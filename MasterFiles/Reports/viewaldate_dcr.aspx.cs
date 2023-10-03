@@ -19,6 +19,7 @@ using Amazon.S3.IO;
 using Amazon.S3;
 using Amazon.S3.Transfer;
 using System.Net;
+using DBase_EReport;
 
 public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
 {
@@ -214,13 +215,15 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         return dsRemark;
     }
 	    [WebMethod]
-    public static string GetAudiofile(string Name, string FileName)
+    public static string GetAudiofile(string div_code, string FileName)
     {
-        MasterFiles_Reports_viewaldate_dcr playa = new MasterFiles_Reports_viewaldate_dcr();
-       // string msg = "";
+        DB_EReporting db = new DB_EReporting();        
+        DataSet ds = db.Exec_DataSet("Select Select Url_Short_Name+'_'+'Audio' foldername from Mas_Division where Division_Code='" + div_code + "'  ");
+        string Folder= ds.Tables[0].Rows[0]["foldername"].ToString();
         string bucketName = "happic";
-        string folderName = "Gandhimathi Appliances PVT Limited_Audio";
+        string folderName = Folder;
         string fileName = FileName;
+        MasterFiles_Reports_viewaldate_dcr playa = new MasterFiles_Reports_viewaldate_dcr();
         string msg =playa.downloadaudio( bucketName,folderName,fileName);
         return msg;
     }

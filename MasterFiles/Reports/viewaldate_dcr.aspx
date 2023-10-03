@@ -194,7 +194,7 @@
                 contentType: "application/json",
                 async: false,
                 url: "viewaldate_dcr.aspx/GetAudiofile",
-                data: "{ 'Name': 'happic/TAPhotos', 'FileName': '" + aud + "' }",
+                data: "{'div_code':'<%=Session["div_code"]%>', 'FileName': '" + aud + "' }",
                 dataType: 'json',
                 success: function (data) {
                     var file = data;

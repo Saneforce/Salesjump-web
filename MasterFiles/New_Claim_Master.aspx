@@ -124,6 +124,20 @@
                     background-color: #428bca;
                     border-color: #428bca;
                 }
+				                .aState1[data-val='Active']
+                {color: #66a454 !important;}
+                .aState1[data-val='Deactivate']
+                {color: #d3252a;}
+
+                .aState2[data-val='Active']
+{color: #66a454 !important;}
+.aState2[data-val='Deactivate']
+{color: #d3252a;}
+
+.aState3[data-val='Active']
+{color: #66a454 !important;}
+.aState3[data-val='Deactivate']
+{color: #d3252a;}
 
     </style>
      <form id="frm" runat="server">
@@ -801,9 +815,9 @@
         });
         $(document).on('click', ".ddlStatus>li>a", function () {
         //$(".ddlStatus>li>a").on("click", function () {
-            cStus = $(this).closest("td").find(".aState");
+            cStus = $(this).closest("td").find(".aState1");
             let slbid = $(this).closest("tr").find(".sfedit").attr("id");
-            stus = $(this).attr("v");
+            stus = $(this).attr("v1");
             $indx = Orders.findIndex(x => x.GiftSlabID == slbid);
             cStusNm = $(this).text();
             if (confirm("Do you want change status " + $(cStus).text() + " to " + cStusNm + " ?")) {
@@ -874,8 +888,8 @@
                         '</a></td><td>' + Orders[$i].Duration + '</td><td>' + Orders[$i].Claim_deadline + '</td><td id=' + Orders[$i].GiftSlabID +
                         ' class="sfedit"><input type="hidden"  value="0"><a href="#">Edit</a></td>' +
                         '<td><ul class="nav" style="margin:0px"><li class="dropdown"><a href="#" style="padding:0px" class="dropdown-toggle" data-toggle="dropdown">'
-                        + '<span><span class="aState" data-val="' + Orders[$i].Status + '">' + Orders[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
-                        '<ul class="dropdown-menu dropdown-custom dropdown-menu-right ddlStatus" style="right:0;left:auto;">' + ((Orders[$i].Status == "Active") ? '<li><a href="#" v2="1">Deactivate</a></li>' : '<li><a href="#" v2="0">Active</a></li>') + '</ul></li></ul></td>');
+                        + '<span><span class="aState1" data-val="' + Orders[$i].Status + '">' + Orders[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
+                        '<ul class="dropdown-menu dropdown-custom dropdown-menu-right ddlStatus" style="right:0;left:auto;">' + ((Orders[$i].Status == "Active") ? '<li><a href="#" v1="1">Deactivate</a></li>' : '<li><a href="#" v1="0">Active</a></li>') + '</ul></li></ul></td>');
 
                     $("#retailbslab TBODY").append(tr);
                 }
@@ -1180,9 +1194,9 @@ if (clmval == "" && clmtyp == '1') {
         }
         $(document).on('click', ".ddlStatus1>li>a", function () {
             //$(".ddlStatus>li>a").on("click", function () {
-            cStus = $(this).closest("td").find(".aState");
+            cStus = $(this).closest("td").find(".aState2");
             let slbid = $(this).closest("tr").find(".sfedit2").attr("id");
-            stus = $(this).attr("v1");
+            stus = $(this).attr("v2");
             $indx = Orders2.findIndex(x => x.GiftSlabID == slbid);
             cStusNm = $(this).text();
             if (confirm("Do you want change status " + $(cStus).text() + " to " + cStusNm + " ?")) {
@@ -1226,7 +1240,7 @@ if (clmval == "" && clmtyp == '1') {
                         '</td><td>' + Orders2[$i].Sf_HQ1 + '</td><td>' + Orders2[$i].Mapped_Retails1 + '</td><td>' + Orders2[$i].Duration + '</td><td>' + Orders2[$i].Claim_deadline + '</td><td id=' + Orders2[$i].GiftSlabID +
                         ' class="sfedit2"><a href="#">Edit</a></td>' +
                         '<td><ul class="nav" style="margin:0px"><li class="dropdown"><a href="#" style="padding:0px" class="dropdown-toggle" data-toggle="dropdown">'
-                        + '<span><span class="aState" data-val="' + Orders2[$i].Status + '">' + Orders2[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
+                        + '<span><span class="aState2" data-val="' + Orders2[$i].Status + '">' + Orders2[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
                         '<ul class="dropdown-menu dropdown-custom dropdown-menu-right ddlStatus1" style="right:0;left:auto;">' + ((Orders2[$i].Status == "Active") ? '<li><a href="#" v2="1">Deactivate</a></li>' : '<li><a href="#" v2="0">Active</a></li>') + '</ul></li></ul></td>');
 
                     $("#billslab TBODY").append(tr);
@@ -1568,9 +1582,9 @@ if (clmval == "" && clmtyp == '1') {
         }
         $(document).on('click', ".ddlStatus2>li>a", function () {
             //$(".ddlStatus>li>a").on("click", function () {
-            cStus = $(this).closest("td").find(".aState");
+            cStus = $(this).closest("td").find(".aState3");
             let gid = $(this).closest("tr").find(".sfedit3").attr("id");
-            stus = $(this).attr("v2");
+            stus = $(this).attr("v3");
             $indx = Orders3.findIndex(x => x.ID == gid);
             cStusNm = $(this).text();
             if (confirm("Do you want change status " + $(cStus).text() + " to " + cStusNm + " ?")) {
@@ -1612,8 +1626,8 @@ if (clmval == "" && clmtyp == '1') {
                     $(tr).html('<td>' + slno + '</td><td>' + Orders3[$i].prod_type + '</td><td>' + Orders3[$i].PName + '</td><td>' + Orders3[$i].Product_Price + '</td><td id=' + Orders3[$i].ID +
                         ' class="sfedit3"><a href="#">Edit</a></td>' +
                         '<td><ul class="nav" style="margin:0px"><li class="dropdown"><a href="#" style="padding:0px" class="dropdown-toggle" data-toggle="dropdown">'
-                        + '<span><span class="aState" data-val="' + Orders3[$i].Status + '">' + Orders3[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
-                        '<ul class="dropdown-menu dropdown-custom dropdown-menu-right ddlStatus2" style="right:0;left:auto;">' + ((Orders3[$i].Status == "Active") ? '<li><a href="#" v2="1">Deactivate</a></li>' : '<li><a href="#" v2="0">Active</a></li>') + '</ul></li></ul></td>');
+                        + '<span><span class="aState3" data-val="' + Orders3[$i].Status + '">' + Orders3[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
+                        '<ul class="dropdown-menu dropdown-custom dropdown-menu-right ddlStatus2" style="right:0;left:auto;">' + ((Orders3[$i].Status == "Active") ? '<li><a href="#" v3="1">Deactivate</a></li>' : '<li><a href="#" v3="0">Active</a></li>') + '</ul></li></ul></td>');
                     $("#giftpList TBODY").append(tr);
                 }
             }
@@ -1740,7 +1754,7 @@ if (clmval == "" && clmtyp == '1') {
             if (prodtyp == "1") {
                 productnm = $('#txtprod').val();
             }
-			if(productnm=="" && productnm=="0" && prodtyp == "0")
+			if((productnm=="" || productnm=="0") && prodtyp == "0")
 			{
 			alert("Select Product");
 			$("#ddlprod").focus();
