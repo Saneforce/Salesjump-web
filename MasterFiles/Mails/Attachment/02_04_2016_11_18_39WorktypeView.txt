@@ -1,0 +1,46 @@
+ public DataSet Get_ChkWorkTypeName(string StrChkWorkType)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            strQry = "select Worktype_Name_B,WType_SName from Mas_WorkType_BaseLevel where WorkType_Code_B in(" + StrChkWorkType + ")";
+
+            DataSet dsDCR = null;
+
+            try
+            {
+                dsDCR = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsDCR;
+        }
+
+       public DataSet Get_CountWorkType(string SF_Code, string div_code, string cmonth, string cyear, string WorkTypeName)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            strQry = "select count(Trans_SlNo)  " +
+                     "from DCRMain_Trans DCR,Mas_WorkType_BaseLevel B " +
+                     "where DCR.Sf_Code = '" + SF_Code + "' and month(DCR.Activity_Date)='" + cmonth + "' " +
+                     "and YEAR(DCR.Activity_Date)='" + cyear + "' " +
+                     "and DCR.Work_Type =B.WorkType_Code_B and DCR.Division_Code='" + div_code + "' and B.WType_SName='" + WorkTypeName + "' ";
+
+            DataSet dsDCR = null;
+
+            try
+            {
+                dsDCR = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsDCR;
+        }
+
+get_dcr_Pending_date
+
+strQry = "select Last_Dcr_Date  from Mas_Salesforce " +
+                     " where Sf_Code='" + SF_Code + "' and sf_TP_Active_Flag=0 ";

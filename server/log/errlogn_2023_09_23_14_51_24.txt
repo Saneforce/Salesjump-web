@@ -1,0 +1,16 @@
+FMCG_Live Error:select isnull(Fld1629admin_638310762626636659,'')Fld1629admin_638310762626636659 from CFGT16_20230923143014  where EntryBy ='MR4126' and EntryId ='MR4126-1695460757000'
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'EntryBy'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'EntryBy'."}]
+data:MR4126FMCG_Live Error:select isnull(Fld1630admin_638310763307092103,'')Fld1630admin_638310763307092103 from CFGT16_20230923143023  where EntryBy ='MR4126' and EntryId ='MR4126-1695460757000'
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'EntryBy'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'EntryBy'."},{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Fld1630admin_638310763307092103'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Fld1630admin_638310763307092103'."}]
+data:MR4126FMCG_Live Error:select isnull(Fld1631admin_638310763866184295,'')Fld1631admin_638310763866184295 from CFGT16_20230923143028  where EntryBy ='MR4126' and EntryId ='MR4126-1695460757000'
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'EntryBy'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'EntryBy'."}]
+data:MR4126FMCG_Live Error:select isnull(Fld1630admin_638310764134818974,'')Fld1630admin_638310764134818974 from CFGT16_20230923143023  where EntryBy ='MR4126' and EntryId ='MR4126-1695460757000'
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'EntryBy'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'EntryBy'."}]
+data:MR4126FMCG_Live Error:select isnull(Fld1631admin_638310764426484802,'')Fld1631admin_638310764426484802 from CFGT16_20230923143028  where EntryBy ='MR4126' and EntryId ='MR4126-1695460757000'
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'EntryBy'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'EntryBy'."}]
+data:MR4126

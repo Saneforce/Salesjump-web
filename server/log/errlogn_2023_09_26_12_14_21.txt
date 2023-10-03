@@ -1,0 +1,7 @@
+FMCG_ENGLISH Error:select * from Trans_Retailer_Custom_Field where RetailerID = '2117'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Trans_Retailer_Custom_Field'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Trans_Retailer_Custom_Field'."}]
+data:2117FMCG_ENGLISH Error:select * from Trans_Retailer_Custom_Field where RetailerID = '2117'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Trans_Retailer_Custom_Field'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Trans_Retailer_Custom_Field'."}]
+data:2117

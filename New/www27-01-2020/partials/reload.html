@@ -1,0 +1,282 @@
+<ion-view class="ion-viewport">
+    <ion-content class="screen-parent">
+    
+        <div class="select-component" ng-hide="view_MR">
+            <div class="label">
+                <div class="label-text">Headquarters</div>
+            </div>
+            <div class="select-box">
+                <div class="input-box">
+                    <div  class="input-css" ng-click="openModal('subordinate_master', 208)">
+                        {{(Reload.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Headquarters"}}
+                    </div> 
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- <div class="select-box" ng-click="RefreshData();" >
+                <div class="input-box">
+                    <span  class="item-note icon-loop2 reload" style="margin-top:3px;margin-right:6px;background-color:#aaa;" ></span>
+                </div>
+            </div> -->
+        <div class="list">
+
+             <a class="item item-icon-left"ng-click="RefreshData();" style="padding:16px;">
+              <div style="text-align: center;font-size: 11px;line-height: 33px;border: 1px solid #ddd;box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.11);">
+                <span  class="icon-loop2 reload"></span> Sync All Data
+              </div>
+            </a>
+         <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(0)">
+                <i class="icon ion-medkit"></i>
+                {{DrCap}} 
+                <span class="item-note" ng-show="loadr[0]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[0]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+           
+            <a class="item item-icon-left" ng-hide="ChmNeed" ng-click="vibrate();
+                clearItem(1)">
+                <i class="icon ion-flask"></i>
+                {{ChmCap}}
+                <span class="item-note" ng-show="loadr[1]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[1]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+               <!-- <a class="item item-icon-left"  ng-hide="StkNeed" ng-click="vibrate();-->
+            <a class="item item-icon-left" ng-click="vibrate();
+                clearItem(2)">
+                <i class="icon ion-bag"></i>
+                {{StkCap}}
+                <span class="item-note" ng-show="loadr[2]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[2]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left" ng-hide="UNLNeed" ng-click="vibrate();
+                clearItem(3)">
+                <i class="icon ion-man"></i>
+                {{NLCap}}
+                <span class="item-note" ng-show="loadr[3]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[3]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(4)">
+                <i class="icon ion-social-wordpress-outline"></i>
+                WorkType
+                <span class="item-note" ng-show="loadr[4]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[4]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left" ng-click="vibrate();
+                clearItem(14)">
+                <i class="icon icon-lastfm2"></i>
+                Channel
+                <span class="item-note" ng-show="loadr[14]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[14]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left" ng-click="vibrate();
+                clearItem(13)">
+                <i class="icon icon-star-half"></i>
+                Category
+                <span class="item-note" ng-show="loadr[13]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[13]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left" ng-click="vibrate();
+                clearItem(18)">
+                <i class="icon ion-ios7-bookmarks"></i>
+                Class
+                <span class="item-note" ng-show="loadr[18]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[18]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left" ng-click="vibrate();
+                clearItem(19)">
+                <i class="icon ion-university"></i>
+                Qualification
+                <span class="item-note" ng-show="loadr[19]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[19]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left" ng-click="vibrate();
+                clearItem(17)">
+                <i class="icon ion-cube"></i>
+                Product Brands
+                <span class="item-note" ng-show="loadr[17]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[17]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(5)">
+                <i class="icon ion-ios7-cart"></i>
+                Product
+                <span class="item-note" ng-show="loadr[5]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[5]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(20)">
+                <!--ion-social-yen-outline-->
+                <i class="icon ion-social-usd"></i>
+                Product Rate
+                <span class="item-note" ng-show="loadr[20]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[20]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left" ng-click="vibrate();
+                clearItem(27)">
+                <!--ion-social-yen-outline-->
+                <i class="icon ion-social-usd"></i>
+                Tax Details
+                <span class="item-note" ng-show="loadr[27]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[27]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left" ng-click="vibrate();
+                clearItem(28)">
+                <!--ion-social-yen-outline-->
+                <i class="icon ion-social-usd"></i>
+                Productwise Tax Details
+                <span class="item-note" ng-show="loadr[28]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[28]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(6)">
+                <i class="icon ion-trophy"></i>
+                Inputs
+                <span class="item-note" ng-show="loadr[6]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[6]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(7)">
+                <i class="icon ion-person-add"></i>
+                JointWork
+                <span class="item-note" ng-show="loadr[7]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[7]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(8)">
+                <i class="icon ion-person-stalker"></i>
+                Route
+                <span class="item-note" ng-show="loadr[8]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[8]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+             <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(23)">
+                <i class="icon ion-android-calendar"></i>
+                Leave Type
+                <span class="item-note" ng-show="loadr[23]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[23]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(9)" ng-hide="view_MR||!view_MR">
+                <i class="icon ion-chatbox-working"></i>
+                Call Feedback
+                <span class="item-note" ng-show="loadr[9]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[9]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(10)">
+                <i class="icon ion-android-archive"></i>
+                Templates
+                <span class="item-note" ng-show="loadr[10]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[10]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a ng-if="HlfNeed" class="item item-icon-left" ng-click="vibrate();
+                clearItem(11)">
+                <i class="icon ion-pricetags"></i>
+                Halfday Works
+                <span class="item-note" ng-show="loadr[11]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[11]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+             <a class="item item-icon-left"  ng-click="vibrate();
+                clearItem(22)" style="display:none;">
+                <!--ion-social-yen-outline-->
+                <i class="icon ion-ios7-alarm"></i>
+                TP Entry
+                <span class="item-note" ng-show="loadr[22]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[22]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left" ng-click="vibrate();
+                clearItem(12)">
+                <i class="icon icon-bubbles2"></i>
+                My Day Plan
+                <span class="item-note" ng-show="loadr[12]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[12]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            <a class="item item-icon-left" ng-click="vibrate();
+                clearItem(29)">
+                <i class="icon icon-bubbles2"></i>
+                Pending Bills
+                <span class="item-note" ng-show="loadr[29]"><i class="ion-looping spinnr"></i></span>
+                <span class="item-note" ng-show="ErrFnd[29]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+            </a>
+            
+            <a class="item item-icon-left" ng-click="vibrate();
+               clearItem(30)">
+               <i class="icon ion-social-usd"></i>
+               Category Rates
+               <span class="item-note" ng-show="loadr[30]"><i class="ion-looping spinnr"></i></span>
+               <span class="item-note" ng-show="ErrFnd[30]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+           </a>
+            <a class="item item-icon-left" ng-click="vibrate();
+               clearItem(31)">
+               <i class="icon icon-bubbles2"></i>
+               Schemes
+               <span class="item-note" ng-show="loadr[31]"><i class="ion-looping spinnr"></i></span>
+               <span class="item-note" ng-show="ErrFnd[31]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+           </a>
+
+            <a class="item item-icon-left"    ng-if="MsdDate==1" ng-click="vibrate();
+               clearItem(32)">
+               <i class="icon icon-bubbles2"></i>
+               MissedDates
+               <span class="item-note" ng-show="loadr[32]"><i class="ion-looping spinnr"></i></span>
+               <span class="item-note" ng-show="ErrFnd[32]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+           </a>
+
+           <a class="item item-icon-left"    ng-if="DemoGivenND==1" ng-click="vibrate();
+               clearItem(33)">
+               <i class="icon icon-bubbles2"></i>
+               FieldDemoCategory
+               <span class="item-note" ng-show="loadr[33]"><i class="ion-looping spinnr"></i></span>
+               <span class="item-note" ng-show="ErrFnd[33]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+           </a>
+           <a class="item item-icon-left"    ng-if="DemoGivenND==1" ng-click="vibrate();
+               clearItem(34)">
+               <i class="icon icon-bubbles2"></i>
+               BreedCategory
+               <span class="item-note" ng-show="loadr[34]"><i class="ion-looping spinnr"></i></span>
+               <span class="item-note" ng-show="ErrFnd[34]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+           </a>
+
+           <a class="item item-icon-left" ng-click="vibrate();
+               clearItem(35)"    ng-if="Supplier_Master==1 ">
+               <i class="icon icon-bubbles2"></i>
+               Super Stockist
+               <span class="item-note" ng-show="loadr[35]"><i class="ion-looping spinnr"></i></span>
+               <span class="item-note" ng-show="ErrFnd[35]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+           </a>
+
+          <a class="item item-icon-left"  ng-if="NewContact==1" ng-click="vibrate();
+               clearItem(36)">
+               <i class="icon icon-bubbles2"></i>
+             Promotional Items
+               <span class="item-note" ng-show="loadr[36]"><i class="ion-looping spinnr"></i></span>
+               <span class="item-note" ng-show="ErrFnd[36]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+           </a>
+           <a class="item item-icon-left"  ng-click="vibrate();
+               clearItem(37)">
+               <i class="icon icon-bubbles2"></i>
+             Claim Type
+               <span class="item-note" ng-show="loadr[37]"><i class="ion-looping spinnr"></i></span>
+               <span class="item-note" ng-show="ErrFnd[37]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+           </a>
+           <a class="item item-icon-left"  ng-if="Product_Remark==1"  ng-click="vibrate();
+               clearItem(42)">
+               <i class="icon ion-ios7-cart"></i>
+             Product Reason
+               <span class="item-note" ng-show="loadr[42]"><i class="ion-looping spinnr"></i></span>
+               <span class="item-note" ng-show="ErrFnd[42]"><i class="ion-alert-circled spinnr" style="color:#E6B800;"></i></span>
+           </a>
+        </div>
+
+     
+      <button  class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+         ClearDate()">Clear Data</button>
+     
+   
+    </ion-content>
+   
+</ion-view>

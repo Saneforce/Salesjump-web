@@ -1,0 +1,436 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using Bus_EReport;
+
+
+public partial class MasterFiles_MGR_TP_Entry : System.Web.UI.Page
+{
+    #region "Declaration"
+    DataSet dsTP = null;
+    DataSet dsWeek = null;
+    DataSet dsHoliday = null;
+    DataSet dsSalesForce = null;
+    string Terr_Code = string.Empty;
+    string sf_code = string.Empty;
+    string div_code = string.Empty;
+    string state_code = string.Empty;
+    string TP_Date = string.Empty;
+    string TP_Day = string.Empty;
+    string TP_Terr = string.Empty;
+    string TP_WW = string.Empty;
+    bool TP_Submit = false;
+    int TP_Month = -1;
+    int TP_Year = -1;
+    DateTime TP_Submit_Date;
+    DateTime TP_Tour_Date;
+    string TP_Tour_Shedule = string.Empty;
+    string TP_Objective = string.Empty;
+    string[] sWork;
+    int iIndex = -1;
+
+
+    DateTime dt_TP_Active_Date;
+    DateTime dt_TP_Current_Date;
+    int i;
+    int iWeek = -1;
+    int iReturn = -1;
+    #endregion
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+        sf_code = Session["sf_code"].ToString();
+        if (!Page.IsPostBack)
+        {
+            menu1.FindControl("btnBack").Visible = false;
+            menu1.Title = this.Page.Title;
+            FillTPDate();
+        }
+    }
+
+    private void FillTPDate()
+    {
+        TourPlan tp = new TourPlan();
+        dsTP = tp.get_TP_Active_Date(sf_code);
+        if (dsTP.Tables[0].Rows.Count > 0)
+        {
+            dt_TP_Active_Date = Convert.ToDateTime(dsTP.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+        }
+        lblmon.Text = getMonth(Convert.ToInt16(dt_TP_Active_Date.Month));
+        lblmon.Text = lblmon.Text + " - " + (Convert.ToInt16(dt_TP_Active_Date.Year));
+        dsTP = tp.getEmptyTourPlan(dt_TP_Active_Date);
+        if (dsTP.Tables[0].Rows.Count > 0)
+        {
+            grdTP.Visible = true;
+            grdTP.DataSource = dsTP;
+            grdTP.DataBind();
+        }
+    }
+
+
+    protected void grdTP_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        UnListedDR LstDR = new UnListedDR();
+        sf_code = Session["sf_code"].ToString();
+        dsHoliday = LstDR.getState(sf_code);
+        if (dsHoliday.Tables[0].Rows.Count > 0)
+        {
+            state_code = dsHoliday.Tables[0].Rows[0].ItemArray.GetValue(0).ToString();
+            div_code = dsHoliday.Tables[0].Rows[0].ItemArray.GetValue(1).ToString();
+        }
+
+        TourPlan tp = new TourPlan();
+        dsTP = tp.get_TP_Active_Date(sf_code);
+        if (dsTP.Tables[0].Rows.Count > 0)
+        {
+            dt_TP_Active_Date = Convert.ToDateTime(dsTP.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+        }
+
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            Label lblSNo = (Label)e.Row.FindControl("lblSNo");
+            Label lblDate = (Label)e.Row.FindControl("lblDate");
+            Label lblDay = (Label)e.Row.FindControl("lblDay");
+            DropDownList ddlTerr = (DropDownList)e.Row.FindControl("ddlTerr");
+            TextBox txtObjective = (TextBox)e.Row.FindControl("txtObjective");
+
+
+            if (lblSNo != null)
+            {
+                DataRowView row = (DataRowView)e.Row.DataItem;
+                dt_TP_Current_Date = dt_TP_Active_Date.AddDays(Convert.ToInt32(lblSNo.Text) - 1);
+                lblDay.Text = dt_TP_Current_Date.DayOfWeek.ToString();
+                lblDate.Text = dt_TP_Current_Date.ToString("MM/dd/yyyy");
+
+                dsHoliday = tp.getHolidays(state_code, div_code, lblDate.Text);
+                if (dsHoliday.Tables[0].Rows.Count > 0)
+                {
+                    lblDay.BackColor = System.Drawing.Color.FromName("#F454BF");
+                    lblSNo.BackColor = System.Drawing.Color.FromName("#F454BF");
+                    lblDate.BackColor = System.Drawing.Color.FromName("#F454BF");
+                    ddlTerr.Enabled = false;
+                    txtObjective.Enabled = false;
+                    txtObjective.Text = Convert.ToString(dsHoliday.Tables[0].Rows[0].ItemArray.GetValue(1).ToString());
+                }
+
+                dsWeek = tp.get_WeekOff(sf_code);
+                if (dsWeek.Tables[0].Rows.Count > 0)
+                {
+                    iWeek = Convert.ToInt32(dsWeek.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+                    if (lblDay.Text.Trim() == getDays(iWeek))
+                    {
+                        lblDay.BackColor = System.Drawing.Color.FromName("#F454BF");
+                        lblSNo.BackColor = System.Drawing.Color.FromName("#F454BF");
+                        lblDate.BackColor = System.Drawing.Color.FromName("#F454BF");
+                        ddlTerr.Enabled = false;
+                        txtObjective.Enabled = false;
+                        txtObjective.Text = txtObjective.Text + " Weekly Off";
+                    }
+                }
+
+                ddlTerr.Items.Clear();
+                CheckBoxList ddlWW = (CheckBoxList)e.Row.FindControl("ddlWW");
+                //TourPlan tp = new TourPlan();
+                dsTP = tp.FetchTerritory(sf_code);
+                ddlTerr.DataTextField = "Territory_Name";
+                ddlTerr.DataValueField = "Territory_Code";
+                ddlTerr.DataSource = dsTP;
+                ddlTerr.DataBind();
+
+                // Saved but not submitted
+
+                dsTP = tp.get_TP_Draft(sf_code, lblDate.Text);
+                if (dsTP.Tables[0].Rows.Count > 0)
+                {
+                    txtObjective.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+                    ddlTerr.SelectedValue = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(1).ToString());
+                    TP_WW = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(2).ToString());
+                }
+
+                
+
+                if (TP_WW != "")
+                {
+                    iIndex = -1;
+                    sWork = TP_WW.Split(',');
+                    foreach (string sw in sWork)
+                    {
+                        for (iIndex = 0; iIndex < ddlWW.Items.Count; iIndex++)
+                        {
+                            if (sw == ddlWW.Items[iIndex].Value)
+                            {
+                                ddlWW.Items[iIndex].Selected = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    protected void grdTP_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //CheckBoxList ddlWW = (CheckBoxList)sender;
+        //GridViewRow row = (GridViewRow)ddlWW.NamingContainer;
+        TourPlan tp = new TourPlan();
+        foreach (GridViewRow gridRow in grdTP.Rows)
+        {
+            Label lblDate = (Label)gridRow.Cells[1].FindControl("lblDate");
+            CheckBoxList ddlWW = (CheckBoxList)gridRow.Cells[3].FindControl("ddlWW");
+            DropDownList ddlTerritory_Type = (DropDownList)gridRow.Cells[4].FindControl("ddlTerr");
+            //TP_Terr = ddlTerritory_Type.SelectedValue.ToString();
+
+            for (iIndex = 0; iIndex < ddlWW.Items.Count; iIndex++)
+            {
+                if (ddlWW.Items[iIndex].Selected == true)
+                {
+                    //ddlWW.Items[iIndex].Selected = true;
+                    ddlTerritory_Type.Items.Clear();
+                    TP_WW = ddlWW.Items[iIndex].Value.ToString();
+                    
+                    dsTP = tp.FetchTerritory(TP_WW);
+                    ddlTerritory_Type.DataTextField = "Territory_Name";
+                    ddlTerritory_Type.DataValueField = "Territory_Code";
+                    ddlTerritory_Type.DataSource = dsTP;
+                    ddlTerritory_Type.DataBind();
+                }
+                else
+                {
+                    ddlTerritory_Type.Items.Clear();
+                    TP_WW = ddlWW.Items[iIndex].Value.ToString();
+                    
+                    dsTP = tp.FetchTerritory("0");
+                    ddlTerritory_Type.DataTextField = "Territory_Name";
+                    ddlTerritory_Type.DataValueField = "Territory_Code";
+                    ddlTerritory_Type.DataSource = dsTP;
+                    ddlTerritory_Type.DataBind();
+                }
+            }
+
+            dsTP = tp.get_TP_Draft(sf_code, lblDate.Text);
+            if (dsTP.Tables[0].Rows.Count > 0)
+            {
+                ddlTerritory_Type.SelectedValue = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(1).ToString());
+            }
+
+        }
+        //int count = 0;
+        //int g = row.RowIndex + 3;
+        //int current_row_index = row.RowIndex;
+        //foreach (GridViewRow gvRow in grdTP.Rows)
+        //{
+
+        //    //gvRow.BackColor = Color.White;
+        //    if (((DropDownList)gvRow.FindControl("dropdownid")).SelectedIndex != 0)
+        //    {
+        //        count++;
+        //    }
+
+        //    if (gvRow.FindControl("dropdownid") != null && gvRow.RowIndex != current_row_index)
+        //    {
+        //        ((DropDownList)gvRow.FindControl("dropdownid")).SelectedIndex = 0;
+        //    }
+        //}
+        //grdTP.Rows[g].BackColor = Color.Red;
+        //if (count == 0)
+        //{
+        //    foreach (GridViewRow gvRow in grdTP.Rows)
+        //    {
+        //        gvRow.BackColor = Color.White;
+        //    }
+        //}
+    }
+    //protected void checked_delete(object sender, EventArgs e)
+    //{
+    //    CheckBox chk = (CheckBox)sender;
+    //    GridViewRow gr = (GridViewRow)chk.Parent.Parent;
+    //    checked_label.Text = grdTP.DataKeys[gr.RowIndex].Value.ToString();
+    //}
+
+
+
+    private string getDays(int iDay)
+    {
+        string sWeek = string.Empty;
+
+        if (iDay == 0)
+        {
+            sWeek = "Sunday";
+        }
+        else if (iDay == 1)
+        {
+            sWeek = "Monday";
+        }
+        else if (iDay == 2)
+        {
+            sWeek = "Tuesday";
+        }
+        else if (iDay == 3)
+        {
+            sWeek = "Wednesday";
+        }
+        else if (iDay == 4)
+        {
+            sWeek = "Thursday";
+        }
+        else if (iDay == 5)
+        {
+            sWeek = "Friday";
+        }
+        else if (iDay == 6)
+        {
+            sWeek = "Saturday";
+        }
+
+        return sWeek;
+    }
+    private string getMonth(int iMonth)
+    {
+        string sMonth = string.Empty;
+
+        if (iMonth == 1)
+        {
+            sMonth = "January";
+        }
+        else if (iMonth == 2)
+        {
+            sMonth = "Febraury";
+        }
+        else if (iMonth == 3)
+        {
+            sMonth = "March";
+        }
+        else if (iMonth == 4)
+        {
+            sMonth = "April";
+        }
+        else if (iMonth == 5)
+        {
+            sMonth = "May";
+        }
+        else if (iMonth == 6)
+        {
+            sMonth = "June";
+        }
+        else if (iMonth == 7)
+        {
+            sMonth = "July";
+        }
+        else if (iMonth == 8)
+        {
+            sMonth = "August";
+        }
+        else if (iMonth == 9)
+        {
+            sMonth = "September";
+        }
+        else if (iMonth == 10)
+        {
+            sMonth = "October";
+        }
+        else if (iMonth == 11)
+        {
+            sMonth = "November";
+        }
+        else if (iMonth == 12)
+        {
+            sMonth = "December";
+        }
+        return sMonth;
+    }
+
+    protected DataSet FillTerritory()
+    {
+        TourPlan tp = new TourPlan();
+        dsTP = tp.FetchTerritory(sf_code);
+        if (dsTP.Tables[0].Rows.Count <= 1)
+        {
+            Response.Redirect("../Territory/TerritoryCreation.aspx");
+            //menu1.Status = "Territory must be created prior to Doctor creation";
+            ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Territory must be created prior to Doctor creation');</script>");
+        }
+        return dsTP;
+    }
+    protected DataSet FillSF()
+    {
+        SalesForce sf = new SalesForce();
+        dsSalesForce = sf.SF_ReportingTo_TourPlan(div_code, sf_code);
+        if (dsSalesForce.Tables[0].Rows.Count > 0)
+        {
+           //
+        }
+        return dsSalesForce;
+
+    }
+
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        int iReturn = -1;
+        if (rdoComplete.SelectedValue == "1")
+        {
+            TP_Submit = true;
+        }
+
+        foreach (GridViewRow gridRow in grdTP.Rows)
+        {
+            Label lblDate = (Label)gridRow.Cells[1].FindControl("lblDate");
+            TP_Date = lblDate.Text.ToString();
+            Label lblDay = (Label)gridRow.Cells[2].FindControl("lblDay");
+            TP_Day = lblDay.Text.ToString();
+            //DropDownList ddlWW = (DropDownList)gridRow.Cells[3].FindControl("ddlWW");
+            //TP_WW = ddlWW.SelectedValue.ToString();
+            CheckBoxList ddlWW = (CheckBoxList)gridRow.Cells[3].FindControl("ddlWW");
+            //TP_WW = ddlWW.SelectedValue.ToString();
+
+            TP_WW = "";
+            for (int i = 0; i < ddlWW.Items.Count; i++)
+            {
+                if (ddlWW.Items[i].Selected)
+                {
+                    TP_WW += ddlWW.Items[i].Value + ",";
+                }
+            }
+
+            DropDownList ddlTerritory_Type = (DropDownList)gridRow.Cells[4].FindControl("ddlTerr");
+            TP_Terr = ddlTerritory_Type.SelectedValue.ToString();
+            
+            TextBox txtObjective = (TextBox)gridRow.Cells[5].FindControl("txtObjective");
+            TP_Objective = txtObjective.Text.ToString();
+
+            //if ((TP_Terr.Trim().Length > 0) && (TP_Objective.Trim().Length > 0) )
+            if (TP_Terr.Trim().Length > 0)
+            {
+                // Add New Tour Plan
+                TourPlan tp = new TourPlan();
+               // iReturn = tp.RecordAddMGR(TP_Date, TP_Day, TP_Terr,TP_WW, TP_Objective, TP_Submit, Session["sf_code"].ToString());
+            }
+            else
+            {
+                //menu1.Status = "Enter all the values!!";
+            }
+        }
+
+        if (iReturn != -1)
+        {
+            if (TP_Submit == false)
+            {
+               // menu1.Status = "TourPlan Created Successfully!!";
+                ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('TourPlan Created Successfully');</script>");
+            }
+            else
+            {
+               // menu1.Status = "TourPlan submitted Successfully!!";
+                ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('TourPlan submitted Successfully');</script>");
+            }
+            FillTerritory();
+        }
+
+    }
+}

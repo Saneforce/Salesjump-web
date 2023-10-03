@@ -1,0 +1,56 @@
+﻿<ion-view>
+    <div class="bar bar-subheader">
+        <div class="list">
+            <label class="item item-input item-date">
+                <div class="input-label cwhite">
+                    Date :
+                </div>
+                <input type="date" ng-model="dyRptDt" ng-change="getDayReports()" />
+            </label>
+        </div>
+    </div>
+    <ion-content class="headertop" style="background-color:#f6eeee">
+        <div class="card Tbrd{{dyDCR.Desig_Code}}" ng-repeat="dyDCR in dayDCRList">
+            <h4> {{dyDCR.SF_Name}}</h4>
+            <div class="propCase">
+                <b>{{dyDCR.wtype}}<span ng-if="dyDCR.HalfDay_FW_Type"> / {{dyDCR.HalfDay_FW_Type}}</span></b>
+                <br /><b>Collected Amount<span style="color:#389BFD">:{{dyDCR.POB}}</span></b>
+                <div class="item-note" ng-if="dyDCR.FWFlg == 'F'||dyDCR.FWFlg=='HG'||dyDCR.FWFlg=='DS'">
+                    <table style="border-collapse:collapse" border="1">
+                        <tr><td>T.Calls</td><td>P.Calls</td><td>O.Value</td><td>{{StkCap}}</td></tr>
+
+                        <!--<tr><td>VT1</td><td>VT2</td><td>VT3</td><td>VT4</td></tr>-->
+                        <tr>
+                            <td ng-click="ViewDetail(dyDCR.ACode, 1, dyDCR.Adate, 0)">{{dyDCR.Drs}}</td>
+                            <td ng-click="ViewDetail(dyDCR.ACode, 1, dyDCR.Adate, 1)">{{dyDCR.orders}}</td>
+                            <td>{{dyDCR.orderValue}}</td>
+
+                            <td ng-click="ViewDetail(dyDCR.ACode, 3, dyDCR.Adate)">{{dyDCR.Stk}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="item-note" ng-if="dyDCR.FWFlg=='DH'">
+                    <table style="border-collapse:collapse" border="1">
+                            <tr><td>T.Calls</td><td>P.Calls</td><td>O.Value</td><td>{{StkCap}}</td></tr>
+                        <tr>
+                            <td ng-click="ViewDetail(dyDCR.ACode, 4, dyDCR.Adate,0)">{{dyDCR.hunting}}</td>
+                             <td ng-click="ViewDetail(dyDCR.ACode, 1, dyDCR.Adate,1)">{{dyDCR.orders}}</td>
+                            <td>{{MnDCR.orderValue||0}}</td>
+                            <td ng-click="ViewDetail(dyDCR.ACode, 3, dyDCR.Adate)">{{dyDCR.Stk}}</td></tr>
+                    </table>
+                </div>
+                   <div class="item-note" ng-if="dyDCR.FWFlg=='DD'">
+                    <table style="border-collapse:collapse" border="1">
+                            <tr><td>T.Calls</td><td>P.Calls</td><td>O.Value</td><td>{{StkCap}}</td></tr>
+                        <tr>
+                            <td ng-click="ViewDetail(MnDCR.ACode, 6, MnDCR.Adate,0)">{{dyDCR.door}}</td>
+                             <td ng-click="ViewDetail(MnDCR.ACode, 1, MnDCR.Adate,1)">{{dyDCR.orders}}</td>
+                            <td>{{dyDCR.orderValue||0}}</td>
+                            <td ng-click="ViewDetail(MnDCR.ACode, 3, MnDCR.Adate)">{{dyDCR.Stk}}</td></tr>
+                    </table>
+                </div>
+            </div>
+            <p class="propCase rmks">{{dyDCR.Remarks}}</p>
+        </div>
+    </ion-content>
+</ion-view>

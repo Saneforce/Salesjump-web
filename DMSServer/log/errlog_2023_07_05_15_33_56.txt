@@ -1,0 +1,7 @@
+Error:exec getPrimaryOrderDashBoard_modNew '189','2023-07-05','All','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'."}]
+data:{"login_sfCode":"189","Stk":"189","div":"172,","Dt":"2023-07-05","Grpcode":"All","loginType":"Distributor"}Error:exec getSecOrderDashBoard_mod '189','2023-07-05','Distributor',''
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'."}]
+data:{"login_sfCode":"189","Stk":"189","div":"172,","Dt":"2023-07-05","Grpcode":"All","loginType":"Distributor"}

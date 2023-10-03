@@ -1,0 +1,302 @@
+Apple ID
+_______________________________________________________________________________________________________________________________________________________________________
+anbu@saneforce.com
+SANAPPS143a
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PlayStore
+_______________________________________________________________________________________________________________________________________________________________________
+saneforceapps@gmail.com
+apps1234
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+New German
+_______________________________________________________________________________________________________________________________________________________________________
+
+Primary IP
+--------------
+IP: 85.195.87.22
+
+Remote
+-----------
+User: AdminG2017
+pwd: ieg9pienuuHojei7
+
+SQL
+--------
+sa
+!A#8wrAtreWamEK#
+
+FTP
+-------
+ftpserverg2012
+suSPuS6*traPuC
+s9789033008ssspmcsaneforce
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+FMCG Server
+_______________________________________________________________________________________________________________________________________________________________________
+
+IP: 85.195.81.194
+
+User: adming2017
+Pass: ENkgWW2DX5
+
+sa
+?u7aze143renumeM
+
+ftp
+ftpguser2017
+guv5spuRes$e
+
+\9789033008ssspmcsaneforce
+
+Your network configuration (85.195.81.192/30):
+
+Gateway: 85.195.81.193
+Usable IPs: 85.195.81.194
+Broadcast: 85.195.81.195
+Subnet mask: 255.255.255.252
+DNS resolver: 85.195.64.10
+
+Your network configuration (2a01:7a0:2:13dd::/64):
+
+Gateway: 2a01:7a0:2:13dd::1
+DNS resolver: 2a01:7a0:3::10
+
+
+IPMI access details:
+http://146.0.242.68
+User: ADMIN
+password: PSEkDnHBBR
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ASP German II
+_______________________________________________________________________________________________________________________________________________________________________
+
+IP: 37.61.220.210
+
+Remote
+-----------------
+User: Admin321
+Pass: TmqThT5MM2
+ 
+SQL
+-----------------
+sa
+@acRe-AcusTewR4z
+
+FTP
+-----------------
+sanftpserverg2012
+QvrNUN6ewH9R
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ASP SERVERS
+----------------
+
+remoteg2017
+yAqafakAcr6cH@
+
+IP
+Usable IPs: 146.0.255.98 - 146.0.255.102
+
+IPMI access details:
+http://85.195.65.137
+User: ADMIN
+password: T3grfbbNVt
+
+ftpserverg2012
+tAS2B=-t4qaw
+
+sa: Sat-eswek+x7mu
+
+S9789033008SSSPMCSANEFORCE
+
+ASP Server III
+-----------------------
+198.11.197.234
+Admin143
+Wan6phzB
+
+FTP:
+
+User Name:pmcsan
+Password:Nu6e-tup
+Path:9841333008ssspmcsaneforce
+
+SQL:
+
+Password:Corx1R2CpMc0078
+
+
+
+
+
+FDC Server
+-----------------------
+
+Your operating system: Windows Server 2012 R2
+
+RDP IP: 146.0.227.202
+RDP Username: remoteg2017
+RDP Password: D*ThUbrechA5ra
+
+
+sa
+fUvuD2veDReTh!
+
+
+FTP
+ftpserverg2017
+Pe4RUxaca=Ec
+
+
+
+Your network configuration (146.0.227.200/29):
+
+Gateway: 146.0.227.201
+Usable IPs: 146.0.227.202 - 146.0.227.206
+Broadcast: 146.0.227.207
+Subnet mask: 255.255.255.248
+
+IPv4 DNS resolver: 85.195.64.10
+
+Your network configuration (2a01:7a0:2:13dc::/64):
+
+Gateway: 2a01:7a0:2:13dc::1
+
+IPv6 DNS resolver: 2a01:7a0:3::10
+
+
+IPMI access details:
+https://146.0.240.45
+User: ADMIN
+password: 3tEgHStq
+
+
+
+
+
+ASP FILReport
+---------------------
+IP : 37.61.217.210
+remoteg2017
+jEda8RApa#tud+
+
+
+
+
+sa
+6mzpwf_*t#KE#C6d
+
+
+
+ftpserverg2012
+ch#wrAK*drAS73
+
+
+path:   /s9789033008ssspmcsaneforce
+
+
+php 5.3 installed
+
+
+Your network configuration (37.61.217.208/29):
+
+Gateway: 37.61.217.209
+Usable IPs: 37.61.217.210 - 37.61.217.214
+Broadcast: 37.61.217.215
+Subnet mask: 255.255.255.248
+
+IPv4 DNS resolver: 85.195.64.10
+
+Your network configuration (2a01:7a0:2:12b0::/64):
+
+Gateway: 2a01:7a0:2:12b0::1
+
+IPv6 DNS resolver: 2a01:7a0:3::10
+
+
+IPMI access details:
+http://195.69.243.101
+User: ADMIN
+password: WxwG9Pk7Ea
+
+
+
+
+Bluecross / H&H / OTC
+--------------------------------------------
+
+IP: 37.61.218.26
+--------------------
+
+remoteg2018
+7rasEgA*enAz
+
+
+sa
+S!awemedAm3@uP
+
+
+ftpuser2018
+6UStufrE$hAn
+
+/s9789033008ssspmcsaneforce
+
+
+Usable IPs: 37.61.218.26 - 37.61.218.30
+Subnet mask: 255.255.255.248
+Gateway: 37.61.218.25
+Broadcast: 37.61.218.31
+
+IPv4 DNS resolver: 85.195.64.10
+
+
+
+iis, ASP, dns, php 7.2, office redistribute
+
+IPMI access details:
+https://146.0.240.172
+User: ADMIN
+password: Mm2PxM226M
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

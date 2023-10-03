@@ -1,0 +1,4 @@
+FMCG_ALLENINDIA Error:select * from vwOrderDetails where Dcr_Code='ALIN4-2'
+|param:
+|error:[{"0":"22018","SQLSTATE":"22018","1":245,"code":245,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value '119.64' to data type int.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value '119.64' to data type int."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}

@@ -1,0 +1,115 @@
+<ion-view>
+    <ion-content>      
+        <div  style="margin-top:10px;"></div>
+        <div  style="background-color:rgba(237, 227, 227, 0.81)">
+        <div class="row" >
+  <div class="col col-50" style="color:black;font-weight:bold;">
+     Headquarters
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color:green">
+    :{{LA.FieldForceName}}
+  </div>
+</div>
+        <div class="row"  >
+  <div class="col col-50" style="color:black;font-weight:bold">
+     Distibutor
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color:green">
+    :{{LA.Distributors}}
+  </div>
+</div>     
+        <div class="row"  >
+  <div class="col col-50" style="color:black;font-weight:bold">
+    Route
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color:green">
+    :{{LA.Route}}
+  </div>
+</div>     
+        <div class="row"  >
+  <div class="col col-50" style="color:black;font-weight:bold">
+     Name
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color:green">
+    :{{LA.Retailer}}
+  </div>
+</div>    
+        <div class="row"  >
+  <div class="col col-50" style="color:black;font-weight:bold">
+     Remarks
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color:green">
+    :{{LA.Remarks||"-----"}}
+  </div>
+</div>    
+          
+         <div class="row"  >
+  <div class="col col-50" style="color:black;font-weight:bold">
+     Date
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color:green">
+    :{{LA.SDate}}
+  </div>
+</div>    
+         
+        
+          <div class="row" >
+  <div class="col col-50" style="color:black;font-weight:bold">
+   Current Volume
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color:green">
+    :{{LA.CurrentVolume}}
+  </div>
+</div>           
+        
+          <div class="row" >
+  <div class="col col-50" style="color:black;font-weight:bold">
+   Add Volume
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color:green">
+    :{{LA.AddVolume}}
+  </div>
+</div>  
+     <div class="row" >
+  <div class="col col-50" style="color:black;font-weight:bold">
+   Discount Amount
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color:green">
+    :{{LA.DiscountAmount}}
+  </div>
+</div>    
+
+ <div class="row" ng-if="rejection==1"  >
+  <div class="col col-50" style="color:black;font-weight:bold">
+ Reason
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color:green">
+     <input   type="text" ng-model="data.reason" placeholder= "Reason" >
+  </div>
+</div>  
+
+
+
+
+
+
+
+
+        <div class="row" >
+  <div class="col col-50" style="color:black;font-weight:bold;">
+   <button class="button button-small button-calm" style="float:right" ng-click="approve()">Approve</button>
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold">
+     <button class="button button-small  button-assertive" ng-if="rejection==1"  ng-click="rejSend()">Reject </button> 
+    <button class="button button-small  button-assertive"  ng-if="rejection==0" ng-click="reject()">Reject</button>
+
+
+  </div>
+</div></div>        
+</ion-content>
+   <ion-footer-bar class="bar-dark">
+        <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+            &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+        </button>
+    </ion-footer-bar>
+</ion-view>

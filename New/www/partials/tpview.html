@@ -1,0 +1,39 @@
+﻿<ion-view>
+  
+
+        <div class="bar bar-subheader noborder">
+            <label class="item item-input item-date noborder">
+                <div class="input-label cwhite">Month - Year :</div>
+                <input type="date" ng-model="mnthDt" ng-change="GetTpEntry()" />
+            </label>
+              <div class="bar bar-subheader noborder" ng-if="SF_type==2">
+            <div class="item item-input item-selectH noborder">
+                <div class="input-label cwhite">Headquarters :</div>
+                <div class="cwhite" style="width:80%;border-bottom:solid #4cff00 1px;" ng-click="openModal(allsubs, 50)">
+                    {{(tpview.subordinate.selected.id| getValueforIDD : {'collection' : allsubs}).name || "Select the Fieldforce Name"  }}
+                </div>
+            </div>
+           
+        </div>
+        </div>
+ 
+    <ion-content class="headertop" style="background-color:#f6eeee;" > 
+            <ion-item ng-repeat="tpvwlist in tpvwlists" ng-style="tpvwlist.Confirmed==1&& {'background-color': ' rgb(241, 241, 241)'}" style="
+    margin-top: 36px;
+"><span ng-if="tpvwlist.Confirmed===1" class="ion-star" style="color: red;float: right"></span>
+                <p style="color:#39ac08;">{{tpvwlist.date}}</p>
+                <h2 class="propCase"><b>{{tpvwlist.wtype}}</b>
+                   <!-- <span ng-if="tpvwlist.towns"> - {{tpvwlist.PlnNo}}</span> -->
+                </h2>
+                <p>{{tpvwlist.distributor}}</p>
+                <p>{{tpvwlist.towns}}</p>
+            </ion-item>
+        </ion-list>
+        <div class="cus-error blink" ng-if="error">{{error}}</div>
+    </ion-content>
+    <ion-footer-bar class="bar-dark bar bar-footer">
+        <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+            &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+        </button>
+    </ion-footer-bar>
+</ion-view>

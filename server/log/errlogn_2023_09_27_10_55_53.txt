@@ -1,0 +1,7 @@
+FMCG_ARBRO Error:select top 1 SFCode,LeaveCode,LeaveValue,LeaveAvailability,LeaveTaken,Leave_SName,Leave_Name from MasEntitlement
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_SName'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_SName'."},{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_Name'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_Name'."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}FMCG_ARBRO Error:select top 1 SFCode,LeaveCode,LeaveValue,LeaveAvailability,LeaveTaken,Leave_SName,Leave_Name from MasEntitlement
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_SName'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_SName'."},{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_Name'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_Name'."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}

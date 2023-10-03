@@ -1,0 +1,7 @@
+FMCG_Live Error:SELECT count(Leave_Id)leave_count from mas_Leave_Form where sf_code = 'SEFMR0010' and Leave_Active_Flag = 2 and
+            ((From_date BETWEEN ''2023/09/28'' AND '2023/09/28') OR 
+            (To_date BETWEEN ''2023/09/28'' AND '2023/09/28') OR 
+            (From_date <= ''2023/09/28'' AND To_date >= '2023/09/28'))
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '2023'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '2023'."}]
+data:[{"LeaveForm_New":{"Leave_Type":"'195'","From_Date":"'2023/09/28'","To_Date":"'2023/09/28'","Reason":"'Yes'","address":"''","No_of_Days":1,"halfday":"''"}}]

@@ -1,0 +1,7 @@
+Error:exec GetPOSProducts_App '3'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'."}]
+data:{"SF":"3","Stk":"3","div":"190,"}Error:exec GetConversion '190'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Mas_PrimaryConversion'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Mas_PrimaryConversion'."}]
+data:{"div":"190,","SF":"3","Stk":"3"}

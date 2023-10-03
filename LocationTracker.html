@@ -1,0 +1,456 @@
+<html>
+<head>
+    <link rel="stylesheet" href="MonthViewer/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="MonthViewer/kendo.material.min.css" />
+    <link rel="stylesheet" href="MonthViewer/kendo.dataviz.min.css" />
+    <link rel="stylesheet" href="MonthViewer/kendo.dataviz.material.min.css" />
+<style type="text/css">
+#map_canvas,#tbMain,body {
+    width: 100%;
+    height: 100%;
+	padding:0px;
+	margin:0px;
+}
+#vstDet > ul{
+    list-style-type: none;
+    -webkit-margin-start: 0em;
+    -webkit-margin-before: 0em;
+    -webkit-padding-start: 0px;
+}
+#vstDet > ul > li{
+margin-bottom: 5px;
+}
+table{    border-collapse: collapse;}
+.k-icon{
+margin:13px 5px;
+}
+#vstCnt
+{
+     position: absolute;
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: -27px 76px;
+    line-height:20px;
+    text-align:center;
+    border-radius: 90%;
+    font-size: 75%;
+    background: rgb(82, 208, 139);
+}
+</style>
+
+</head>
+<body>
+	<table id="tbMain" >
+		<tr>
+			<td colspan=2 valign="top" style="height:1%;background-color: #f1f1f1;border-bottom:solid 1px #cacaca">
+				<table >
+					<tr>
+						<td>Employee Name : </td>
+						<td valign="top">
+				    		<select name="selSF" id="selSF" onchange="Callback()">
+                                <optgroup label="Savorit">
+	                                <option value="MR0003">Mylapore-SE.. BHARATHI RAJA TSE   ( Savorit Limited )</option>
+									<option value="MGR0002">CHENNAI - SOUTH -ASM  ( Savorit Limited )</option>
+									<option value="MR0004">ARUMBAKKAM 1 - SE SIVASUBRAMANI     ( Savorit Limited )</option>
+							 	</optgroup>
+                                
+                                <optgroup label="Savorit">
+									<option value="MR0017">MUTHUMAYIL ( KALIMARKS )</option>
+									<option value="MR0021">SENTHILKUMAR ( KALIMARKS )</option>
+									<option value="MGR0006">LAKSHMI NARAYANAN.M ( KALIMARKS )</option>
+									<option value="MGR0007">H.IYYAPPAN ( KALIMARKS )</option>
+									<option value="MGR0008">ASHOK ( KALIMARKS )</option>
+									<option value="MR0019">MAGESH ( KALIMARKS )</option>
+									<option value="MR0018">SENTHILKUMAR ( KALIMARKS )</option>
+									<option value="MR0020">SELVAKUMAR ( KALIMARKS )</option>
+							 	</optgroup>
+                                
+                                <optgroup label="Savorit">
+									<option value="MR0049">Sasikumar P ( Ramanas Food Product )</option>
+									<option value="MR0025">Sumathi D ( Ramanas Food Product )</option>
+									<option value="MR0050">Sathish Kumar N ( Ramanas Food Product )</option>
+									<option value="MR0022">Hariharan PR ( Ramanas Food Product )</option>
+									<option value="MR0063">Saravanan R ( Ramanas Food Product )</option>
+									<option value="MGR0013">Mubarak Ali I ( Ramanas Food Product )</option>
+									<option value="MGR0011">Hirendhiran N ( Ramanas Food Product )</option>
+									<option value="MR0042">Ruban S ( Ramanas Food Product )</option>
+									<option value="MR0037">Rajasekar R ( Ramanas Food Product )</option>
+									<option value="MGR0015">Manivannan C ( Ramanas Food Product )</option>
+									<option value="MR0058">Vijayaragavan D ( Ramanas Food Product )</option>
+									<option value="MGR0012">Dakshinamurthy N ( Ramanas Food Product )</option>
+									<option value="MR0028">Elangovan M ( Ramanas Food Product )</option>
+									<option value="MR0053">Sebastin S ( Ramanas Food Product )</option>
+									<option value="MR0024">Uthayakumar K ( Ramanas Food Product )</option>
+									<option value="MR0035">Saravanan P ( Ramanas Food Product )</option>
+									<option value="MR0038">Manikandan M ( Ramanas Food Product )</option>
+									<option value="MR0055">Mohan N ( Ramanas Food Product )</option>
+									<option value="MR0041">Ibrahim SMS ( Ramanas Food Product )</option>
+									<option value="MR0023">Thiyagarajan M ( Ramanas Food Product )</option>
+									<option value="MR0057">Venkatesh K ( Ramanas Food Product )</option>
+									<option value="MR0054">Syed Mansur M ( Ramanas Food Product )</option>
+									<option value="MR0056">Chandrasekar L ( Ramanas Food Product )</option>
+									<option value="MR0052">Ramesh Kumar M ( Ramanas Food Product )</option>
+							 	</optgroup>
+                                
+                                <optgroup label="Savorit">
+									<option value="MGR0024">C.MUTHURAMAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0068">VACANT 2 ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0070">A.NAGARATHINAM ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0089">J.PREM ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0057">JAISHANKAR J ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0098">KARTHIKEYAN  A ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0137">KARTHIK N ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0202">ARUNKUMAR L ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0038">S. PERIYASAMY ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0090">KALIRAJ MM ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0161">BEEMAN C ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0025">RADHA KRISHNAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0073">VINOTH KUMAR ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0071">S.SENTHAMIZHVENDAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0081">RAMAKRISHNAN M ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0020">RISWAN MOHAMED B ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0044">VANARAJ H ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0084">RAJESH C ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0135">K. TAMILSELVAM ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0219">VIJAYAKUMAR R ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0026">JAYAKUMAR M ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0033">P.RAVICHANDRAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0182">ANAND B ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0189">Vacant Test ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0225">NATARAJAN S ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0034">VACANT  ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0094">SHANMUGA SELVAM S ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0201">THANU MALAYA PERUMAL K ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0162">MUKUNDAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0218">CHANDRA SEKAR S ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0199">RAMARAJ A ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0041">PALANISAMY ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0203">MOHAMED ASKAR ALI A ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0022">SARAVANAN T ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0042">KANAGARASU A ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0133">R. KALIMUTHU ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0134">T. NATCHIMUTHU ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0075">DINAKARAN G ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0099">VINOTH D ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0130">PAULRAJ T ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0086">SOUNDARRAJ S ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0149">DEKSHINAMOORTHY ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0178">P.DIVAKARAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0031">M.MUJIBUR RAHMAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0088">T.RENGANATHAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0164">MARIMUTHU ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0074">MAYATHEVAN P ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0032">SHANMUGA SUNDARAM V ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0155">MUTHUMYIL ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0198">LAKSHMANAN S ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0091">ANAND B ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0160">MOHAN RANJAN D ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0039">MUTHUMALAI SAMI ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0078">SABARISH KUMAR K ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0021">MOHAN K ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0028">DHANASEKARAN G ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0027">SUBRAMANI P ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0040">VIJAYAKUMAR ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0085">RAMESH M ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0087">R.DINAKARAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0167">KARTHIKESAN G ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0030">R.PRAVINKUMAR ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0069">K.RAJESHKUMAR ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0093">MUTHUKUMAR PANDIAN B ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0152">KUMARESAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MGR0019">S.R.VEERAPANDIAN ( KC Dairy Products Pvt. Ltd )</option>
+									<option value="MR0177">S MANIVANANNAN ( KC Dairy Products Pvt. Ltd )</option>
+							 	</optgroup>
+                                
+                                <optgroup label="Savorit">
+									<option value="MGR0048">G VIJAYARAMAN ( AAC Ghee company )</option>
+									<option value="MR0192">J SENTHIL KUMAR ( AAC Ghee company )</option>
+									<option value="MR0206">S SHANMUGA SUNDARAM ( AAC Ghee company )</option>
+									<option value="MR0290">TEST USER ( AAC Ghee company )</option>
+									<option value="MR0195">R MAHESH ( AAC Ghee company )</option>
+									<option value="MR0207">S NAGARAJAN ( AAC Ghee company )</option>
+									<option value="MR0191">S SEENIVASA MATHAVAN ( AAC Ghee company )</option>
+									<option value="MR0193">S JAYAKUMAR ( AAC Ghee company )</option>
+									<option value="MR0194">GMG GANESAN ( AAC Ghee company )</option>
+									<option value="MR0190">K NEETHI RAJAN ( AAC Ghee company )</option>
+							 	</optgroup>
+                                
+                                <optgroup label="Savorit">
+									<option value="MGR0053">Sanjay Sinha ( Vikrant Group )</option>
+									<option value="MR0214">Shri Shanker ( Vikrant Group )</option>
+									<option value="MGR0056">Sudama Gupta ( Vikrant Group )</option>
+									<option value="MR0211">Satendra Mourya ( Vikrant Group )</option>
+									<option value="MGR0054">Santosh Rai ( Vikrant Group )</option>
+									<option value="MGR0052">Jagdhar ASM ( Vikrant Group )</option>
+									<option value="MR0210">Alok Dixit ( Vikrant Group )</option>
+									<option value="MGR0055">Saurabh Singh ( Vikrant Group )</option>
+									<option value="MR0213">Bhanu Taneja ( Vikrant Group )</option>
+									<option value="MR0215">Gaurav Gupta ( Vikrant Group )</option>
+									<option value="MR0216">Gautam Sahu ( Vikrant Group )</option>
+							 	</optgroup>
+                                
+                                <optgroup label="Savorit">
+									<option value="MR0242">SUNDARAMAHALINGAM ( RKG Ghee )</option>
+									<option value="MR0286">KAMALDASAN ( RKG Ghee )</option>
+									<option value="MR0231">THAMIZH ( RKG Ghee )</option>
+									<option value="MR0234">KUMAR ( RKG Ghee )</option>
+									<option value="MR0288">KRISNAKUMAR1 ( RKG Ghee )</option>
+									<option value="MR0249">JOSEPH ANTONY  ( RKG Ghee )</option>
+									<option value="MR0241">LAKSHMANAN ( RKG Ghee )</option>
+							 	</optgroup>
+                                
+                                <optgroup label="Sujatha Bio Tech">
+									<option value="MR0300">Dinesh N ( Sujatha Bio Tech )</option>
+									<option value="MGR0075">Balaji. G ( Sujatha Bio Tech )</option>
+									<option value="MR0297">Karthick J ( Sujatha Bio Tech )</option>
+									<option value="MR0281">VACANT CUDDALORE1 ( Sujatha Bio Tech )</option>
+									<option value="MR0298">Narendra Babu S ( Sujatha Bio Tech )</option>
+									<option value="MGR0072">CHIDAMBARAM ( Sujatha Bio Tech )</option>
+									<option value="MR0296">Leo Allwyn Savarimuthu ( Sujatha Bio Tech )</option>
+									<option value="MGR0079">VACANT COIMBATORE ( Sujatha Bio Tech )</option>
+									<option value="MGR0087">SUNDARESAN RAJGOPAL ( Sujatha Bio Tech )</option>
+									<option value="MR0267">SenthilKumar. M ( Sujatha Bio Tech )</option>
+									<option value="MGR0074">Prabu.B ( Sujatha Bio Tech )</option>
+									<option value="MR0257">Arun Kumar ( Sujatha Bio Tech )</option>
+									<option value="MR0255">Suresh.P ( Sujatha Bio Tech )</option>
+                                 </optgroup>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td width="100%" valign="top">
+	    		<div id="map_canvas" class="mapping"></div>
+			</td>
+			<td valign="top" style="width: 100% !important;">
+				<div style="display:none"><div  class="panel-heading" style="display:block;white-space:nowrap;padding: 10px 15px;background: #ff865c;color: #fff;">Kilometers Traveled</div>
+				<span id="total" style="display:block;white-space:nowrap;padding: 10px 15px;font-weight:bold;border:solid 1px #000;border-radius: 0px 0px 5px 5px;border-top-width: 0px;"></span>
+				<small><small><br></small></small></div>
+				<div  class="panel-heading" style="display:block;white-space:nowrap;padding: 10px 15px;background: #ff865c;color: #fff;">Calls Detail<span id="vstCnt"></span><span id="dspDt" style="float:right;"></span></div>
+				<div id="mvstDet" style="display:block;white-space:nowrap;font-weight:bold;border:solid 1px #000;border-radius: 0px 0px 5px 5px;border-top-width: 0px;">
+                <div id="vstDet" style="display:block;padding: 5px;min-height:263px;max-height:263px;overflow: auto;"></div>
+                <div style="display:block;background:#dcdcdc;"><table style="width:100%;color:black;font:10px tahoma;font-weight:bold"><tr><td style="padding: 5px;">Tot.POB (value) : <span id="tpval" style="color:Green"></span></td><td style="padding: 5px;">Tot.POB (Ltrs) : <span id="tltrs" style="color:Green"></span></td></tr></table></div></div>
+				<small><small><br></small></small>
+				<div id="calendar"></div><small><small><br></small></small>
+			</td>
+		</tr>
+	</table>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="MonthViewer/kendo.all.min.js"></script>
+<script type="text/javascript">
+
+    // Multiple Markers
+    var markers = [];
+	var prvMarkers=[];
+	var NavMarkers=[];
+	var poly;
+	var map;
+	var KMTot=0;
+	var z=14 ;
+	var Loaded=false;
+	
+	selDt="";
+	cdt=new Date();
+  	selDt= cdt.getFullYear() + '-' + (cdt.getMonth()+1)  + '-' + cdt.getDate() +' 00:00:00.000';
+	
+	jQuery(function($) {
+		// Asynchronously Load the map API 
+		var script = document.createElement('script');
+		script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCOY8BqGMFqo7Ij2n1O8b4RcL443zjoI_o&callback=initMap";
+		document.body.appendChild(script);
+		
+	});
+	function initMap(){
+		var mapOptions = {
+			mapTypeId: 'roadmap',zoom:14,center: {lat: 13, lng: 80},
+		};
+		map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+		Callback(selDt);
+	}
+
+	function Callback(DtTm,movMark){
+		if(!movMark) movMark=false;
+		KMTot=0;
+		$.get("http://sanfmcg.com/server/db.php?axn=get/track&SF_Code="+$("#selSF").val()+"&Dt="+selDt+"",
+			function (response) {
+				if(movMark==true){
+					lastIndx=(markers.length>0)?(markers.length-1):0;
+					markers = $.merge(markers,JSON.parse(response));
+					if (markers.length>0) moveMarker(lastIndx);
+					
+				}else{ 
+					markers = JSON.parse(response);
+					clearLocations();
+					if (markers.length>0) initMarkers();   
+				}
+				cdt=new Date();
+				if(selDt== cdt.getFullYear() + '-' + (cdt.getMonth()+1)  + '-' + cdt.getDate() +' 00:00:00.000')
+                { 
+                    setTimeout(function(){
+			            var aSync;
+                        if(markers.length>0){dte=new Date(markers[markers.length-1].DtTm);lastDt=(dte.getFullYear() + '-' + (dte.getMonth()+1)  + '-' + dte.getDate() +' 00:00:00.000');aSync=true;}else{lastDt=selDt;aSync=false;}
+                        Callback(lastDt,aSync);
+                    },1000*5); 
+                }
+			})
+			.fail(function (response) {
+				console.log("Connection Failed");
+			});
+	}
+
+	function clearLocations() {
+		for (var i = 0; i < prvMarkers.length; i++) {
+			prvMarkers[i].setMap(null);
+		}
+		prvMarkers=[];
+		if(poly!=null){
+			poly.setPath([]);
+			poly.setMap(null);
+		}
+	}
+	function moveMarker(lastIndx){
+		var lat = markers[markers.length-1].lat;
+		var lng = markers[markers.length-1].lng;
+		NavMarkers[0].setPosition(new google.maps.LatLng(lat, lng));
+	}
+	function initMarkers() {
+		var path = new google.maps.MVCArray();
+		var service = new google.maps.DirectionsService();
+		poly = new google.maps.Polyline({
+			strokeColor	: '#FF8200',
+		  strokeOpacity	: 0.5,
+			strokeWeight: 15
+		});
+		poly.setMap(map);
+			
+		// Display multiple markers on a map
+		var infoWindow = new google.maps.InfoWindow(), marker, i;
+		var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';7-5
+		// Loop through our array of markers & place each one on the map  hjh;bhjh;hjh;
+		var position;NavMarkers=[];slatlng="";sStr='<ul>';CusCnt=0;tpval=0;tltrs=0;
+        
+		var src = new google.maps.LatLng(markers[0].lat, markers[0].lng);
+		for( i = 0; i < markers.length; i++ ) {
+			pos= new google.maps.LatLng(markers[i].lat, markers[i].lng);
+
+            if(slatlng.indexOf(markers[i].lat+":"+ markers[i].lng+";")>-1){
+            var rews = new RegExp(markers[i].lat+":"+ markers[i].lng+";","gi");
+            var re = new RegExp(markers[i].lat+":"+ markers[i].lng,"gi");
+            rptcnt=slatlng.replace(re,'').length-slatlng.replace(rews,'').length;
+            lt=pos.lat()+ (rptcnt/(1000000-7));
+            lg=pos.lng()+ (rptcnt/(100000-7));
+			position = new google.maps.LatLng(lt,lg);
+            }else position=pos;
+			if (i==0 || i == (markers.length-1) || markers[i].ordfld==0){
+				marker = new google.maps.Marker({
+					position: position,
+					map: map,
+					title: markers[i].DtTime
+				});
+                slatlng+=markers[i].lat+":"+ markers[i].lng+";"
+				prvMarkers.push(marker);
+                if(i == (markers.length-1)) 
+                {
+                    marker.setIcon(im);
+                    NavMarkers.push(marker);
+                }
+				if(markers[i].ordfld==0) 
+                {
+                
+			        dte=new Date(markers[i].DtTime);
+                    dy=dte.getDate();
+                    mn=dte.getMonth()+1;
+                    hh=dte.getHours();
+                    mm=dte.getMinutes();
+                    ss=dte.getSeconds()
+  			        ddmm= ((dy<10)?'0':'')+dy+ ' / ' + ((mn<10)?'0':'')+mn  + ' / ' +  dte.getFullYear() ;
+                    sHH=((hh>12)?hh-12:hh)
+                    sHH=((sHH<10)?'0':'')+sHH
+                    $("#dspDt").html(ddmm);
+                    CusCnt++;
+                    tpval+=((markers[i].POB_Value!='0')?parseFloat(markers[i].POB_Value):0);
+                    tltrs+=((markers[i].net_weight_value!='0')?parseFloat(markers[i].net_weight_value):0);
+                    sStr+='<li><div style="display:block;"><table style="width:100%"><tr style="background:#dcdcdc;"><td style="padding:5px ;border-left:solid 2px #dcdcdc;"><font style="color:darkblue;font:15px tahoma;">'+ markers[i].Trans_Detail_Name + '</td>'
+                            +'<td style="padding:5px;border-right:solid 2px #dcdcdc;"><a style="color:#00303f; font:bold 10px verdana;float: right;">' + sHH +":"+((mm<10)?'0':'')+mm+":"+((ss<10)?'0':'')+ss+" "+((hh>11)?'PM':'AM') + '</a></td></tr>'  
+                            + '<tr><td style="padding:5px;border-left:solid 2px #dcdcdc;"><font style="color:black;font:11px tahoma;">POB ( Value ) : '+((markers[i].POB_Value!='0')?'' + markers[i].POB_Value:'-') +'</td>'
+                            + '<td style="padding:5px;border-right:solid 2px #dcdcdc;"><font style="color:black;font:11px tahoma;">POB ( Liters ) : '+((markers[i].net_weight_value!='0')?'' + markers[i].net_weight_value:'-') +'</td></tr>'
+                            + '<tr><td colspan=2 style="padding:5px;font:12px verdana;border:solid 2px #dcdcdc;border-top-width:0px;border-radius: 0px 0px 5px 5px;">Visited Place : <br><font style="color:darkgreen;">' + markers[i].GeoAddrs + '</font></td></tr>' 
+                            + '</table></div></li>';
+                    marker.setIcon('img/shop.png');
+
+				    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+					    return function() {
+						    infoWindow.setContent('<div style="display:block;width:500px;"><table style="width:100%"><tr><td style="padding:0px 5px 10px 5px ;border-bottom:solid 2px #dcdcdc;text-transform: capitalize;"><font style="color:darkblue;font:15px tahoma;">'+ markers[i].Trans_Detail_Name + '</td>'
+                            +'<td style="padding:0px 5px 10px 5px ;border-bottom:solid 2px #dcdcdc;"><a style="color:#00303f; font:bold 10px verdana;float: right;">' + markers[i].DtTime + '</a></td></tr>'  
+                            + '<tr><td style="padding:5px;"><font style="color:black;font:11px tahoma;">POB ( Value ) : '+((markers[i].POB_Value!='0')?'' + markers[i].POB_Value:'-') +'</td>'
+                            + '<td style="padding:5px;"><font style="color:black;font:11px tahoma;">POB ( Liters ) : '+((markers[i].net_weight_value!='0')?'' + markers[i].net_weight_value:'-') +'</td></tr>'
+                            + '<tr><td colspan=2 style="padding:5px;font:12px verdana;">Visited Place : <br><font style="color:darkgreen;">' + markers[i].GeoAddrs + '</font></td></tr>' 
+                            + '</table></div>'
+                            );
+						    infoWindow.open(map, marker);
+					    }
+				    })(marker, i))
+                }
+			}
+			
+			path.push(position);
+			poly.setPath(path);
+			if ((i + 1) < markers.length) {
+				var des = new google.maps.LatLng(markers[i+1].lat, markers[i+1].lng);
+                dis=getDistance(src, des,"K");
+                if (dis>0.130) 
+				var src =des; else dis=0;
+				KMTot+=dis;
+
+			}
+			map.setCenter(position);
+		}
+		sStr+="</ul>";
+
+        $("#tpval").html(roundNumber(tpval,2));
+        $("#tltrs").html(roundNumber(tltrs,2));
+        $("#vstCnt").html(CusCnt);
+        $("#vstDet").html(sStr);
+		$("#total").html(roundNumber(KMTot,2)+ " Km");
+	}
+	function getDistance(latlon1, latlon2, unit) {
+		var radlat1 = Math.PI * latlon1.lat()/180;
+		var radlat2 = Math.PI * latlon2.lat()/180;
+		var theta = latlon1.lng()-latlon2.lng();
+		var radtheta = Math.PI * theta/180
+		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+		dist = Math.acos(dist)
+		dist = dist * 180/Math.PI
+		dist = dist * 60 * 1.1515
+		if (unit=="K") { dist = dist * 1.609344 }
+		if (unit=="N") { dist = dist * 0.8684 }
+		if(isNaN(dist)) dist=0;
+		return dist
+	}
+	roundNumber = function(number, precision) {
+		precision = Math.abs(parseInt(precision)) || 0;
+		var multiplier = Math.pow(10, precision);
+		return (Math.round(number * multiplier) / multiplier);
+	}
+ 
+	$(document).ready(function() {
+    	// create Calendar from div HTML element
+        $("#calendar").kendoCalendar();
+        var calendar = $("#calendar").data("kendoCalendar");
+
+        var current = calendar.current();
+        $(".k-footer").css("display","none");
+	    calendar.bind("change", function() {
+			dte=new Date(this.value());
+  			selDt= dte.getFullYear() + '-' + (dte.getMonth()+1)  + '-' + dte.getDate() +' 00:00:00.000';
+			Callback()
+	    });
+    });
+</script>
+</body>
+</html>

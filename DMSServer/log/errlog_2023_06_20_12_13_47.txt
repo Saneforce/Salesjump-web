@@ -1,0 +1,13 @@
+Error:exec getSlottime 'SS457','56'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'."}]
+data:{"distributorCode":"SS457","GrpCode":"56"}Error:select State_Code, Division_Code,Distributor_Price,Retailor_Price,MRP_Price,Product_Detail_Code from vwProductStateRates where Division_code='29' and State_Code=
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Incorrect syntax near '='.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Incorrect syntax near '='."}]
+data:Error:exec getPOSProductGroupList 'SS457'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductGroupList'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductGroupList'."}]
+data:{"SF":"SS457","Stk":"SS457","div":"29,"}Error:exec GetPOSProdBrand_App 'SS457'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProdBrand_App'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProdBrand_App'."}]
+data:{"SF":"SS457","Stk":"SS457","div":"29,"}

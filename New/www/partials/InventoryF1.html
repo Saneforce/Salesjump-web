@@ -1,0 +1,137 @@
+﻿<ion-view>
+    <ion-content ion-sticky>
+        <div style="
+    margin-top: 10px;
+"   class="select-component" ng-if="SF_type==2 || SF_type==3">
+            <div class="label">
+                <div class="label-text">Headquarters</div>
+            </div>
+            <div class="select-box">
+                <div class="input-box">
+                    <div class="input-css" ng-click="openModal('subordinate_master', 164)">
+                        {{(DayInv.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Fieldforce"  }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="
+    margin-top: 10px;
+" class="select-component">
+            <div class="label">
+                <div class="label-text">Stock From</div>
+            </div>
+            <div class="select-box">
+                <div class="input-box">
+                    <div class="input-css" ng-click="vibrate();openModal('stockist_master', 165, DayInv.subordinate.selected.id)">
+                        {{(DayInv.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                    </div>  
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-if="SF_type==2" style="background: #1aacc3;">
+            <div class="col"  style="color: white;">
+                Stock From : {{(DayInv.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name }}
+            </div>
+        </div>
+        <ion-list>
+ <div  ng-if="ErrMsg==''"  class="col col-100 gh" style="    margin-top: 2px;border-radius:6px;text-align: right;background-color: #fff;padding: 0px 10px;box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.23) !important;border: solid 1px #aaa;
+" ><input type="search" placeholder="Search"     ng-model="modal.searchText"> </div> 
+
+
+
+            <div ng-if="ErrMsg!=''" style="font-size: 97%;color: #07750b;padding: 38px 5px;font-weight: 900;text-align: center;">{{ErrMsg}}</div>
+            <div ng-if="ErrMsg=='' ">
+  <!--  <div class="row" style="background-color:#ffffff;">
+       <div style="padding: 5px 10px;min-width: 84%;color: #bbbab9;font-size: 11px;" class="col col-50" ng-if="(SF_type==1)">Opening :  <span style="
+    color: #47991b;
+">10 Case 5 Pcs</span></div>
+ <div style="padding: 5px 10px;min-width: 84%;color: #bbbab9;font-size: 11px;" class="col col-50" ng-if="(SF_type==2 || (SF_type==3 && Van_Sales_ND==1) )&& DayInv.EMode == 0">Stock :  <span style="
+    color: #47991b;
+">10 Case 5 Pcs</span></div>
+      
+       
+    
+  </div> -->
+<!--  <div   style="  margin-top: 1px; "class="row" style="background-color:#ffffff;">
+      <div class="col col-22" style=" margin-top: -15px ">opening</div>
+       <div ng-if="(SF_type==2 || (SF_type==3 && Van_Sales_ND==1) )&& DayInv.EMode == 0" class="col col-30" style="margin-left: -50px; margin-top: -13px">Closing</div>
+        <div style=" margin-top: -13px" ng-if="(SF_type==2 || (SF_type==3 && Van_Sales_ND==1) )&& DayInv.EMode == 0" class="col col-56">Begin Inventory</div>
+ </div> -->
+
+</div>
+            <div ng-repeat="item in ProductsList | filter:modal.searchText | orderBy:OrderFields" ng-if="ErrMsg=='' " style="border-bottom:solid 1px #f9f1f1">
+                <div class="row item-divider" ng-if="$index==0||ProductsList[$index-1].cateid!=item.cateid">
+                    <div class="col col-70">{{(item.cateid| getValueforIDD : {'collection' : CategoryList}).name || " "}}</div><div style="font-size: 12px;" class="col col-15">{{CaseShCap}}</div><div  style="font-size: 12px;"class="col col-15">{{PiecShCap}}</div>
+                </div>
+                <div class="row" style="background-color:#ffffff;">
+                    <div class="col col-70">{{item.name}}</div>
+
+                    <div class="col col-15" style="text-align:right;">
+                        <input type="number" ng-model="item.Qty" ng-change="VansalesRowCalc(item,SF_type,0)" class="efield"
+                               style="border:solid 1px #c4c4c4;height:25px;padding: 5px;font-size: 15px;line-height: 15px;text-align:right;" />
+                    </div>
+                    <div class="col col-15" style="text-align:right;">
+                        <input type="number" ng-model="item.PQty" ng-change="VansalesRowCalc(item,SF_type,1)" value="" class="efield"
+                               style="border:solid 1px #c4c4c4;height:25px;padding: 5px;font-size: 15px;line-height: 15px;text-align:right;" />
+                    </div>
+                </div>
+
+
+                <div class="row"  style="background-color:#ffffff;padding:0px;margin-top: -18px;">
+                    <div style="min-width: 35%;padding:0px;">
+                       <!--  <div class="row" style="padding:0px;">
+                     <div style="padding:0px 15px;min-width:25%;color: #bbbab9;">op</div><div style="padding:0px;min-width:25%;color:#6c3;">{{item.COP||0}}</div>
+                        </div> -->
+
+<div class="row" >
+       <div style="padding: 5px 10px;min-width: 84%;color: #bbbab9;font-size: 11px;" class="col col-70" ng-if="(SF_type==1) || (SF_type==2 || (SF_type==3 && Van_Sales_ND==1) )&& DayInv.EMode == 1">Opening : <span style="
+    color: #47991b;
+">{{item.DCase||0}} Case {{item.DPiece||0}} Pcs</span></div>
+
+ <div style="padding: 5px 10px;min-width: 84%;color: #bbbab9;font-size: 11px;margin-top: 4px" class="col col-70" ng-if="(SF_type==2 || (SF_type==3 && Van_Sales_ND==1) )&& DayInv.EMode == 0">Stock :  <span style="
+    color: #47991b;
+">{{item.ECase||0}} Case {{item.EPiece||0}} Pcs</span></div>
+      
+   <div style="padding: -2px 10px;min-width: 84%;color: #bbbab9;font-size: 11px;    margin-left: -44px;margin-top: 4px" class="col col-70" ng-if="(SF_type==2 || (SF_type==3 && Van_Sales_ND==1) )&& DayInv.EMode == 0">Sales :  <span style="
+    color: #47991b;
+">{{item.SCase||0}} Case {{item.SPiece||0}} Pcs</span></div>    
+    
+  </div>
+
+
+
+                    </div>
+                   
+                </div>
+
+               <!--  <div class="row" ng-if="(SF_type==2 || (SF_type==3 && Van_Sales_ND==1) )&& DayInv.EMode == 0" style="background-color:#ffffff;padding:0px;margin-top: 0px;">
+                    <div style="min-width: 35%;padding:0px;">
+                        <div class="row" style="padding:0px;">
+                            <div style="padding:0px 15px;min-width:25%;color: #bbbab9;" >BI</div><div style="padding:0px;min-width:25%;color:#6c3;">{{item.UCQty||0}}</div><div style="padding:0px;min-width:25%;color:#6c3;">{{item.UPQty||0}}</div>
+                        </div>
+                    </div>
+                    <div style="min-width: 35%;padding:0px;">
+                        <div class="row" style="padding:0px">
+                            <div style="padding:0px;min-width:25%;color: #bbbab9;"  >Cl
+                                </div><div style="padding:0px;min-width:25%;color:#4a87ee;">{{item.VStock||0}}</div>
+                        </div>
+                    </div>
+                </div>  -->
+            </div>
+        </ion-list>
+        <button class="button buttonClear  button-balanced pull-right"  style="margin-top: 29px;"ng-click="vibrate();save()" ng-if="DayInv.EMode == 0">Save</button>
+        <div ng-if="rejection==1">
+        <textarea ng-model="data.reason"  rows="5"  style="float:left" placeholder="Reason For Reject" class="textarea-css" ng-click="vibrate();">                     
+
+                </textarea></div>
+        <div class="row">
+        <div class="col col-50">
+        <button class="button buttonClear  button-balanced pull-right"  style="margin-top: 29px;" ng-click="vibrate();saveAprl()" ng-if="DayInv.EMode == 1 ">Approve</button>
+    </div>
+<div class="col col-50">
+        <button class="button buttonClear  button-balanced pull-right"  style="margin-top: 29px;" ng-click="vibrate();Reject()" ng-if="DayInv.EMode == 1 ">Reject</button>
+    </div>
+    </div>
+    </ion-content>
+</ion-view>

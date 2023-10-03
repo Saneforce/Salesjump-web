@@ -1,0 +1,286 @@
+﻿using Bus_EReport;
+using ClosedXML.Excel;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class MasterFiles_UploadExcelFile : System.Web.UI.Page
+{
+
+    DataSet dsProduct = null;
+    DataSet dsRetailer = null;
+    string Div_Code = string.Empty;
+    string SF_Code = string.Empty;
+    DataTable Dt = null;
+    DataTable dt = null;
+    public static string excelName = string.Empty;
+	string sf_type = string.Empty;
+	protected override void OnPreInit(EventArgs e)
+    {
+        base.OnPreInit(e);
+        sf_type = Session["sf_type"].ToString();
+        if (sf_type == "3")
+        {
+            this.MasterPageFile = "~/Master.master";
+        }
+        else if (sf_type == "2")
+        {
+            this.MasterPageFile = "~/Master_MGR.master";
+        }
+        else if (sf_type == "1")
+        {
+            this.MasterPageFile = "~/Master_MR.master";
+        }
+    }
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+    public static string getdate(string date)
+    {
+        DateTime Fdate;
+        string fdate;
+        try
+        {
+            try
+            {
+                Fdate = DateTime.ParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture); //HH:mm:ss
+                fdate = Fdate.ToString("yyyy-MM-dd");
+            }
+            catch
+            {
+                Fdate = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture); //HH:mm:ss
+                fdate = Fdate.ToString("yyyy-MM-dd");
+            }
+        }
+        catch
+        {
+            fdate = string.Empty;
+        }
+        return fdate;
+    }
+
+    [WebMethod]
+    public static string getTable(string divcode)
+    {
+        divcode = string.Empty;
+        SalesForce SFD = new SalesForce();
+        DataSet dds = SFD.GeUploadExcelTableName(divcode);
+        return JsonConvert.SerializeObject(dds.Tables[0]);
+    }
+
+    [WebMethod]
+    public static string getAliseName(string divcode, string toolname)
+    {
+        divcode = string.Empty;
+        SalesForce SFD = new SalesForce();
+        DataSet dds = SFD.GetAliseName(divcode, toolname);
+        return JsonConvert.SerializeObject(dds.Tables[0]);
+    }
+
+    [WebMethod]
+    public static string InsertExcelData(string data, string Table_Name, string column_name, string div, string ToolNm)
+    {
+        string msg = string.Empty;
+        string sQry = string.Empty;
+        string svQry = string.Empty; 
+        if (ToolNm == "Scheme Mapping")
+        {
+            sQry = "update " + Table_Name + " set ";
+            svQry = " where ";
+        }
+        else
+        {
+            sQry = "insert into " + Table_Name + "(";
+            svQry= "select ";
+        }
+		string sfcode = string.Empty;
+        char ch = '\n';
+        SalesForce SFD = new SalesForce();
+        dynamic Data = JsonConvert.DeserializeObject(data);
+
+        string[] Cols = column_name.Split(',');
+        int il = 0;
+
+        DataSet dsd = SFD.getDefault_AutoCols("", ToolNm);//2 4
+        for (int ij = 0; ij < dsd.Tables[0].Rows.Count; ij++)
+        {
+            //if (Cols[il] != "")
+            //{
+            if (dsd.Tables[0].Rows[ij]["Name_To_Code"].ToString() == "2")
+            {
+                DataSet dsA = SFD.getAuto_ID(dsd.Tables[0].Rows[ij]["Alise_Name"].ToString(), ToolNm);//autoID
+                var autoID = dsA.Tables[0].Rows[0]["ID"].ToString();
+                sQry += dsd.Tables[0].Rows[ij]["Field_Name"].ToString() + ",";
+                svQry += autoID + ",";
+                DataSet dsD = SFD.getIdentical_Fields(dsd.Tables[0].Rows[ij]["Alise_Name"].ToString(), ToolNm);
+                for (int ji = 0; ji < dsD.Tables[0].Rows.Count; ji++)
+                {
+                    sQry += dsD.Tables[0].Rows[ji]["Field_Name"].ToString() + ",";
+                    svQry += autoID + ",";
+                }
+            }
+            else if (dsd.Tables[0].Rows[ij]["Name_To_Code"].ToString() == "4")
+            {
+                sQry += dsd.Tables[0].Rows[ij]["Field_Name"].ToString() + ",";
+                if (dsd.Tables[0].Rows[ij]["Target_Field"].ToString() == "@Div")
+                {
+                    svQry += div + ",";
+                }
+                else
+                {
+                    svQry += dsd.Tables[0].Rows[ij]["Target_Field"].ToString() + ",";
+                }
+            }
+            else if (dsd.Tables[0].Rows[ij]["Name_To_Code"].ToString() == "5")
+            {
+                svQry += dsd.Tables[0].Rows[ij]["Field_Name"].ToString() + "='" + Data[dsd.Tables[0].Rows[ij]["Alise_Name"].ToString()].ToString() + "'";
+            }
+        }
+        foreach (var item in Data)
+        {
+            if (Cols[il] != "")
+            {
+                DataSet ds = SFD.getUploadSettings("", ToolNm, Cols[il]);
+                for (int ij = 0; ij < ds.Tables[0].Rows.Count; ij++)
+                {
+					if (ToolNm == "Scheme Mapping" && ds.Tables[0].Rows[ij]["Name_To_Code"].ToString() != "5")
+                    {
+                        string fldStr = ((ds.Tables[0].Rows[ij]["Name_To_Code"].ToString() == "1") ? ds.Tables[0].Rows[ij]["SubQuery"].ToString() : "'@value'");
+                        sQry += ds.Tables[0].Rows[ij]["Field_Name"].ToString() + "=" + fldStr.Replace("@Div", div).Replace("@value", item.Value.ToString()).Replace("u0027", "''") + ",";
+                    }
+					else if(ds.Tables[0].Rows[ij]["Name_To_Code"].ToString() != "5")
+					{
+						sQry += ds.Tables[0].Rows[ij]["Field_Name"].ToString() + ",";
+						var itmval = item.Value.ToString();
+						if (ToolNm == "TP Upload")
+						{
+							if (Cols[il] == "Tour_Date")
+							{
+								DateTime gtdate = Convert.ToDateTime(Data["Tour_Date"]);
+								item.Value = gtdate.ToString("yyyy-MM-dd");
+								svQry = svQry.Replace("@Mn", gtdate.Month.ToString());
+								svQry = svQry.Replace("@Yr", gtdate.Year.ToString());
+							}
+							svQry = svQry.Replace("@SF", Data["SF_Code"].ToString());
+						}
+						string fldStr;
+						if (ToolNm == "TP Upload")
+						{
+							if ((ds.Tables[0].Rows[ij]["Name_To_Code"].ToString() == "1"))
+							{
+								if ((ds.Tables[0].Rows[ij]["Mantatory"].ToString() == "1"))
+								{
+									string sfcod = Data["SF_Code"];
+									string squery = ds.Tables[0].Rows[ij]["SubQuery"].ToString().Replace("@Div", div).Replace("@value", item.Value.ToString()).Replace("u0027", "''").Replace("@SF", sfcod);
+									string retval = getValues(squery);
+									if (retval == null)
+									{
+										msg = "No Values Found for " + Cols[il];
+										msg = "{\"success\":\"" + msg + "\",\"Qry\":\"" + sQry + "\"}";
+										return msg;
+									}
+									else
+									{
+										fldStr = "'" + retval + "'";
+									}
+								}
+								else
+								{
+									fldStr = ds.Tables[0].Rows[ij]["SubQuery"].ToString();
+								}
+							}
+							else
+							{
+								fldStr = "'@value'";
+							}
+						}
+						else
+						{
+							fldStr= ((ds.Tables[0].Rows[ij]["Name_To_Code"].ToString() == "1") ? ds.Tables[0].Rows[ij]["SubQuery"].ToString() : "'@value'");
+							svQry += fldStr.Replace("@Div", div).Replace("@value", item.Value.ToString()).Replace("u0027", "''") + ",";
+							if (ToolNm == "Outlet Upload")
+							{
+								svQry = svQry.Replace("@secval", Data["Territory"].ToString());
+							}
+						}
+					}
+                }
+            }
+            il++;
+        }
+        if (ToolNm == "Scheme Mapping")
+        {
+            sQry = sQry.TrimEnd(',') + " " + svQry.TrimEnd(',');
+        }
+        else
+        {
+            sQry = sQry.TrimEnd(',') + ") " + svQry.TrimEnd(',');
+        }
+        //msg = SFD.ExcelData(sQry);
+        using (SqlConnection con = new SqlConnection(Globals.ConnString))
+        {
+            using (SqlCommand cmd = con.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = sQry;
+
+                try
+                {
+                    if (con.State != ConnectionState.Open)
+                    {
+                        con.Open();
+                    }
+
+                    int i = cmd.ExecuteNonQuery();
+                    if (i > 0)
+                    {
+                        msg = "Success";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    msg = ex.Message.Replace(ch, '.');
+                }
+            }
+        }
+        msg = "{\"success\":\"" + msg + "\",\"Qry\":\"" + sQry + "\"}";
+        return msg;
+    }
+    [WebMethod]
+    public static string getUploadSettings(string divcode, string toolname)
+    {
+        SalesForce SFD = new SalesForce();
+        DataSet dds = SFD.getUploadSettings(divcode, toolname, "");
+        return JsonConvert.SerializeObject(dds.Tables[0]);
+    }
+    public static string getValues(string sqry)
+    {
+        string strQry = string.Empty;
+        DataSet dsTerritory = new DataSet();
+        SqlConnection con = new SqlConnection(Globals.ConnString);
+        con.Open();
+        SqlCommand cmd = new SqlCommand("select "+sqry, con);
+        SqlDataAdapter da = new SqlDataAdapter(cmd);
+        da.Fill(dsTerritory);
+        con.Close();
+        if (dsTerritory.Tables[0].Rows.Count > 0)
+        {
+            return dsTerritory.Tables[0].Rows[0][0].ToString();
+        }
+        else
+        {
+            return null;
+        }
+    }
+}

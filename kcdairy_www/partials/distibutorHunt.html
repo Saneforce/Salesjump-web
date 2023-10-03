@@ -1,0 +1,90 @@
+﻿<ion-view>
+  
+    <ion-content style="background-color:#f6eeee;">
+        <ion-list ng-if="editable==0&&distibutorHunt==true">
+            <ion-item ng-repeat="distributor in distributorHunt" class="propCase">
+                <h2 style="color:#39ac08;"><b>{{distributor.Shop_Name}}</b> <button class="button buttonClear button-small button-calm" style="float:right" ng-click="vibrate();Edit(distributor)">Edit</button></h2>
+                <p>Contact : <b style="color:#7e0ca5">{{distributor.Contact_Person}}</b></p>
+                <p  style="white-space:pre-wrap !important">Phone Number : <b style="color:#7e0ca5">{{distributor.Phone_Number}}</b></p>
+                <p  style="white-space:pre-wrap !important">Area : <b style="color:#7e0ca5">{{distributor.area}}</b></p>
+                <p  style="white-space:pre-wrap !important">Remarks : <b style="color:#7e0ca5">{{distributor.Remarks}}</b></p>
+            </ion-item>
+        </ion-list>
+         <ion-list ng-if="editable==0&&doortodoor==true">
+            <ion-item ng-repeat="door in doors" class="propCase">
+                <h2 style="color:#39ac08;"><b>{{door.ClstrName}}</b> 
+                    <!--<button class="button buttonClear button-small button-calm" style="float:right" ng-click="vibrate();Edit(distributor)">Edit</button>
+-->
+                </h2>
+                <p>Retailor : <b style="color:#7e0ca5">{{door.retailor_name}}</b></p>
+                <p  style="white-space:pre-wrap !important">Number of Coupens : <b style="color:#7e0ca5">{{door.no_of_coupens}}</b></p>
+                <p  style="white-space:pre-wrap !important">Worked With : <b style="color:#7e0ca5">{{door.worked_with_name}}</b></p>
+            </ion-item>
+        </ion-list>
+
+        <div class="list list-inset" ng-if="editable==1&&distibutorHunt==true">
+             <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Name Of the Shop</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="data.Shop_Name" placeholder="Name of the Name">     
+                    </div>
+                </div>
+            </div>
+             <div class="select-component">
+                <div class="label">
+                    <div class="label-text">area</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="data.area" placeholder="Contact Person Name">     
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Contact Person Name</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="data.Contact_Person" placeholder="Contact Person Name">     
+                    </div>
+                </div>
+            </div>
+           
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Phone Number</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="data.Phone_Number" placeholder="Enter the Phone No">     
+                    </div>
+                </div>
+            </div>   
+             <div class="select-component" style="padding:2px;height:160px">
+
+                <div class="label">
+                    <div class="label-text">Remarks</div>
+                </div>
+                <div class="select-box">
+                    <textarea ng-model="data.Remarks" rows="5" placeholder="Enter the Address" class="textarea-css" ng-click="vibrate();">                     
+
+                    </textarea>
+                </div>
+            </div>
+  
+        </div>
+               
+    </ion-content>
+   
+     <ion-footer-bar class="bar-dark"  ng-if="editable==1">
+ 
+        
+              <button class="button buttonClear pull-right" ng-click="vibrate();
+        hunt()">Save</button>
+     
+</ion-footer-bar>
+</ion-view>

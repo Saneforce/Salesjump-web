@@ -1,0 +1,85 @@
+﻿<ion-view>
+    <ion-content>
+
+        <div class="list list-inset">
+              
+                <div class="select-component" ng-hide="view_MR">
+                <div class="label">
+                    <div class="label-text">Headquarters</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('subordinate_master', 103)">
+                            {{(Mypln.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Fieldforce"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="select-component">
+                <div class="label">
+                    <div class="label-text">{{StkCap}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal('stockist_master', 104, Mypln.subordinate.selected.id)">
+                            {{(Mypln.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Route</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('town_master', 102, Mypln.subordinate.selected.id)">
+                            {{(Mypln.cluster.selected.id| getValueforIDD : {'collection' : myTpTwns}).name || "Select the Route"  }}
+                        </div>
+                    </div>
+                </div>
+            </div> 
+             <div class="select-component" style="padding-bottom:10px;height:auto">
+                <div class="label">
+                    <div class="label-text">{{DrCap}} Name</div>
+                </div>
+                <div class="item item-divider" style="height:50px;" ng-click=" vibrate();
+                    openModal('doctor_master', 106, Mypln.subordinate.selected.id)">
+                    {{(Mypln.doctor.selected.id| getValueforIDD : {'collection' : doctors}).name  || "Select " + DrCap + " Name"}}
+                </div>
+            </div> 
+             
+
+                  <div style="margin-top:10px;">
+                      <div  style="color:green;font-weight:bolder">Last 3 month product analysis </div>
+        <div class="row"  style="background-color:#f6eeee">
+             <div class="col col-20" style="color:black;font-weight:bold;">
+     Sl.No
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;">
+      Product Name
+  </div>
+            <div class="col" style="color:black;font-weight:bold;">
+     Last Order Date
+  </div>
+ 
+</div></div>
+<div ng-repeat="(i,x) in LostProducts" style="background-color: rgb(241, 241, 241)">
+  <div class="row">
+       <div class="col col-20">
+      {{i+1}}
+  </div>
+  <div class="col col-50">
+      {{x.Product_Detail_Name}}
+  </div>  
+       <div class="col" ng-if="x.orderDate!=null">
+      {{x.orderDate}}
+  </div>  
+        <div class="col" ng-if="x.orderDate==null">
+     -
+  </div>  
+</div>
+</div>  
+</div>
+    </ion-content>
+</ion-view>

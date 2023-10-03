@@ -1,0 +1,1197 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Master_MGR.master.cs" Inherits="Master" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
+        name='viewport'>
+    <meta name="description" content="Developed By M Abdur Rokib Promy">
+    <meta name="keywords" content="Admin, Bootstrap 3, Template, Theme, Responsive">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/morris/morris.css" rel="stylesheet" type="text/css" />
+    <link href="css/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+    <link href="css/datepicker/datepicker3.css" rel="stylesheet" type="text/css" />
+    <%--<link href="css/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />--%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.css" />
+    <link href="css/iCheck/all.css" rel="stylesheet" type="text/css" />
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css' />
+    <link href="css/style1.css" rel="stylesheet" type="text/css" />
+    <link href="css/Stockist.css" rel="stylesheet" type="text/css" />
+    <link href="css/chosen.css" rel='stylesheet' type='text/css' />
+    <!-- jQuery 2.0.2 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+	 <script src="../js/lib/xls.core.min.js" type="text/javascript"></script>
+    <script src="../js/lib/xlsx.core.min.js" type="text/javascript"></script>
+    <script src="../js/lib/import_data.js" type="text/javascript"></script>
+    <%--
+    <script src="js/jquery.min.js" type="text/javascript"></script>--%>
+    <style type="text/css">
+        .left-side::-webkit-scrollbar
+        {
+            width: 2px;
+            height: 2em;
+        }
+        
+        .left-side::-webkit-scrollbar-button
+        {
+            width: 2px;
+            height: 0px;
+        }
+        
+        .left-side::-webkit-scrollbar-track-piece
+        {
+            /*background: #000000;*/
+        }
+        
+        .left-side::-webkit-scrollbar-thumb
+        {
+            /*background: #22262f;*/
+        }
+        
+        .scrollmenu
+        {
+            overflow: auto;
+            white-space: nowrap;
+            margin-bottom: 16px;
+            text-shadow: none !important;
+        }
+        
+        .tl-menu-br
+        {
+            float: left;
+            display: block;
+            width: 100px;
+            height: 70px;
+            margin-top: 0px;
+        }
+        
+        .md-title
+        {
+            width: 100%;
+            overflow: hidden;
+            white-space: pre-wrap;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .scrollmenu a
+        {
+            display: inline-block;
+            text-align: center;
+            padding: 3px;
+            text-decoration: none;
+            color: #333;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        
+        .scrollmenu::-webkit-scrollbar
+        {
+            width: 2px;
+        }
+        
+         .tl-menu-br>.active
+        {
+            background-color: #19a4c6; /*#3c8dbc;*/
+            color: white !important;
+        }
+        
+        .scrollmenu a:hover
+        {
+            background-color: #19a4c6d1;
+            color: white !important;
+        }
+        
+        .md-icon
+        {
+            margin-top: 7px;
+            width: 23px;
+            vertical-align: middle;
+            background-color: var(--icon-background-color);
+            height: var(--md-icon-size);
+            justify-content: center;
+            margin-bottom: var(--md-icon-margin-bottom);
+        }
+        
+        .md-text
+        {
+            font-size: 12px;
+            text-overflow: ellipsis;
+        }
+        
+        .content
+        {
+            padding: 1px 15px;
+            background: #f0f3f4;
+        }
+		.pad {
+    padding: 36px 10px 10px;
+}
+    </style>
+    <link href="https://fmcg.sanfmcg.com/images/logoTop.ico" rel="shortcut icon" type="image/x-icon" />
+
+    </head>
+<body class="skin-black">
+    <!-- header logo: style can be found in header.less -->
+    <header class="header">
+            <%--<a href="index.html" class="logo">
+                E-Reporting
+            </a>--%>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+<asp:Image ID="logoo" runat="server" style="vertical-align: middle;padding: 4px 8px;height: 48px;"></asp:Image>
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav">
+                         <%--<li class="dropdown tasks-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-tasks"></i>
+                                <span class="label label-danger">9</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 9 tasks</li>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu">
+                                        <li><!-- Task item -->
+                                            <a href="#">
+                                                <h3>
+                                                    Design some buttons
+                                                    <small class="pull-right">20%</small>
+                                                </h3>
+                                                <div class="progress progress-striped xs">
+                                                    <div class="progress-bar progress-bar-success" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">20% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li><!-- end task item -->
+                                        <li><!-- Task item -->
+                                            <a href="#">
+                                                <h3>
+                                                    Create a nice theme
+                                                    <small class="pull-right">40%</small>
+                                                </h3>
+                                                <div class="progress progress-striped xs">
+                                                    <div class="progress-bar progress-bar-danger" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">40% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li><!-- end task item -->
+                                        <li><!-- Task item -->
+                                            <a href="#">
+                                                <h3>
+                                                    Some task I need to do
+                                                    <small class="pull-right">60%</small>
+                                                </h3>
+                                                <div class="progress progress-striped xs">
+                                                    <div class="progress-bar progress-bar-info" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">60% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li><!-- end task item -->
+                                        <li><!-- Task item -->
+                                            <a href="#">
+                                                <h3>
+                                                    Make beautiful transitions
+                                                    <small class="pull-right">80%</small>
+                                                </h3>
+                                                <div class="progress progress-striped xs">
+                                                    <div class="progress-bar progress-bar-warning" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">80% Complete</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li><!-- end task item -->
+                                    </ul>
+                                </li>
+                                <li class="footer">
+                                    <a href="#">View all tasks</a>
+                                </li>
+                            </ul>
+                        </li>--%>
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user"></i>
+                                <span><asp:Label ID="Label1" runat="server" Text="Label"></asp:Label><i class="caret"></i></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                                <li class="dropdown-header text-center">Account</li>
+                                <li class="divider"></li>
+
+                               <%-- <li>
+                                    <a href="#">
+                                        <i class="fa fa-user fa-fw pull-right"></i>
+                                        Profile
+                                    </a>
+                                    <a data-toggle="modal" href="#modal-user-settings">
+                                        <i class="fa fa-cog fa-fw pull-right"></i>
+                                        Settings
+                                    </a>
+                                </li>--%>
+
+                                <li class="divider"></li>
+
+                                <li>
+                                    <a href="../../../../Index.aspx"><i class="fa fa-ban fa-fw pull-right"></i> Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="left-side sidebar-offcanvas">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    <div class="menu-panel" style="height:500px;">
+                    <ul class="main-menu">
+                          <li>
+                            <a href="../../../../DashBoard1.aspx">
+                                <i class="fa fa-home"></i> 
+                                <span>Home</span>
+                                
+                            </a>
+                            
+                        </li>
+                        <li><a href="#"><i class="fa fa-gavel"></i> <span>Information</span><i class="icon-arrow"></i></a>
+                            <ul class="sub-menu">
+                                <li id="menu_LiDiv"><a href="../../../../MasterFiles/MGR/ProductRate.aspx" onclick="ShowProgress();">Product Information</a> </li>
+                                 <li style="display:none"><a href="../../../../MasterFiles/Product_Target_Achive.aspx" onclick="ShowProgress();">Product Target Fixation</a></li>
+                                 <li><a href="../../../../Stockist/Retailer_List.aspx" onclick="ShowProgress();">Retailer Creation</a></li>
+                                 <li><a href="../../../../MasterFiles/RetailerApproval.aspx" onclick="ShowProgress();">New Retailer Approval</a></li>
+                               <li><a href="../../../../MasterFiles/User_List.aspx" onclick="ShowProgress();">Subordinate Detail</a></li>  
+							   <li><a href="../../../../MasterFiles/Reports/Retailer_GeoTag_Status.aspx" onclick="ShowProgress();">Retailer Tag Status</a> </li>
+							   <li id="stkmaster"><a href="../../../../MasterFiles/Distributor_Master.aspx" onclick="ShowProgress();">Distributor Master</a></li>
+								<li id="routemaster"><a href="../../../../MasterFiles/Route_Master.aspx" onclick="ShowProgress();">Route Master</a></li>
+                                  <li><a href="#">Master View<i class="icon-arrow"></i></a>
+                                    <ul class="sub-menu">
+										<%--<li><a href="../../../../MasterFiles/StockistList.aspx" onclick="ShowProgress();">Stockist Details</a></li>--%>
+									       <%--  <li id="Li3"><a href="../../../../MasterFiles/MR/Territory/Territory.aspx" onclick="ShowProgress();">Route</a></li>  --%>
+                                           <li><a href="../../../../MasterFiles/DistributorRateFixation.aspx" onclick="ShowProgress();">Distributor</a></li>   
+                                           <li><a href="../../../../MasterFiles/ProductWiseRateFix.aspx" onclick="ShowProgress();">Product Target Fixation</a></li>   
+                                              <li><a href="../../../../MasterFiles/CustomerRateFixation.aspx" onclick="ShowProgress();">Retailer Target Fixation</a></li>
+                                			<%-- <li id="Li4"><a href="../../../../MasterFiles/MR/ListedDoctor/LstDoctorList.aspx" onclick="ShowProgress();">Retailer</a></li>  --%>
+
+                                    </ul>
+                                </li>  
+                                  <%--<li><a href="#">Approvals<i class="icon-arrow"></i></a>
+                                    <ul class="sub-menu">
+                                      
+                                         <li><a href="../../../../MasterFiles/MGR/TP_Approve.aspx" onclick="ShowProgress();">TP Approval</a></li>
+                                     <li><a href="../../../../MasterFiles/MGR/DCR_Approval.aspx" onclick="ShowProgress();">DCR Approval</a></li>
+                                         <li><a href="../../../../MasterFiles/MGR/Leave_Approval.aspx" onclick="ShowProgress();">Expense Approval</a></li>
+									
+                           
+                                    </ul>
+                                </li>--%>
+                                 
+                            </ul>
+                        </li>
+                        <li><a href="#"><i class="fa fa-globe"></i> <span>Activities</span><i class="icon-arrow"></i></a>
+                            <ul class="sub-menu" id="lireports">
+                             <%--<li><a href="../../../../MasterFiles/Expense_Entry.aspx?Mode=0" onclick="ShowProgress();">Expense Entry</a></li>--%>
+                             <li><a href="../../../../MIS Reports/rpt_Claim_main_sl.aspx" onclick="ShowProgress();">Claim Status</a></li>
+							 <li style="display: none;" class="medosecentry"><a href="../../../../MasterFiles/newtp.aspx" onclick="ShowProgress();">Secondary Sales Entry</a></li>
+								<li><a href="#">Approvals<i class="icon-arrow"></i></a>
+                                    <ul class="sub-menu">
+                                       <li id="Old_ExpApprl"><a href="../../../../MasterFiles/Expense_Approval.aspx" onclick="ShowProgress();">Expense</a></li>
+					<li id="Vasu_ExpApprl" style="display:none;"><a href="../../../../MasterFiles/Expense_Approval_Modified_New.aspx" onclick="ShowProgress();">Expense New</a></li>
+					<li id="Aachi_ExpApprl" style="display:none;"><a href="../../../../MasterFiles/Expense_Approval_Modified_New_Aachi.aspx" onclick="ShowProgress();">Expense New</a></li>
+					<li id="daily_ExpApprl" style="display:none;"><a href="../../../../MasterFiles/Expense_Approval_SingleDay.aspx" onclick="ShowProgress();">Expense New</a></li>
+                                   <li><a href="../../../../MasterFiles/Report/Tp_Approval.aspx" onclick="ShowProgress();">TP</a></li>
+                                     <%--<li><a href="../../../../MasterFiles/MGR/DCR_Approval.aspx" onclick="ShowProgress();">DCR Approval</a></li>--%>
+                                       <%--  <li><a href="../../../../MasterFiles/MGR/Leave_Approval.aspx" onclick="ShowProgress();">Expense Approval</a></li>--%>
+										<li><a href="../../../../MIS Reports/Today_Order.aspx" onclick="ShowProgress();">Order Confirmation</a></li>
+                                        <li><a href="../../../../MasterFiles/Leave_Admin_Approval.aspx" onclick="ShowProgress();">Leave Confirmation</a></li>
+                                    <li><a href="../../../../MIS Reports/vansales_approval_Native.aspx" onclick="ShowProgress();">Begin Inventory</a></li>
+                                    </ul>
+                                </li>
+                                <%--<li><a href="#">Route Plan<i class="icon-arrow"></i></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="../../../../MasterFiles/Reports/rptRoutePlan.aspx" onclick="ShowProgress();">View</a></li>
+                                        <li><a href="../../../../MasterFiles/Reports/RoutePlan_Status.aspx" onclick="ShowProgress();">Status</a></li>
+                                    </ul>
+                                </li>--%>
+                                <li><a href="#">Tour Plan<i class="icon-arrow"></i></a>
+                                    <ul class="sub-menu">
+                                            <%--<li><a href="../../../../MasterFiles/Reports/DCR_My_Date_Plan.aspx" onclick="ShowProgress();">My Day Plan Entry</a></li>--%>
+  											<li><a href="../../../../MasterFiles/Reports/DCR_My_Day_Plan_View.aspx" onclick="ShowProgress();">Attendance View</a></li>
+
+                                        <%--<li><a href="../../../../MasterFiles/MGR/TourPlan_Calen.aspx" onclick="ShowProgress();">Entry</a></li>
+						                <li><a href="../../../../MasterFiles/MGR/TP_Calendar_Edit.aspx" onclick="ShowProgress();">Edit</a></li>--%>
+						                <li><a href="../../../../MasterFiles/Report/TP_View_Report.aspx" onclick="ShowProgress();">View</a></li>
+				                        <%--<li><a href="../../../../MasterFiles/Report/TP_Status_Report.aspx" onclick="ShowProgress();">Status</a></li>--%>
+										<li><a href="../../../../MIS Reports/TP_Deviation.aspx" onclick="ShowProgress();">Deviation</a></li>
+                                   </ul>
+                                </li>
+                                 <li><a href="#">DCR<i class="icon-arrow"></i></a>
+                                    <ul class="sub-menu">
+
+                                    <li><a href="../../../../MasterFiles/Sec_Entry.aspx" onclick="ShowProgress();">Order Entry</a></li>
+                                        <li><a href="../../../../MasterFiles/Reports/DCR_View.aspx" onclick="ShowProgress();">
+                                        View</a></li>
+                                        <li><a href="../../../../MasterFiles/Reports/DCR_Status.aspx" onclick="ShowProgress();">
+                                         Status</a></li>
+                                         <li><a href="../../../../MasterFiles/Reports/DCR_Event_Captures_View.aspx" onclick="ShowProgress();">
+                                            Event Captures Report</a></li>
+                                   </ul>
+                                </li>
+
+                                 <%--<li><a href="../../../../MasterFiles/Reports/RptAutoExpense_Approve_View.aspx" onclick="ShowProgress();">Actual Expense View</a></li>--%>
+								<li><a href="../../../../MIS Reports/routedeviation.aspx" onclick="ShowProgress();">Route Deviation</a></li>
+                                <li><a href="../../../../MIS Reports/Today_Order_view.aspx" onclick="ShowProgress();">Total Order View</a></li>
+								<li><a href="../../../../MIS Reports/Daywise_Sales_Summary.aspx">Daywise Summary</a></li>
+                                <li><a href="../../../../MIS Reports/Retailer_Scheme_Enrollment_Report.aspx" onclick="ShowProgress();">Scheme Enrollment</a></li>
+                                <li><a href="../../../../MIS Reports/Month_wise_Activity_Data.aspx" onclick="ShowProgress();">Month wise Activity Data </a></li>
+                                <li><a href="../../../../MIS Reports/Attendence_Speedometer.aspx" onclick="ShowProgress();">SpeedoMeter Report</a></li>
+                            </ul>
+                        </li>
+                        <%--<li><a href="#"><i class="fa fa-list-alt"></i> <span>Inventory</span><i class="icon-arrow"></i></a>
+                            <ul class="sub-menu" id="Ul1">
+                                  <li style="display:none"><a href="../../../../MasterFiles/Expense_Entry.aspx?Mode=0" onclick="ShowProgress();">Expense Entry</a></li>
+                                    <%--<li><a href="#">Entry<i class="icon-arrow"></i></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="../../../../MasterFiles/Goods_Received_List.aspx" onclick="ShowProgress();">GRN</a></li>
+                                        <li><a href="../../../../MasterFiles/Stock_Issue_List.aspx" onclick="ShowProgress();">Issue Slip </a></li>										
+										<li><a href="../../../../MasterFiles/Stock_Transfer_List.aspx" onclick="ShowProgress();">Stock Transfer </a></li>
+										<li><a href="../../../../MasterFiles/Stock_Adj_List.aspx" onclick="ShowProgress();">Stock Adjustment </a></li>
+                                   </ul>
+                                   </li>
+                                      <li><a href="#">Reports<i class="icon-arrow"></i></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="../../../../MasterFiles/Stock_Summary.aspx" onclick="ShowProgress();">Stock Summary </a></li>
+										<li><a href="../../../../MasterFiles/Stock_Status.aspx" onclick="ShowProgress();">Stock Status </a></li>
+										<li><a href="../../../../MasterFiles/Stock_Summary_Van.aspx" onclick="ShowProgress();">Van Stock Summary  </a></li>
+                                        <li><a href="../../../../MIS Reports/Dailyinv_view.aspx" onclick="ShowProgress();">Imbalance view</a></li>
+                                        <li><a href="../../../../MIS Reports/RptIssueSlip.aspx" onclick="ShowProgress();">Issue Slip</a></li>
+                                        <li><a href="../../../../MIS Reports/Van_stock_ledger.aspx" onclick="ShowProgress();">Van Ledger</a></li>
+                                        <li><a href="../../../../MIS Reports/stockist_account_statement.aspx" onclick="ShowProgress();">Stock Ledger</a></li>
+                                       
+                                    </ul>
+                                </li>  
+                                <!-- <li><a href="#">Target Fixation<i class="icon-arrow"></i></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="../../../../MasterFiles/ActivityReports/TargetFixationProduct.aspx" onclick="ShowProgress();">Productwise</a></li>
+                                        <li><a href="../../../../MasterFiles/ActivityReports/TargetFixationView.aspx" onclick="ShowProgress();">View</a></li>
+                                   </ul>
+                                </li>
+                            </ul>
+                        </li>--%>
+                        <li>
+                             <a href="#"><i class="fa fa-clock-o"></i><span>Time Management</span><i class="icon-arrow"></i></a>
+                             <ul class="sub-menu">
+                                  <li><a href="#">Attendance<i class="icon-arrow"></i></a>
+                                     <ul class="sub-menu">
+                                         <li>
+                                             <a href="../../../../MasterFiles/Reports/DCR_My_Day_Plan_View.aspx" onclick="ShowProgress();">
+                                                 <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/dailyat.png" alt="" />   
+                                                 Daily
+                                             </a>
+                                         </li>
+                                         <li>
+                                             <a href="../../../../MIS Reports/Attendance_view.aspx" onclick="ShowProgress();">
+                                                 <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/monthlyat.png" alt="" />   
+                                                 Monthly
+                                             </a>
+                                         </li>
+                                         <li>
+                                             <a href="../../../../MasterFiles/Missed_Date_Approve.aspx" onclick="ShowProgress();">
+                                                 <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/misseddate.png" alt="" />   
+                                                 Missed Date Approval 
+                                             </a>
+                                         </li>
+                                     </ul>
+
+                                 </li>
+                                 <li><a href="#">Leave<i class="icon-arrow"></i></a>
+                                     
+                                     <ul class="sub-menu">
+                                        
+                                         <li>
+                                             <a href="../../../../MIS Reports/DailyLeaveDetails.aspx" onclick="ShowProgress();">                                                
+                                                 Leave Status
+                                             </a>
+                                         </li>
+                                         <li>
+                                             <a href="../../../../MasterFiles/LeaveForm.aspx" onclick="ShowProgress();">
+                                                 <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/leave.png" alt="" />    
+                                                 Entry
+                                             </a>
+                                         </li>
+                                         <li>
+                                             <a href="../../../../MasterFiles/Leave_Admin_Approval.aspx" onclick="ShowProgress();">
+                                                 <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/leavapprval.png" alt="" />    
+                                                 Approval
+                                             </a>
+                                         </li> 
+                                         <li>
+                                             <a href="../../../../MasterFiles/LeaveCancellation.aspx" onclick="ShowProgress();">
+                                                 <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/leavcancel.png" alt="" />    
+                                                 Cancellation
+                                             </a>
+                                         </li> 
+                                         <li>
+                                             <a href="../../../../MasterFiles/LeaveEligibility.aspx" onclick="ShowProgress();">
+                                                 <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/lveligibl.png" alt="" />    
+                                                 Eligibility
+                                             </a>
+                                         </li>  
+                                         <li>
+                                             <a href="../../../../MasterFiles/Leave_Type_List.aspx" onclick="ShowProgress();">
+                                                 <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/leavetype.png" alt="" />    
+                                                 Type Master
+                                             </a>
+                                         </li>  
+                                         <li>
+                                             <a href="../../../../MIS Reports/LeaveFormAll.aspx" onclick="ShowProgress();">
+                                                 <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/lvavail.png" alt="" />    
+                                                 Availability Status
+                                             </a>
+                                         </li>  
+                                     </ul>
+
+                                 </li>
+                                 <li><a href="#">Tour Plan<i class="icon-arrow"></i></a>
+                                     <ul class="sub-menu">
+									     <li>
+                                             <a href="../../../../MasterFiles/Report/Tp_Approval.aspx" onclick="ShowProgress();">                                                  
+                                                  Approval
+                                             </a>
+                                         </li>
+                                         <li>
+                                             <a href="../../../../MIS Reports/TP_Deviation.aspx" onclick="ShowProgress();">
+                                                  
+                                                 Deviation
+                                             </a>
+                                         </li>
+                                         <li>
+                                             <a href="../../../../MasterFiles/TPStatus.aspx" onclick="ShowProgress();">
+                                                  
+                                                 Status
+                                             </a>
+                                         </li>
+                                         <li>
+                                             <a href="../../../../MasterFiles/Report/TP_View_Report.aspx" onclick="ShowProgress();">
+                                                  
+                                                 View
+                                             </a>
+                                         </li>
+                                     </ul>
+
+                                 </li>
+                                  <li>
+                                      <a href="../../../../MasterFiles/HolidayMaster.aspx" onclick="ShowProgress();">Holiday Master<i class="icon-arrow"></i></a>                                     
+                                 </li>
+                             </ul>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-file"></i><span>Order Management</span><i class="icon-arrow"></i></a>
+                            <ul class="sub-menu">
+                               <li><a href="#">Primary Order<i class="icon-arrow"></i></a>
+                                   <ul class="sub-menu">
+                                       <li><a href="../../../../MIS Reports/Today_PriOrder_view.aspx">Primary Order</a></li>
+                                       <li><a href="../../../../MIS Reports/Primary_Order_View.aspx">Primary Order View</a></li>
+                                       <li><a href="../../../../MIS Reports/Employee_wise_POrder.aspx"><i class="fa fa-user"></i>  <span>Employee Wise Primary Order</span></a></li>
+                                      
+                                   </ul>
+                               </li>
+                               <li><a href="#">Secondary Order<i class="icon-arrow"></i></a>
+                                   <ul class="sub-menu">
+                                       <li>
+                                           <a href="../../../../MIS Reports/Secondary_Order_Reports.aspx" onclick="ShowProgress();">
+                                               <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/secondaryorder.png" alt="" />  
+                                               Secondary Order
+                                           </a>
+                                       </li>
+                                        <li class="hidden">
+                                            <a href="../../../../MIS Reports/dcrcalls.aspx" onclick="ShowProgress();">                                                
+                                                Channel Dashboard
+                                            </a>
+                                        </li>                                       
+                                       <li>
+                                           <a href="../../../../MIS Reports/Daywise_Sales_Summary.aspx" onclick="ShowProgress();">
+                                               <i class="fa fa-list-alt" aria-hidden="true"></i>  
+                                               Daywise Summary
+                                           </a>
+                                       </li>
+                                       <li>
+                                           <a href="../../../../MasterFiles/Reports/Secondary_Order.aspx" onclick="ShowProgress();">
+                                               <i class="fa fa-list-alt" aria-hidden="true"></i>  
+                                               Secondary Order Summary
+                                           </a>
+                                       </li>
+                                       <li>
+                                            <a href="../../../../MasterFiles/newtp.aspx" onclick="ShowProgress();">                                                
+                                                Secondary Sales Entry
+                                            </a>
+                                        </li>  
+                                       <li>
+                                           <a href="../../../../MIS Reports/ledgernewFormt.aspx" onclick="ShowProgress();">
+                                               <i class="fa fa-user"></i>  
+                                               <span>Employee Wise Secondary Order</span>
+                                           </a>
+                                       </li>
+                                       <li>
+                                           <a href="../../../../MIS Reports/SOB_POB_Order_Report.aspx" onclick="ShowProgress();">
+                                               <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/secondaryorder.png" alt="" />  
+                                               SOB POB Order
+                                           </a>
+                                       </li>
+                                       <li>
+                                           <a href="../../../../MIS Reports/Month_wise_Activity_Data.aspx" onclick="ShowProgress();">
+                                               <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/monthlyacti.png" alt="" />  
+                                               Month Wise Activity Details
+                                           </a>
+                                       </li>
+									   <li>
+                                           <a href="../../../../MIS Reports/Retailer_Wise_Product_Trend_Analysis.aspx" onclick="ShowProgress();">
+                                               <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/rtlwisepro.png" alt="" />  
+                                               Retailer Wise Product Trend
+                                           </a>
+                                       </li>
+                                       <li>
+                                           <a href="../../../../MIS Reports/Sec_Order_Dtl_RepView.aspx" onclick="ShowProgress();">
+                                               <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/prodtls.png" alt="" />  
+                                               Product Wise Secondary Order Details
+                                           </a>
+                                       </li> 
+                                       <li>
+                                           <a href="../../../../MIS Reports/PrimaryVsSecondary_Sales.aspx" onclick="ShowProgress();">
+                                               <img style="width:10px;height:10px;background:white;" src="MasterFiles/icon/privssec.png" alt="" />  
+                                               Primary Vs Secondary Sales Order 
+                                           </a>
+                                       </li>   									   
+                                   </ul>
+                               </li>
+                               <li><a href="../../../../MIS Reports/Productwise_SuperStockist_Order.aspx"> Product Wise Super Stockist<i class="icon-arrow"></i></a> </li>
+                               <li><a href="../../../../MIS Reports/SuperStockistOrderView.aspx"> Super Stockist Order Management<i class="icon-arrow"></i></a></li>
+							   <li><a href="../../../../MIS%20Reports/Inshop_Retailer.aspx" onclick="ShowProgress();">Inshop Sale Activity<i class="icon-arrow"></i></a></li>
+                              
+                           </ul>
+                        </li>
+                        <li class="TrackinSystemM">
+                            <a href="#"><i class="fa fa-map-marker"></i><span>Tracking System</span><i class="icon-arrow"></i></a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="/Location_Finder.aspx" onclick="ShowProgress();">
+                                        Location Finder
+                                    </a>
+                                </li>   
+                                <li>
+                                    <a href="../../../../MIS Reports/FieldForceTracking.aspx" onclick="ShowProgress();">
+                                        Tracking
+                                    </a>
+                                </li>   
+                            </ul>
+                        </li>
+ 						<li class="misreportsmgr">
+                            <a href="#"><i class="fa fa-dashboard"></i><span>MIS Reports</span><i class="icon-arrow"></i></a>
+                                <ul class="sub-menu">
+                                    <li class="ActivityReportmgr">
+                                        <a href="#">Activity Report<i class="icon-arrow"></i></a>
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a href="../../../../MasterFiles/Reports/DCR_Missed_Dates.aspx" onclick="ShowProgress();">
+                                                    Missed Dates Report
+                                                </a>
+                                            </li>   
+                                            <li>
+                                                <a href="../../../../MasterFiles/Reports/DCR_Event_Captures_View.aspx" onclick="ShowProgress();">
+                                                    Activity Event Capture
+                                                </a>
+                                            </li>  
+                                            <li>
+                                                <a href="../../../../MasterFiles/Reports/DCR_Call_Report_View.aspx" onclick="ShowProgress();">
+                                                    Call Report
+                                                </a>
+                                            </li> 
+                                            <li>
+                                                <a href="../../../../MIS Reports/dailycallreport.aspx" onclick="ShowProgress();">
+                                                    SalesMan Daily Call Report
+                                                </a>
+                                            </li> 
+                                            <li>
+                                                <a href="../../../../MIS Reports/Salesmandailycallreportfl.aspx" onclick="ShowProgress();">
+                                                    SalesMan Day Wise Report
+                                                </a>
+                                            </li> 
+                                             <li>
+                                                <a href="../../../../MIS Reports/Route_Productivity_Report.aspx" onclick="ShowProgress();">
+                                                    Route Productivity
+                                                </a>
+                                            </li> 
+                                            <li>
+                                                <a href="../../../../MasterFiles/Reports/DCR_View.aspx" onclick="ShowProgress();">
+                                                    DCR View
+                                                </a>
+                                            </li> 
+                                        </ul>
+
+                                    </li>
+                                    <li class="RetailerMgmReportmgr">
+                                        <a href="#">Retailer Management<i class="icon-arrow"></i></a>
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a href="../../../../MIS Reports/routedeviation.aspx" onclick="ShowProgress();">
+                                                    Retailer Visit Status
+                                                </a>
+                                            </li>   
+                                            <li>
+                                                <a href="../../../../MIS Reports/Customer_wise_sales_analysis.aspx" onclick="ShowProgress();">
+                                                    Customerwise Sales Analysis
+                                                </a>
+                                            </li>  
+                                            <li>
+                                                <a href="../../../../MIS Reports/Fieldforce_wise_sales_analysis.aspx" onclick="ShowProgress();">
+                                                    FieldForce Wise Sales Analysis
+                                                </a>
+                                            </li>  
+                                        </ul>
+
+                                    </li>
+                                    <li class="Retailermgr">
+                                        <a href="#">Retail<i class="icon-arrow"></i></a>
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a href="../../../../MIS Reports/Retailer_Distributor_Wise.aspx" onclick="ShowProgress();">
+                                                    Distributor Wise
+                                                </a>
+                                            </li>   
+                                        </ul>
+                                    </li>
+                                    <li class="TargetMgmmgr">
+                                        <a href="#">Target Achievement<i class="icon-arrow"></i></a>
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a href="../../../../MIS Reports/Customer_wise_target_VS_sales_analysis.aspx" onclick="ShowProgress();">
+                                                    Target Vs Sales Analysis
+                                                </a>
+                                            </li>  
+                                        </ul>
+
+                                    </li>
+                                    <li class="PerformanceMgmmgr">
+                                        <a href="#">Performance Report<i class="icon-arrow"></i></a>
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a href="../../../../MIS Reports/FieldForcePerformance.aspx" onclick="ShowProgress();">
+                                                    FieldForce Summary Details
+                                                </a>
+                                            </li> 
+                                            <li>
+                                                <a href="../../../../MIS Reports/DistributorPerformance.aspx" onclick="ShowProgress();">
+                                                    Distributor Performance
+                                                </a>
+                                            </li> 
+                                            <li>
+                                                <a href="../../../../MIS Reports/Emp_Month_call.aspx" onclick="ShowProgress();">
+                                                    Employee Monthly Call Details
+                                                </a>
+                                            </li> 
+                                            <li>
+                                                <a href="../../../../MIS Reports/FFWiseUOMReport.aspx" onclick="ShowProgress();">
+                                                    FieldForce Work Analysis
+                                                </a>
+                                            </li> 
+                                            <li>
+                                                <a href="../../../../MIS Reports/New_Outlet_Sales_Rep.aspx" onclick="ShowProgress();">
+                                                    New Outlet Sales Repoort
+                                                </a>
+                                            </li> 
+                                             <li>
+                                                <a href="../../../../MIS Reports/OrderDetailedView.aspx" onclick="ShowProgress();">
+                                                    Order Wise Repoort
+                                                </a>
+                                            </li> 
+                                            <li>
+                                                <a href="../../../../MIS Reports/ProductcatAnalysis.aspx" onclick="ShowProgress();">
+                                                    Product Cat Analysis
+                                                </a>
+                                            </li> 
+                                            <li>
+                                                <a href="../../../../MIS Reports/SKU_Analysis.aspx" onclick="ShowProgress();">
+                                                    SKU Analysis
+                                                </a>
+                                            </li> 
+                                        </ul>
+
+                                    </li>
+                                    <li class="ReasonAnalysismgr">
+                                        <a  href="../../../../MIS Reports/ReasonAnalysisView.aspx" onclick="ShowProgress();"><i class="icon-arrow"></i>Reason Analysis</a>                                        
+                                    </li>
+                                </ul>                          
+ 						</li>
+ 					<li>
+                      
+                        <a href="#"><i class="fa fa-gears"></i> <span>Options</span><i class="icon-arrow"></i></a>
+                            <ul class="sub-menu">
+                                <li><a href="../../../../MasterFiles/Options/ChangePassword.aspx" onclick="ShowProgress();">Change Password</a></li>
+								 <li><a href="../../../../MasterFiles/MailBox.aspx" onclick="ShowProgress();">
+                                   Mail Box </a></li>
+								<li><a href="#">Target Setting<i class="icon-arrow"></i></a>
+                                                    <ul class="sub-menu">
+                                                        <li><a href="#">Primary Target<i class="icon-arrow"></i></a>
+                                                            <ul class="sub-menu">
+                                                                <li><a href="../../../../MasterFiles/Distributer_Product.aspx"
+                                                                        onclick="ShowProgress();">Distributor-Product
+                                                                        wise</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+													</li> 
+                                <%--<li><a href="../../../../MasterFiles/Mails/Mail_Head.aspx" onclick="ShowProgress();">Mail Box</a></li>   
+                                <li><a href="../../../../MasterFiles/MR/FileUpload_MR.aspx">Files Download</a></li>
+                                <li><a href="../../../../MasterFiles/MR/UserManual_View.aspx" onclick="ShowProgress();">User Manual - View</a></li>               
+                                <li><a href="../../../../MasterFiles/MGR/Vacant_MR_Login.aspx">Vacant - MR Login Access</a></li>  
+                                <li><a href="#">Leave<i class="icon-arrow"></i></a>
+                                    <ul class="sub-menu">
+                                      <li><a href="../../../../MasterFiles/MGR/Leave_Form_Mgr.aspx" onclick="ShowProgress();">Entry</a></li>               
+                                       <li><a href="../../../../MasterFiles/MR/Leave_Status.aspx" onclick="ShowProgress();">Status</a></li> 
+                                   </ul>
+                                </li>     
+                            </ul>
+                        </li>--%>
+            	</ul></li></ul></div>
+          	</section>
+      	</aside>
+        <aside class="right-side">
+            <div class="pad HDBg">
+                 <%--<div class="under" style="position:relative;color: #336277;font-family: Verdana;font-weight: bold;text-transform: capitalize;font-size: 14px;"> <span class="pageheader"></span></div>--%>
+             <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="true"  />
+                        <asp:SiteMapPath ID="SiteMapPath1" runat="server" PathSeparator=" / "  ParentLevelsDisplayed="1" 
+                            class="under" style="position:relative;color: #336277;font-family: Verdana;font-weight: bold;text-transform: capitalize;font-size: 14px;" PathDirection="RootToCurrent" RenderCurrentNodeAsLink="false">
+                        </asp:SiteMapPath>
+			</div>
+			 <div class="HDBg scrollmenu">
+           <div class="tl-row">
+           
+               </div>
+                 </div>
+            <!-- Main content -->
+            <section class="content" >
+
+                  
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+     
+        </asp:ContentPlaceHolder>
+  
+                           
+                    <!-- row end -->
+                </section><!-- /.content -->
+            <%--    <div class="footer-main">
+                    Copyright &copy Director, 2014
+                </div>--%>
+            </aside>
+        <!-- /.right-side -->
+    </div>
+    <!-- ./wrapper -->
+    <script src="<%=Page.ResolveUrl("~/js/jquery.min.js")%>" type="text/javascript"></script>
+    <!-- jQuery UI 1.10.3 -->
+    <script src="<%=Page.ResolveUrl("~/js/jquery-ui-1.10.3.min.js")%>" type="text/javascript"></script>
+    <!-- Bootstrap -->
+    <script src="<%=Page.ResolveUrl("~/js/bootstrap.min.js")%>" type="text/javascript"></script>
+    <!--Chosen-->
+    <script src="<%=Page.ResolveUrl("~/js/chosen.jquery.js")%>" type="text/javascript"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Moment-->
+    <script src="<%=Page.ResolveUrl("~/js/lib/bootstrap-select.min.js")%>" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <!-- daterangepicker -->
+    <%--<script src="<%=Page.ResolveUrl("~/js/plugins/daterangepicker/daterangepicker.js")%>"
+        type="text/javascript"></script>--%>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.js"></script>
+    <script src="<%=Page.ResolveUrl("~/js/plugins/chart.js")%>" type="text/javascript"></script>
+    <script src="<%=Page.ResolveUrl("~/js/plugins/iCheck/icheck.min.js")%>" type="text/javascript"></script>
+    <!-- calendar -->
+    <script src="<%=Page.ResolveUrl("~/js/plugins/fullcalendar/fullcalendar.js")%>" type="text/javascript"></script>
+	<script src="<%=Page.ResolveUrl("~/js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js")%>"></script>
+    <!-- Director App -->
+    <script src="<%=Page.ResolveUrl("~/js/jquery.multiselect.js")%>" type="text/javascript"></script>
+    <script src="<%=Page.ResolveUrl("~/js/Director/app.js")%>" type="text/javascript"></script>
+    <!-- Director dashboard demo (This is only for demo purposes) -->
+    <script src="<%=Page.ResolveUrl("~/js/Director/dashboard.js")%>" type="text/javascript"></script>
+    <script src="<%=Page.ResolveUrl("~/js/Director/domenu.js")%>" type="text/javascript"></script>
+    <!-- Director for demo purposes -->
+
+    <script type="text/javascript">
+        $('input').on('ifChecked', function (event) {
+            // var element = $(this).parent().find('input:checkbox:first');
+            // element.parent().parent().parent().addClass('highlight');
+            $(this).parents('li').addClass("task-done");
+            console.log('ok');
+        });
+        $('input').on('ifUnchecked', function (event) {
+            // var element = $(this).parent().find('input:checkbox:first');
+            // element.parent().parent().parent().removeClass('highlight');
+            $(this).parents('li').removeClass("task-done");
+            console.log('not');
+        });
+		  if ('<%=Session["div_code"].ToString()%>' == '1') {				
+		   $('.main-menu').html('');
+				}
+        $(document).ready(
+		
+        function () {
+		$.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                url: "DashBoard.aspx/Get_access_master",
+                dataType: "json",
+                success: function (data) {
+                    window.localStorage.removeItem("Access_Details");
+                    Access_data = JSON.parse(data.d) || [];
+                    localStorage.setItem('Access_Details', data.d);
+                },
+                error: function (result) {
+                }
+            });
+		if(localStorage.getItem('Access_Details')){
+				if (Number('<%=DBase_EReport.Global.ExpenseType%>') >= 1 && JSON.parse(localStorage.getItem('Access_Details'))[0].Exp_Process_Type==0 && '<%=Session["div_code"].ToString()%>' == '109' || '<%=Session["div_code"].ToString()%>' == '29') {
+					$('#Vasu_ExpApprl').show();
+					$('#Old_ExpApprl').hide();$('#daily_ExpApprl').hide();
+				}
+				else if(Number('<%=DBase_EReport.Global.ExpenseType%>') >= 1 && JSON.parse(localStorage.getItem('Access_Details'))[0].Exp_Process_Type==0 && '<%=Session["div_code"].ToString()%>' != '109' || '<%=Session["div_code"].ToString()%>' != '29'){
+					$('#Vasu_ExpApprl').hide();
+					$('#Aachi_ExpApprl').hide();
+					$('#Old_ExpApprl').show();$('#daily_ExpApprl').hide();
+				}
+				if ('<%=DBase_EReport.Global.ExpenseType%>' == '2' && JSON.parse(localStorage.getItem('Access_Details'))[0].Exp_Process_Type==0) {
+					$('#Aachi_ExpApprl').show();
+					$('#Vasu_ExpApprl').hide();
+					$('#Old_ExpApprl').hide();$('#daily_ExpApprl').hide();
+				}	
+				if(JSON.parse(localStorage.getItem('Access_Details'))[0].Exp_Process_Type!=0){
+					 $('#Aachi_ExpApprl').hide();
+					$('#Old_ExpApprl').hide();$('#Vasu_ExpApprl').hide();
+					$('#daily_ExpApprl').show();
+				}
+			}
+			if ('<%=Session["div_code"].ToString()%>' == '91'){
+				$('#stkmaster').show();
+				$('#routemaster').show();
+			}
+			else{
+				$('#stkmaster').hide();
+				$('#routemaster').hide();
+			}
+			if('<%=Session["div_code"].ToString()%>'=='58'){
+				$('.medosecentry').show();
+			}
+            $(this).attr("title", "Fast Moving Consumer Goods" + $(this).attr("title").replace(/Fast Moving Consumer Goods/g, ''));
+            $(".pageheader").text($(this).attr("title").replace(/Fast Moving Consumer Goods/g, ''));
+                var AllData = [];
+                var selectedDate = [];
+                var sValue = ("<%=Session["Menu_type"].ToString()%>");
+                var Div_Code = ("<%=Session["div_code"].ToString()%>");
+                var Sf_type = ("<%=Session["sf_type"].ToString()%>");
+
+                var url_string = window.location.href;
+                var newurl = new URL(url_string);
+                var smid = newurl.searchParams.get("id");
+
+                var sf_type = ("<%=Session["sf_type"].ToString()%>");
+                // localStorage.removeItem('d');
+                var dataa = localStorage.getItem('d');
+
+                if ('<%=Session["div_code"].ToString()%>' == 1) {
+                    if (dataa == null) {
+                        $.ajax({
+                            type: "Post",
+                            contentType: "application/json; charset=utf-8",
+                            //url: "menucre.asmx/getmenubypermission",
+                            url: "menucre.asmx/getmenubypermission",
+                            dataType: "json",
+                            //data: "{'Desgn':'" + Degn_Code + "','Div_Code':'" + Div_Code + "'}",
+                            data: "{'SF':'<%=Session["sf_code"].ToString()%>'}",
+                            async: false,
+                            success: function (data) {
+                                selectedDate = data.d;
+                                localStorage.setItem('d', JSON.stringify(selectedDate));
+                                //method(selectedDate);
+                            },
+                            error: function (result) {
+                                console.log(result);
+                            }
+                        });
+                    }
+                    else {
+                        var dataa = localStorage.getItem('d');
+                        method(JSON.parse(dataa));
+                    }
+
+                }
+
+
+                function method(data) {
+		    if (data == null) {
+			window.location.href = "Login.aspx";
+		    }
+                    var strhome = '<li><a href="../../../../DashBoard1.aspx"><i class="fa fa-home"></i><span>Home</span></a></li>';
+                    $('.main-menu').html('');
+                    $('.main-menu').append(strhome);
+                    var MainM = data.filter(function (a) {
+                        return a.Menu_Types == '0';
+                    });
+
+                    for (var i = 0; i < MainM.length; i++) {
+
+                        var str = " <li><a href=" + MainM[i].Link_Urls + "><i class='" + MainM[i].Menu_Icons + "'></i> <span>" + MainM[i].Menu_Names + "</span><i class='icon-arrow'></i></a>";
+
+                        var s = data.filter(function (a) {
+                            return (a.Parent_Menus == MainM[i].Menu_IDs && a.Menu_Types != 2)
+                        });
+
+                        var k = data.filter(function (a) {
+                            return (a.MMnu == MainM[i].Menu_IDs && a.Menu_Type != 0)
+                        });
+
+                        str += "<ul class='sub-menu'>";
+
+                        for (var j = 0; j < s.length; j++) {
+
+
+                            if (s[j].Menu_Types == 1) {
+
+                                str += " <li><a  href=" + s[j].Link_Urls + "?menuid=" + s[j].Menu_IDs + "&parentid=" + s[j].Parent_Menus + "&id=" + s[j].Dfault_Screens + "> " + s[j].Menu_Names + "<i class='icon-arrow'></i></a>";
+
+                                var h = data.filter(function (a) {
+                                    return (a.Parent_Menus == 1 && a.Menu_Types == 2)
+                                });
+
+                                //str += "<ul class='sub-menu'>";
+                                //for (var r = 0; r < h.length; r++) {
+
+                                //        str += "<li><a href=" + h[r].Link_Urls + ">" + h[r].Menu_Names + "</a></li>";
+
+                                //}
+                                //str += "</ul></li>"
+                            }
+                            else {
+
+                                str += "<li><a href=" + s[j].Link_Urls + "?id=" + s[j].Menu_IDs + "&parentid=" + s[j].Parent_Menus + ">" + s[j].Menu_Names + "</a></li>";
+                            }
+                        }
+                        str += "</ul></li>";
+                        $('.main-menu').show();
+                        $('.main-menu').append(str);
+                    }
+
+                    runNavigationMenu();
+                }
+                var url_string = window.location.href;
+                var url = new URL(url_string);
+                //var c = url.searchParams.get("menuid");
+                var c = url.searchParams.get("menuid");
+
+                //var id = url.searchparams.get("tbar_id");
+                if (dataa != null) {
+                    toolbar(c, JSON.parse(dataa));
+                }
+                function toolbar(c, data) {
+
+
+                    var tool = data.filter(function (a) {
+                        return a.Parent_Menus == c && a.Tbar_ids == 1;
+                    }); var str = "";
+                    for (var i = 0; i < tool.length; i++) {
+
+                        str += "<div class='tl-menu-br'><a class='md-tile" + ((smid == tool[i].Menu_IDs) ? " active" : "") + "' href=" + tool[i].Link_Urls + "?&menuid=" + tool[i].Parent_Menus + "&id=" + tool[i].Menu_IDs + "><div class='md-tile-inner' draggable='false'><img class='md-icon' src=" + tool[i].Menu_Icons + "><div class='md-title' style='direction: ltr;'><span>" + tool[i].Menu_Names + "</span></div></div></a></div>";
+
+                    }
+                    $('.tl-row').show();
+                    $('.tl-row').append(str);
+
+                }
+                $("#lout").click(function () {
+                    localStorage.removeItem('d');
+                    window.location.reload(false);
+
+                });
+            });
+    </script>
+
+
+
+
+    <%--<script type="text/javascript">
+        $('input').on('ifChecked', function (event) {
+            // var element = $(this).parent().find('input:checkbox:first');
+            // element.parent().parent().parent().addClass('highlight');
+            $(this).parents('li').addClass("task-done");
+            console.log('ok');
+        });
+        $('input').on('ifUnchecked', function (event) {
+            // var element = $(this).parent().find('input:checkbox:first');
+            // element.parent().parent().parent().removeClass('highlight');
+            $(this).parents('li').removeClass("task-done");
+            console.log('not');
+        });
+		  if ('<%=Session["div_code"].ToString()%>' == '1') {				
+		   $('.main-menu').html('');
+				}
+        $(document).ready(
+        function () {
+			if ('<%=Session["div_code"].ToString()%>' == '91'){
+				$('#stkmaster').show();
+				$('#routemaster').show();
+			}
+			else{
+				$('#stkmaster').hide();
+				$('#routemaster').hide();
+			}
+			if('<%=Session["div_code"].ToString()%>'=='58'){
+				$('.medosecentry').show();
+			}
+            $(this).attr("title", "Fast Moving Consumer Goods" + $(this).attr("title").replace(/Fast Moving Consumer Goods/g, ''));
+            $(".pageheader").text($(this).attr("title").replace(/Fast Moving Consumer Goods/g, ''));
+            var AllData = [];
+                var selectedDate = [];
+                var sValue = ("<%=Session["Menu_type"].ToString()%>");
+                var Div_Code = ("<%=Session["div_code"].ToString()%>");
+                var Sf_type = ("<%=Session["sf_type"].ToString()%>");
+
+                var url_string = window.location.href;
+                var newurl = new URL(url_string);
+                var smid = newurl.searchParams.get("id");
+
+                var sf_type = ("<%=Session["sf_type"].ToString()%>");
+                // localStorage.removeItem('d');
+                var dataa = localStorage.getItem('d');
+
+                if (sf_type=='2' || sf_type=='1') {
+                    if (dataa == null) {
+                        $.ajax({
+                            type: "Post",
+                            contentType: "application/json; charset=utf-8",
+                            //url: "menucre.asmx/getmenubypermission",
+                            url: "menucre.asmx/getmenubypermission",
+                            dataType: "json",
+                            //data: "{'Desgn':'" + Degn_Code + "','Div_Code':'" + Div_Code + "'}",
+                            data: "{'SF':'<%=Session["sf_code"].ToString()%>'}",
+                            async: false,
+                            success: function (data) {
+                                selectedDate = data.d;
+                                localStorage.setItem('d', JSON.stringify(selectedDate));
+                                method(selectedDate);
+                            },
+                            error: function (result) {
+                                console.log(result);
+                            }
+                        });
+                    }
+                    else {
+                        var dataa = localStorage.getItem('d');
+                        method(JSON.parse(dataa));
+                    }
+
+                }
+
+
+                function method(data) {
+                    var strhome = '<li><a href="../../../../DashBoard1.aspx"><i class="fa fa-home"></i><span>Home</span></a></li>';
+                    $('.main-menu').html('');
+                    $('.main-menu').append(strhome);
+                    var MainM = data.filter(function (a) {
+                        return a.Menu_Types == '0';
+                    });
+
+                    for (var i = 0; i < MainM.length; i++) {
+
+                        var str = " <li><a href=" + MainM[i].Link_Urls + "><i class='" + MainM[i].Menu_Icons + "'></i> <span>" + MainM[i].Menu_Names + "</span><i class='icon-arrow'></i></a>";
+
+                        var s = data.filter(function (a) {
+                            return (a.Parent_Menus == MainM[i].Menu_IDs && a.Menu_Types != 2)
+                        });
+
+                        var k = data.filter(function (a) {
+                            return (a.MMnu == MainM[i].Menu_IDs && a.Menu_Type != 0)
+                        });
+
+                        str += "<ul class='sub-menu'>";
+
+                        for (var j = 0; j < s.length; j++) {
+
+
+                            if (s[j].Menu_Types == 1) {
+
+                                str += " <li><a  href=" + s[j].Link_Urls + "?menuid=" + s[j].Menu_IDs + "&parentid=" + s[j].Parent_Menus + "&id=" + s[j].Dfault_Screens + "> " + s[j].Menu_Names + "<i class='icon-arrow'></i></a>";
+
+                                var h = data.filter(function (a) {
+                                    return (a.Parent_Menus == s[j].Menu_IDs)//a.Parent_Menus == 1 && a.Menu_Types == 2
+                                });
+
+                                str += "<ul class='sub-menu'>";
+                                for (var r = 0; r < h.length; r++) {
+
+                                        str += "<li><a href=" + h[r].Link_Urls + ">" + h[r].Menu_Names + "</a></li>";
+
+                                }
+                                str += "</ul></li>"
+                            }
+                            else {
+
+                                str += "<li><a href=" + s[j].Link_Urls + "?id=" + s[j].Menu_IDs + "&parentid=" + s[j].Parent_Menus + ">" + s[j].Menu_Names + "</a></li>";
+                            }
+                        }
+                        str += "</ul></li>";
+                        $('.main-menu').show();
+                        $('.main-menu').append(str);
+                    }
+
+                    runNavigationMenu();
+                }
+                var url_string = window.location.href;
+                var url = new URL(url_string);
+                //var c = url.searchParams.get("menuid");
+                var c = url.searchParams.get("menuid");
+
+                //var id = url.searchparams.get("tbar_id");
+                if (dataa != null) {
+                    toolbar(c, JSON.parse(dataa));
+                }
+                function toolbar(c, data) {
+
+
+                    var tool = data.filter(function (a) {
+                        return a.Parent_Menus == c && a.Tbar_ids == 1;
+                    }); var str = "";
+                    for (var i = 0; i < tool.length; i++) {
+
+                        str += "<div class='tl-menu-br'><a class='md-tile" + ((smid == tool[i].Menu_IDs) ? " active" : "") + "' href=" + tool[i].Link_Urls + "?&menuid=" + tool[i].Parent_Menus + "&id=" + tool[i].Menu_IDs + "><div class='md-tile-inner' draggable='false'><img class='md-icon' src=" + tool[i].Menu_Icons + "><div class='md-title' style='direction: ltr;'><span>" + tool[i].Menu_Names + "</span></div></div></a></div>";
+
+                    }
+                    $('.tl-row').show();
+                    $('.tl-row').append(str);
+
+                }
+                $("#lout").click(function () {
+                    localStorage.removeItem('d');
+                    window.location.reload(false);
+
+                });
+            });
+    </script>--%>
+</body>
+</html>

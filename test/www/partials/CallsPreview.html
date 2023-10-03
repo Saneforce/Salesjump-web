@@ -1,0 +1,135 @@
+<ion-view>
+   <ion-header-bar class="bar bar-header bar-positive">
+      <h1 class="title">Preview</h1>
+   </ion-header-bar>
+   <ion-content style="background-color:#f6eeee;">
+      <div id="vstpreview">
+
+         <ion-list>
+            <ion-item class="propCase" style="padding: 4px;">
+                <div style="text-align: center;margin-top:4% ">
+              <img src="img/cLogo.png" id="cLogo" width="100">
+               </div>
+               <div ng-if="SlTyp!=8" class="ro" style="back ground: #7d81f1;padding: 5px;margin-bottom:15px;">
+                  <h2 style="color:#39ac08;;"><b style="color:#666">DTS:</b>{{PrvData.stockist_name}}</h2>
+               </div>
+              
+                <div  class="ro" >
+                  <h2 style="color:#39ac08;;"><b style="color:#666">Order No:</b>{{PrvData.Trans_Sl_No}}</h2>
+               </div>
+               <div class="ro">
+                  <h2 style="color:#39ac08;" ng-if="SlTyp==1"><b style="color:#666">Retailer:</b>{{PrvData.name}}</h2>
+                     <h2 style="color:#39ac08;" ng-if="SlTyp==1"><b style="color:#666">Mobile:</b>{{PrvData.Mobile_Number}}</h2>
+                   <h2 style="color:#39ac08;" ng-if="SlTyp==8"><b style="color:#666">SS Name:</b>{{PrvData.name}}</h2>
+                  
+                  <!-- <div ng-if="SlTyp==1 SlTyp==8" style="display:block;font-size: 11px;margin-top: -8px;">{{PrvData.Mobile_Number}}</div> -->
+               </div>
+               <div class="ro" style="padding-top:5px;padding-bottom:5px">
+                  <h2>
+                     <p>Route : <b style="color:#7e0ca5">{{PrvData.Territory}}</b><span class="item-note propCase" style="color:#39ac08;white-space:nowrap !important;">{{dateFormat("DD/MM/YYYY HH:MN NN",PrvData.vtime)}}</span></p>
+                  </h2>
+                  <h2>
+                     <p>Address : <b style="color:#7e0ca5">{{PrvData.address}}</b></p>
+                  </h2>
+                  <!-- <h2>
+                     <p>Time Taken : <b style="color:#7e0ca5">{{PrvData.Time_Taken}}</b></p>
+                  </h2> -->
+                  <h2 ng-if="PrvData.a==2">
+                     <p>Net Amount <b style="color:#7e0ca5"></b><span class="item-note propCase" style="color:#39ac08;white-space:nowrap !important;">{{PrvData.NA|number:2}}</span></p>
+                  </h2>
+               </div>
+               <div class="ro" ng-if="PrvData.productSelectedList">
+                  <table style="width: 100%;" border="1">
+                     <tr style="background-color:#eae9e9">
+                        <th style="text-align:left;padding:5px;font-size:90%;">Product</th>
+                        <th style="text-align:left;padding:5px;font-size:90%;">Rate</th>
+                       
+                         <th style="text-align:left;padding:5px;font-size:90%;"  ng-if="SlTyp==3 || SlTyp==8 " >CQty</th>
+                         <th style="text-align:left;padding:5px;font-size:90%;"  ng-if="SlTyp==3 || SlTyp==8 ">PQty</th>
+                           <th style="text-align:left;padding:5px;font-size:90%;" ng-if="SlTyp==1">Qty</th>
+                        <th style="text-align:left;padding:5px;font-size:90%;" ng-if="(((PrvData.rateType=='free' && OfferMode == 1 ) || OfferMode == 2) && SlTyp==1) ||( SlTyp==3 && Pri_Scheme==1)">Free</th>
+                  
+
+                        <th style="text-align:left;padding:5px;font-size:90%;" ng-if="(OfferMode == 1  || OfferMode == 2) &&  TDisc!=1 && SlTyp==1 ||( SlTyp==3 && Pri_Scheme==1)">Disc.%</th>
+                         <th style="text-align:left;padding:5px;font-size:90%;" ng-if="(OfferMode == 1  || OfferMode == 2) &&  TDisc!=1 && SlTyp==1 ||( SlTyp==3 && Pri_Scheme==1)">Disc</th>
+                        <th style="text-align:left;padding:5px;font-size:90%;" ng-if="DrSmpQ==1">Value</th>
+                        <th style="text-align:left;padding:5px;font-size:90%;" ng-if="clbal==1">CL</th>
+                     </tr>
+                     <tr ng-repeat="productSelection in PrvData.productSelectedList" ng-if="productSelection.rx_qty || productSelection.free  || productSelection.Prx_qty">
+                        <td class="max-width-300" style="font-size:12px;">
+                           {{productSelection.product_Nm}}
+                           <span style="display:block;color: #507280;font-weight: 700;font-size: 80%;">{{productSelection.Mfg_Date}}</span>
+                        </td>
+                        <td style="text-align:right;padding:2px 5px;font-size:70%;background: #e7e7fb;width:70px;">{{productSelection.Rate|number:2|| 0.00}}</td>
+                    <td style="text-align:right;padding:2px 5px;font-size:70%;background: #e7e7fb;width:60px;">{{productSelection.rx_qty|| 0}}</td>
+                   <td style="text-align:right;padding:2px 5px;font-size:100%;background: #e7e7fb;width:60px;" ng-if="SlTyp==3  || SlTyp==8">{{productSelection.Prx_qty|| 0}}</td> 
+                        <td ng-if="(((PrvData.rateType=='free' && OfferMode == 1 ) || OfferMode == 2) && SlTyp==1) ||( SlTyp==3 && Pri_Scheme==1)" style="text-align:right;padding:2px 5px;font-size:90%;background: #e7e7fb;width:60px;">{{productSelection.free|| 0}}</td>
+                       
+
+                  <td ng-if="(OfferMode == 1  || OfferMode == 2) && SlTyp==1 &&  TDisc!=1 ||( SlTyp==3 && Pri_Scheme==1)" style="text-align:right;padding:2px 5px;font-size:90%;background: #e7e7fb;width:60px;">{{productSelection.discount | number:2 || 0.00}}</td>
+
+                   <td ng-if="(OfferMode == 1  || OfferMode == 2) && SlTyp==1 &&  TDisc!=1 ||( SlTyp==3 && Pri_Scheme==1)" style="text-align:right;padding:2px 5px;font-size:90%;background: #e7e7fb;width:60px;">{{productSelection.discount_price | number:2 || 0.00}}</td>
+                  <td style="text-align:right;padding:2px 5px;font-size:100%;width:70px;" ng-if="DrSmpQ==1">{{productSelection.sample_qty|number:2}}</td>
+
+                  <td style="text-align:right;padding:2px 5px;font-size:100%;width:90px;" ng-if="clbal==1">{{productSelection.cb_qty|number:2}}</td>
+                                          
+                                       </tr>
+                  <tr ng-if="PrvData.discount>0">
+                        <td colspan="2">Order Amount</td>
+                        <td style="text-align:right;padding:5px;"><b style="color:#39ac08;">{{PrvData.orderValue|number:2}}</b></td>
+                     </tr>
+                     <tr ng-if="PrvData.discount>0">
+                        <td colspan="2">Discount</td>
+                        <td style="text-align:right;padding:5px;"><b style="color:#39ac08;">{{PrvData.discount|number:2}}</b></td>
+                     </tr>
+                     <tr ng-if="PrvData.a==1">
+                        <td colspan="2">Net Amount</td>
+                       
+                         
+                        <td colspan="2" style="border-top:1px solid #dcdcdc;border-bottom:double #dcdcdc;text-align:right;padding:5px;"><b style="color:#39ac08;">{{PrvData.NA|number:2}}</b></td>
+                     </tr>
+                  </table>
+                   <h2 style="margin-top: 12px;color:#666";>Order Taken Address :</h2>
+                    <h2 style="margin-top: 12px;color:#666;">
+                     <p><b style="color:#7e0ca5">{{PrvData.Address}}</b></p>
+                  </h2>
+               </div>
+            </ion-item>
+         </ion-list>
+      </div>
+      <div class="row moveDown">
+         <div class="col" ng-if="InvCnvrtNd==1 && SlTyp==1">
+            <div class='buttonC-container left-sidepull' ng-click="vibrate();CnvtInvoice()">
+               <img src="img/invoice.png" style="height: 48px;" />
+               <div class='buttonC-text' style="white-space:nowrap">Invoice</div>
+            </div>
+         </div>
+         <div class="col" ng-if="OrdPrnNd==1 && SlTyp==1">
+            <div class='buttonC-container left-sidepull' ng-click="vibrate();PrintOrder()">
+               <img src="img/off.png" style="height: 48px;" />
+               <div class='buttonC-text' style="white-space:nowrap">Print</div>
+            </div>
+         </div>
+         <div class="col">
+            <div class='buttonC-container left-sidepull' ng-click="vibrate();sendWhatsApp(PrvData)">
+               <img src="img/WhatsApp.png" style="height: 48px;" />
+               <div class='buttonC-text' style="white-space:nowrap">Whats App</div>
+            </div>
+         </div>
+         <div class="col"  ng-if="Whatsapp_text!=1">
+            <div class='buttonC-container left-sidepull'ng-click="vibrate();sendEmail()">
+               <img src="img/Email.png" style="height: 48px;" />
+               <div class='buttonC-text' style="white-space:nowrap">E-Mail</div>
+            </div>
+         </div>
+
+          <div class="col"  ng-if="Whatsapp_text" >
+            <div class='buttonC-container left-sidepull' ng-click="vibrate();sendWhatsAppText(PrvData)">
+               <img src="img/notify.png" style="height: 48px;" />
+               <div class='buttonC-text' style="white-space:nowrap">Whats App Text</div>
+            </div>
+         </div>
+      </div>
+      <!-- <a href="#" id="btn-Convert-Html2Image">s</a> -->
+   </ion-content>
+</ion-view>

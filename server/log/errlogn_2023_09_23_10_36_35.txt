@@ -1,0 +1,7 @@
+FMCG_GIPLA Error:exec get_leave_det 'GHPLMGR0006','2023' 
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'get_leave_det'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'get_leave_det'."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}FMCG_GIPLA Error:select top 1 SFCode,LeaveCode,LeaveValue,LeaveAvailability,LeaveTaken,Leave_SName,Leave_Name from MasEntitlement
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_SName'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_SName'."},{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_Name'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_Name'."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}

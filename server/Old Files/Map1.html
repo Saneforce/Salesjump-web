@@ -1,0 +1,311 @@
+<html>
+<head>
+<style type="text/css">
+#map_canvas,#tbMain,body {
+    width: 100%;
+    height: 100%;
+	padding:0px;
+	margin:0px;
+}
+table{    border-collapse: collapse;}
+.k-icon{
+margin:13px 5px;
+}
+</style>
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.429/styles/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.429/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.429/styles/kendo.dataviz.min.css" />
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/2015.1.429/styles/kendo.dataviz.material.min.css" />
+
+</head>
+<body>
+	<table id="tbMain" >
+		<tr>
+			<td colspan=2 valign="top" style="height:1%;background-color: #f1f1f1;border-bottom:solid 1px #cacaca">
+				<table >
+					<tr>
+						<td>Employee Name : </td>
+						<td valign="top">
+				    		<select name="selSF" id="selSF" onchange="Callback()">
+								<option value="MR0231">THAMIZH</option>
+								<option value="MR0134">T. NATCHIMUTHU</option>
+								<option value="MR0231">THAMIZH</option>
+								<option value="MR0241">LAKSHMANAN</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td width="100%" valign="top">
+	    		<div id="map_canvas" class="mapping"></div>
+			</td>
+			<td valign="top">
+				<div id="calendar"></div><small><small><br></small></small>
+				<div  class="panel-heading" style="display:block;white-space:nowrap;padding: 10px 15px;background: #ff865c;color: #fff;">Kilometers Traveled</div>
+				<div style="display:none"><span id="total" style="display:block;white-space:nowrap;padding: 10px 15px;font-weight:bold;border:solid 1px #000;border-radius: 0px 0px 5px 5px;border-top-width: 0px;"></span>
+				<small><small><br></small></small>
+				<div  class="panel-heading" style="display:block;white-space:nowrap;padding: 10px 15px;background: #ff865c;color: #fff;">Calls Detail</div>
+				<span id="vstDet" style="display:block;white-space:nowrap;padding: 10px 15px;font-weight:bold;border:solid 1px #000;border-radius: 0px 0px 5px 5px;border-top-width: 0px;"></span>
+				<small><small><br></small></small>
+				<canvas id="carcanvas" width="32" height="32"></canvas>
+			</td>
+		</tr>
+	</table>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2015.1.429/js/kendo.all.min.js"></script>
+<script type="text/javascript">
+
+    // Multiple Markers
+    var markers = [];
+	var z=14 ;
+	selDt="";
+	cdt=new Date();
+  	selDt= cdt.getFullYear() + '-' + (cdt.getMonth()+1)  + '-' + cdt.getDate() +' 00:00:00.000';
+jQuery(function($) {
+    // Asynchronously Load the map API 
+    var script = document.createElement('script');
+    script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyCOY8BqGMFqo7Ij2n1O8b4RcL443zjoI_o&callback=Callback";
+    document.body.appendChild(script);
+	
+});
+
+
+function Callback(){
+	
+KMTot=0;
+jQuery.ajax({
+    url: "http://sanfmcg.com/server/db.php?axn=get/track&SF_Code="+$("#selSF").val()+"&Dt="+selDt+"",
+    type: "POST",
+    data: JSON.stringify({"sf_code":"bar"}),
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
+    success: function (response) {
+
+    // Multiple Markers
+	    markers = response;
+		clearLocations();
+
+        initialize();
+
+    },
+    error: function (response) {
+        console.log("failed");
+    }
+});
+}
+
+var poly;
+var map;KMTot=0;
+var Loaded=false;var prvMarkers=new Array();
+function initializeMap() {
+    var mapOptions = {
+        mapTypeId: 'roadmap',zoom:14
+    };
+    //
+    // Display a map on the page
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    map.setTilt(45);   
+
+    var bounds = new google.maps.LatLngBounds();
+    position = new google.maps.LatLng(markers[markers.length-1].lat, markers[markers.length-1].lng);
+	bounds.extend(position);
+    map.fitBounds(bounds);        
+	var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+        this.setZoom(17);
+        google.maps.event.removeListener(boundsListener);
+		this.setCenter(position);
+    });
+}
+function clearLocations() {
+	/*if(CreateMarker && CreateMarker.innerHTML)
+		CreateMarker.innerHTML = "";*/
+	//infoWindow.close();
+	for (var i = 0; i < prvMarkers.length; i++) {
+		prvMarkers[i].setMap(null);
+	}
+	prvMarkers=[]; console.log(poly);
+	if(poly!=null){
+	 poly.setPath([]);
+     poly.setMap(null);
+	}
+}
+function initialize() {
+
+	if (Loaded==false){
+		initializeMap();Loaded=true;
+	}
+	jk=0;
+	var nv = 'nav.png';
+	var lineSymbol = {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 8,
+          strokeColor: '#393'
+        };
+	var path = new google.maps.MVCArray();
+   	var service = new google.maps.DirectionsService();
+    poly = new google.maps.Polyline({
+    	strokeColor: '#FF8200',
+          strokeOpacity: 0.5,
+          strokeWeight: 15,
+		  icons: [{
+            icon: lineSymbol,
+            offset: '100%'
+          }]
+        });
+        poly.setMap(map);
+        
+    // Display multiple markers on a map
+    var infoWindow = new google.maps.InfoWindow(), marker, i;
+	var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+    // Loop through our array of markers & place each one on the map  
+	var position;
+    for( i = 0; i < markers.length; i++ ) {
+
+       	position = new google.maps.LatLng(markers[i].lat, markers[i].lng);
+        
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: markers[i].DtTime,
+			icon:im
+					
+        });
+		prvMarkers.push(marker)
+        // Allow each marker to have an info window    
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infoWindow.setContent(markers[i].DtTime+'<br>lat : '+markers[i].lat+'<br>lng : '+markers[i].lng);
+                infoWindow.open(map, marker);
+            }
+        })(marker, i))
+        if ((i + 1) < markers.length) {
+        	var src = new google.maps.LatLng(markers[i].lat, markers[i].lng);
+            var des = new google.maps.LatLng(markers[i+1].lat, markers[i+1].lng);
+
+            path.push(src);
+            poly.setPath(path);
+            KMTot+=getDistance(markers[i].lat,markers[i].lng, markers[i+1].lat,markers[i+1].lng,"K");
+
+			marker.setMap(null);
+        }
+        map.setCenter(position);
+        // Automatically center the map fitting all markers on the screen
+
+    }
+
+		jk++;
+
+		if(jk>=5){jk=0}
+	
+	
+	$("#total").html(roundNumber(KMTot,2)+ " Km");
+	//animateCircle(poly);
+	setTimeout(Callback, 1000*1);    
+}
+function getDistance(lat1, lon1, lat2, lon2, unit) {
+	var radlat1 = Math.PI * lat1/180
+	var radlat2 = Math.PI * lat2/180
+	var theta = lon1-lon2
+	var radtheta = Math.PI * theta/180
+	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	dist = Math.acos(dist)
+	dist = dist * 180/Math.PI
+	dist = dist * 60 * 1.1515
+	if (unit=="K") { dist = dist * 1.609344 }
+	if (unit=="N") { dist = dist * 0.8684 }
+	if(isNaN(dist)) dist=0;
+	return dist
+}
+roundNumber = function(number, precision) {
+	precision = Math.abs(parseInt(precision)) || 0;
+	var multiplier = Math.pow(10, precision);
+	return (Math.round(number * multiplier) / multiplier);
+}
+/*function getDistance(frm,to){
+$.ajax({
+                type: "GET",
+                url: "https://maps.googleapis.com/maps/api/distancematrix/json?origins="+frm+"&destinations="+to+"&mode=driving&language=de",
+                headers: { 'Access-Control-Allow-Origin': '*' },
+                async: true,
+                crossDomain: true,
+                success: function (response) {
+
+                    console.log(response['rows'][0]['elements'][0]['distance']['text'])
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+
+}*/
+
+
+
+    if (document.getElementById('carcanvas').getContext) {
+        var supportsCanvas = true;
+    } else {
+        var supportsCanvas = false;
+    }
+
+    var rImg = new Image();
+    rImg.src='nav.png';
+
+    // Returns the bearing in radians between two points.
+    function bearing( from, to ) {
+        // Convert to radians.
+        var lat1 = from.lat() * Math.PI / 180;
+        var lon1 = from.lng() * Math.PI / 180;
+        var lat2 = to.lat() * Math.PI / 180;
+        var lon2 = to.lng() * Math.PI / 180;
+        // Compute the angle.
+        var angle = - Math.atan2( Math.sin( lon1 - lon2 ) * Math.cos( lat2 ), Math.cos( lat1 ) * Math.sin( lat2 ) - Math.sin( lat1 ) * Math.cos( lat2 ) * Math.cos( lon1 - lon2 ) );
+        if ( angle < 0.0 )
+            angle  += Math.PI * 2.0;
+        if (angle == 0) {angle=1.5;}
+        return angle;
+    }
+
+    function plotcar() {
+        canvas = document.getElementById("carcanvas").getContext('2d');
+        var cosa = Math.cos(angle);
+        var sina = Math.sin(angle);
+        canvas.clearRect(0,0,32,32);
+        canvas.save();
+        canvas.rotate(angle);
+        canvas.translate(16*sina+16*cosa,16*cosa-16*sina);
+        canvas.drawImage(rImg,-16,-16);
+        canvas.restore();
+    }
+
+	$(document).ready(function() {
+    	// create Calendar from div HTML element
+        $("#calendar").kendoCalendar();
+        var calendar = $("#calendar").data("kendoCalendar");
+
+        var current = calendar.current();
+        console.log(current);
+
+	    calendar.bind("change", function() {
+			dte=new Date(this.value());
+  			selDt= dte.getFullYear() + '-' + (dte.getMonth()+1)  + '-' + dte.getDate() +' 00:00:00.000';
+			Callback()
+	    });
+    });
+
+	function animateCircle(line) {
+          var count = 0;
+          window.setInterval(function() {
+            count = (count + 1) % 200;
+
+            var icons = line.get('icons');
+            icons[0].offset = (count / 2) + '%';
+            line.set('icons', icons);
+        }, 50);
+    }
+</script>
+</body>
+</html>

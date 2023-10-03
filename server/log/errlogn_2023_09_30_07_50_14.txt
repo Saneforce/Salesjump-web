@@ -1,0 +1,7 @@
+FMCG_UAL Error:select Approve_Flag approve_flag from Trans_Expense_Head_Periodic where sf_code = 'UALMR0005' and Periodic_ID = 'null' and Expense_Month = '' and Expense_Year = ''
+|param:
+|error:[{"0":"22018","SQLSTATE":"22018","1":245,"code":245,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value 'null' to data type int.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value 'null' to data type int."}]
+data:{}FMCG_Live Error:exec TourPlan_Holyday_Auto_Insert 'LABMR0084' ,'undefined','undefined',' '
+|param:
+|error:[{"0":"22018","SQLSTATE":"22018","1":245,"code":245,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value 'undef' to data type int.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value 'undef' to data type int."}]
+data:{"tableName":"vwTourPlan","coloumns":"[\"date\",\"remarks\",\"worktype_code\",\"worktype_name\",\"RouteCode\",\"RouteName\",\"Worked_with_Code\",\"Worked_with_Name\",\"JointWork_Name\",\"Retailer_Code\",\"Retailer_Name\",\"Place_Inv\"]","orderBy":"[\"name asc\"]","desig":"mgr"}

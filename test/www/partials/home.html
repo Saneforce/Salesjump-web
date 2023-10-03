@@ -1,0 +1,406 @@
+<ion-view class="ion-viewport">
+    <!--ng-if="view_STOCKIST==0"-->
+    <ion-content class="screen-parent">
+         <div class = "row" ng-if="view_STOCKIST == 0&&Mypln.worktype.FWFlg=='DH'"  style="margin-top:1%;">
+            <div class = "col col-50 col-offset-2">
+                <div class="div" ng-click="vibrate();goToCustomer(7)">
+                    <div   class="MenuBox">
+                        <div class="icon-holder"><img src="img/stockist.png"></div>
+                        <div class="Menu_Title">{{StkCap}} Hunting</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+     <marquee width="100%" direction="left" height="50px"  style='color: red;
+    margin-top: 20px;
+    height: 17px;'>
+      {{Messageoptions}}
+    </marquee>
+
+        <div class="row" ng-if="view_STOCKIST == 0&&Mypln.worktype.FWFlg!='DH'   " style="margin-top:1%;display:block;">
+            <div class="col col-50 col-offset-2"  ng-if="(DyInvNeed!=1 && Van_Sales_ND!=1 )&& Produt_Availability!=1"   style="float:left">
+                <div class="div" ng-click="vibrate();goToCustomer(1)">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/scondary.png"></div>
+                        <div class="Menu_Title">{{EDrCap}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-50 col-offset-2" ng-if="StkNeed  && DyInvNeed!=1 && Van_Sales_ND!=1 && SF_type!=4" style="float:left">
+                <div class="div" ng-click="vibrate();goToCustomer(3)">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/primary.png"></div>
+                        <div class="Menu_Title">{{EStkCap}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-50 col-offset-2" ng-if="StkNeed && DemoGivenND==1" style="float:left">
+                <div class="div" ng-click="vibrate();FieldDemo()" ng-if="DemoGivenND==1">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/primary.png"></div>
+                        <div class="Menu_Title">FieldDemo</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-50 col-offset-2" ng-if="StkNeed && NewContact==1 && AI!=1" style="float:left">
+                <div class="div" ng-click="vibrate();NewContactt()" ng-if="NewContact==1">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/primary.png"></div>
+                        <div class="Menu_Title">New Contact</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-50 col-offset-2" ng-if="StkNeed && NewContact==1 && AI==1" style="float:left">
+                <div class="div" ng-click="vibrate();NewAI()" ng-if="NewContact==1">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/inspect.png"></div>
+                        <div class="Menu_Title">New AI</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-50 col-offset-2"  ng-hide="!view_MR" ng-if="StkNeed && NewContact==1 && AI==1 " style="float:left">
+                <div class="div" ng-click="vibrate();pregnancy()" ng-if="NewContact==1">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/cow.png"></div>
+                        <div class="Menu_Title">Today pregnancy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-50 col-offset-2" ng-if="StkNeed && DemoGivenND==1" style="float:left">
+                <div class="div" ng-click="vibrate();Paccsmeeting()">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/meeting.png"></div>
+                        <div class="Menu_Title">PACCS Meeting</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-50 col-offset-2" ng-if="DyInvNeed || Van_Sales_ND" style="float:left">
+                <div ng-if="view_STOCKIST == 0" ng-click="vibrate();gotoInv()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/lan2.png"></div>
+                        <div class="Menu_Title">Daily <b ng-if="SF_type!=2">Begin - </b><b ng-if="SF_type==2">End - </b> Inventory</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-50 col-offset-2" ng-if="OrdRetNeed" style="float:left">
+                <div ng-if="view_STOCKIST == 0" ng-click="vibrate();gotoRet()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/retentry.png"></div>
+                        <div class="Menu_Title">Return Entry</div>
+                    </div>
+                </div>
+            </div>
+<div class="col col-50 col-offset-2" ng-if="OrdRetNeed" style="float:left">
+                <div ng-if="view_STOCKIST == 0" ng-click="vibrate();gotoprimaryRet()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/retentry.png"></div>
+                        <div class="Menu_Title">Primary Return Entry</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col col-50 col-offset-2" ng-if="DTDNeed==1" style="float:left;">
+                <div ng-if="view_STOCKIST == 0" ng-click="vibrate();doortodoor()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/DTD.png"></div>
+                        <div class="Menu_Title">Door To Door</div>
+                    </div>
+                </div>
+            </div>
+             <div class="col col-50 col-offset-2"  ng-if="Produt_Availability==1"   style="float:left;">
+                <div  ng-click="vibrate();productAvailability()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/DTD.png"></div>
+                        <div class="Menu_Title">Availability</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-50 col-offset-2" ng-if="InshopND==1" style="float:left;">
+                <div ng-if="view_STOCKIST == 0" ng-click="vibrate();Inshop()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/inshop.png"></div>
+                        <div class="Menu_Title">Inshop-Sale</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-50 col-offset-2" style="float:left;" ng-if="(Supplier_Master==1 && view_MR!=1 )|| (MR_SStockist_Nd==1)">
+                <div ng-if="view_STOCKIST == 0" ng-click="vibrate();SupplierMaster()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/inshop.png"></div>
+                        <div class="Menu_Title">SS Order</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col col-50 col-offset-2" ng-if="productdisplayND==1" style="float:left;">
+                <div ng-if="view_STOCKIST == 0" ng-click="vibrate();ProductDisplay()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/inshop.png"></div>
+                        <div class="Menu_Title">Product Display</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col col-50 col-offset-2" ng-if=" Van_Sales_ND==1 && SF_type!=1" style="float:left;">
+                <div class="div" ng-click="vibrate();goToCustomer(1)">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/scondary.png"></div>
+                        <div class="Menu_Title">{{EDrCap}}</div>
+                    </div>
+                </div>
+            </div>
+
+<div class="col col-50 col-offset-2" ng-if=" Van_Sales_ND==1 &&  SF_type==1" style="float:left;">
+                <div ng-click="vibrate();VanSales()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/van.png"></div>
+                        <div class="Menu_Title">Van Sales</div>
+                    </div>
+                </div>
+            </div>
+
+
+
+<div class="col col-50 col-offset-2" ng-if="DyInvNeed || Van_Sales_ND" style="float:left">
+                <div class="div" ng-click="vibrate();goToCustomer(3)">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/primary.png"></div>
+                        <div class="Menu_Title">{{EStkCap}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-50 col-offset-2" ng-if="InshopND==1" style="float:left;">
+                <div ng-if="view_STOCKIST == 0" ng-click="vibrate();InshopCheckIn()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/inshop.png"></div>
+                        <div class="Menu_Title">Inshop Checkin</div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col  col-offset-2 col-50">
+                <div ng-if="view_STOCKIST == 1" ng-click="vibrate();
+                goToCustomer(5)" class="div">
+                    <div class="MenuBox" style='width: 670px'>
+                        <div class="icon-holder"><img src="img/Doctor1.png"></div>
+                        <div class="Menu_Title">Stock Updation</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-offset-2 col-50">
+                <div ng-if="view_STOCKIST == 1" ng-click="vibrate();
+                goToCustomer(6)" class="div">
+                    <div class="MenuBox" style='width: 670px'>
+                        <div class="icon-holder"><img src="img/stockist.png"></div>
+                        <div class="Menu_Title">Stock View</div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+
+          <div class="row" ng-if="view_STOCKIST == 1 && SF_type ==3" >
+
+            <div class="col col-50 col-offset-2" ng-if="view_STOCKIST == 1" style="float:left">
+                <div class="div" ng-click="vibrate();goToCustomer(1)">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/primary.png"></div>
+                        <div class="Menu_Title">{{EDrCap}}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col col-50 col-offset-2"   ng-if="Pri_Stockist_Type==1  && SF_type ==3"  style="float:left">
+                <div class="div" ng-click="vibrate();goToCustomer(3)">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/primary.png"></div>
+                        <div class="Menu_Title">{{EStkCap}}</div>
+                    </div>
+                </div>
+            </div>
+          <div class="col col-50 col-offset-2"  ng-if="Pri_Stockist_Type==0  && SF_type ==3" style="float:left">
+                <div class="div" ng-click="StockistPrimary()">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/primary.png"></div>
+                        <div class="Menu_Title">Primay Order</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+       <!--  <div class="row" >
+            <div ng-if="view_STOCKIST == 1 && StkUpdt==1" class="col col-50  col-offset-2 ">
+                <div ng-click="vibrate();
+                    goToCustomer(5)">
+                    <div class="MenuBox">
+                        <div class="icon-holder" >
+                            <img  width="50" height="50" src="img/Doctor1.png">
+                            <div class="Menu_Title">Stock Updation</div>
+                        </div></div>
+                </div>
+            </div>
+            <div ng-if="view_STOCKIST == 1 && StkUpdt==1" class="col col-50 col-offset-2 ">
+                <div ng-click="vibrate();
+                    goToCustomer(6)">
+                    <div class="MenuBox">
+                        <div class="icon-holder">
+                            <img  width="50" height="50" src="img/stockist.png">
+                            <div class="Menu_Title">Stock View</div>
+                        </div></div>
+                </div>
+            </div>
+        </div> -->
+         <div class="row"  ng-if="Van_Sales_ND==1 && SF_type ==3 ">
+         <div class="col col-50 col-offset-2" ng-if="Van_Sales_ND==1  " >
+                <div  ng-click="vibrate();gotoInv()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/lan2.png"></div>
+                        <div class="Menu_Title">Daily <b ng-if="SF_type!=2">Begin - </b><b ng-if="SF_type==3">End - </b> Inventory</div>
+                    </div>
+                </div>
+            </div>
+        <div class="col col-50 col-offset-2" ng-if="Van_Sales_ND==1" >
+                <div  ng-click="vibrate();gotoLedger()" class="div">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/lan2.png"></div>
+                        <div class="Menu_Title">Van Ledger</div>
+                    </div>
+                </div>
+            </div>
+
+
+
+</div>
+<div ng-if="view_STOCKIST == 2" >
+<div class="row">
+
+           <div class="col col-50 col-offset-2"   style="float:left">
+                <div class="div" ng-click="vibrate();goToCustomer(1)">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/scondary.png"></div>
+                        <div class="Menu_Title">{{EDrCap}}</div>
+                    </div>
+                </div>
+            </div>
+           <div class="col col-50 col-offset-2" style="float:left">
+                <div class="div" ng-click="vibrate();goToCustomer(3)">
+                    <div class="MenuBox">
+                        <div class="icon-holder"><img src="img/primary.png"></div>
+                        <div class="Menu_Title">{{EStkCap}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="row">
+
+            <div class="col col-50  col-offset-2 ">
+                <div ng-if="view_STOCKIST == 2" ng-click="vibrate();
+                    goToCustomer(7)">
+                    <div class="MenuBox">
+                        <div class="icon-holder" >
+                            <img  width="50" height="50" src="img/Doctor1.png">
+                            <div class="Menu_Title">SStock Updation</div>
+                        </div></div>
+                </div>
+            </div>
+            <div class="col col-50 col-offset-2 ">
+                <div ng-if="view_STOCKIST == 2" ng-click="vibrate();
+                    goToCustomer(8)">
+                    <div class="MenuBox">
+                        <div class="icon-holder" >
+                            <img  width="50" height="50" src="img/stockist.png">
+                            <div class="Menu_Title">SStock View</div>
+                        </div></div>
+                </div>
+            </div>
+        </div>
+
+</div>
+        <div class="gridcontainer" style="margin-top: -15px;padding: 0px 5px;">
+            <div class="gridbox gridright" style="margin-left:0px;">
+                <div class="dash-holder right">
+                    <div>
+                        <div>
+                           <span class="icon" style="display: none;width: 35px;height: 35px;border-radius: 5px;padding:3px;line-height:20px;border:1px solid #dcdcdc;float:right;margin-top: -3px;margin-Bottom: 3px;margin-right: -13px;" ng-click="viewDashboard();"><img width="27px" height="27px" src="img/Dash.png" /></span>
+                           <div class="dash-header">Today
+                                <div style="float:right;font-size: 14px;display:none">{{modal.rootTarget | number:2||0.00}}</div>
+                                 <div style="float: right;font-size: 14px; text-overflow: ellipsis;overflow: hidden;width: 166px;margin-right: 27px;text-align: center;white-space: nowrap;">Route : {{MyplnsRoute}}</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-30">
+                                <div class="dash-detail">AC : <b>{{modal.vwCalls.Totalretailer ||0}}</b></div>
+                                <div class="dash-detail">TC : <b>{{modal.vwCalls.calls||0}}</b></div>
+                                <div class="dash-detail"><span style='display:inline-block;width: 10px;height: 10px;background-color: #14bcc1;text-align: middle;'></span> PC : <b>{{modal.vwCalls.order||0}}</b></div>                            
+                                <div class="dash-detail">BAC : <b>{{modal.vwCalls.BalanceretailerCount ||0}}</b></div>
+                                <div class="dash-detail">Ord : <b>{{modal.vwCalls.orderVal | number:2||0.00}}</b></div>
+                                <!-- <div class="dash-detail">Ach : <b>{{modal.vwCalls.AAmt | number:2||0.00}}</b></div> -->
+                            </div>
+                            <div class="col col-70">
+                                <div class="childbox">
+                                    <canvas id="pie" class="chart chart-pie"  
+                                            chart-data="data" chart-labels="labels" chart-options="options" chart-colors='colors' 
+                                            style='width: 383px;height: 190px;' chart-legend="true">
+                                    </canvas>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gridbox gridleft" style="margin-left:0px;">
+                <div class="dash-holder right">
+
+                    <div>
+                        <div class="dash-header">This Month<div style="float:right;font-weight: bolder;font-family: sans-serif;color: rgb(201, 23, 23);font-size: 14px;display:none">{{modal.monthvwCalls.TAmt | number:2||0.00}}</div></div>
+
+                          
+                        <div class="row">
+                            <div class="col col-40">
+
+                               
+                                <div class="dash-detail">TC : <b>{{modal.monthvwCalls.calls||0}}</b></div>
+                                <div class="dash-detail"><span style='display:inline-block;width: 10px;height: 10px;background-color: #14bcc1;text-align: middle;'></span> PC : <b>{{modal.monthvwCalls.order||0}}</b></div>
+                                
+                               <!--  <div class="dash-detail">Ach : <b>{{modal.monthvwCalls.AAmt | number:2||0.00}}</b></div> -->
+
+
+                                <div class="dash-detail">Target : <b>{{modal.monthvwCalls.target||0}}</b></div>
+                                <div class="dash-detail">Achieved : <b>{{modal.monthvwCalls.orderVal | number:2||0.00}}</b></div>
+                                <div class="dash-detail">Balance : <b>{{modal.monthvwCalls.Balance||0}}</b></div>
+                            </div>
+                            <div class="col col-60">
+                                <div class="childbox">
+                                    <canvas id="pie" class="chart chart-pie"
+                                            chart-data="monthdata" chart-labels="labels" chart-options="options" chart-colors='colors'
+                                            style=';width: 383px;height: 190px;' chart-legend="true"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="height:50px;float:left">&nbsp;</div>
+        <div id="inf" style="display:none"></div>
+    </ion-content>
+
+ <ion-footer-bar class="bar-dark">
+            <div class="footer-center pull-center"><a>
+            <div class="home-button" >
+        <img   ng-click="GoToReport()"  src="img/a.png" style="width: 23px;height: 23px;" />
+            </div>
+        </a>
+            </div>
+        </ion-footer-bar>
+
+</ion-view>

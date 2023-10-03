@@ -1,0 +1,72 @@
+<ion-view>
+   <ion-content>
+      <div class="list list-inset">
+         <div>
+          
+         </div>
+         
+         <div class="row"  style="background-color: #1aacc3;">
+          <!--   <div class="col col-5" style="color:white;font-weight:bold;">No</div> -->
+            <div class="col col-59" style="color:white;font-weight:bold;">Product Name</div>
+            <div class="col col-12" style="color:white;font-weight:bold;">Rate</div>
+            <div class="col col-12" style="color:white;font-weight:bold;">Qty</div>
+            <div class="col col-12" style="color:white;font-weight:bold;">NQty</div>
+            <div class="col col-9" style="color:white;font-weight:bold;" ng-if="GenerateFL==1">Qty</div>
+            <div class="col col-13" style="color:white;font-weight:bold;">Total</div>
+         </div>
+          <!-- <p style="float: right;background: darkcyan;color: white;text-align: center;width: 87px;margin-top: 3px;border-radius: 2px;" ng-click="Generate()">Generate</p> -->
+         <div ng-repeat="(i,x) in StockistOrder track by $index" style="background-color: rgb(241, 241, 241)">
+         
+             <div class="row" style="padding-top: 0px;">
+              <div class="col " style="font-size:large;padding:5px 0px;color:#6c3;margin-left: 14px;">
+                  {{(x.Product_Name)}}
+               </div>
+             </div>
+            <div class="row">
+                <div class="col col-12">
+                {{(i+1)}}.
+               </div> 
+              <div class="col col-12" >
+               {{x.Rate}} 
+               </div>
+               <div class="col col-12" >
+                {{x.Qty}}
+                
+                
+               </div>
+               <div class="col col-12" >
+                {{x.NewQty}}
+                
+                
+               </div>
+             <div class="col col-9" ng-if="GenerateFL==1" style="border-radius: 7px;     margin-top: -9px; background: white;">
+                 <input type="number" ng-model="x.Qtyy"  ng-change="TotalCalulations(x)" min="0" />
+                
+               </div>
+
+              
+                  <div  class="col col-13">
+                  {{x.Total}}
+               </div>
+            </div>
+              <hr style="border-top: 1px dashed #655f59;"/>
+         </div>
+        <div class="select-component1" >
+               <div class="label">
+                  <!--ng-if="template==1"-->
+                  <div class="label-text">Remarks <span style="float:right;font-size: small;padding: 0px 9px;color: #f8920b;" ng-click="vibrate();openModal('nonreport_template_master', 15)">Templates  <span style="color:#989898;font-size: x-small;">v</span></span></div>
+               </div>
+              <textarea  ng-model="fmcgData.remarks" rows="5" class="textarea-css" ng-click="vibrate();" placeholder="Enter the Remarks ( or ) Select from Template">
+                     
+                    </textarea> 
+
+                    
+                
+            </div>
+      </div>
+   </ion-content>
+   <ion-footer-bar class="bar-dark bar bar-footer">
+      
+       <button class="button  button-balanced buttonClear pull-right" ng-click="vibrate();SaveStockistPrimary()">Submit</button>
+   </ion-footer-bar>
+</ion-view>

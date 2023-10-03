@@ -1,0 +1,56 @@
+<ion-view class="ion-viewport">
+
+    <ion-content class="screen-parent" >
+        <div style="text-align: center;margin-top:35px ">
+            <img src="img/cLogo.png" id="cLogo" width="186">
+        </div>
+        <br />
+        <div class="padding-vertical padding-horizontal">
+            <div class="profile"></div>
+            <div ng-if="login">
+
+                <div class="list padding-vertical padding-horizontal">
+                    <div class="cus-error" ng-if="error">{{error}}</div>
+
+                    <!--           style="background-color: #AA1502"
+                        <a-select ng-model="currentSelection.name" field="name" data-options="colors" data-label="{{'Select an option'}}"  data-change-callback="callback(value)">
+
+                    </a-select>-->
+                    <form ng-enter="signIn(user)" class="signin-form">
+                        <div ng-show="user.valid" class="input-css" style="margin-top:15px" >{{SFDispName}}</div>
+                        <input ng-show="!user.valid" class="input-css" style="margin-top:15px" type="text" ng-model="user.name" placeholder="Username">
+                        
+                        <input type="password" class="input-css" style="margin-top:15px"  ng-model="user.password" placeholder="Password">
+
+                        <button class="button button-balanced" style="margin-top:15px"  ng-click="signIn(user)">
+                            Sign-In
+                        </button>
+                        <!--  <button    class="Googleplus" style="margin-top:15px"  ng-click="GooglesignIn(user)">
+                            Sign-In With Google
+                        </button>  -->
+                    </form>
+                    <div style="margin-top: 42px;">
+                    <span style="display:block;text-align:right;padding:5px;font-family: Poppins;font-size: 11px;">{{appVar}}</span>
+                    <span style="display:block;position: absolute;bottom: 7px;left: 50%;transform: translateX(-50%);"><img src="img/cLogo.png" width="100"></span>
+            <span style="display:block;position: absolute;bottom:45px;left: 50%;transform: translateX(-50%);font-family: Poppins;font-size: 11px;">Powered By</span>
+        </div>
+                </div>
+
+
+            
+            </div>
+            <div ng-if="process">
+                <div class="padding-vertical padding-horizontal button-assertive" style="height:100px !important">
+                    <div style="text-align: center" class="">
+                        <i class="ion-looping" style="color:white;font-size: -webkit-xxx-large"></i><br>
+                        <b style="color:white">Please Wait</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--     <span id="devID" style="padding:5px 10px;display:none;"></span>
+        <span id="inf" style="padding:5px 10px;display:none"></span>
+        <span id="infTwr" style="padding:5px 10px;display:none;"></span>    -->    
+    </ion-content>
+   
+</ion-view>

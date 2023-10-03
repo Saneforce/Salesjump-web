@@ -1,0 +1,7 @@
+FMCG_RAD Error:exec GetCustomerwisePayLedger '3','2023-09-26','2023-09-26','96'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetCustomerwisePayLedger'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetCustomerwisePayLedger'."}]
+data:{"SF":"96","Stk":"3","FDT":"2023-09-26","TDT":"2023-09-26"}FMCG_RAD Error:exec GetCustomerwisePayLedger '3','2023-09-26','2023-09-26','96'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetCustomerwisePayLedger'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetCustomerwisePayLedger'."}]
+data:{"SF":"96","Stk":"3","FDT":"2023-09-26","TDT":"2023-09-26"}

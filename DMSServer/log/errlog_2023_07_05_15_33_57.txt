@@ -1,0 +1,55 @@
+Error:exec getProductGroupList_mod '189','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getProductGroupList_mod'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getProductGroupList_mod'."}]
+data:{"SF":"189","Stk":"189","outletId":"OutletCode","div":"172,","loginType":"Distributor"}Error:exec getProductTypeList_mod '189','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getProductTypeList_mod'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getProductTypeList_mod'."}]
+data:{"SF":"189","Stk":"189","outletId":"OutletCode","div":"172,","loginType":"Distributor"}Error:exec GetProducts_App '189'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetProducts_App'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetProducts_App'."}]
+data:{"SF":"189","Stk":"189","outletId":"OutletCode","div":"172,","loginType":"Distributor"}Error:exec GetProdBrand_DMSApp_mod '189','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetProdBrand_DMSApp_mod'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetProdBrand_DMSApp_mod'."}]
+data:{"SF":"189","Stk":"189","outletId":"OutletCode","div":"172,","loginType":"Distributor"}Error:exec getService_Universe_OutletSummary '189','172'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getService_Universe_OutletSummary'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getService_Universe_OutletSummary'."}]
+data:{"sfCode":"189","divCode":"172,","dt":"2023-07-05","loginType":"Distributor"}Error:exec getService_OutletSummary_Channelwise '189','172'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getService_OutletSummary_Channelwise'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getService_OutletSummary_Channelwise'."}]
+data:{"sfCode":"189","divCode":"172,","dt":"2023-07-05","loginType":"Distributor"}Error:exec getCumulative_AppDashboard '189','172','2023-07-05'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getCumulative_AppDashboard'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getCumulative_AppDashboard'."}]
+data:{"sfCode":"189","divCode":"172,","dt":"2023-07-05","loginType":"Distributor"}Error:select Product_Grp_Code GroupCode,Product_Grp_Name name from Mas_Product_Group where SubDiv='2,1,' and Product_Grp_Active_Flag=0
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'SubDiv'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'SubDiv'."}]
+data:{"distributorid":"189"}Error:exec getPrimaryOrderDashBoard_modNew '189','2023-07-05','All','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'."}]
+data:{"login_sfCode":"189","Dt":"2023-07-05","Grpcode":"All","loginType":"Distributor","distributorcode":""}Error:exec getSecOrderDashBoard_mod '189','2023-07-05','Distributor',''
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'."}]
+data:{"login_sfCode":"189","Dt":"2023-07-05","Grpcode":"All","loginType":"Distributor","distributorcode":""}Error:exec getPOSProductGroupList '189'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductGroupList'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductGroupList'."}]
+data:{"SF":"189","Stk":"189","div":"172,"}Error:exec getPOSProductTypeList '189'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductTypeList'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductTypeList'."}]
+data:{"SF":"189","Stk":"189","div":"172,"}Error:exec GetPOSProdBrand_App '189'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProdBrand_App'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProdBrand_App'."}]
+data:{"SF":"189","Stk":"189","div":"172,"}Error:exec GetPOSProducts_App '189'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'."}]
+data:{"SF":"189","Stk":"189","div":"172,"}Error:exec getPrimaryOrderDashBoard_modNew '189','2023-07-05','All','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'."}]
+data:{"login_sfCode":"189","Stk":"189","div":"172,","Dt":"2023-07-05","Grpcode":"All","loginType":"Distributor"}Error:exec getSecOrderDashBoard_mod '189','2023-07-05','Distributor',''
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'."}]
+data:{"login_sfCode":"189","Stk":"189","div":"172,","Dt":"2023-07-05","Grpcode":"All","loginType":"Distributor"}Error:exec getPrimaryOrderDashBoard_modNew '189','2023-07-05','All','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'."}]
+data:{"login_sfCode":"189","Dt":"2023-07-05","Grpcode":"All","loginType":"Distributor","distributorcode":""}Error:exec getSecOrderDashBoard_mod '189','2023-07-05','Distributor',''
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'."}]
+data:{"login_sfCode":"189","Dt":"2023-07-05","Grpcode":"All","loginType":"Distributor","distributorcode":""}

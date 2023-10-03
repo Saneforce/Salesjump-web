@@ -1,0 +1,32 @@
+﻿<ion-view>
+    <div class="bar bar-subheader">
+        <div class="list">
+            <label class="item item-input item-date">
+                <div class="input-label" style="color:#ffffff">
+                    Date :
+                </div>
+                <input type="date" ng-model="tpDate" ng-change="GetTpEntryDtws()" />
+            </label>
+        </div>
+    </div>
+    <ion-content class="headertop">
+        <ion-list>
+            <ion-item ng-repeat="dttpvwlist in dtTPvwlists track by $index"><span ng-if="dttpvwlist.Confirmed==1" class="ion-star" style="color: red;float: right"></span>
+                <h2 class="propCase"><b style="Color:Green">{{dttpvwlist.sfName}}</b></h2>
+                <p style="color:#39ac08;">{{dttpvwlist.date}}</p>
+                <h2 class="propCase"><b>{{dttpvwlist.wtype}}</b>
+                   <!-- <span ng-if="dttpvwlist.towns"> - {{dttpvwlist.towns}}</span> -->
+
+                </h2>
+                <p>{{dttpvwlist.distributor}}</p>
+                <p>{{dttpvwlist.towns}}</p>
+            </ion-item>
+        </ion-list>
+        <div class="cus-error blink" ng-if="error">{{error}}</div>
+    </ion-content>
+    <ion-footer-bar class="bar-dark bar bar-footer">
+        <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+            &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+        </button>
+    </ion-footer-bar>
+</ion-view>

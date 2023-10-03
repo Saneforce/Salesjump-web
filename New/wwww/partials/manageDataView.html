@@ -1,0 +1,93 @@
+<ion-view>
+    <ion-content>
+        <ion-list>
+            <ion-item class="item" ng-repeat="draft in drafts" item="draft" ng-show="draft.customer.selected.id == myChoice">
+                <div class="data-table">
+                    <div class="ro" ng-if="draft.doctor">
+                        <div class="co">
+                            {{DrCap}} Name
+                        </div>
+                        <div class="co" ng-if="routeWise==1">
+                            {{draft.doctor.name}}
+                        </div>
+                        <div class="co" ng-if="routeWise==0">
+                            Retailor Of {{draft.cluster.name}}
+                        </div>
+                    </div>
+                    <div class="ro" ng-if="draft.stockist">
+                        <div class="co">
+                            {{StkCap}} Name
+                        </div>
+                        <div class="co">
+                            {{draft.stockist.name}}
+                        </div>
+                    </div>
+<div class="ro" ng-if="draft.Superstockist">
+                        <div class="co">
+                           Super Stockist
+                        </div>
+                        <div class="co">
+                            {{draft.Superstockist.name}}
+                        </div>
+                    </div>
+
+                    <div class="ro" ng-if="draft.chemist">
+                        <div class="co">
+                            {{ChmCap}} Name
+                        </div>
+                        <div class="co">
+                            {{draft.chemist.name}}
+                        </div>
+                    </div>
+                    <div class="ro" ng-if="draft.uldoctor">
+                        <div class="co">
+                            {{NLCap}} Name
+                        </div>
+                        <div class="co">
+                            {{draft.uldoctor.name}}
+                        </div>
+                    </div>
+
+                    <div class="ro">
+                        <div class="co">
+                            Route
+                        </div>
+                        <div class="co">
+                            {{draft.cluster.name}}
+                        </div>
+                    </div>
+                    <div class="ro">
+                        <div class="co">
+                            Meet Time
+                        </div>
+                        <div class="co">
+                            {{draft.entryDate| date:'medium'}}
+                        </div>
+                    </div>
+                </div>
+                <ion-option-button class="button-balanced" style="line-height: 105px;display:none;"
+                                   ng-click="vibrate();
+                                           editOrder(draft)" ng-if="routeWise==1&&draft.doctor">
+                    Edit Order
+                </ion-option-button>
+                <ion-option-button class="button-calm" style="line-height: 105px;display:none;" ng-if="routeWise==1||draft.stockist"
+                                   ng-click="vibrate();
+                                           edit(draft)">
+                    Edit
+                </ion-option-button>
+                <ion-option-button class="button-energized" style="line-height: 105px;"
+                                   ng-click="vibrate();
+                                           preView(draft)">
+                    View
+                </ion-option-button>
+                <ion-option-button class="button-assertive" style="line-height: 105px;" ng-if="routeWise==1||draft.stockist"
+                                   ng-click="vibrate();
+                                           deleteDraft(draft)">
+                    Delete
+                </ion-option-button>
+                <div class="toggle-swipe button button-icon ion-arrow-left-b">
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

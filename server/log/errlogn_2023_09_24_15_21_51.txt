@@ -1,0 +1,10 @@
+FMCG_Live Error:select SLVNo SVL,Division_Code,Doc_Class_ShortName DrCat,PIN_Code pincode,isnull(GST,'') GST,ListedDrCode,Slan_Name,Giftenrol_Name,Doc_Spec_ShortName DrSpl,isnull(stuff((select ', '+Doc_SubCatName from Mas_Doc_SubCategory S where CHARINDEX(cast(Doc_SubCatCode as varchar),D.Doc_SubCatCode)>0 for XML Path('')),1,2,''),'') DrCamp,isnull(stuff((select ', '+Product_Detail_Name from Map_LstDrs_Product M  inner join Mas_Product_Detail P on M.Product_Code=P.Product_Detail_Code and P.Division_Code=M.Division_Code where Listeddr_Code=D.ListedDrCode for XML Path('')),1,2,''),'') DrProd,Case WHEN ListedDr_Address1!=''  and ListedDr_Address1 IS NOT NULL THEN ListedDr_Address1 WHEN ListedDr_Address2!=''  and ListedDr_Address2 IS NOT NULL THEN ListedDr_Address2 ELSE ListedDr_Address3 END as Address  from mas_listeddr  D where ListedDrCode=''
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":8114,"code":8114,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric."}]
+data:FMCG_Live Error:select top 1 convert(varchar, Last_Visit_Date,101) Last_Visit_Date, convert(varchar,Last_Order_Date,101) Last_Order_Date from retailer_visit_time where RetailerCode='' 
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":8114,"code":8114,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric."}]
+data:FMCG_Live Error:select top 1 Slan_Name   from Gift_Mas_ListedDr where  ListedDrCode='' 
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":8114,"code":8114,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric."}]
+data:

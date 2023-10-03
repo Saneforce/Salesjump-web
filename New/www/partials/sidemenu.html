@@ -1,0 +1,325 @@
+<ion-side-menus>
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-assertive">
+            <ion-nav-buttons side="left">
+                <button class="button icon button-icon ion-navicon-round  button-dark" ng-click="vibrate();
+                    toggleLeft()">
+                </button>
+
+            </ion-nav-buttons>
+            <ion-nav-buttons side="left" class="caption">
+                <span class="caption">{{navTitle}}</span>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+                  <div ng-hide="navTitle==''" class="button icon button-icon" style="line-height: 40px;" ng-click="HomeFunction()">
+                    <img  src="img/home.png" style="vertical-align: middle;"  />
+                   
+                </div>
+               <!--  <div class="button icon button-icon" style="line-height: 40px;" >
+                    <img src="img/homebutton.png" style="vertical-align: middle;" class="" />
+                    <span style="margin: 9px 0px 0px 18px !important;" class="badgeBar badge-outbox notify"></span>
+                </div> -->
+                <div ng-if="navTitle==''" class="button icon button-icon" style="line-height: 40px;" ng-click="sendQData()">
+                    <img src="img/cloud.png" style="vertical-align: middle;" class="" />
+                    <span style="margin: 9px 0px 0px 18px !important;"  class="badgeBar badge-outbox notify">{{outboxCount}}</span>
+                </div>
+
+                <div ng-if="navTitle==''" class="button icon button-icon" style="line-height: 40px;" ng-click="Notofications()">
+                    <img src="img/bell.png" style="vertical-align: middle;" ng-class="{'bell-shake-delay':NotifyCount}" class="" />
+                    <span class="badgeBar badge-outbox notify" ng-hide="NotifyCount==0">{{NotifyCount}}</span>
+                </div>
+
+            </ion-nav-buttons>
+          
+        </ion-nav-bar>
+        <ion-nav-view name="menuContent"></ion-nav-view>
+
+       
+    </ion-side-menu-content> 
+
+    <ion-side-menu side="left">
+        <a class="item bar-assertive" href="" style="height:100px !important;color:#fff !important;padding:20px 20px;">
+        <div ng-if="(User_Image==0)" style="display:block;width:40px;height:40px;background:#fff;border-radius:10px;float:left"></div>  
+        <div  ng-if="User_Image!== undefined && User_Image!=0">
+            <img src="{{User_Image}}"   style="border: 1px solid;border-color: rgba(254,255,255,1);width: 40px;border-radius: 11px;height: 40px;float: left;">
+        </div> 
+            <div class="fieldforce-name" style="float:left"></div>
+            <div class="Desig" style="float:left">{{DesigSname}}</div>
+             <div ng-if="Expense_Nd==1 &&  SF_type !=3"  ng-click="Stop();
+                    toggleLeft()" style="float: right;text-align: center;padding: 2px 25px;margin-top:2px;color: #333;border-color: rgba(254,255,255,1);border-radius: 24px;background: white;font-family: 'Poppins';font-weight: bold;font-size: 13px;">Check-out</div>
+        </a>
+
+        <ion-content style="top:100px;">
+            <div class="side_menu">
+                <div class="list" ng-if="view_STOCKIST==1 || view_STOCKIST == 2">
+                     <a class="item item-icon-left" href="#/fmcg/home" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-home"></i>
+                        Home
+                    </a>
+                    <!--  <a class="item item-icon-left" ng-if="view_STOCKIST==1" href="#/fmcg/stockUpdation" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-finder"></i>
+                        Stock Updation
+                    </a>
+                    <a   ng-if="view_STOCKIST==1" class="item item-icon-left" href="#/fmcg/transCurrentStocks" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-list"></i>
+                        Stock View
+                    </a> -->
+                     <a  ng-if="view_STOCKIST==2  "  class="item item-icon-left" href="#/fmcg/transCurrentStocks" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-list"></i>
+                        SStock View
+                    </a>
+                     <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/BrndSummary" ng-click="vibrate();
+                        toggleLeft()">
+                        <i class="icon ion-ios7-pie"></i>
+                        Brandwise Summary
+                    </a>
+                    <!--  <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/distDayReport" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-document-text"></i>
+                        Distributor Day Report
+                    </a> -->
+
+
+                    <a class="item item-icon-left" href="#/fmcg/SSstockUpdation" ng-if="view_STOCKIST == 2" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-finder"></i>
+                        SS Stock Entry
+                    </a>
+
+
+                    <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/reload" ng-click="vibrate();
+                                toggleLeft()">
+                        <i class="icon ion-android-download"></i>
+                        Master Sync
+                    </a>
+                      <a class="item item-icon-left" ng-click="vibrate();
+                                logout()">
+                        <i class="logout icon ion-log-out"></i>
+                        Logout
+                    </a>
+                </div>
+                <div class="list" ng-if="view_STOCKIST==0">
+                    <a class="item item-icon-left" href="#/fmcg/home" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-home"></i>
+                        Home
+                    </a>
+                    <a class="item item-icon-left" href="#/fmcg/myPlan" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-bubbles2"></i>{{PlanCap}} 
+
+                    </a>
+                   <!-- <a class="item item-icon-left" href="#/fmcg/draft" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-document-text"></i>
+                        Draft Calls<span class="badge badge-assertive">{{draftCount}}</span> 
+                    </a>--><!--ng-if="fmcgData.hasGps"  -->
+                    <a class="item item-icon-left" href="#/fmcg/outbox" ng-click="vibrate();toggleLeft()">
+                        <i class="icon ion-upload"></i>
+                        Outbox <span class="badge badge-assertive">{{outboxCount}}</span>
+                    </a>
+                   
+                  <!--   <a class="item item-icon-left" ng-if="onLine" href="#/fmcg/stockUpdationPrimary"  ng-if="SF_type==1" ng-click="vibrate();toggleLeft();">
+                        <i class="icon ion-calendar"></i>
+                       Primary Entry
+                    </a> -->
+                    <a ng-if="onLine && UNLNeed && SF_type!=4" class="item item-icon-left" href="#/fmcg/adduldoctor" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-man"></i>
+                        Add {{NLCap}}
+                    </a>
+                    <a ng-if="onLine && !ChmNeed && SF_type!=4" class="item item-icon-left" href="#/fmcg/addchemist" ng-hide="view_AddMas" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-flask"></i>
+                        Add {{ChmCap}}
+                    </a>
+                    <a ng-if="onLine && Gift_Claim==1" class="item item-icon-left" href="#/fmcg/GiftClaim_Home"  ng-click="vibrate();
+                    toggleLeft()">
+                       <i class="icon ion-man"></i>
+                        Claim Gift
+                    </a>
+                      <a class="item item-icon-left" ng-hide="view_MR" ng-if="SF_type!==1&&onLine" href="#/fmcg/Approvals" ng-click="vibrate();toggleLeft();">
+                        <i class="icon ion-folder"></i>
+                       Approvals
+                    </a>
+                   <a ng-if="onLine && UNLNeed && SF_type!=4" class="item item-icon-left" href="#/fmcg/EditRetail" ng-click="vibrate();
+                   toggleLeft()">
+                       <i class="icon ion-man"></i>
+                       Edit {{DrCap}}
+                   </a>
+                   <a ng-if="onLine && (EdSubCalls||EdSubCalls1)" ng-if="onLine"  class="item item-icon-left" href="#/fmcg/manageData" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-folder-open"></i>
+                         Submitted Calls
+                    </a>
+        
+                     <a ng-if="onLine && SF_type!=4" class="item item-icon-left" href="#/fmcg/reportingentry" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-compose"></i>
+                       Admin Forms
+                    </a>
+                     <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/reports" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-history"></i>
+                       Reports
+                    </a>
+                     <a class="item item-icon-left" ng-if="Near_Me_Flag" href="#/fmcg/explore" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-history"></i>
+                       Explore
+                    </a>
+                   <!--  <a ng-if="onLine" class="item item-icon-left" ng-click="vibrate();
+                    dashboard_url()">
+                        <i class="icon icon-history"></i>
+                       Dashboard
+                    </a> -->
+                    <!--  <a ng-if="onLine && MsdDate==1" class="item item-icon-left" href="#/fmcg/MissedDates" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-history"></i>
+                       Missed Dates
+                    </a> -->
+                     <!-- 
+                  <a class="item item-icon-left" href="#/fmcg/screen3s" ng-click="vibrate();toggleLeft();">
+                        <i class="icon ion-calendar"></i>
+                       Screen3s
+                    </a>-->
+                       <!-- <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/mail" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-android-mail"></i>
+                       Mail
+                    </a>-->
+                 <!--   <a class=" item item-icon-left" href="#/fmcg/RCPA" ng-click="vibrate();
+                    toggleLeft();">
+                        <i class="icon icon-finder"></i>
+                       Market Audit
+                    </a>
+
+                    <a ng-if="!AppTyp" class="item item-icon-left" href="#/fmcg/RMCL" ng-click="vibrate();
+                    toggleLeft();">
+                        <i class="icon icon-alarm"></i>
+                        Reminder Calls
+                    </a>
+  
+                
+                    <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/precall" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-history"></i>
+                        Precall Analysis
+                    </a>
+                     <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/myAudio" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-music-note"></i>
+                      Product Detailing
+                    </a>
+                    
+                      <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/LostProducts" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-folder-open"></i>
+                        Lost Products
+                    </a>
+              
+                    
+                    <a class="item item-icon-left" href="#/fmcg/transCurrentStocks" ng-if="SF_type==1" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-list"></i>
+                        Stock View
+                    </a>
+                    <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/ExpenseEntry" ng-click="vibrate(); 
+                        toggleLeft()" ng-hide="view_MR">
+                        <i class="icon ion-social-usd"></i>
+                        Expense Entry
+                    </a>
+
+                      <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/TourPlan" ng-click="vibrate(); 
+                        toggleLeft()" ng-hide="view_MR">
+                        <i class="icon ion-calendar"></i>
+                        TP Entry
+                    </a>
+                   
+                     <a class="item item-icon-left" ng-if="onLine" href="#/fmcg/LeaveForm" ng-click="vibrate();toggleLeft();">
+                        <i class="icon ion-android-calendar"></i>
+                       Leave Form
+                    </a>
+                    <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/dayPlan" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-compose"></i>
+                        Day Plan
+                    </a>
+                    <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/dayReport" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-compose"></i>
+                        Day Report
+                    </a>
+                     <a ng-if="onLine && view_MR!==1" class="item item-icon-left" href="#/fmcg/distDayReport" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-document-text"></i>
+                        Distributer Day Report
+                    </a>
+                      <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/BrndSummary" ng-click="vibrate();
+                        toggleLeft()">
+                        <i class="icon ion-ios7-pie"></i>
+                        Brandwise Summary
+                    </a>
+                    <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/dcrdata" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon ion-ios7-pie"></i>
+                        Monthly Summary
+                    </a>
+                    <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/tpview" ng-click="vibrate();toggleLeft()">
+                        <i class="icon ion-model-s"></i>TP View 
+                    </a>
+                    <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/tpviewdt" ng-click="vibrate();toggleLeft()">
+                        <i class="icon ion-calendar"><i style="position:absolute;left:5px;bottom:5px;" class="icon ion-model-s"></i></i>TP View Datewise 
+                    </a>
+
+                    -->
+                    <a ng-if="GEOTagNeed==1" class="item item-icon-left" href="#/fmcg/geoTag" ng-click="vibrate();toggleLeft()">
+                        <i class="icon ion-calendar"></i>Geo Tagging
+                    </a>
+                     <a  ng-if="SF_type==2&&onLine" class="item item-icon-left" href="#/fmcg/locationdfind" ng-click="vibrate();toggleLeft()">
+                        <i class="icon ion-calendar"></i>Locations Finder
+                    </a>
+                    <a ng-if="InvCnvrtNd==1 ||OrdPrnNd==1" class="item item-icon-left" href="#/fmcg/settings" ng-click="vibrate();
+                                toggleLeft()">
+                        <i class="icon ion-ios7-settings"></i>
+                        Settings
+                    </a>
+                     <a class="item item-icon-left" href="#/fmcg/stockUpdation" ng-if="onLine && SF_type!=4 && New_Closing!=1" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-finder"></i>
+                        Closing Stock Entry
+                    </a>
+                     <a class="item item-icon-left" href="#/fmcg/NewClosing" ng-if="onLine && SF_type!=4 &&New_Closing==1 "  ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-finder"></i>
+                        Closing Stock Entry
+                    </a>
+                    <!-- <a class="item item-icon-left" href="#/fmcg/SSstockUpdation" ng-if="(onLine && Supplier_Master==1 && view_MR!=1 )||view_STOCKIST == 2 || MR_SStockist_Nd==1" ng-click="vibrate();
+                    toggleLeft()">
+                        <i class="icon icon-finder"></i>
+                        SS Stock Entry
+                    </a> -->
+                    <a class="item item-icon-left" ng-if="changepassword" href="#/fmcg/ChangePassword" ng-click="vibrate(); toggleLeft()
+                               ">
+                     <i class="icon ion-android-contact"></i>
+                        My Profile
+                    </a>
+                    <a ng-if="onLine" class="item item-icon-left" href="#/fmcg/reload" ng-click="vibrate();
+                                toggleLeft()">
+                        <i class="icon icon-loop2 reload"></i>
+                        Master Sync
+                    </a>
+                    <a class="item item-icon-left" ng-click="vibrate();
+                                logout()">
+                        <i class="logout icon ion-log-out"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>

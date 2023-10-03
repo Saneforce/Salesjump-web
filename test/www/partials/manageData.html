@@ -1,0 +1,37 @@
+
+
+<ion-view>
+    <ion-content>
+                <ion-list ng-if="success">
+                       <div class="item item-text-wrap"   ng-show="customerslength==1">
+                <b>Calls is Empty</b> 
+            </div>
+                    <ion-item href="#/fmcg/manageDataView?myChoice={{customer.id}}" class="item-card" ng-repeat="customer in customers" ng-if="customer.count">
+
+                        {{ customer.name}}
+                        <span class="badge badge-assertive" style="top: 14px;right: 16px;" ng-if="customer.count">{{customer.count}}</span>
+                    </ion-item>
+              
+                </ion-list>
+         <ion-list ng-if="owsuccess && owTypeData.FWFlg=='DH'">
+                    <ion-item  href="#/fmcg/distibutorHunt">
+        
+                       {{(owTypeData.worktype_code| getValueforIDD : {'collection' : worktypes}).name }}
+                        <span class="badge badge-assertive" ng-if="owTypeData.count">{{owTypeData.count}}</span>
+                    </ion-item>
+                </ion-list>
+        <div class="card" ng-if="owsuccess && owTypeData.FWFlg!='DH'">
+            <div class="item item-divider">
+                {{(owTypeData.worktype_code| getValueforIDD : {'collection' : worktypes}).name ||"Leave"}}
+
+            </div>
+            <div class="item item-text-wrap">
+                <b>Day Activity Remarks</b> :{{owTypeData.daywise_remarks}}
+            </div>
+            <div class="item item-text-wrap" style="display:none">
+                <b>Halfday Work</b> :{{owTypeData.HlfDayWrk}}
+            </div>
+            
+        </div>
+    </ion-content>
+</ion-view>

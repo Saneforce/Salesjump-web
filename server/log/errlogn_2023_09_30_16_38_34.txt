@@ -1,0 +1,4 @@
+FMCG_RAJAM Error:select * from POP_Material_master where Division_Code='175'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'POP_Material_master'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'POP_Material_master'."}]
+data:

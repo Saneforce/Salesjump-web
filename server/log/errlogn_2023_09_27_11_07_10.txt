@@ -1,0 +1,4 @@
+FMCG_RAD Error:select 'http://hap.sanfmcg.com/offerimg/'+offerimg offerimg from Mas_Retail_AppOffers where Eff_from<='2023-09-27 00:00:00' and isnull(Eff_to,getdate())>='2023-09-27 00:00:00'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_Retail_AppOffers'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_Retail_AppOffers'."}]
+data:

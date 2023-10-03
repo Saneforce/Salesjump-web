@@ -1,0 +1,247 @@
+<ion-view class="ion-viewport">
+    <ion-content class="screen-parent">
+        <div class="list list-inset">
+            <div class="select-component" ng-hide="view_MR" >
+                <div class="label">
+                    <div class="label-text">Headquarters<label style="color: red;"> &nbsp;*</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('subordinate_master', 500)">
+                            {{(Retailer.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Headquarters"}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" ng-hide="view_MR">
+                <div class="label">
+                    <div class="label-text">{{StkCap}}<label style="color: red;"> &nbsp;*</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal('stockist_master', 501, Retailer.subordinate.selected.id)">
+                            {{(Retailer.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">{{StkRoute}}<label style="color: red;"> &nbsp;*</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('town_master', 502, Retailer.subordinate.selected.id)">
+                            {{(Retailer.cluster.selected.id| getValueforIDD : {'collection' : myTpTwns}).name || "Select the Route"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Name<label style="color: red;"> &nbsp;*</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                                openModal('doctor_master', 503, Retailer.subordinate.selected.id)">
+                            {{(Retailer.doctor.selected.id| getValueforIDD : {'collection' : doctors}).name  || "Select "+DrCap}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="label-text" style="padding:5px;color: white;background-color:#1ac0d6;margin-top: -22px;">Retailer Details</div>
+        <div class="list list-inset" style="margin:0px;padding: 5px;"   ng-if="Retailer.doctor.selected.id" >
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Name<label style="color: red;"> &nbsp;*</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="Retailer.Data.name" placeholder="{{NmCap}} Name">
+                    </div>
+                </div>
+            </div>
+
+          <div class="select-component" ng-if="(','+RetailerNeeded+',').indexOf(',gs,')>-1" ng-hide="divisionCode==50">
+                <div class="label">
+                   <div class="label-text">GST No <label ng-if="(','+RetailerMandatory+',').indexOf(',gs,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="Retailer.Data.gstno" placeholder=" Enter the GST No"  maxlength="75">     
+                    </div>
+                </div>
+            </div>  
+            <div class="select-component"  ng-if="(','+RetailerNeeded+',').indexOf(',ad,')>-1" >
+                <div class="label">
+                 <div class="label-text">Address  <label ng-if="(','+RetailerMandatory+',').indexOf(',ad,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                   <input type="text" ng-model="Retailer.Data.address" rows="5" placeholder="Enter the Address" class="input-css"   ng-click="vibrate();">
+                </div>
+            </div>
+            
+          <div class="select-component" ng-hide="divisionCode==50" ng-if="(','+RetailerNeeded+',').indexOf(',ar,')>-1">
+                <div class="label">
+                     <div class="label-text">Area Name <label ng-if="(','+RetailerMandatory+',').indexOf(',ar,')>-1"  style="color: red;">&nbsp; *</label>     </div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="Retailer.Data.areaname" placeholder=" Enter the Area Name"  maxlength="75">     
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" ng-hide="divisionCode==50" ng-if="(','+RetailerNeeded+',').indexOf(',ct,')>-1" >
+
+                <div class="label">
+                   <div class="label-text">City   <label ng-if="(','+RetailerMandatory+',').indexOf(',ct,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <input type="text" ng-model="Retailer.Data.cityname" rows="5" placeholder="Enter the City" class="input-css" ng-click="vibrate();" maxlength="50">
+                </div>
+            </div>
+<div class="select-component" ng-hide="divisionCode==50"  ng-if="(','+RetailerNeeded+',').indexOf(',ln,')>-1">
+
+                <div class="label">
+                      <div class="label-text">LandMark <label ng-if="(','+RetailerMandatory+',').indexOf(',ln,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <input type="text" ng-model="Retailer.Data.Land_Mark" rows="5" placeholder="Enter the City" class="input-css" ng-click="vibrate();" maxlength="50">                     
+
+                   
+                </div>
+            </div>
+         <div class="select-component"ng-hide="divisionCode==50" ng-if="(','+RetailerNeeded+',').indexOf(',pc,')>-1">
+                <div class="label">
+                   <div class="label-text">Pin Code <label ng-if="(','+RetailerMandatory+',').indexOf(',pc,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="number" class="input-css" ng-model="Retailer.Data.pincode" placeholder=" Enter the pin code"  maxlength="6" only-digits>     
+                    </div>
+                </div>
+            </div>
+            
+<div class="select-component" ng-hide="divisionCode==50"  ng-if="(','+RetailerNeeded+',').indexOf(',dn,')>-1">
+                <div class="label">
+                    <div class="label-text">Designation <label ng-if="(','+RetailerMandatory+',').indexOf(',dn,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="Retailer.Data.designation" placeholder="Enter the Designation"  maxlength="75">     
+                    </div>
+                </div>
+            </div>
+          <div class="select-component" ng-hide="divisionCode==50"  ng-if="(','+RetailerNeeded+',').indexOf(',cp,')>-1">
+                <div class="label">
+                   <div class="label-text">Contact Person <label ng-if="(','+RetailerMandatory+',').indexOf(',cp,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="Retailer.Data.contactperson" placeholder="Enter the Contact Person " maxlength="75">     
+                    </div>
+                </div>
+            </div>
+<div class="select-component" ng-if="(','+RetailerNeeded+',').indexOf(',ph,')>-1" >
+                <div class="label">
+                     <div class="label-text">Phone <label ng-if="(','+RetailerMandatory+',').indexOf(',ph,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="number" class="input-css" ng-model="Retailer.Data.phone" placeholder="Enter the Phone No" maxlength="10" only-digits>
+                    </div>
+                </div>
+            </div>
+             
+            
+
+<!-- contact persion 2 -->
+
+           <div class="select-component" ng-hide="divisionCode==50" ng-if="(','+RetailerNeeded+',').indexOf(',cp2,')>-1">
+                <div class="label">
+                   <div class="label-text">Contact Person 2 <label ng-if="(','+RetailerMandatory+',').indexOf(',cp2,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="Retailer.Data.contactperson2" placeholder="Enter the Contact Person2 "  maxlength="75">     
+                    </div>
+                </div>
+            </div>
+<div class="select-component" ng-hide="divisionCode==50" ng-if="(','+RetailerNeeded+',').indexOf(',ph2,')>-1">
+                <div class="label">
+                     <div class="label-text">Phone 2 <label ng-if="(','+RetailerMandatory+',').indexOf(',ph2,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="tel" class="input-css" ng-model="Retailer.Data.phone2" placeholder="Enter the Phone No2" maxlength="50">     
+                    </div>
+                </div>
+            </div> 
+
+ <div class="select-component" ng-hide="divisionCode==50" ng-if="(','+RetailerNeeded+',').indexOf(',cp3,')>-1">
+                <div class="label">
+                   <div class="label-text">Contact Person 3 <label ng-if="(','+RetailerMandatory+',').indexOf(',cp3,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="Retailer.Data.contactperson3" placeholder="Enter the Contact Person3 "  maxlength="75">     
+                    </div>
+                </div>
+            </div>
+<div class="select-component" ng-hide="divisionCode==50" ng-if="(','+RetailerNeeded+',').indexOf(',ph3,')>-1">
+                <div class="label">
+                     <div class="label-text">Phone 3 <label ng-if="(','+RetailerMandatory+',').indexOf(',ph3,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="tel" class="input-css" ng-model="Retailer.Data.phone3" placeholder="Enter the Phone No3" maxlength="50">     
+                    </div>
+                </div>
+            </div> 
+             <div class="select-component"ng-hide="divisionCode==50"  ng-if="(','+RetailerNeeded+',').indexOf(',dn2,')>-1">
+                <div class="label">
+                     <div class="label-text">Designation 2 <label ng-if="(','+RetailerMandatory+',').indexOf(',dn2,')>-1"  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="Retailer.Data.designation2" placeholder="Enter the Designation2"  maxlength="75">     
+                    </div>
+                </div>
+            </div>
+            
+            <div class="select-component" ng-hide="view_chemist">
+                <div class="label">
+                    <div class="label-text">Retailer Class<label style="color: red;"> &nbsp;*</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box" style="background-color: #ece2c4;">
+                        <div class="input-css" ng-click="openModal('class_master', 504)">
+                            {{(Retailer.Data.class.selected.id| getValueforIDD : {'collection' : class_master}).name  || "Select the Retailer Class" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" ng-hide="view_chemist">
+                <div class="label">
+                    <div class="label-text">Retailer Channel<label style="color: red;"> &nbsp;*</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box" style="background-color: #ece2c4;">
+                        <div class="input-css" ng-click="openModal('Doctor_Specialty', 505)">
+                            {{(Retailer.Data.speciality.selected.id| getValueforIDD : {'collection' : specialitys}).name  || "Select the Retailer Channel" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
+<button style="margin-top: 10px" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();SaveDatas()">
+                Save
+            </button>
+    </ion-content>
+</ion-view>
+
+

@@ -1,0 +1,27 @@
+﻿<ion-view>
+    <div class="bar bar-subheader">
+        <div class="list">
+            <label class="item item-input item-date">
+                <div class="input-label cwhite">Date :</div><input type="date" ng-model="dyRptDt" ng-change="getAttView()" />
+            </label>
+        </div>
+    </div>
+    <ion-content class="headertop" style="background-color:#f6eeee">
+        <div class="card Tbrd{{dyDCR.Desig_Code}}" ng-repeat="(i,dyDCR) in dayDCRList">
+            <h4>{{dyDCR.Sf_Name}}<span style="position: absolute;text-align: right;margin-top: 20px;left: 22px;font-size: 11px;color:#332f2f">( PH : {{dyDCR.MOb}} )</span></h4>
+           <div class="propCase" style="padding-top: 8px;">
+                <b style="color: darkcyan;font-weight: bold;">{{dyDCR.Worktype_Name_B}}<span class="item-note propCase" style="white-space:nowrap !important;color: #537979;font-weight: bold;">{{dyDCR.Pln_Time}}</span></b>
+                <p style="color: #537979;font-weight: bold;">{{dyDCR.dist_name}}<span class="item-note propCase" style="color: #537979;font-weight: bold;">{{dyDCR.ClstrName}}</span></p>
+            </div>
+            <p class="propCase rmks">{{dyDCR.Remarks}}</p>
+        </div>
+    </ion-content>
+    <ion-footer-bar class="bar-dark bar bar-footer">
+    <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+
+   
+</ion-footer-bar>
+</ion-view>
+

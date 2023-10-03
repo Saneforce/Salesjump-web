@@ -1,0 +1,12 @@
+﻿<ion-view class="ion-viewport">
+    <ion-content>
+        <ion-list>
+            <ion-item ng-click="vibrate();GotoCTP()">
+                <span class="item-note" style="color:#4800ff;font-weight:bold;margin-right:180px;float:left;">Current Month [ {{MonthNames[CMonth-1]}} - {{CYear}} ]</span>
+            </ion-item>
+            <ion-item ng-click="vibrate();GotoNTP(1)">
+                <span class="item-note" style="color:#4800ff;font-weight:bold;margin-right:180px;float:left;">Next Month [ {{MonthNames[NMonth-1]}} - {{NYear}} ]</span>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

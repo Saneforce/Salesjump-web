@@ -1,0 +1,4 @@
+FMCG_ARBRO Error:select * from Trans_Inshop_CL_Stock where CheckIn_SlNo=''
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":8114,"code":8114,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric."}]
+data:

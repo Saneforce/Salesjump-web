@@ -1,0 +1,4 @@
+FMCG_Live Error:exec van_stock_ledger_new 'PGLMR0005','101','2023-09-28','2023-09-28','0'  
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":8114,"code":8114,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}

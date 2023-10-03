@@ -1,0 +1,84 @@
+<ion-view>
+
+    <ion-content style="padding: 9px;">
+      
+            <div class="list list-inset">
+            <div class="select-component" ng-hide="view_MR" >
+                <div class="label">
+                    <div class="label-text">{{DrCap}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-if="fmcgData.editableOrder!=1" ng-click="vibrate();
+                     openModal('doctor_master', 6, fmcgData.subordinate.selected.id)">
+                     {{fmcgData.doctor.name || "Select "+DrCap}}
+                  </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+            <div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Former Name</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box"  >
+                       <input type="text"   class="input-css" ng-model="fmcgData.FormarName" placeholder="Enter the Former Name"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+
+            <div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Crop</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box"  >
+                       <input type="text"   class="input-css" ng-model="fmcgData.Crop" placeholder="Enter Crop"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+          <div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Contact Number</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box"  >
+                       <input type="text"   class="input-css" ng-model="fmcgData.ContactNumber" placeholder="Enter the Contact Number"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+       
+
+
+          <div class="select-component1">
+               <div class="label">
+                  <!--ng-if="template==1"-->
+                  <div class="label-text">Remarks <span style="float:right;font-size: small;padding: 0px 9px;color: #05e68a;" ng-click="vibrate();openModal('nonreport_template_master', 15)">Templates  <span style="color:#989898;font-size: x-small;">v</span></span></div>
+               </div>
+               <textarea ng-model="fmcgData.remarks" rows="5" class="textarea-css" ng-click="vibrate();" placeholder="Enter the Remarks ( or ) Select from Template">
+                     
+                    </textarea>
+            </div>
+         
+      </ion-content>
+</ion-view>
+<ion-footer-bar class="bar-dark">
+  <button class="button buttonClear pull-left" ng-click="vibrate();
+        goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+
+ <button  class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+         Save()">Submit</button>
+    <button  class="button buttonClear  button-calm pull-right" style="margin-right: {{100*((fmcgData.customer.selected.id!=3)?fmcgData.customer.selected.id:0)}}px;" ng-click="vibrate();
+         goNext()">Sample/Area</button>
+    
+</ion-footer-bar>
+

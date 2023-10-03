@@ -1,0 +1,116 @@
+<ion-view>
+   <ion-content>
+      <div class="list list-inset">
+         <!--   <button class="button button-small button-balanced" style="float:right" ng-click="vibrate();
+            viewStock()">View Stock
+            </button>
+            <div class="select-component" ng-if="(',1,4,').indexOf(',' + fmcgData.customer.selected.id + ',') > -1 && AppTyp == 1">
+                <div class="label">
+                    <div class="label-text">Stockist</div>
+                </div>
+            
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" >
+                            {{(fmcgData.OrdStk.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+         <!--ng-click="vibrate();openModal('stockist_master', 14, fmcgData.subordinate.selected.id)"-->
+         <label style="display:block;font-size: 17px;font-weight: bold" ng-if="fmcgData.customer.selected.id == 1">
+         {{DrCap}} Name : {{fmcgData.doctor.name}}
+         </label>
+         <label style="display:block;font-size: 17px;font-weight: bold" ng-if="fmcgData.customer.selected.id == 3">
+         {{StkCap}} Name : {{(fmcgData.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+         </label>
+         <label style="display:block;font-size: 17px;font-weight: bold" ng-if="fmcgData.customer.selected.id == 1">
+         Route Target <span class="badge badge-royal icon-badge">{{fmcgData.rootTarget}}</span>
+         </label>
+         <div style="margin-bottom: 10px;"></div>
+         <div class="select-component" style="display:none" ng-if="(',1,4,').indexOf(',' + fmcgData.customer.selected.id + ',') > -1 && AppTyp == 1">
+            <div class="label">
+               <div class="label-text">Order No</div>
+            </div>
+            <div class="select-box">
+               <div class="input-box">
+                  <input type="number" ng-model="fmcgData.OrderNo" class="input-css" placeholder="Order No" ng-click="vibrate();">
+               </div>
+            </div>
+         </div>
+         <div ng-if="fmcgData.customer.selected.id == 1 && OfferMode == 1">
+            <ion-radio ng-model="fmcgData.rateType" ng-value="'discount'" style="color:green;font-weight:bold" ng-change="changeMode(this.fmcgData.rateType)">Discount</ion-radio>
+            <ion-radio ng-model="fmcgData.rateType" ng-value="'free'" style="color:green;font-weight:bold" ng-change="changeMode(this.fmcgData.rateType)">Free</ion-radio>
+         </div>
+         <div class="select-component" ng-if="prod==0">
+            <div class="label">
+               <div class="label-text">Product</div>
+            </div>
+            <div class="select-box">
+               <div class="input-box">
+                  <div class="input-css" ng-click="vibrate();
+                     openMProduct('product_master', 9)">
+                     {{(fmcgData.product.selected.id| getValueforIDD : {'collection' : products}).name || "Select the Product"}}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      
+      <div class="gridStyle" ng-grid="gridOptions" style="height: 500px">
+      </div>
+      <div class="row" ng-if="TDisc==1" >
+         <div class="col-33" >
+            <p>Discount %</p>
+            <input   type="number"  ng-change="netAmount()" ng-model="fmcgData.discounttt"  style="borderolid 1px #c4c4c4;width: 101px;" class="efield ng-pristine ng-valid ng-valid-number" placeholder= "Discount"  min="0">
+         </div>
+         <div class="col-50" >
+            <div class="col-55" >
+               <span  style="float:right;margin-top: 18px;margin-right: 30px;font-size:16px;color:green;font-weight:bold" class="ngLabel ng-binding">Discount: {{fmcgData.dis}}</span>
+            </div>
+            <div class="col-55" >
+               <span  style="float:right;margin-top: 18px;margin-right: 30px;font-size:16px;color:green;font-weight:bold" class="ngLabel ng-binding">Net Amount: {{fmcgData.netamount}}</span>
+            </div>
+         </div>
+      </div>
+      <div style="padding:10px 5px">
+         <div class="select-component" ng-if="fmcgData.worktype.selected.FWFlg == 'F' && DistBased==0">
+            <div class="label">
+               <div class="label-text">{{StkCap}}</div>
+            </div>
+            <div class="select-box">
+               <div class="input-box">
+                  <div class="input-css" ng-click="vibrate();
+                     openModal('stockist_master', 4, fmcgData.subordinate.selected.id)">
+                     {{(fmcgData.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="row moveDown">
+         <div class="col">
+            <div class='buttonC-container left-sidepull' ng-click="vibrate();openOptMenu()">
+               <div class="buttonC">
+                  <i class="icon ion-images footer-icon" style="line-height: 45px;"></i>
+               </div>
+               <div class='buttonC-text'>Event Captures</div>
+            </div>
+         </div>
+      </div>
+      <div style="height: 75px">
+      </div>
+   </ion-content>
+   <ion-footer-bar class="bar-dark">
+      <button ng-if=" fmcgData.editableOrder!=1" class="button button-assertive buttonClear pull-left" ng-click="vibrate();
+         goBack()">
+      &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+      </button>
+      <button ng-if="(fmcgData.customer.selected.id != 1 && fmcgData.editableOrder!=1) && fmcgData.customer.selected.id != 3"  class="button button-assertive buttonClear pull-right"ng-click="vibrate();
+         goNext()">&nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-right-c"></i>&nbsp;&nbsp;&nbsp;</button>
+      <button  ng-if="(fmcgData.customer.selected.id == 1&& fmcgData.editableOrder!=1)||(SPNeed==1&&fmcgData.customer.selected.id == 3)" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+         submit()">Submit</button>
+      <button  ng-if=" fmcgData.editableOrder==1&&fmcgData.customer.selected.id != 3" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+         editOrder()">Save</button>
+   </ion-footer-bar>
+</ion-view>

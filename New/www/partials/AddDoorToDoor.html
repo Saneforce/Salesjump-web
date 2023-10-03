@@ -1,0 +1,129 @@
+<ion-view>
+
+    <ion-content>
+        <div class="list list-inset">
+<div class="select-component" ng-hide="view_MR" >
+                <div class="label">
+                    <div class="label-text">Headquarters</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('subordinate_master', 500)">
+                            {{(Retailer.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Headquarters"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">{{StkCap}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal('stockist_master', 501, Retailer.subordinate.selected.id)">
+                            {{(Retailer.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Route</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('town_master', 502, Retailer.subordinate.selected.id)">
+                            {{(Retailer.cluster.selected.id| getValueforIDD : {'collection' : myTpTwns}).name || "Select the Route"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Name</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                                openModal('doctor_master', 503, Retailer.subordinate.selected.id)">
+                            {{(Retailer.doctor.selected.id| getValueforIDD : {'collection' : doctors}).name  || "Select "+DrCap}}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+                 <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Total No Of Coupons </div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="fmcgData.Coupons" placeholder="Enter No Of  Coupons">     
+                    </div>
+                </div>
+            </div>
+             <div  ng-repeat="item in fmcgData.DoortoDoor  track by $index" >
+                    <div class="input-box">
+                    <div class="row" >
+                        <div class="col">
+                              <p style="color: #828181;font-weight: 700;">Promotor Name </p>
+                              <input   type="text" ng-model="item.PromotorName" class="efieldl" placeholder= "Name" >
+                           </div>
+                        </div>
+                        <div class="row" >
+                           <div class="col" >
+                              <p style="color: #828181;font-weight: 700;">Place</p>
+                              <input  type="text" class="efieldl" ng-model="item.Place"    placeholder= "Place">
+                           </div>
+                        </div>
+                        <div class="row" >
+                            <div class="col col-20" >
+                              <p style="color: #828181;font-weight: 700;">Taken</p>
+                              <input type="text" class="efield" ng-model="item.Taken" placeholder= "Taken">
+                           </div>
+                           <div class="col col-20">
+                              <p style="color: #828181;font-weight: 700;">Issue </p>
+                              <input   type="text" class="efield" placeholder= "Issue"  ng-model="item.Issue">
+                           </div>
+                            <div class="col col-30" >
+                              <p style="color: #828181;font-weight: 700;">S.Time</p>
+                              <input  type="time" class="efieldl" ng-model="item.Stime" >
+                            </div>
+                            <div class="col col-30" >
+                              <p style="color: #828181;font-weight: 700;">E.Time</p>
+                              <input type="time" class="efieldl" ng-model="item.Etime"  >
+                           </div>
+                        </div>
+                    </div>
+                    
+                    <hr style="border: 0px;border-bottom: dotted 1px #498f24;">
+                </div>
+                    
+                   
+
+                    
+                    </div>
+                    <div class="row" >
+                        <div class="col col-70">
+                              <p style="color: #828181;font-weight: 700;">Remarks </p>
+                              <input   type="text" ng-model="fmcgData.doortodoorremarks" placeholder= "Remarks" >
+                           </div>
+                        </div>
+                    
+              <div class="row moveDown">
+               <div class="col">
+                  <div class='buttonC-container left-sidepull' ng-click="vibrate();openOptMenu()">
+                     <div class="buttonC">
+                        <i class="icon ion-images footer-icon" style="line-height: 45px;"></i>
+                     </div>
+                     <div class='buttonC-text'>Event Captures</div>
+                  </div>
+               </div>
+            </div>
+    <button class="button buttonClear pull-right" ng-click="vibrate();
+        save()">Save</button>
+    </ion-content>
+
+</ion-view>
+
+

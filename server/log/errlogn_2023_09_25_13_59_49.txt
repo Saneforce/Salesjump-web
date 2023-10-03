@@ -1,0 +1,7 @@
+FMCG_RAD Error:select 'http://hap.sanfmcg.com/offerimg/'+offerimg offerimg from Mas_Retail_AppOffers where Eff_from<='2023-09-25 00:00:00' and isnull(Eff_to,getdate())>='2023-09-25 00:00:00'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_Retail_AppOffers'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_Retail_AppOffers'."}]
+data:FMCG_RAD Error:exec getCusAppNotifyLists '96'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getCusAppNotifyLists'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getCusAppNotifyLists'."}]
+data:

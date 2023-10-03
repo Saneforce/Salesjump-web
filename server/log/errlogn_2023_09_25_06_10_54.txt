@@ -1,0 +1,8 @@
+FMCG_PRECISION Error:select File_Name offerimg from product_new_launch where  division_code='164' and cast(Effective_From as date)<=CAST(getdate() as date) and CAST(getdate() as date)<=CAST(Effective_To as date)
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'division_code'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'division_code'."}]
+data:FMCG_NNPMS Error:insert into Trans_OrderCNF_Head 
+		select Trans_Sl_No,Sf_Code,Cust_Code,Stockist_Code,Route_Target,Order_No,Order_Date,DCR_Code,Order_Value,Collected_Amount,Route,net_weight_value,Order_Flag,Remarks,discount_price,rateMode,CL_Stock,Div_ID,OrderID,OrderType,TDPercent,rejRemarks from Trans_Order_Head where Trans_Sl_No='NNPMMR0002-23-24-SO-2412'
+|param:
+|error:[{"0":"21S01","SQLSTATE":"21S01","1":213,"code":213,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Column name or number of supplied values does not match table definition.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Column name or number of supplied values does not match table definition."}]
+data:{}

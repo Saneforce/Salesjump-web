@@ -1,0 +1,30 @@
+<ion-view class="ion-viewport">
+    <ion-content >
+        <ion-list>   
+         <ion-item  ng-click="vibrate();goTo('primarysales')">
+               <span class="item-note" style="color:#4800ff;font-weight:bold;margin-right:180px;float:left;">Primary  Sales FF Wise</span>
+           </ion-item> 
+
+           <ion-item  ng-click="vibrate();goTo('primarysalesstate')">
+               <span class="item-note" style="color:#4800ff;font-weight:bold;margin-right:180px;float:left;">Primary  Sales State Wise</span>
+           </ion-item> 
+            <ion-item ng-click="vibrate();goTo('distributortarget')">
+               <span class="item-note" style="color:#4800ff;font-weight:bold;margin-right:180px;float:left;">Distributor Target Wise</span>
+           </ion-item> 
+
+         <ion-item  ng-click="vibrate();goTo('productwisesales')">
+               <span class="item-note" style="color:#4800ff;font-weight:bold;margin-right:180px;float:left;">Productwise Sales</span>
+           </ion-item> 
+
+
+
+        </ion-list>
+    </ion-content>
+    <ion-footer-bar class="bar-dark bar bar-footer">
+    <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+
+   
+</ion-footer-bar>
+</ion-view>

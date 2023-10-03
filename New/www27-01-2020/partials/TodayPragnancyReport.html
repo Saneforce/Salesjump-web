@@ -1,0 +1,100 @@
+<ion-view>
+    <div class="bar bar-subheader">
+        <div class="list">
+            <label class="item item-input item-date">
+                <div class="input-label cwhite">
+                    Date :
+                </div>
+                <input type="date" ng-model="dyRptDt"  />
+            </label>
+        </div>
+
+
+
+    </div>
+     
+   <ion-content >
+
+        <div id="vstpreview" style="margin-top: 42px;">
+            <div class = "row">
+               
+                  
+               </div>
+               <div class="select-component" ng-hide="view_MR" ng-if="(',F,IH,DH,').indexOf(','+Mypln.worktype.selected.FWFlg+',')>-1">
+                <div class="label">
+                    <div class="label-text">Headquarter</div>
+                </div>
+                <!-- <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('subordinate_master', 103)">
+                            {{(Mypln.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Fieldforce"  }}
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            
+
+  
+
+
+
+       
+
+
+             <ion-list  ng-if="fmcgData.modal.type==null || fmcgData.modal.type==0" >
+                             <ion-item ng-repeat="(i,Vstlist) in fmcgData.modal.vwVstlists track by $index" class="propCase" ng-style="Vstlist.orderValue>0 && {'background-color': ' #f1f1f1'}">
+                                 <span ng-if="Vstlist.orderValue>0 && modal.SlTyp!=3" class="ion-star" style="color: red;float: right"></span>
+                                 <div class="ro" style="padding-top:0px;padding-bottom:3px">
+                                     <h2 style="color:#39ac08;"><b>{{Vstlist.name}} </b><span style="float:right" ng-if="modal.SlTyp==3"><b>{{Vstlist.orderValue | number:2}}</b></span><span class="item-note propCase" style="color:#39ac08;white-space:nowrap !important;">{{Vstlist.vtime}}</span></h2>
+
+                                 </div>
+                                 <div class="ro" style="padding-top:5px;padding-bottom:0px">
+                                     <p>Date : <b style="color:#7e0ca5">{{Vstlist.Activity_Date}}</b></p>
+
+                                 </div>               
+                                                   
+                                          
+                               
+                                <div class="ro">                
+                                    <p style="white-space:pre-wrap !important;">Remarks : <b style="color:#7e0ca5">{{Vstlist.Remarks}}</b></p>
+                                      <p style="white-space:pre-wrap !important;">Confirm : <b style="color:#7e0ca5" ng-if="Vstlist.Order_No==1">YES </b> <b style="color:#7e0ca5" ng-if="Vstlist.Order_No==0">NO </b> </p>
+                                  <p style="white-space:pre-wrap !important;">FeedBack : <b  style="color:#7e0ca5" >{{Vstlist.Message}}</b>   </p>
+                                
+                                </div>  
+
+
+                                                 
+                             </ion-item>
+              </ion-list>
+
+
+          
+
+           
+        </div>
+       <!--  <div class="row moveDown">
+            <div class="col">
+                <div class='buttonC-container left-sidepull' ng-click="vibrate();modal.sendWhatsApp()">
+                    <img src="img/WhatsApp.png" />
+                    <div class='buttonC-text' style="white-space:nowrap">Whats App</div>
+
+                </div>
+            </div>
+            <div class="col">
+                <div class='buttonC-container left-sidepull' ng-click="vibrate();modal.sendEmail()">
+                    <img src="img/Email.png" />
+                    <div class='buttonC-text' style="white-space:nowrap">E-Mail</div>
+                </div>
+            </div>
+        </div> -->
+        <!-- <a href="#" id="btn-Convert-Html2Image">s</a> -->
+    </ion-content>
+    <ion-footer-bar class="bar-dark bar bar-footer">
+    <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+<!-- <button  class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+         submit()" >Submit</button> -->
+   
+</ion-footer-bar>
+</ion-view>

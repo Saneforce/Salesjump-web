@@ -1,0 +1,11 @@
+FMCG_Live Error:SELECT Last_Updation_Date FROM SSvwlastupdationdate as tab WHERE tab.SF_Code='ABIOMR0036' ORDER BY name asc
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'SSvwlastupdationdate'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'SSvwlastupdationdate'."}]
+data:{"tableName":"SSvwlastupdationdate","coloumns":"[\"Last_Updation_Date\"]","orderBy":"[\"name asc\"]","desig":"mgr"}FMCG_Live Error:exec TourPlan_Holyday_Auto_Insert 'ABIOMR0036' ,'undefined','undefined',' '
+|param:
+|error:[{"0":"22018","SQLSTATE":"22018","1":245,"code":245,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value 'undef' to data type int.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value 'undef' to data type int."}]
+data:{"tableName":"vwTourPlan","coloumns":"[\"date\",\"remarks\",\"worktype_code\",\"worktype_name\",\"RouteCode\",\"RouteName\",\"Worked_with_Code\",\"Worked_with_Name\",\"JointWork_Name\",\"Retailer_Code\",\"Retailer_Name\",\"Place_Inv\"]","orderBy":"[\"name asc\"]","desig":"mgr"}FMCG_Live Error:select  * from vwTourPlan t inner join Mas_Salesforce S on S.Sf_Code=t.sf_code 
+ where t.SF_Code='ABIOMR0036' and t.Tmonth=undefined and t.Tyear=undefined and cast(S.sf_TP_Active_Dt as date)<=cast(t.date as date) order by worktype_name
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'undefined'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'undefined'."},{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'undefined'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'undefined'."}]
+data:{"tableName":"vwTourPlan","coloumns":"[\"date\",\"remarks\",\"worktype_code\",\"worktype_name\",\"RouteCode\",\"RouteName\",\"Worked_with_Code\",\"Worked_with_Name\",\"JointWork_Name\",\"Retailer_Code\",\"Retailer_Name\",\"Place_Inv\"]","orderBy":"[\"name asc\"]","desig":"mgr"}

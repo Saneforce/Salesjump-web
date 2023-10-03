@@ -1,0 +1,33 @@
+﻿  <ion-view view-title="Menu">
+        <div>
+        <ion-side-menus  enable-menu-with-back-views="false">
+            <ion-side-menu-content>
+                <ion-header-bar class="bar bar-assertive item-input-inset" style="top:44px;">
+                    <div style="background-color:#444;margin-left:-38px;width:40px;height:200%;color:#ffffff;border:solid 1px #3A3A3A;border-radius:12px;"><i class="ion-android-more" style="position: relative;color: #fff;text-align: right;top: 10px;right: -30px;"></i></div>
+                    <div style="display:block;white-space:nowrap;padding-left:10px;">
+                        {{selCate}}
+                    </div>
+                </ion-header-bar>
+                <ion-content style="top:88px" delegate-handle="ProdScroll">
+                    <ion-checkbox ng-repeat="item in ProdByCat | filter:modal.searchText track by $index" ng-model="item.checked" ng-checked="item.checked" ng-click="vibrate();setSelProduct(item);">
+                        <div>{{item.name}}</div>
+                    </ion-checkbox>
+                    <div ng-if="ShowMsg"><center><h5 style="color:red">{{prodmsg}}</h5></center></div>
+                </ion-content>
+            </ion-side-menu-content>
+            <ion-side-menu side="left"  >
+                <ion-content class="ionic-scroll" style="background-color:#444;border-color:#444;color:#fff;"  delegate-handle="catScroll">
+                    <ion-list class="side_menu">
+                     
+                        <ion-item ng-repeat="item in ProdCategory" ng-click="filterProd(item);">
+                                <div>{{item.name}}</div>
+                        </ion-item>
+                    </ion-list>
+                </ion-content>
+            </ion-side-menu>
+        </ion-side-menus>
+        <!--<ion-footer-bar class="bar bar-footer bar-dark">
+            <button class="button button-clear button-primary" ng-click="vibrate();prdCloseMenu();modalProd.hide()">Close</button>
+            <button class="button buttonClear  button-positive pull-right" style="width:80px;" ng-click="vibrate();prdCloseMenu();svSelect(selectedProduct)">Ok</button>
+        </ion-footer-bar>-->
+            </div></ion-view>

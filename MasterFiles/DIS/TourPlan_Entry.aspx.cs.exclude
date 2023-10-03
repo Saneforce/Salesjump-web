@@ -1,0 +1,177 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Bus_EReport;
+using System.Data;
+
+public partial class MasterFiles_MGR_TourPlan_Entry : System.Web.UI.Page
+{
+    string sf_code = string.Empty;
+    DataSet dsTP = null;
+    string TP_Date = null;
+    DateTime dtTP;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        sf_code = Session["sf_code"].ToString();
+        TP_Date = Request.QueryString["TP_Date"].ToString();
+        if (!Page.IsPostBack)
+        {
+            lblHeadingText.Text = lblHeadingText.Text + TP_Date;
+            //Session["backurl"] = "LstDoctorList.aspx";
+            //menu1.Title = this.Page.Title;
+            FillTPDate();
+        }        
+
+
+    }
+
+    private void FillTPDate()
+    {
+        TourPlan tp = new TourPlan();
+        dsTP = tp.getManagerList(sf_code);
+        if (dsTP.Tables[0].Rows.Count > 0)
+        {
+            chkMGR.DataTextField = "Sf_Name";
+            chkMGR.DataValueField = "Sf_Code";
+            chkMGR.DataSource = dsTP;
+            chkMGR.DataBind();
+        }
+    }
+
+   protected void chkMGR_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string name = ""; 
+        chkHQ.Items.Clear();
+        TourPlan tp = new TourPlan();
+
+        for (int i = 0; i < chkMGR.Items.Count; i++)
+        {
+            if (chkMGR.Items[i].Selected)
+            {
+                name += chkMGR.Items[i].Text + ",";
+                //dsTP = tp.getManagerHQ(chkMGR.Items[i].Value.ToString());
+                dsTP = tp.get_TP_HQ(chkMGR.Items[i].Value.ToString());
+                
+                if (dsTP.Tables[0].Rows.Count > 0)
+                {
+                    chkHQ.Items.Add(dsTP.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+                }
+            }
+        }
+        txtMGR.Text = name;
+    }
+
+    protected void chkHQ_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string name = "";
+        chkFieldForce.Items.Clear();
+        TourPlan tp = new TourPlan();
+
+        for (int i = 0; i < chkHQ.Items.Count; i++)
+        {
+            if (chkHQ.Items[i].Selected)
+            {
+                name += chkHQ.Items[i].Text + ",";
+
+                dsTP = tp.get_TP_FieldForce(chkHQ.Items[i].Value.ToString());
+
+                if (dsTP.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dataRow in dsTP.Tables[0].Rows)
+                    {
+                        ListItem liTerr = new ListItem();
+                        liTerr.Value = dataRow["sf_code"].ToString();
+                        liTerr.Text = dataRow["sf_name"].ToString();
+
+                        //chkFieldForce.Items.Add(dataRow["sf_name"].ToString());
+                        chkFieldForce.Items.Add(liTerr);
+                    }
+                }
+
+            }
+        }
+        txtHQ.Text = name;
+    }
+
+    protected void chkFieldForce_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string name = "";
+        string svalue = "";
+        chkTerritory.Items.Clear();
+        TourPlan tp = new TourPlan();
+
+        for (int i = 0; i < chkFieldForce.Items.Count; i++)
+        {
+            if (chkFieldForce.Items[i].Selected)
+            {
+                name += chkFieldForce.Items[i].Text + ",";
+                svalue += chkFieldForce.Items[i].Value + ",";
+                //dsTP = tp.get_TP_Territory(chkFieldForce.Items[i].Value.ToString());
+                dsTP = tp.FetchTerritory(chkFieldForce.Items[i].Value.ToString());
+                
+                if (dsTP.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow dataRow in dsTP.Tables[0].Rows)
+                    {
+                        //chkTerritory.Items.Add(dataRow["Territory_Name"].ToString());
+                        ListItem liTerr = new ListItem();
+                        liTerr.Value = dataRow["Territory_Code"].ToString();
+                        liTerr.Text = dataRow["Territory_Name"].ToString();
+                        chkTerritory.Items.Add(liTerr);
+                    }
+                }
+
+            }
+        }
+        txtFieldForce.Text = name;
+        txtSFCode.Text = svalue;
+    }
+
+    protected void chkTerritory_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string name = "";
+        string svalue = "";
+        for (int i = 0; i < chkTerritory.Items.Count; i++)
+        {
+            if (chkTerritory.Items[i].Selected)
+            {
+                name += chkTerritory.Items[i].Text + ",";
+                svalue += chkTerritory.Items[i].Value + ",";
+            }
+        }
+        txtTerritory.Text = name;
+        txtTerr.Text = svalue;
+    }
+
+    protected void btnSubmit_Click(object sender, EventArgs e)
+    {
+        int iReturn = -1;
+        bool TP_Submit = true;
+
+        string TP_WW = "";
+        TP_WW = txtSFCode.Text;
+
+        string TP_Terr = txtTerr.Text;
+        string TP_Objective = txtObj.Text.ToString();
+        string sDay = TP_Date.Substring(0, TP_Date.IndexOf('/'));
+        string TP_Day = TP_Date.Substring(TP_Date.IndexOf('/') + 1, (TP_Date.Length - sDay.Length) - 1);
+        TP_Day = TP_Day.Substring(0, TP_Day.IndexOf('/'));
+
+        if (TP_Terr.Trim().Length > 0)
+        {
+            // Add New Tour Plan
+            TourPlan tp = new TourPlan();
+           // iReturn = tp.RecordAddMGR(TP_Date, TP_Day, TP_Terr, TP_WW, TP_Objective, TP_Submit, Session["sf_code"].ToString());
+        }
+
+        if (iReturn != -1)
+        {
+            lblStatus.Text = "TourPlan submitted Successfully!!";            
+        }
+
+    }
+}

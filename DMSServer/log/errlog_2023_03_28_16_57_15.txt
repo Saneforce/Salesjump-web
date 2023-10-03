@@ -1,0 +1,4 @@
+Error:exec GetConversion '29'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Mas_PrimaryConversion'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Mas_PrimaryConversion'."}]
+data:{"div":"29,","SF":"32469","Stk":"32469"}

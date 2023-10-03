@@ -1,0 +1,13 @@
+FMCG_AACHI Error:update Expense_Start_Activity set Enddateand_time='2023-09-29 22:04:11',End_Km='',End_Image_Url='',End_remarks='𝘿𝙖𝙩𝙚           : 29/09/2023
+𝙉𝙖𝙢𝙚         : 𝙍. 𝙍𝙖𝙢𝙚𝙨𝙝 𝙎𝙞𝙧. 𝙈𝙧. 𝙋𝙧𝙚𝙢 𝙠𝙪𝙢𝙖𝙧 𝙎𝙞𝙧 (𝙎.𝙎𝙈) 
+𝘿𝙞𝙨. 𝙉𝙖𝙢𝙚 : 𝙆𝙖𝙫𝙞𝙣
+𝘼𝙧𝙚𝙖            : 𝙏𝙝𝙞𝙧𝙪𝙢𝙖𝙡𝙖𝙥𝙖𝙙𝙞
+𝙏𝙤. 𝘾𝙖𝙡𝙡       : 59
+𝙀𝙛. 𝘾𝙖𝙡𝙡        : 55
+𝙏𝙤. 𝘼𝙢𝙩       : 47,570/-
+𝙎𝙩. 𝙏𝙞𝙢𝙚      : 09.30(A.M)
+𝙀𝙣. 𝙏𝙞𝙢𝙚     : 07.00(P.M)'
+		,End_MOT='PUBLIC TRANSPORT',Personal_Km='',End_Entry = '0',Fare = '0' where Sf_code='MR6843' and convert(date,ExpenseDate)='2023-09-29'
+|param:
+|error:[{"0":"22001","SQLSTATE":"22001","1":8152,"code":8152,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]String or binary data would be truncated.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]String or binary data would be truncated."},{"0":"01000","SQLSTATE":"01000","1":3621,"code":3621,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The statement has been terminated.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The statement has been terminated."}]
+data:{}

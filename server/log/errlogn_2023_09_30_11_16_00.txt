@@ -1,0 +1,4 @@
+FMCG_LUCKY Error:update vwDoctor_Master_APP set ListedDr_Address1 = where Doctor_Code='3727'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":156,"code":156,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'where'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'where'."}]
+data:{"Cust_Code":"'3727'","latlng":"13.151918471776698, 123.75250638009508","Addr":"Peñaranda Street, Barangay 33-Pnr-penaranda St.-iraya, Legazpi City, 4500 Albay, Philippines","Mode":"R","eKey":"EKLUk7MGR0002-1696052566"}

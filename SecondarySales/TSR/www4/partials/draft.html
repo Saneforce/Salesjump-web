@@ -1,0 +1,30 @@
+<ion-view>
+    <ion-content>
+        <div class="card" ng-if="nodata">
+            <div class="item item-text-wrap">
+                No Data Found
+            </div>
+        </div>
+        <ion-list ng-if="success">
+            <ion-item  href="#/fmcg/draftView?myChoice={{customer.id}}" ng-repeat="customer in customers">
+
+                {{ customer.name}}
+                <span class="badge badge-assertive" ng-if="customer.count">{{customer.count}}</span>
+            </ion-item>
+        </ion-list>
+        <div class="card" ng-if="owsuccess">
+            <div class="item item-divider">
+                {{(owTypeData.worktype_code| getValueforIDD : {'collection' : worktypes}).name }}
+
+            </div>
+            <div class="item item-text-wrap">
+                <b>Day Activity Remarks</b> :{{owTypeData.daywise_remarks}}
+            </div>
+            <div class="button-bar">
+                <a class="button button-balanced" ng-click="vibrate();saveEntry()">Save</a>
+                <a class="button button-calm" ng-click="vibrate();editEntry()">Edit</a>
+                <a class="button button-assertive" ng-click="vibrate();deleteEntry()">Delete</a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

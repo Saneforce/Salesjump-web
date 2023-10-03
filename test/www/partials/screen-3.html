@@ -1,0 +1,380 @@
+<ion-view>
+<div class="list list-inset" style="margin: 0px;margin-top: 54px;padding: 16px 10px 5px 10px;background-color: #f9f9f9;/* margin: 0px; */">
+         <label style="font-size: 100%;font-weight: bold;padding: 5px;" ng-if="(fmcgData.customer.selected.id == 1 ||fmcgData.customer.selected.id == 8 )  &&  fmcgData.FLDEMO!=1 ">
+         {{DrCap}} Name : {{fmcgData.doctor.name}}
+         </label>
+         <label style="font-size: 100%;font-weight: bold;padding: 5px;" ng-if="fmcgData.customer.selected.id == 3">
+         {{StkCap}} Name : {{(fmcgData.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+         </label>
+         <label style="font-size: 100%;font-weight: bold;padding: 5px;" >
+         Route Target <span class="badge badge-royal icon-badge">{{fmcgData.rootTarget}}</span>
+         </label>
+      <span style="float:right;font-size: small;padding: 0px 9px;color: #ef4e3a;margin-top: -14px;" ng-click="vibrate();OfferProduct()">  <img src="img/offer.png"  width="30">  </span>
+           <!--  <div ng-if="fmcgData.editableOrder!=1"  ng-click="vibrate();
+         submit()"  style="float: right;background: #0ea9be;border-radius: 7px;text-align: center;color: white;width: 65px;">
+               <div >Submit</div>
+            </div> -->
+          
+         <!-- <div class="select-component" style="display:none" ng-if="(',1,4,').indexOf(',' + fmcgData.customer.selected.id + ',') > -1 && AppTyp == 1">
+            <div class="label">
+               <div class="label-text">Order No</div>
+            </div>
+            <div class="select-box">
+               <div class="input-box">
+                  <input type="number" ng-model="fmcgData.OrderNo" class="input-css" placeholder="Order No" ng-click="vibrate();">
+               </div>
+            </div>
+         </div> -->
+      </div>
+      <!--  <div class="list-item" style="display:none;font-size: x-large;font-family: sans-serif;background: #fb6060;padding: 8px 5px;border: solid 1px #e40606;color: #f8f8f8;font-weight: 900;">
+            <div style="display:none;" ng-if="!fmcgData.inshopactivityopen && !fmcgData.inshopactivitycheckin &&  fmcgData.inshopactivitycheckin&& fmcgData.FLDEMO!=1 && fmcgData.Incentive!=1">Order Details</div>
+<div  ng-if="fmcgData.customer.selected.id == 8">Order Details</div>
+
+            <div style="display:none;" ng-if="fmcgData.inshopactivityopen">Inshop Sales</div>
+            <div style="display:none;" ng-if="fmcgData.FLDEMO==1">Demo Sample</div>
+            <div style="display:none;" ng-if="fmcgData.inshopactivitycheckin">Inshop CheckIn</div>
+            <div style="display:none;" ng-if="fmcgData.FLDEMO!=1 && fmcgData.Incentive!=1 && fmcgData.FLDEMO!=1 && !fmcgData.inshopactivitycheckin">Order Details</div>
+            <div style="display:none;" ng-if="PromoValND==1  && fmcgData.Incentive==1">Incentive/closing stock details</div>
+ <input type="checkbox"    ng-if="Cl_Filter==1" ng-click="addprop1($event)"/> 
+            <div class="col-md-12" style="margin: 0px 0px 18px 0px;" ng-if="Cl_Filter==1" >
+                <div class="form-group">
+                    <label for="chkb_Checked" class="required" style="font-weight: 900;color: #FFFFFF;">Cl Filter Given</label>  
+                        <label class="switch"    style="float: right;">
+                        <input type="checkbox" class="switch-input" ng-click="addprop1($event)">
+                        <span class="switch-label" data-on="YES" data-off="NO"></span>
+                   </label>
+               </div>   
+</div>
+         </div> -->
+          <div   ng-model="item.id" class="col col-100 gh" style="text-align:right;background-color:#fff;padding:0px 10px; box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.23) !important;
+" ><input type="search" placeholder="Search"  ng-change="searchChange(modal.searchText)"    ng-model="modal.searchText"> {{item.id}}</div> 
+   <ion-content  scroll="true" class="has-subheader" padding="true" style="overflow: none; margin-top: 122px;    z-index: -1;">
+      
+      
+      <ion-list>
+        
+         <div class="list-item"  ng-repeat="item in CatewsBillProd">
+         <!-- ng-click="vibrate();filterProd(item);" -->
+             
+             <div class="item-divider" ng-click="vibrate();filterProd(item);" style="border: 1px solid #f3ebeb;color: rgb(26, 192, 214);">
+            {{item.name}}<span style="float:right;padding:0px 5px"> <i class="arrow right"></i> </span><span     style="float:right;padding:0px 5px;font-weight: 900;" ng-hide="fmcgData.FLDEMO==1 || fmcgData.inshopactivitycheckin"> {{(item.SubTotal||0.00)|number:2}} </span>
+            <div ng-if="NRCPA==1 && fmcgData.customer.selected.id == 1 " style=" float: right;padding: 0px 5px;background: #11b0c5;color: white;border-radius: 7px;" ng-click="Comp(item)">RCPA</div>
+            </div>           
+            <div class="item-divider row" ng-if="item.Products" ng-hide="!item.ShowProd" style="padding:0px;border-bottom: dotted 1px #cac5c5;">
+               <div class="col col-10" ng-if="Product_img_nd==1" ></div>
+                <div class="col col-90" style="padding:0px;margin:0px">
+                    <div class="row" style="padding:0px;margin:0px">
+               <div class="col col-30 gh" style="text-align:right;color:#6e7173;" ng-if="fmcgData.Incentive!=1 &&fmcgData.FLDEMO!=1 && !fmcgData.inshopactivitycheckin &&!fmcgData.SupplierMaster" >Rate</div>
+               <div class="col col-29 gh" style="text-align:right;color:#6e7173;" ng-if="fmcgData.SupplierMaster" >C Rate</div>
+               <div class="col col-29 gh" style="text-align:right;color:#6e7173;" ng-if="fmcgData.SupplierMaster" >P Rate</div>
+               <div class="col col-20 gh" style="font-size: 12px;text-align:right;color:#6e7173;" ng-if="fmcgData.FLDEMO==1">Area(Acre)</div>
+              
+              
+               <div class="col col-{{qtCol}} gh" style="text-align:right;color:#6e7173;" ng-if="slTyp==1 && PromoValND!=2 &&fmcgData.Incentive!=1 &&!fmcgData.inshopactivitycheckin &&Cclbal!=1">Qty</div>
+
+               <!--  <div class="col col-{{qtCol}} gh" style="text-align:right;color:#6e7173;"  ng-if="slTyp==1 && Product_Remark==1">Remarks</div> -->
+               <div class="col col-16 gh" style="text-align:right;color:#6e7173;" ng-if="((slTyp==1 && PromoValND==2 &&fmcgData.Incentive!=1 &&!fmcgData.inshopactivitycheckin)|| slTyp==8 )">CQty</div>
+               <div class="col col-{{qtCol}} gh" style="text-align:right;color:#6e7173;" ng-if="((slTyp==1 && PromoValND==2 &&fmcgData.Incentive!=1 &&!fmcgData.inshopactivitycheckin)|| slTyp==8)">PQty</div>
+               <div class="col col-{{qtCol}} gh" style="text-align:right;color:#6e7173;" ng-if="slTyp==3  && fmcgData.Incentive!=1  && Cqty_Nd==1">C.Qty</div>
+               <div class="col col-{{qtCol}} gh" style="text-align:right;color:#6e7173;" ng-if="slTyp==3  && fmcgData.Incentive!=1  && Pqty_Nd==1">P.Qty</div>
+               <div class="col col-15 gh" style="text-align:right;color:#6e7173;" ng-if="(slTyp==1 && OfferMode>0 &&fmcgData.Incentive!=1 &&!fmcgData.inshopactivitycheckin) || (slTyp==3&&Pri_Scheme==1)" >Free</div>   
+               <div class="col col-20 gh" style="text-align:right;color:#6e7173;" ng-if="(slTyp==1 && OfferMode>0 && !fmcgData.inshopactivitycheckin ) ">Disc</div>    
+               <div class="col col-{{rtCol}} gh" style="text-align:right;color:#6e7173;" ng-if="fmcgData.Incentive!=1&&fmcgData.FLDEMO!=1 &&!fmcgData.inshopactivitycheckin">Amount</div>
+             <!--   <div class="col col-25 gh" style="text-align:right;color:#6e7173;" ng-show="slTyp==1 && PromoValND==1 && fmcgData.Incentive==1">Incentive</div>  -->  
+           </div>
+
+            </div>
+                     </div>
+             <div ng-repeat="itmProd in item.Products | filter:modal.searchText" ng-hide="!item.ShowProd" class="col" style="background-color:#fff;padding:0px;border-bottom: dotted 1px #cac5c5;"  ng-if="itmProd.Product_Type_Code!='O'"  >
+                   <div class="row" style="padding-top: 0px;">
+                        <div class="col col-10"   ng-if="Product_img_nd==1">
+                            <img  style="height: 100%;width: 200%;" src="{{itmProd.imageUri}}">
+                        </div>
+                        <div class="col col-90"> 
+                            <div class="row" style="padding-top: 0px;">
+                                <div class="col" style="font-size:13px;padding:5px 0px;color:#333;margin-left: 16px;">{{itmProd.product_Nm}}</div>
+                            </div>
+                            
+               <div class="row" style="margin-bottom: 8px;border-bottom: solid 1px #f9f9f9;">
+                  <div style="padding:0px 5px 0px 0px;text-align:right;" class="col col-25" ng-if="RateEditable != 1 &&  fmcgData.Incentive!=1 && fmcgData.FLDEMO!=1 &&!fmcgData.inshopactivitycheckin && !fmcgData.SupplierMaster">{{(itmProd.Rate||0.00)|number:2}}</div>
+
+               <div style="padding:0px 5px 0px 0px;text-align:right;" class="col col-29" ng-if="fmcgData.SupplierMaster">{{(itmProd.CRate||0.00)|number:2}}</div>
+               <div style="padding:0px 5px 0px 0px;text-align:right;" class="col col-29" ng-if="fmcgData.SupplierMaster">{{(itmProd.PRate||0.00)|number:2}}</div>
+             <div ng-if="Product_RCPA==1 &&  fmcgData.customer.selected.id == 1 " style=" float: right;padding: 0px 5px;background: #11b0c5;color: white;border-radius: 7px;" ng-click="ProductComp(itmProd)">RCPA</div>
+
+
+              <div style="padding:0px 5px 0px 0px;text-align:right;" class="col col-20" ng-if="RateEditable != 1 &&  fmcgData.Incentive!=1 && fmcgData.FLDEMO==1">
+
+              <input ng-if="fmcgData.FLDEMO==1" type="text" ng-model="itmProd.area"  class="efield"  ng-/>
+
+                </div>
+                  <div style="padding:0px 5px 0px 0px;text-align:right;" class="col col-30" ng-if="RateEditable == 1 &&slTyp!=8">
+                     <input type="number" ng-model="itmProd.Rate" class="efield" ng-focus="resetfBx(itmProd,4)" ng-blur="resetlBx(itmProd,4)" ng-change="pRowCalc(itmProd,item)" />
+                  </div>
+                <!--  <div style="padding:0px 5px 0px 0px;text-align:right;" class="col col-20" ng-if=" fmcgData.SupplierMaster">
+                     <input type="number" ng-model="itmProd.PRate" class="efield" ng-focus="resetfBx(itmProd,4)" ng-blur="resetlBx(itmProd,4)" ng-change="pRowCalc(itmProd,item)" />
+                  </div> 
+               <div style="padding:0px 5px 0px 0px;text-align:right;" class="col col-20" ng-if="RateEditable == 1  &&  fmcgData.SupplierMaster">
+                     <input type="number" ng-model="itmProd.CRate" class="efield" ng-focus="resetfBx(itmProd,4)" ng-blur="resetlBx(itmProd,4)" ng-change="pRowCalc(itmProd,item)" />
+                  </div> -->
+                 
+                  <div style="padding:0px 5px" class="col col-{{qtCol}}" ng-if="slTyp==1  &&PromoValND==0 &&!fmcgData.inshopactivitycheckin &&Cclbal!=1 && (Unit_Cnv!=1 || fmcgData.editableOrder==1)">
+                     <input type="number" ng-model="itmProd.rx_qty" class="efield" ng-focus="resetfBx(itmProd,0)" ng-blur="resetlBx(itmProd,0)" ng-mouseup="$event.preventDefault();" ng-change="pRowCalc(itmProd,item)"  min="0"/></div>
+
+                     <div style="padding:0px 5px" class="col col-{{qtCol}}" ng-if="slTyp==1  &&PromoValND==0 &&!fmcgData.inshopactivitycheckin &&Cclbal!=1 && Unit_Cnv==1 && fmcgData.editableOrder!=1 ">
+                     <input type="number" ng-model="itmProd.rx_Conqty" class="efield" ng-focus="resetfBx(itmProd,0)" ng-blur="resetlBx(itmProd,0)" ng-mouseup="$event.preventDefault();" ng-change="pRowCalc(itmProd,item)"  min="0"/></div>
+                 <div ng-if="Unit_Cnv==1 &&  fmcgData.customer.selected.id == 1 && fmcgData.editableOrder!=1" style=" float: right;padding: 0px 5px;background: #11b0c5;color: white;border-radius: 7px;"  ng-click="vibrate();openModal(UnitConversion,5559,itmProd.id,CatewsBillProd)">{{itmProd.UnitName}}</div>
+                
+<!-- <div class="row" style="padding-top: 0px;"    ng-if="slTyp==1 && Product_Remark==1" >
+                                <div  class="col col-60">
+                                    <div class="label-text">Reason </div>
+                                </div>
+                                <div  class="col col-40">
+                                    <span style="float:right;font-size: small;padding: 0px 9px;color: #f8920b;" ng-click="vibrate();openModal('nonreport_Product_master',5557,itmProd.id)">Templates  <span style="color:#989898;font-size: x-small;">v</span></span>
+                                </div>
+                            </div> -->
+
+
+
+             <div style="padding:0px 5px" class="col col-{{qtCol}}" ng-if="slTyp==1  && (PromoValND==1|| PromoValND==2)  && fmcgData.Incentive!=1&&!fmcgData.inshopactivitycheckin">
+                     <input type="number" ng-model="itmProd.rx_qtyy" class="efield" ng-focus="resetfBx(itmProd,0)" ng-blur="resetlBx(itmProd,0)" ng-mouseup="$event.preventDefault();" ng-change="pRowCalcc(itmProd,item)" /></div>
+             <div style="padding:0px 5px" class="col col-{{qtCol}}" ng-if="slTyp==1  &&  PromoValND==2 && fmcgData.Incentive!=1&&!fmcgData.inshopactivitycheckin">
+                     <input type="number" ng-model="itmProd.rx_qtyp" class="efield" ng-focus="resetfBx(itmProd,0)" ng-blur="resetlBx(itmProd,0)" ng-mouseup="$event.preventDefault();" ng-change="pRowCalcc(itmProd,item)" /></div>
+
+
+
+                 
+                  
+
+                  <div style="padding:0px 5px" class="col col-{{qtCol}}" ng-if="(slTyp==3  &&fmcgData.Incentive!=1 &&!fmcgData.inshopactivitycheckin  && Cqty_Nd==1) || slTyp==8 ">
+                     <input type="number" ng-model="itmProd.rx_qty" class="efield" ng-focus="resetfBx(itmProd,0)" ng-blur="resetlBx(itmProd,0)" ng-change="pPRowCalc(itmProd,item,'CQT')" /></div>
+                  <div style="padding:0px 5px" class="col col-{{qtCol}}" ng-if="(slTyp==3 && fmcgData.Incentive!=1 && Pqty_Nd==1) || slTyp==8 " >
+                     <input type="number" ng-model="itmProd.Prx_qty" class="efield" ng-focus="resetfBx(itmProd,1)" ng-blur="resetlBx(itmProd,1)"ng-change="pPRowCalc(itmProd,item)" /></div>
+
+
+
+
+                      <div style="padding:0px 5px;text-align:right" class="col col-15" ng-if="(slTyp==1 && OfferMode>0&&!fmcgData.inshopactivitycheckin) ||  (slTyp==3 && Pri_Scheme==1)">
+                     <span ng-if="OfferMode!=1 && fmcgData.Incentive!=1">{{itmProd.free}}</span>
+                     <input ng-if="(OfferMode==1 && fmcgData.Incentive!=1) ||  (slTyp==3 && Pri_Scheme==1)" type="number" ng-model="itmProd.free" class="efield" ng-focus="resetfBx(itmProd,5)" ng-blur="resetlBx(itmProd,5)" /></div>
+                     <div style="padding:0px 5px;text-align:right" class="col col-20" ng-if="(slTyp==1 && OfferMode>0  && fmcgData.Incentive!=1&&!fmcgData.inshopactivitycheckin) ">
+                     {{(itmProd.discount_price||0)|number:2}}                     
+                  </div>
+                  <div style="padding:0px 0px 0px 5px;text-align:right;font-weight: 900;color: #878a8c;" class="col col-{{rtCol}}" ng-if="((fmcgData.Incentive!=1 &&  fmcgData.FLDEMO!=1 &&!fmcgData.inshopactivitycheckin)||slTyp==8)">{{(itmProd.sample_qty||0.00)|number:2}}</div>
+
+                 <!--  <div style="padding:0px 5px" class="col col-25" ng-show="slTyp==1 && PromoValND==1  fmcgData.Incentive!=0">
+                     <input type="number" ng-model="itmProd.PromoVal" class="efield" ng-focus="resetfBx(itmProd,6)" ng-blur="resetlBx(itmProd,6)" /></div> -->
+
+
+               </div>
+                 <div class="row" style="padding:5px 0px;color:#6c3;" ng-if="fmcgData.inshopactivityopen || clbal==1">
+   <div class="col-30" style="padding:5px 0px;color:#6c3;">
+                     <label for="cb_{{$index}}" style="font-size: 10px;margin-top: -4px;float: right;color: #888888;font-weight: bold; margin-left: 27px;">CL</label>
+                     <input type="number" id="cb_{{$index}}" ng-model="itmProd.cb_qty" class="efield"  ng-focus="resetfBx(itmProd,3)" ng-blur="resetlBx(itmProd,3)"/>
+                
+                </div>  
+
+ <div class="col-50"  ng-if="Cclbal==1 && fmcgData.customer.selected.id == 1 "  style="padding:5px 0px;color:#6c3;">
+                     <label for="cb_{{$index}}" style="font-size: 10px;margin-top: -4px;float: right;color: #888888;font-weight: bold; margin-left: 27px;">CCL</label>
+                     <input type="number" id="Number1" ng-model="itmProd.Ccb_qty" class="efield"  ng-focus="resetfBx(itmProd,3)" ng-blur="resetlBx(itmProd,3)"/>
+                  </div>
+
+              </div>
+               <div class="row" style="padding-top: 12px;margin-bottom: 8px;" ng-if="slTyp==1 && (MfgDtNeed==1 || RetCBNd==1 || OfferMode==1 || opbal==1  || clbal==1 || fmcgData.Incentive==1 || MinimumOQ!=0 || DyInvNeed==1 )">
+
+                  <div class="col-20" style="padding:5px 0px;color:#6c3;"><div ng-if="MfgDtNeed==1">
+                     <label for="mfg_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold;">Mfg Date</label>
+                     <input type="text" id="mfg_{{$index}}" ng-model="itmProd.Mfg_Date" class="efield" style="text-align:left"/></div>
+                  </div>
+
+                   <!-- <div    class="col-40" style="padding:5px 5px;color:#6c3;"  ng-if="slTyp==1 && PromoValND==1 && fmcgData.Incentive==1"><div >
+                     <label for="dis_{{$index}}" style="font-size: 15px;margin-top: -14px;float: left;color: #888888;font-weight: bold;     margin-left: 56px;">Incentive</label>
+                      <input type="number" ng-model="itmProd.PromoVal" class="efield" ng-focus="resetfBx(itmProd,6)" ng-blur="resetlBx(itmProd,6)" /></div>
+                  </div>  -->
+
+
+                  <div class="col-40" style="padding:5px 0px;color:#6c3;"  ng-if="slTyp==1 && PromoValND==1 && fmcgData.Incentive==1"><div>
+                     <label for="cb_{{$index}}" style="font-size: 15px;margin-top: -14px;float: left;color: #888888;font-weight: bold;     margin-left: 34px;">Closing Stock</label>
+                     <input type="number" id="Number2" ng-model="itmProd.cb_qty" class="efield"  ng-focus="resetfBx(itmProd,3)" ng-blur="resetlBx(itmProd,3)"/></div>
+                  </div>
+                 
+
+                  <div class="col-15" style="padding:5px 5px;color:#6c3;"   ng-if="opbal==1 "  ><div >
+                     <label for="dis_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold; margin-left: 14px; ">Op</label>
+                     <input  type="number" ng-model="itmProd.OP" ng- class="efield"  readonly/></div>
+                  </div>
+                  <!-- <div class="col-15" style="padding:5px 5px;color:#6c3;"  ng-if="MinimumOQ!=0"  ng-hide="fmcgData.inshopactivityopen"><div >
+                     <label for="dis_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold;  margin-left: 27px;">Op</label>
+                     <input  type="number" ng-model="itmProd.OP" ng- class="efield"  readonly/></div>
+                  </div>
+ -->
+<!--  <div class="col-15" style="padding:5px 0px;color:#6c3;" ng-if="MinimumOQ!=0  &&fmcgData.Incentive==0 ||  fmcgData.inshopactivitycheckin " ng-hide="fmcgData.inshopactivityopen"><div>
+                     <label for="cb_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold;">CL</label>
+                     <input type="number" id="cb_{{$index}}" ng-model="itmProd.cb_qty" class="efield"  ng-focus="resetfBx(itmProd,3)" ng-blur="resetlBx(itmProd,3)"/></div>
+                  </div> -->
+        
+       <div class="col-15" style="padding:5px 5px;color:#6c3;" ng-if="MinimumOQ!=0"   ng-hide="fmcgData.inshopactivityopen"><div>
+                     <label for="dis_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold;">MOQ</label>
+                     <input   type="text" ng-model="itmProd.MOQ" ng- class="efield"  readonly /></div>
+                  </div> 
+
+              <div class="col-20" style="padding:5px 5px;color:#6c3;" ng-if="fmcgData.vansales==1"  ><div>
+                     <label for="dis_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold;">DI</label>
+                     <input   type="text" ng-model="itmProd.dailyinvqty" ng- class="efield" style="margin-left: -18px;" readonly /></div>
+                  </div>
+
+
+                  <div class="col-20" style="padding:5px 5px;color:#6c3;" ng-if="OfferMode==1  && fmcgData.FLDEMO!=1 &&!fmcgData.inshopactivitycheckin"><div>
+                     <label for="dis_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold;">Disc %</label>
+                     <input ng-if="OfferMode==1" id="dis_{{$index}}" type="number" ng-model="itmProd.discount" ng-change="pRowCalc(itmProd,item)" class="efield"  ng-focus="resetfBx(itmProd,2)" ng-blur="resetlBx(itmProd,2)" /></div>
+                  </div>
+
+                  <div class="col-20" style="padding:5px 5px;color:#6c3;" ng-if="OfferMode==1 "><div>
+                     <label for="dis_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold;">{{itmProd.Fname}}</label>
+                     
+                      </div> 
+
+                      <div class="col-20" style="padding:5px 5px;color:#6c3;" ng-if="OfferMode==1"><div>
+                    
+                         <input ng-if="OfferMode==1" id="Hidden1" type="hidden" ng-model="itmProd.FreeP_Code" class="efield"   ng-blur="resetlBx(itmProd,2)" /></div>
+                      </div> 
+                   </div>
+            </div>
+  <div class="row" style="padding-top: 12px;margin-bottom: 8px;" ng-if="slTyp==3 && Pri_Scheme==1">
+ <div class="col-30" style="padding:5px 5px;color:#6c3;" ng-if="OfferMode==1  && fmcgData.FLDEMO!=1 &&!fmcgData.inshopactivitycheckin"><div>
+                     <label for="dis_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold;">Disc % </label>
+                     <input ng-if="OfferMode==1" id="dis_{{$index}}" type="number" ng-model="itmProd.discount" ng-change="pPRowCalc(itmProd,item,'CQT')" class="efield"  ng-focus="resetfBx(itmProd,2)" ng-blur="resetlBx(itmProd,2)" /></div>
+                  </div>
+
+                   <div class="col-30"style="padding:0px 5px;text-align:right" >
+                     <label for="dis_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold;">Disc</label>
+                     {{(itmProd.discount_price||0)|number:2}}                     
+                  </div>
+
+
+
+
+                  <div class="col-20" style="padding:5px 5px;color:#6c3;" ng-if="slTyp==3 && Pri_Scheme==1"><div>
+                     <label for="dis_{{$index}}" style="font-size: 10px;margin-top: -14px;float: left;color: #888888;font-weight: bold;">{{itmProd.Fname}}</label>
+                     
+                      </div> 
+
+                      <div class="col-20" style="padding:5px 5px;color:#6c3;" ng-if="OfferMode==1"><div>
+                    
+                         <input ng-if="OfferMode==1" id="Hidden1" type="hidden" ng-model="itmProd.FreeP_Code" class="efield"   ng-blur="resetlBx(itmProd,2)" /></div>
+                      </div> 
+                   </div>
+</div> 
+
+
+                            <div class="row" style="padding-top: 0px;"    ng-if="slTyp==1 && Product_Remark==1" >
+                                <div  class="col col-60">
+                                    <div class="label-text">Reason </div>
+                                </div>
+                                <div  class="col col-40">
+                                    <span style="float:right;font-size: small;padding: 0px 9px;color: #f8920b;" ng-click="vibrate();openModal('nonreport_Product_master',5557,itmProd.id)">Templates  <span style="color:#989898;font-size: x-small;">v</span></span>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-top: 0px;"    ng-if="slTyp==1 && Product_Remark==1" >
+                                 <input type="text"  placeholder="Select from Template"  ng-model="itmProd.rx_remarks"  ng-focus="resetfBx(itmProd,0)" ng-blur="resetlBx(itmProd,0)" style="background: #f9f9f9;border-color: blue;border-radius: 9px;color: black;" readonly />
+                           </div>
+                        </div>
+                    </div>
+            <div style="height:1px"></div>
+         </div>
+         </div>
+         <div class="row" style="color: #096767;font-size: 100%;font-weight: 900;background: #fff;" ng-hide="fmcgData.inshopactivitycheckin">
+            <div class="col">Total Amount <div style="float:right;font-weight: 900;font-size:125%">{{(GTotal||0.00)|number:2}}</div></div>
+         </div>
+      </div>
+      <div class="row" ng-if="TDisc==1 && fmcgData.customer.selected.id == 1 " >
+         <div class="col-33"  ng-hide="fmcgData.inshopactivitycheckin">
+            <p>Discount %</p>
+            <input   type="number"  ng-change="netAmount()" ng-model="fmcgData.discounttt"  style="borderolid 1px #c4c4c4;width: 101px;" class="efield ng-pristine ng-valid ng-valid-number" placeholder= "Discount"  min="0">
+         </div>
+         <div class="col-50" ng-hide="fmcgData.inshopactivitycheckin" >
+            <div class="col-55">
+               <span  style="float:right;margin-top: 18px;margin-right: 30px;font-size:16px;color:green;font-weight:bold" class="ngLabel ng-binding">Discount: {{fmcgData.dis}}</span>
+            </div>
+            <div class="col-55" >
+               <span  style="float:right;margin-top: 18px;margin-right: 30px;font-size:16px;color:green;font-weight:bold" class="ngLabel ng-binding">Net Amount: {{fmcgData.netamount}}</span>
+            </div>
+         </div>
+      </div>
+      <div style="padding:10px 5px">
+         <div class="select-component"   ng-hide="(slTyp==3 && Supplier_Master==1 && view_MR!=1)||fmcgData.SupplierMaster==true"   ng-if="fmcgData.worktype.selected.FWFlg == 'F' && (DistBased==0 || SupplyThrow==1)  ">
+            <div class="label" ng-if="fmcgData.worktype.selected.FWFlg == 'F' && DistBased==0  && slTyp!=3 " >
+               <div class="label-text">{{StkCap}}</div>
+            </div>
+            <div class="label" ng-if="fmcgData.worktype.selected.FWFlg == 'F' && SupplyThrow==1  && slTyp!=3">
+               <div class="label-text">Supply Through Distributor</div>
+            </div>
+
+
+            <div class="select-box" ng-hide="slTyp==3">
+               <div class="input-box">
+                  <div class="input-css" ng-click="vibrate();
+                     openModal('stockist_master', 4, fmcgData.subordinate.selected.id)">
+                     {{(fmcgData.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="label" ng-if="slTyp==3 && Supplier_Master==1  && SF_type !=5 ">
+               <div class="label-text">Supply Through</div>
+            </div>
+
+                <div class="select-box"  ng-if="slTyp==3 && Supplier_Master==1  ">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                                openModal('SupplierMster', 508,fmcgData.subordinate.selected.id)">
+                            {{(fmcgData.Super_Stck_code.selected.id| getValueforIDD : {'collection' : SupplierMster}).name  || "Select Supply Through"}}
+                            
+                        </div>
+                    </div>
+                </div>
+      </div>
+      <div class="row moveDown">
+         <div class="col">
+            <div class='buttonC-container left-sidepull' ng-click="vibrate();openOptMenu()">
+               <div class="buttonC">
+                  <i class="icon ion-images footer-icon" style="line-height: 45px;"></i>
+               </div>
+               <div class='buttonC-text'>Event Captures</div>
+            </div>
+         </div>
+      </div>
+        <!-- <div style="margin:30px 10px">
+            <button ng-if="(fmcgData.customer.selected.id == 1&& fmcgData.editableOrder!=1)||(SPNeed==1&&fmcgData.customer.selected.id == 3)||(fmcgData.customer.selected.id == 8)" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+                 submit()" ng-hide="fmcgData.submitdis">
+                Submit
+            </button>
+            <button ng-if="fmcgData.editableOrder==1 && fmcgData.customer.selected.id !=3" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+                 editOrder()">
+                Save
+            </button>
+        </div> -->
+
+        <!--  <button ng-if="(fmcgData.customer.selected.id != 1 && fmcgData.editableOrder!=1) && fmcgData.customer.selected.id != 3 && fmcgData.customer.selected.id != 4"  class="button button-assertive buttonClear pull-right"ng-click="vibrate();
+         goNext()">&nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-right-c"></i>&nbsp;&nbsp;&nbsp;</button> -->
+      <button style="margin-top: 15px;" ng-if="(fmcgData.customer.selected.id == 1&& fmcgData.editableOrder!=1)||(SPNeed==1&&fmcgData.customer.selected.id == 3)||(fmcgData.customer.selected.id == 8)" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+         submit()" ng-hide="fmcgData.submitdis">Submit</button>
+      <button  ng-if=" fmcgData.editableOrder==1&&fmcgData.customer.selected.id!= 3" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+         editOrder()">Save</button>
+      <div style="height: 50px">
+      </div>
+   </ion-content>
+   <!-- <ion-footer-bar class="bar-dark">
+     <!--  <button ng-if=" fmcgData.editableOrder!=1" class="button button-assertive buttonClear pull-left" ng-click="vibrate();
+         goBack()">
+      &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+      </button> 
+      <button ng-if="(fmcgData.customer.selected.id != 1 && fmcgData.editableOrder!=1) && fmcgData.customer.selected.id != 3 && fmcgData.customer.selected.id != 4"  class="button button-assertive buttonClear pull-right"ng-click="vibrate();
+         goNext()">&nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-right-c"></i>&nbsp;&nbsp;&nbsp;</button>
+      <button ng-if="(fmcgData.customer.selected.id == 1&& fmcgData.editableOrder!=1)||(SPNeed==1&&fmcgData.customer.selected.id == 3)||(fmcgData.customer.selected.id == 8)" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+         submit()" ng-hide="fmcgData.submitdis">Submit</button>
+      <button  ng-if=" fmcgData.editableOrder==1&&fmcgData.customer. .id != 3" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+         editOrder()">Save</button>
+   </ion-footer-bar>-->
+</ion-view>

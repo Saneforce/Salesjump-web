@@ -1,0 +1,4 @@
+Error:exec getDistStockLedger '189','2021-04-01','2023-07-06 00:00:00'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Customer_Monthly_ClStock'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Customer_Monthly_ClStock'."}]
+data:{"Stk":"189"}

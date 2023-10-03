@@ -1,0 +1,7 @@
+Error:select State_Code, Division_Code,Distributor_Price,Retailor_Price,MRP_Price,Product_Detail_Code from vwProductStateRates where Division_code='29' and State_Code=
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '='.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '='."}]
+data:Error:exec getService_OutletSummary_Channelwise 'SS465','29'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getService_OutletSummary_Channelwise'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getService_OutletSummary_Channelwise'."}]
+data:{"sfCode":"SS465","divCode":"29,","dt":"2023-09-23","loginType":"SuperStockist"}

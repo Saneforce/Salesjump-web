@@ -1,0 +1,16 @@
+<div class="modal">
+    <ion-header-bar class="bar bar-header bar-positive">
+        
+
+       <div ng-if="FindRoutemodalMap.rfinder"> Distance:{{FindRoutemodalMap.km}}</div> 
+ 
+
+   <button class="button buttonClear button-calm pull-left" ng-click="FindRoutemodalMap.GoogleRoute()" style="
+    margin-left: 23px;
+">Route</button>
+        <button class="button buttonClear  button-positive pull-right" ng-click="console.log($('.pac-container').length);$('.pac-container').remove();FindRoutemodalMap.hide();FindRoutemodalMap.hidefunction()">Close</button>
+    </ion-header-bar>
+    <ion-content>
+        <div id="map_canvas"></div>
+    </ion-content>
+</div>

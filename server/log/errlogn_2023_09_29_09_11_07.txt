@@ -1,0 +1,4 @@
+FMCG_ARBRO Error:select  tl.Sf_Code sfcode, ms.Sf_Name username,MAX(tl.Lat) lat,MAX(tl.Lon) long,MAX(tl.DtTm) lastdate,isnull(MAX(ms.Profile_Pic),'') profilepic from Mas_Salesforce ms with (nolock) inner join tbTrackLoction  tl with (nolock) on tl.SF_code = ms.Sf_Code where ms.Sf_Code in () and convert(date,tl.DtTm)='2023-09-29' and Lat <> '' and Lon <> '' group by tl.SF_code,ms.Sf_Name
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near ')'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near ')'."}]
+data:{}

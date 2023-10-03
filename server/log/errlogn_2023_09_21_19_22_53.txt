@@ -1,0 +1,4 @@
+FMCG_TSR Error:SELECT  FROM vwactivity_msl_details_tsr as tab WHERE tab.SF_Code='TSRMR0009'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":156,"code":156,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'FROM'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'FROM'."}]
+data:{"tableName":"vwactivity_msl_details"}

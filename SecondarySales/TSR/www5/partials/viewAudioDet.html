@@ -1,0 +1,25 @@
+﻿<ion-view>
+    <ion-content>    
+        <div class="row">
+            <div class="col col-40">
+                Product
+            </div>
+            <div class="col col-40">
+                File Name
+            </div>
+            <div class="col"></div>
+        </div>
+          <div class="row">
+            <div class="col col-30">
+              {{productDetail.Product_Detail_Name}}
+            </div>
+              <div class="col col-30">
+              {{productDetail.File_Name}}
+            </div>
+            <div class="col">
+                <button ng-click="play(productDetail.File_Name,productDetail.File_Type)" class="button button-small button-balanced">Play</button>
+            </div>
+        </div>
+</ion-content>
+    
+</ion-view>

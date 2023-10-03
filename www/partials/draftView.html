@@ -1,0 +1,75 @@
+<ion-view>
+    <ion-content>
+        <ion-list>
+            <ion-item class="item" ng-repeat="draft in drafts" item="draft" ng-show="draft.customer.selected.id == myChoice">
+                <div class="data-table">                   
+                    <div class="ro" ng-if="draft.doctor">
+                        <div class="co">
+                            {{DrCap}} Name
+                        </div>
+                        <div class="co">
+                            {{draft.doctor.name}}
+
+                        </div>                        
+                    </div>
+                    <div class="ro" ng-if="draft.stockist">
+                        <div class="co">
+                            {{StkCap}} Name
+                        </div>
+                        <div class="co">
+                            {{draft.stockist.name}}
+                        </div>                        
+                    </div>
+                    <div class="ro" ng-if="draft.chemist">
+                        <div class="co">
+                            {{ChmCap}} Name
+                        </div>
+                        <div class="co">
+                            {{draft.chemist.name}}
+                        </div>                        
+                    </div>
+                    <div class="ro" ng-if="draft.uldoctor">
+                        <div class="co">
+                            {{NLCap}} Name
+                        </div>
+                        <div class="co">
+                            {{draft.uldoctor.name}}
+                        </div>                        
+                    </div>
+
+                    <div class="ro">
+                        <div class="co">
+                            Cluster
+                        </div>
+                        <div class="co">
+                            {{draft.cluster.name }}
+                        </div>                        
+                    </div>
+                    <div class="ro">
+                        <div class="co">
+                            Meet Time
+                        </div>
+                        <div class="co">
+                            {{draft.entryDate| date:'medium'}}
+                        </div>                        
+                    </div>
+                </div>  
+                <ion-option-button class="button-calm" ng-click="vibrate();edit(draft)">
+                    Edit
+                </ion-option-button>
+                <!--<ion-option-button class="button-primary" ng-click="vibrate();save(draft)">
+                    Submit
+                </ion-option-button>-->
+                <ion-option-button class="button-energized"
+                                   ng-click="vibrate();preView(draft)">
+                    View
+                </ion-option-button>
+                <ion-option-button class="button-assertive"
+                                   ng-click="vibrate();deleteDrftList(draft)">
+                    Delete
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+
+</ion-view>

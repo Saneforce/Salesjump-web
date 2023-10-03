@@ -1,0 +1,11 @@
+FMCG_Live Error:select isnull(min(vstTime),'-') FC,isnull(sum(iif(Vst=1,1,0)),0) vc,isnull(sum(iif(Ord=1 and isnull(Stockist_Code,0)>0,1,0)),0) pc,isnull(sum(Order_Value),0) oVal from (
+	select h.SF_code,cast(Activity_Date as date) Activity_Date,vstTime,Trans_Detail_Info_Code,oh.Stockist_Code,oh.Order_Value
+	,ROW_NUMBER() over(partition by Trans_Detail_Info_Code order by Trans_Detail_Info_Code) Vst
+	,ROW_NUMBER() over(partition by Stockist_Code order by Stockist_Code) Ord
+	from DCRMain_Trans h inner join DCRDetail_CSH_Trans d on H.Trans_SlNo=d.Trans_SlNo
+	left outer join Trans_PriOrder_Head oh on h.Sf_Code=oh.Sf_Code and cast(Activity_Date as date)=cast(Order_Date as date) and cast(Trans_Detail_Info_Code as varchar)=oh.Stockist_Code and oh.Order_value>0
+	where cast(Activity_Date as date)='2023-09-23 00:00:00' and h.SF_code='MR4126'
+	) as Pri
+|param:
+|error:[{"0":"22007","SQLSTATE":"22007","1":242,"code":242,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The conversion of a varchar data type to a datetime data type resulted in an out-of-range value.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The conversion of a varchar data type to a datetime data type resulted in an out-of-range value."}]
+data:{"coloumns":"[\"worktype\",\"FWFlg\",\"sf_member_code as subordinateid\",\"cluster as clusterid\",\"ClstrName\",\"remarks\",\"stockist as stockistid\",\"worked_with_code\",\"worked_with_name\",\"dcrtype\",\"location\",\"name\",\"Sprstk\",\"Place_Inv\",\"WType_SName\",\"convert(varchar,Pln_date,20) plnDate\"]","desig":"mgr","tableName":"vwMyDayPlan"}

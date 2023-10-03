@@ -1,0 +1,7 @@
+FMCG_SFPDN Error:exec Get_Expense_Details 'SFPDNMR0012' ,'9' ,'2023','248' 
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":205,"code":205,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]All queries combined using a UNION, INTERSECT or EXCEPT operator must have an equal number of expressions in their target lists.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]All queries combined using a UNION, INTERSECT or EXCEPT operator must have an equal number of expressions in their target lists."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}FMCG_SFPDN Error:select cast(Add_Sub+Exp_Amnt as numeric) amt from expense_additional where transh_exp=''
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":8114,"code":8114,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Error converting data type varchar to numeric."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}

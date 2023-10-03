@@ -1,0 +1,143 @@
+﻿    <ion-view>
+        <div>
+
+            
+        <div class="bar bar-subheader noborder" >
+            <div class="row">
+            <div class="col">
+             <span  style="font-weight:bold;float:right">{{orders}}</span>&nbsp;&nbsp;
+
+             <span  style="font-weight:bold;float:right">Orders:</span>
+
+            </div>
+                 <div class="col col-25">
+              <span  style="font-weight:bold;float:right">{{totalOrderValue}}</span>
+
+              <span  style="font-weight:bold;float:right" >Order Value:</span>
+
+                 </div>
+                 <div class="col col-20">
+               <button class="button button-small button-balanced" style="float:right;margin-top:-10px;"  ng-click="vibrate();compose()">View All</button>
+                 </div>
+                </div>
+             
+
+
+        </div>
+        </div>
+        <ion-content>
+        <div style="margin-top:44px;"></div>
+        
+<!--<pre>{{selected_images[0].selected}}</pre>-->
+
+           <div ng-repeat="num in range(productsimg.length, 4)">
+ 
+                 
+                   <div class="row">
+            <div class="col col-25">
+
+                <div  class="image" ng-click="addProducts(productsimg[num]);"
+      class="img-responsive" 
+      ng-class="{ 'selected-image': productsimg[num].selected }"   ng-style="{'background-image':'url({{productImgPath+productsimg[num].imagename}})'}" >
+<img style="margin-bottom:-100px;margin-left:120px;" src="../www/img/checkmark.png" ng-if="productsimg[num].selected==true"/>
+
+                </div>
+
+                <div ng-if="productsimg[num].selected==true">
+              <div class="row">
+                 <span style="color:blue;font-weight:bold">Qty</span>&nbsp;
+    <input type="text" ng-model="productsimg[num].qty" ng-change="qtyChange(productsimg[num])" style="border-bottom:1px solid #ff0000;background:none;width:60px;font-size:15px;height:20px;color:blueviolet;font-weight:bold"/>&nbsp;&nbsp;
+                <img src="../www/img/Rupee-25.png" ng-if="productsimg[num].selected==true"/>
+ <span style="color:green;font-weight:bold">{{productsimg[num].rate}}</span>
+              </div>
+             <!--   <div ng-if="DrSmpQ==1">-->
+
+             <div class="row" style="margin-top:10px;">
+                <span style="color:green;font-weight:bold">Total</span>
+                  &nbsp;
+                  <span class="badge badge-balanced">{{productsimg[num].value}}</span>
+              </div></div></div>
+    
+
+                   <div class="col col-25" ng-if="productsimg[num+1].rate!=null">
+
+                <div  class="image" ng-click="addProducts(productsimg[num+1]);"
+      class="img-responsive" 
+      ng-class="{ 'selected-image': productsimg[num+1].selected }"   ng-style="{'background-image':'url({{productImgPath+productsimg[num+1].imagename}})'}">
+<img style="margin-bottom:-100px;margin-left:120px;" src="../www/img/checkmark.png" ng-if="productsimg[num+1].selected==true"/>
+
+                </div>
+
+                <div ng-if="productsimg[num+1].selected==true">
+              <div class="row">
+                 <span style="color:blue;font-weight:bold">Qty</span>&nbsp;
+    <input type="text" ng-model="productsimg[num+1].qty" ng-change="qtyChange(productsimg[num+1])" style="border-bottom:1px solid #ff0000;background:none;width:60px;font-size:15px;height:20px;color:blueviolet;font-weight:bold"/>&nbsp;&nbsp;
+                <img src="../www/img/Rupee-25.png" ng-if="productsimg[num+1].selected==true"/>
+ <span style="color:green;font-weight:bold">{{productsimg[num+1].rate}}</span>
+              </div>
+             <!--   <div ng-if="DrSmpQ==1">-->
+             <div class="row" style="margin-top:10px;">
+                <span style="color:green;font-weight:bold">Total</span>&nbsp;
+                  <span class="badge badge-balanced">{{productsimg[num+1].value}}</span>
+              </div></div></div>
+            
+                    <div class="col col-25" ng-if="productsimg[num+2].rate!=null">
+
+                <div  class="image" ng-click="addProducts(productsimg[num+2]);"
+      class="img-responsive" 
+      ng-class="{ 'selected-image': productsimg[num+2].selected }"   ng-style="{'background-image':'url({{productImgPath+productsimg[num+2].imagename}})'}">
+<img style="margin-bottom:-100px;margin-left:120px;" src="../www/img/checkmark.png" ng-if="productsimg[num+2].selected==true"/>
+
+                </div>
+
+                <div ng-if="productsimg[num+2].selected==true">
+              <div class="row">
+                 <span style="color:blue;font-weight:bold">Qty</span>&nbsp;
+    <input type="text" ng-model="productsimg[num+2].qty" ng-change="qtyChange(productsimg[num+2])" style="border-bottom:1px solid #ff0000;background:none;width:60px;font-size:15px;height:20px;color:blueviolet;font-weight:bold"/>&nbsp;&nbsp;
+                <img src="../www/img/Rupee-25.png" ng-if="productsimg[num+2].selected==true"/>
+ <span style="color:green;font-weight:bold">{{productsimg[num+2].rate}}</span>
+              </div>
+             <!--   <div ng-if="DrSmpQ==1">-->
+             <div class="row" style="margin-top:10px;">
+                  <span style="color:green;font-weight:bold">Total</span> &nbsp;
+                  <span class="badge badge-balanced">{{productsimg[num+2].value}}</span>
+              </div></div></div>
+          
+              <div class="col col-25"  ng-if="productsimg[num+3].rate!=null">
+
+                <div  class="image" ng-click="addProducts(productsimg[num+3]);"
+      class="img-responsive" 
+      ng-class="{ 'selected-image': productsimg[num+3].selected }"   ng-style="{'background-image':'url({{productImgPath+productsimg[num+3].imagename}})'}" >
+<img style="margin-bottom:-100px;margin-left:120px;" src="../www/img/checkmark.png" ng-if="productsimg[num+3].selected==true"/>
+
+                </div>
+
+                <div ng-if="productsimg[num+3].selected==true">
+              <div class="row">
+                 <span style="color:blue;font-weight:bold">Qty</span>&nbsp;
+    <input type="text" ng-model="productsimg[num+3].qty" ng-change="qtyChange(productsimg[num+3])" style="border-bottom:1px solid #ff0000;background:none;width:60px;font-size:15px;height:20px;color:blueviolet;font-weight:bold"/>&nbsp;&nbsp;
+                <img src="../www/img/Rupee-25.png" ng-if="productsimg[num+3].selected==true"/>
+ <span style="color:green;font-weight:bold">{{productsimg[num+3].rate}}</span>
+              </div>
+             <!--   <div ng-if="DrSmpQ==1">-->
+             <div class="row" style="margin-top:10px;">
+                  <span style="color:green;font-weight:bold">Total</span> &nbsp;
+                  <span class="badge badge-balanced">{{productsimg[num+3].value}}</span>
+              </div></div></div>
+           
+       </div>
+               </div>
+               </ion-content>
+        <ion-footer-bar class="bar-dark">
+        <button ng-if=" fmcgData.editableOrder!=1" class="button button-assertive buttonClear pull-left" ng-click="vibrate();
+            goBack()">
+            &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+        </button>
+        <button ng-if="fmcgData.customer.selected.id != 1 && fmcgData.editableOrder!=1"  class="button button-assertive buttonClear pull-right"ng-click="vibrate();
+            goNext()">&nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-right-c"></i>&nbsp;&nbsp;&nbsp;</button>
+        <button  ng-if="fmcgData.customer.selected.id == 1&& fmcgData.editableOrder!=1" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+                submit()">Final Submit</button>
+         <button  ng-if=" fmcgData.editableOrder==1" class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+                editOrder()">Save</button>
+    </ion-footer-bar>
+        </ion-view>

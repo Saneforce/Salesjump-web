@@ -1,0 +1,10 @@
+Error:exec getSlottime '32469','56'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'."}]
+data:{"distributorCode":"32469","GrpCode":"56"}Error:exec getSlottime '32469','56'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'."}]
+data:{"distributorCode":"32469","GrpCode":"56"}Error:exec getSlottime '32469','56'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'."}]
+data:{"distributorCode":"32469","GrpCode":"56"}

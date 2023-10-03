@@ -1,0 +1,120 @@
+<ion-view>
+    <ion-content>
+      <div class="list list-inset">
+    
+
+
+             <div class = "row" style="background-color:#0eabc0;display: none;">
+               <div  class = "col col-25"  style="margin-top: 11px;"ng-click="vibrate();ChangeDatetype(1)"   ><span   id="customday" style="font-size: small; color:white" >Today</span></div>
+               <div  class = "col col-30" style="margin-top: 11px;" ng-click="vibrate();ChangeDatetype(2)" > <span class="select-box" id="Monthwise"style="font-size: small;color:white" >Month</span></div>
+               <div  class = "col col-30" style="margin-top: 11px;" ng-click="vibrate();ChangeDatetype(3)"   ><span id="Custom" class="select-box" style="font-size: small;color:white" >Custom</span></div>
+
+               <div  class = "col col-15" id="YTD"  ng-click="vibrate();openModal(YtdTypes,199,3)" > <img  style="height: 27px;width: 42px;" src="img/doticon.png">  </div>
+            </div>
+                  <div class = "row" style="display: none;">
+               <div  class = "col col-50"><span class="select-box" style="font-size: small;padding: 0px 9px;color:#0ca6ba;" >From</span> <input type="date" id="FromDateId"  ng-model="fromDt" ng-change="Fromdate(fromDt)"style="border-radius: 10px; border: 1px solid rgba(0, 0, 0, .5);"  /></div>
+               <div class = "col col-50"> <span class="select-box" style="font-size:small;padding: 0px 9px;color:#0ca6ba;" >To</span> <input type="date"  id="ToDateId"   ng-model="todate" ng-change="getdistiributortarget(todate)"  style="border-radius: 10px; border: 1px solid rgba(0, 0, 0, .5);"   /></div>
+         
+  
+
+            <!-- <label class="item item-input item-date">
+                <div class="input-label cwhite">
+                    Date :
+                </div>
+                <input type="date" style="background-color: #1ac0d6;"   ng-model="dyRptDt" id='changetype'ng-change="getdistiributortarget(dyRptDt)" readonly/>
+            </label> -->
+        </div>
+         <div>
+                <div class="list">
+                    <label class="item item-input item-date">
+                        <div class="input-label cwhite">
+                            Month :
+                        </div>
+                        <input type="month" ng-model="ExpRptDt" ng-change="GetStatus(ExpRptDt)" />
+                    </label>
+                </div>
+            </div>
+                <div class="select-component" >
+                    <div class="label">
+                        <div class="label-text">FieldForce
+                            <label style="color: red;"> &nbsp;*</label>
+                        </div>
+                    </div>
+                    <div class="select-box">
+                        <div class="input-box">
+                            <div class="input-css" ng-click="openModal('subordinate_master', 144)">
+                                {{(stockUpdation.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Headquarters"}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="select-component" ng-if="SF_type==2&&fmcgData.editable!=1">
+                    <div class="label">
+                        <div class="label-text">{{StkCap}}</div>
+                    </div>
+                    <div class="select-box">
+                        <div class="input-box">
+                            <div class="input-css" ng-click="vibrate();openModal('stockist_master', 42, stockUpdation.subordinate.selected.id)">
+                                {{(stockUpdation.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              <div style="color:green;font-weight:bolder" class="ng-binding">Sales Report On {{SalesreportCaption}}</div>      
+        <div class="row"  style="background-color:#f6eeee">
+             <div class="col col-20" style="color:black;font-weight:bold;font-size: 13px;">Name</div>
+        <div class="col col-30" style="color:black;font-weight:bold;font-size: 13px;">Distributor</div>
+              <div class="col col-20" style="color:black;font-weight:bold;font-size: 13px;">Target</div>
+               <!--<div class="col col-20" style="color:black;font-weight:bold;font-size: 13px;">Order</div>-->
+                <div class="col col-20" style="color:black;font-weight:bold;font-size: 13px;">Achieve</div>
+
+                 <!--<div class="col col-10" style="color:black;font-weight:bold;font-size: 13px;"> %</div>-->
+          </div>
+           <!--<div  style="font-size: 12px;background-color:#f6eeee;color:green;font-weight:bold;font-size: 13px;text-align: end;">
+            Growth
+           </div>-->
+            <div ng-repeat="(i,x) in DIstributortargetwise track by $index" style="background-color: rgb(241, 241, 241)">
+                <div class="row" style="font-size: 12px;">
+                    <div class="col col-20">
+                        {{x.Sf_Name}}
+                    </div>
+                    <div class="col col-30">
+                        {{x.Distiname}}
+                    </div>
+                    <div class="col col-20">
+                        {{x.Targetval}}
+                    </div>
+                     <div class="col col-20">
+                        {{x.Total}}
+                    </div>
+                     <!-- <div class="col col-10">
+                        {{x.Percentage}}
+                    </div> -->
+                </div>
+                 <!-- <div  style="font-size: 12px;color:green;text-align: right;">
+                   {{(x.Targetval-x.Total)/x.Total||0}}
+                 </div> -->
+            </div>
+
+ <div  style="margin-left: 2px;">
+
+                                <div class="childbox">
+                                    <canvas id="bar" class="chart chart-pie"
+                                            chart-data="TargetDistiGraph" chart-labels="targerlabels" chart-options="targetoptions" chart-colors='colors'
+                                            style=';width: 383px;height: 190px;' chart-legend="true"></canvas>
+                                </div>
+                            </div>
+
+
+
+</div>
+
+    </ion-content>
+<ion-footer-bar class="bar-dark bar bar-footer">
+    <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+
+   
+</ion-footer-bar>
+</ion-view>

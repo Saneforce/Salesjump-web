@@ -1,0 +1,7 @@
+Error:exec getProductGroupList '443','SuperStockist'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":8144,"code":8144,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Procedure or function getProductGroupList has too many arguments specified.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Procedure or function getProductGroupList has too many arguments specified."}]
+data:{"SF":"443","Stk":"443","outletId":"OutletCode","div":"29,","loginType":"SuperStockist"}Error:exec getProductGroupList '443','SuperStockist'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":8144,"code":8144,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Procedure or function getProductGroupList has too many arguments specified.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Procedure or function getProductGroupList has too many arguments specified."}]
+data:{"SF":"443","Stk":"443","outletId":"OutletCode","div":"29,","loginType":"SuperStockist"}

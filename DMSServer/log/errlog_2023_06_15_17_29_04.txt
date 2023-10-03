@@ -1,0 +1,4 @@
+Error:exec getRouteListByDis_mod '32993','Distributor','29,'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":8114,"code":8114,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Error converting data type varchar to tinyint.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Error converting data type varchar to tinyint."}]
+data:{"Stk":"32993","Div":"29,","loginType":"Distributor"}

@@ -1,0 +1,60 @@
+﻿<ion-view>
+    <div class="bar bar-subheader">
+        <div class="list">
+            <label class="item item-input item-date">
+                <div class="input-label cwhite">
+                    Date :
+                </div>
+                <input type="date" ng-model="dyRptDt" ng-change="getDayReports()" />
+            </label>
+        </div>
+    </div>
+    <ion-content class="headertop" style="background-color:#f6eeee">
+        <div class="card Tbrd{{dyDCR.Desig_Code}}" ng-repeat="(i,dyDCR) in dayDCRList">
+            <h4> {{dyDCR.SF_Name}}<button ng-if="summaryEdit==0&&dyDCR.FWFlg == 'F'&&dyDCR.SF_Code==sfCode&&edit_sumry==0&&routewise==0" class="item-note propCase button button-small button-balanced" style="white-space:nowrap !important;" ng-click="Edit()">Edit Summary</button></h4>
+            <br />
+            <div class="propCase">
+                <b>{{dyDCR.wtype}}<span ng-if="dyDCR.HalfDay_FW_Type"> / {{dyDCR.HalfDay_FW_Type}}</span></b>
+               <!-- <br /><b>Collected Amount<span style="color:#389BFD">:{{dyDCR.POB}}</span></b>-->
+                <div class="item-note" ng-if="dyDCR.FWFlg == 'F'">
+                    <table style="border-collapse:collapse" border="1">
+                        <tr><td>TC</td><td>EC</td><td>O.Value</td><td>{{ESHStkCap}}</td></tr>
+
+                        <!--<tr><td>VT1</td><td>VT2</td><td>VT3</td><td>VT4</td></tr>-->
+                        <tr>
+                            <td ng-click="ViewDetail(dyDCR.ACode, 1, dyDCR.Adate, 0)" style="background: #ebeeff;color: #2196f3;">{{dyDCR.Drs}}</td>
+                            <td ng-click="ViewDetail(dyDCR.ACode, 1, dyDCR.Adate, 1)" style="background: #ebeeff;color: #2196f3;">
+                                {{dyDCR.orders}}
+                            </td>
+                            <td>{{dyDCR.orderValue}}</td>
+
+                            <td ng-click="ViewDetail(dyDCR.ACode, 3, dyDCR.Adate)">{{dyDCR.Stk}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+           <div style="margin-top:30px;"></div>
+                      <div  style="color:green;font-weight:bolder">Brand Wise Effective Calls</div>
+        <div class="row" >
+      <table ng-repeat="(i,x) in brndwise[dyDCR.SF_Code]"  style="border-collapse:collapse;font-size:14px; color:#aaa;" >
+       <!--   <tr><td  style='border:none;'>Brand Name</td>
+           color:#aaa;
+                           
+                            <td  style='border:none;'>Count</td>
+                        </tr>-->
+                        <tr ><td  >{{x.product_brd_sname}}</td>
+
+                        </tr>
+          <tr >
+                            <td  style='font-weight:bold'>{{x.RetailCount}}</td>
+                        </tr>
+                    </table>
+
+ 
+</div><br />
+           <div style="float:left">Total Lines :<span style="color:green;font-weight:bold">{{ DCR_TLSD[dyDCR.SF_Code]['total']}}</span> </div> 
+           <div style="float:right">Total Products Sold :<span style="color:green;font-weight:bold">{{ DCR_LPC[dyDCR.SF_Code]['total']}}</span></div> 
+            <p class="propCase rmks">{{dyDCR.Remarks}}</p>
+        </div>
+    </ion-content>
+</ion-view>

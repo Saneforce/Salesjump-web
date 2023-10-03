@@ -1,0 +1,58 @@
+<div class="modal">
+    <ion-header-bar class="bar bar-header bar-positive">
+        <h1 class="title">{{modal.dtb}}</h1>
+    </ion-header-bar>
+    <ion-content style="background-color:#f6eeee;">
+        <div id="vstpreview">
+         <ion-list>
+                             <ion-item class="propCase" >
+                                 <span  class="ion-star" style="color: red;float: right"></span>
+                                               
+                                                   
+                                          
+                                 <div class="ro" >
+                                    <table style="width: 100%;" border="1">
+                                        <tr style="background-color:#eae9e9">
+                                            <th style="text-align:left;padding:5px;font-size:100%;">Product</th>
+                                            <th style="text-align:right;padding:5px;font-size:100%;">Rate</th>
+                                            <th style="text-align:right;padding:5px;font-size:100%;">Qty</th>
+                                           
+                                           <th ng-if="modal.Type==3"style="text-align:right;padding:5px;font-size:100%;">PQty</th>
+                                            <th style="text-align:right;padding:5px;font-size:100%;" >Value</th>
+                                        </tr>
+                                    <tr ng-repeat="productSelection in modal.vwVstlists">
+                                            <td style ="text-align:left;padding:2px 5px;font-size:100%;">{{productSelection.Product_Name}}
+                                                
+                                            </td>
+                                            <td style="text-align:right;padding:2px 5px;font-size:100%;background: #e7e7fb;width:70px;">{{productSelection.Rate | number:2|| 0}}</td>
+                                            <td style="text-align:right;padding:2px 5px;font-size:100%;background: #e7e7fb;">{{productSelection.Qty|| 0}}</td>
+                                             <td ng-if="modal.Type==3" style="text-align:right;padding:2px 5px;font-size:100%;background: #e7e7fb;">{{productSelection.PQty|| 0}}</td>
+                                            
+                                           
+                                            <td style="text-align:right;padding:5px;"><b style="color:#39ac08;">{{productSelection.value|number:2}}</b></td>
+                                         </tr>
+                                         
+                                         <tr>
+                                             <td colspan="3" style="border:0px;font-size: 85%;font-weight: 900;color:#757575">Net Amount</td>
+                                            
+                                       
+                                            <td  colspan="3"style="border:0px;border-top:1px double #dcdcdc;border-bottom:double #dcdcdc;text-align:right;padding:5px;"><b style="color:#39ac08;">{{modal.tv|number:2}}</b></td>
+                                         </tr> 
+                                        </tr>
+                                      
+                                    </table>
+                                </div>
+                                                   
+                             </ion-item>
+              </ion-list>
+
+           
+        </div>
+       
+        <!-- <a href="#" id="btn-Convert-Html2Image">s</a> -->
+    </ion-content>
+    <ion-footer-bar class="bar bar-footer bar-dark">
+        <button class="button button-clear button-primary" ng-click="vibrate();modal.hide()">Close</button>
+    </ion-footer-bar>
+</div>
+

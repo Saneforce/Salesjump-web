@@ -1,0 +1,7 @@
+Error:exec getPOSProductTypeList 'SS457'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductTypeList'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductTypeList'."}]
+data:{"SF":"SS457","Stk":"SS457","div":"29,"}Error:exec GetPOSProdBrand_App 'SS457'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProdBrand_App'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProdBrand_App'."}]
+data:{"SF":"SS457","Stk":"SS457","div":"29,"}

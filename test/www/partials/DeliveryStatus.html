@@ -1,0 +1,86 @@
+<ion-view>
+    <div class="bar bar-subheader">
+
+        <div class="list">
+            <label class="item item-input item-date">
+                <div class="input-label cwhite">
+                    Date :
+                </div>
+                <input type="date" ng-model="dyRptDt" />
+            </label>
+        </div>
+
+    </div>
+
+    <ion-content style="background-color:#f6eeee;">
+        <div id="vstpreview" style="margin-top: 42px;">
+            <div class="select-component" ng-hide="view_MR" ng-if="(',F,IH,DH,').indexOf(','+Mypln.worktype.selected.FWFlg+',')>-1" style="height:65px;">
+                <div class="label">
+                    <div class="label-text">Headquarter</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('subordinate_master', 103)">
+                            {{(Mypln.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Fieldforce" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class = "row">
+               <div  class = "col col-40" style="margin-left: -26px;"><span  style="float:right;font-size: small;padding: 0px 9px;color: #ef4e3a;" ng-click="vibrate();Secondary(Mysfcode,1)">Secondary<span style="color:#ef4e3a;font-size: x-small;"></span></span></div>
+                  <div  class = "col col-60"> <span style="float:right;font-size: small;padding: 0px 9px;color: #ef4e3a;" ng-click="vibrate();Primary(Mysfcode,3)">Primary  <span style="color:#ef4e3a;font-size: x-small;"></span></span></div>
+               </div>
+            <ion-list>
+                <ion-item ng-repeat="delivery in DLS" class="propCase" ng-style="{'background-color': ' #f1f1f1'}">
+                    <h2 style="color:#39ac08;"><b>{{delivery.distibutorname}}</b></h2>
+                    <p ng-if="delivery.ordertype==1">Route : <b style="color:#7e0ca5">{{delivery.routename}}</b></p>
+                    <p>Date : <b style="color:#7e0ca5">{{delivery.Order_Date.date}}</b></p>
+                    <p style="border:0px;font-size: 85%;font-weight: 900;color:#757575">Order Value : <b style="color:cornflowerblue">{{delivery.Order_Value}}</b></p>
+                    <p ng-if="delivery.ordertype==1" style="white-space:pre-wrap !important">Retailer : <b style="color:#7e0ca5">{{delivery.retailername}}</b></p>
+
+                    <p style="white-space:pre-wrap !important">OrderType : <b ng-if="delivery.ordertype==1" style="color:#7e0ca5">Secondary</b> <b ng-if="delivery.ordertype==3" style="color:#7e0ca5">Primary</b></p>
+                    <p style="white-space:pre-wrap !important">Remarks : <b style="color:#7e0ca5">{{delivery.Remarks}}</b></p>
+                    <img src="img/delivery.png" width="30">
+                    <div ng-hide="view_MR==0" class="row">
+                        <div class="col-60">
+                            <h2 style="color:#39ac08;"><p  ng-if='delivery.Order_Flag==1'style="white-space:pre-wrap !important">Status:<b style="color:#39ac08">Confirm</b></p>
+                    <p  ng-if='delivery.Order_Flag==2'style="white-space:pre-wrap !important">Status:<b style="color:red">Reject</b></p>  
+                    <p  ng-if='delivery.Order_Flag==0' style="white-space:pre-wrap !important">Status:<b style="color:#ddb78a">Waiting</b></p>  </h2>
+                        </div>
+                        <div class="col-60" style="margin-top: -7px;">
+                            <p ng-click="vibrate();ViewDetail(delivery.TSL,delivery.Order_Value,delivery.distibutorname,delivery.ordertype)" style="white-space:pre-wrap !important"><img src="img/eye.png" width="30"></p>
+                        </div>
+                    </div>
+                    <div ng-if="delivery.rejection==2" style="color:black;font-weight:bold">
+                        Reason
+                    </div>
+                    <div class="row" ng-if="delivery.rejection==2">
+
+                        <div class="col col-100" style="color:black;font-weight:bold;color:green">
+                            <textarea ng-model="delivery.reason" rows="2" placeholder="Reason For Reject" class="textarea-css" ng-click="vibrate();">
+                            </textarea>
+                        </div>
+                    </div>
+                    <div ng-hide="view_MR || delivery.Order_Flag!=0" class="row">
+                        <div class="col-60">
+                            <button class="button button-small button-calm" ng-click="approve(delivery)">Approve</button>
+                        </div>
+                        <div class="col-60">
+                            <button class="button button-small  button-assertive" ng-click="reject(delivery)">Reject</button>
+                        </div>
+                    </div>
+
+                </ion-item>
+            </ion-list>
+
+        </div>
+
+    </ion-content>
+    <ion-footer-bar class="bar-dark bar bar-footer">
+        <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+            &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+        </button>
+        
+
+    </ion-footer-bar>
+</ion-view>

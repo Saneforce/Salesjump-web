@@ -1,0 +1,4 @@
+FMCG_Live Error:update Trans_Order_Head  set Order_Flag='2',Dispatch_Date= GETDATE(),rejRemarks='can't fulfill order' where Trans_Sl_No='MR4126-23-24-SO-1164'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near 't'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near 't'."},{"0":"42000","SQLSTATE":"42000","1":105,"code":105,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Unclosed quotation mark after the character string ''.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Unclosed quotation mark after the character string ''."}]
+data:{}

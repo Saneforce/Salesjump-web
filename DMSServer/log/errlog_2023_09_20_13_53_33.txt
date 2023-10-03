@@ -1,0 +1,16 @@
+Error:exec getService_OutletSummary_Channelwise '9','231'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getService_OutletSummary_Channelwise'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getService_OutletSummary_Channelwise'."}]
+data:{"sfCode":"9","divCode":"231,","dt":"2023-09-20","loginType":"Distributor"}Error:select Product_Grp_Code GroupCode,Product_Grp_Name name from Mas_Product_Group where SubDiv='1,' and Product_Grp_Active_Flag=0
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'SubDiv'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'SubDiv'."}]
+data:{"distributorid":"9"}Error:exec getPOSProductGroupList '9'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductGroupList'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductGroupList'."}]
+data:{"SF":"9","Stk":"9","div":"231,"}Error:exec GetPOSProducts_App '9'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'."}]
+data:{"SF":"9","Stk":"9","div":"231,"}Error:exec GetPOSProdBrand_App '9'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProdBrand_App'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProdBrand_App'."}]
+data:{"SF":"9","Stk":"9","div":"231,"}231,"}

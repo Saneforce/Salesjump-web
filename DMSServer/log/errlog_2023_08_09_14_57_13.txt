@@ -1,0 +1,7 @@
+Error:exec GetPOSProducts_App 'SS440'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'."}]
+data:{"SF":"SS440","Stk":"SS440","div":"29,"}Error:exec getDistributorByHry 'SS440'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getDistributorByHry'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getDistributorByHry'."}]
+data:{"SF":"SS440","div":"29,"}

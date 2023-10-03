@@ -1,0 +1,252 @@
+<ion-view class="ion-viewport">
+   <ion-content class="screen-parent" >
+
+           <div class="list list-inset">
+      <div ng-repeat="(i,x) in getGiftApproval" style="background-color: #FFFF">
+         <div  style="margin-top:10px;"></div>
+         <div  style="background-color:#feffff">
+            <div class="row" >
+               <div class="col col-50" style="color:black;font-weight:bold;">
+                  Retailer Name
+               </div>
+               <div class="col col-50" style="color:black;font-weight:bold;color:green">
+                  :{{x.ListedDr_Name}}
+               </div>
+            </div>
+            <!--  <div class="row"  >
+               <div class="col col-50" style="color:black;font-weight:bold">
+                  Slab Name
+               </div>
+               <div class="col col-50" style="color:black;font-weight:bold;color:green">
+                 :{{x.Slan_Name}}
+               </div>
+               </div>  -->   
+            <div class="row" >
+               <div class="col col-50" style="color:black;font-weight:bold">
+                  Claim Name
+               </div>
+               <div class="col col-50" style="color:black;font-weight:bold;color:green">
+                  :{{x.Giftname}}
+               </div>
+            </div>
+            <div class="row"    ng-if="x.Gift_Type==1"  >
+               <div class="col col-50" style="color:black;font-weight:bold">
+                  Display Scheme
+               </div>
+               <div class="col col-50" style="color:black;font-weight:bold;color:green">
+                  :{{x.Display_Scheme}}
+               </div>
+            </div>
+            <div class="row"  >
+               <div class="col col-50" style="color:black;font-weight:bold">
+                  Date
+               </div>
+               <div class="col col-50" style="color:black;font-weight:bold;color:green">
+                  :{{x.Submiteddate}}
+               </div>
+            </div>
+            <div class="row"  ng-if="x.Gift_Type==1" >
+               <div class="col col-50" style="color:black;font-weight:bold">
+                  Business
+               </div>
+               <div class="col col-50" style="color:black;font-weight:bold;color:green">
+                  :{{x.Expected_Business||"-----"}}
+               </div>
+            </div>
+            <div class="row"  >
+               <div class="col col-50" style="color:black;font-weight:bold">
+                  Descriptions
+               </div>
+               <div class="col col-50" style="color:black;font-weight:bold;color:green">
+                  :{{x.Startt_Date||"-----"}}
+               </div>
+            </div>
+ <div class="row" >
+               <div class="col col-50" style="color:black;font-weight:bold">
+                 
+               </div>
+               <div ng-click="viewAll(x)" class="col col-50" style="color:black;font-weight:bold;color:green">
+                  <img src="img/view.png" ng-if="x.viewall!=1"   title="View" style="height:30px;width:30px;float:right;" >  
+                   <img src="img/undo.png" ng-if="x.viewall==1"  title="View" style="height:30px;width:30px;float:right;" >  
+               </div>
+            </div>
+
+            
+            <div  ng-if="x.viewall==1">
+               <div class="row" style="font-size: small;padding: 0px 9px; color: white;background: #1aacc3;margin-top:5px;text-align: center" >
+                  <div class="col col-100">
+                     Invoice
+                  </div>
+               </div>
+               <div class="row" style="font-size: small;padding: 0px 9px;color: white;background: #444;margin-top:5px;text-align: center;" >
+                  <div class="col col-35">
+                     Date
+                  </div>
+                  <div class="col col-33">
+                     Number
+                  </div>
+                  <div class="col col-32">
+                     Amount
+                  </div>
+               </div>
+               <div ng-repeat="(i,inv) in x.INV" style=" margin-top: 9px;">
+                  <div class="row" >
+                     <div class="giftcol col-40">
+                        <input  type="date" ng-model="inv.Date" class="inputclaim-css" readonly="true"> 
+                     </div>
+                     <div class="giftcol col-30">
+                        <input  type="text" ng-model="inv.Number" class="inputclaim-css"  readonly="true" > 
+                     </div>
+                     <div class="giftcol col-30">
+                        <input  type="text" ng-model="inv.Amount" class="inputclaim-css"  readonly="true"> 
+                     </div>
+                  </div>
+               </div>
+          <div class="row" style="font-size: small;padding: 0px 9px; color: white;background: #1aacc3;margin-top:5px;text-align: center" >
+                  <div class="col col-100">
+                     Invoice Photo
+                  </div>
+               </div>
+
+             <div ng-repeat="(i,invphoto) in x.InvoicePhoto" style=" margin-top: 9px;">
+                  <div style="height: 237px;margin-left: 29px;" >
+                    
+                        <img  style="height: 67%;width:85%;border-radius: 12%;" src="{{invphoto.photo}}"> 
+                     
+                  </div>
+                   <div class="row" ng-click="zoom(invphoto.photo);" >
+                   <img src="img/zoom.png"     title="View"  style="
+                  margin-top: -77px;margin-left: 237px;width: 35px;
+    height: 40px;" > 
+         </div>
+             <div class="row" style="margin-top: -60px;" >
+                    <div class="col col-30">
+                        <p style="font-size: 15px;font-weight: bold;">Title:</p>
+                     
+                     </div>
+                     <div class="col col-70" >{{invphoto.titlee||"--"}}
+                     </div>
+                  </div>
+                   <div  class="row">
+                  <div class="col col-32">
+                        <p style="font-size: 15px;font-weight: bold;">Remarks:</p>
+                     
+                     </div>
+                        <div style="margin-left: -90px;" class="col col-70">
+                           {{invphoto.Remarks||"--"}}
+                     </div>
+                  </div>
+
+                  <hr style="border: 0px;border-bottom:dotted 2px #f0b840">
+               </div>
+            <div ng-if="x.Gift_Type==2">
+               <div class="row" style="font-size: small;padding: 0px 9px; color: white;background: #1aacc3;margin-top:5px;text-align: center" >
+                  <div class="col col-100">
+                     Product
+                  </div>
+               </div>
+               <div class="row" style="font-size: small;padding: 0px 9px; color: white;background: #444;margin-top:5px;text-align: center" >
+                  <div class="col col-35">
+                     Name
+                  </div>
+                  <div class="col col-33">
+                     Rate
+                  </div>
+                  <div class="col col-32">
+                     Qty
+                  </div>
+               </div>
+               <div ng-repeat="(i,Product) in x.Product" style=" margin-top: 9px;">
+                  <div class="row" >
+                     <div class="giftcol col-40">
+                        <input  type="text" ng-model="Product.name" class="inputclaim-css" readonly="true"> 
+                     </div>
+                     <div class="giftcol col-30">
+                        <input  type="text" ng-model="Product.rate" class="inputclaim-css"  readonly="true" > 
+                     </div>
+                     <div class="giftcol col-30">
+                        <input  type="text" ng-model="Product.qty" class="inputclaim-css"  readonly="true"> 
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div ng-if="x.Gift_Type==2 || x.Gift_Type==3">
+               <div class="row" style="font-size: small;padding: 0px 9px; color: white;background: #1aacc3;margin-top:5px;text-align: center" >
+                  <div class="col col-100">
+                     Gift Details
+                  </div>
+               </div>
+               <div class="row" style="font-size: small;padding: 0px 9px; color: white;background: #444;margin-top:5px;text-align: center" >
+                  <div class="col col-70">
+                     Name
+                  </div>
+                  <div class="col col-30">
+                     Qty
+                  </div>
+               </div>
+               <div ng-repeat="(i,MultiGift) in x.MultiGift" style=" margin-top: 9px;">
+                  <div class="row" >
+                     <div class="giftcol col-70">
+                        <input  type="text" ng-model="MultiGift.name" class="inputclaim-css" readonly="true"> 
+                     </div>
+                     <div class="giftcol col-30">
+                        <input  type="text" ng-model="MultiGift.qty" class="inputclaim-css"  readonly="true" > 
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div ng-if="x.Gift_Type==3">
+               <div class="row" style="font-size: small;padding: 0px 9px; color: white;background: #1aacc3;margin-top:5px;text-align: center" >
+                  <div class="col col-100">
+                     Slab Details
+                  </div>
+               </div>
+               <div class="row" style="font-size: small;padding: 0px 9px; color: white;background: #444;margin-top:5px;text-align: center" >
+                  <div class="col col-100">
+                     Name
+                  </div>
+                 
+               </div>
+               <div ng-repeat="(i,MultiSlab) in x.MultiSlab" style=" margin-top: 9px;">
+                  <div class="row" >
+                     <div class="giftcol col-100">
+                        <input  type="text" ng-model="MultiSlab.name" class="inputclaim-css" readonly="true"> 
+                     </div>
+                   <!--   <div class="giftcol col-50">
+                        <input  type="text" ng-model="MultiSlab.qty" class="inputclaim-css"  readonly="true" > 
+                     </div> -->
+                  </div>
+               </div>
+            </div>
+
+           
+         </div>
+          <div class="row" ng-if="x.rejection==1">
+               <div class="col col-50" style="color:black;font-weight:bold">
+                  Reason
+               </div>
+               <div class="col col-50" style="color:black;font-weight:bold;color:green">
+                  <textarea ng-model="x.reason" rows="2" placeholder="Reason For Reject" class="textarea-css" ng-click="vibrate();">                     
+                  </textarea>
+               </div>
+            </div>
+         </div>
+         <div class="row" >
+            <div class="col col-50" style="color:black;font-weight:bold;">
+               <button class="button button-small button-calm" style="float:right;background-color:green; border-radius: 7px;"ng-click="approve(x)">Approve</button>
+            </div>
+            <div class="col col-50" style="color:black;font-weight:bold">
+               <button class="button button-small button-reject"  style="background-color:#FF0000;color: white;    border-radius: 7px;" ng-if="x.rejection==1"  ng-click="rejSend(x)">Reject</button>
+               <button style="background-color:#FF0000;color: white;    border-radius: 7px;" class="button button-small" ng-if="x.rejection==0" ng-click="reject(x)">Reject</button>
+            </div>
+         </div>
+         <hr style="border: 0px;border-bottom:dotted 2px #f0b840">
+      </div>
+      </div>        
+   </ion-content>
+   <ion-footer-bar class="bar-dark">
+      <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+      &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+      </button>
+   </ion-footer-bar>
+</ion-view>

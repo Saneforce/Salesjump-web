@@ -1,0 +1,4 @@
+Error:exec getRouteListByDis_mod '14909','Distributor','4'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getRouteListByDis_mod'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getRouteListByDis_mod'."}]
+data:{"Stk":"14909","Div":"4,","loginType":"Distributor"}

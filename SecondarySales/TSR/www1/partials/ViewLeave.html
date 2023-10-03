@@ -1,0 +1,63 @@
+﻿<ion-view>
+    <ion-content>    
+          <div style="margin-top:10px;">
+        <div class="row"  style="background-color:#f6eeee">
+  <div class="col col-33" style="color:black;font-weight:bold;">
+       Name
+  </div>
+  <div class="col col-25" style="color:black;font-weight:bold;">
+    Leave Days
+  </div>
+  <div class="col" style="color:black;font-weight:bold;">
+      Click Here
+  </div>
+ 
+</div></div>
+<div ng-repeat="(i,x) in leaves" style="background-color: rgb(241, 241, 241)">
+  <div class="row">
+  <div class="col col-33">
+      {{x.FieldForceName}}-({{x.HQ}})
+  </div>
+
+
+  <div class="col col-25">
+             {{x.LeaveDays}}
+  </div>
+  <div class="col">
+      <button class="button button-small  button-calm" ng-click="approval(x.Leave_Id)">Click here to Approve</button>
+    </div>
+</div>
+
+</div>  
+<!--<table class="pure-table">
+    <thead>
+        <th>FieldForce Name</th>
+   <th>Designation</th>
+   <th>HQ</th>
+   <th>Emp.Code</th>
+     <th>From Date</th>
+        <th>To Date</th>
+         <th>Leave Days</th>
+         <th>Click Here</th>
+    </thead>
+ 
+    <tr ng-repeat="x in leaves">
+<td>{{x.FieldForceName}}</td>
+        <td>{{x.Designation}}</td>
+            <td>{{x.HQ}}</td>
+        <td>{{x.EmpCode}}</td>
+        <td>{{x.From_Date}}</td>
+        <td>{{x.To_Date}}</td>
+        <td>{{x.LeaveDays}}</td>
+         <td><button ng-click="approval({{x.Leave_Id}})">approval</button></td>
+    </tr>
+    
+</table>-->
+           
+</ion-content>
+    <ion-footer-bar class="bar-dark">
+        <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+            &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+        </button>
+    </ion-footer-bar>
+</ion-view>

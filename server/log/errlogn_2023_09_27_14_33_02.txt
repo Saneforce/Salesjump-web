@@ -1,0 +1,7 @@
+FMCG_ADDAS Error:select tbl.sf_code,tbl.Pln_Date,Tb.FWFlg from (select max(rw)rw,t.sf_code,Max(t.Pln_Date)Pln_Date from 
+        (select ROW_NUMBER() over(partition by TB.Sf_Code order by TB.Pln_Date asc)rw,TB.* from TbMyDayPlan TB 
+        where CONVERT(date,Pln_Date)='2023-09-27' and sf_code in ()) as t
+        Group by t.sf_code) as tbl inner join TbMyDayPlan TB on tbl.Pln_Date=TB.Pln_Date
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near ')'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near ')'."}]
+data:{}

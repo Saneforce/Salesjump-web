@@ -1,0 +1,91 @@
+select 
+Trans_Detail_Info_Code,a.Doc_Special_Code,SUM(POB_Value) as POB_Value,
+(select distinct count(d.Doc_Special_Code) from Mas_ListedDr d where 
+d.Doc_Special_Code = s.Doc_Special_Code and ListedDr_Active_Flag=0) as Spec_Count, 
+s.Doc_Special_Name
+  from vwActivity_MSL_Details inner join Mas_ListedDr a 
+on Trans_Detail_Info_Code=ListedDrCode inner join  Mas_Doctor_Speciality s on a.Doc_Special_Code=s.Doc_Special_Code
+where cast(convert(varchar,Time,101) as datetime) ='2016-09-15' and a.Doc_Special_Code='5'  and s.Division_Code='1' 
+group by  Trans_Detail_Info_Code,a.Doc_Special_Code,s.Doc_Special_Name,s.Doc_Special_Code
+
+
+
+
+select * from(select  sum(t.value)as value,r.Product_Cat_Code from Trans_Order_Details t   inner join Trans_Order_Head h on h.Trans_Sl_No=t.Trans_Sl_No inner join Mas_Product_Detail r on r.Product_Detail_Code=t.Product_Code  where DATEPART(yyyy,h.Order_Date)='2017' group by r.Product_Cat_Code ) se RIGHT OUTER JOIN (select s.Product_Cat_Code as cat_code,s.Product_Cat_Name  from Mas_Product_Category s
+
+ 
+                 where s.Product_Cat_Active_Flag=0 and s.Division_Code='1' ) dd  on se.Product_Cat_Code=dd.cat_code group by se.Product_Cat_Code,se.value,dd.Product_Cat_Name,dd.cat_code  order by value desc
+
+
+
+
+
+
+
+public DataSet Retail_Gettop10value_category(string divcode,string year)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsSF = null;
+            strQry = "select * from(select top 10 sum(t.value)as value,r.Product_Cat_Code from Trans_Order_Details t   inner join Trans_Order_Head h on h.Trans_Sl_No=t.Trans_Sl_No inner join Mas_Product_Detail r on r.Product_Detail_Code=t.Product_Code  where DATEPART(yyyy,h.Order_Date)='" + year + "' group by r.Product_Cat_Code ) se RIGHT OUTER JOIN (select s.Product_Cat_Code as cat_code,s.Product_Cat_Name  from Mas_Product_Category s " + 
+                     "where s.Product_Cat_Active_Flag=0 and s.Division_Code='"+divcode+"' ) dd  on se.Product_Cat_Code=dd.cat_code group by se.Product_Cat_Code,se.value,dd.Product_Cat_Name,dd.cat_code  order by value desc";
+
+            try
+            {
+                dsSF = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsSF;
+        }
+        public DataSet Retail_Gettop10value_Brand(string divcode, string year)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsSF = null;
+            strQry = "select * from(select top 10 sum(t.value)as value,r.Product_Brd_Code from Trans_Order_Details t  inner join Trans_Order_Head h on h.Trans_Sl_No=t.Trans_Sl_No  inner join Mas_Product_Detail r on r.Product_Detail_Code=t.Product_Code  where  DATEPART(yyyy,h.Order_Date)='"+year+"' group by r.Product_Brd_Code ) se  RIGHT OUTER JOIN (select s.Product_Brd_Code as Brand_code,s.Product_Brd_Name  from Mas_Product_Brand s "+  
+                     "where  s.Product_Brd_Active_Flag=0 and s.Division_Code='"+divcode+"')dd  on se.Product_Brd_Code=dd.Brand_code group by se.Product_Brd_Code,se.value,dd.Product_Brd_Name,dd.Brand_code  order by value desc";
+
+            try
+            {
+                dsSF = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsSF;
+        }
+
+      
+        public DataSet Retail_Gettop10value_Product(string divcode,string year)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsSF = null;
+            strQry = "select top 10 sum(t.value)as value,r.Product_Detail_Code,r.Product_Detail_Name from Trans_Order_Details t inner join Trans_Order_Head h on h.Trans_Sl_No=t.Trans_Sl_No inner join Mas_Product_Detail r on r.Product_Detail_Code=t.Product_Code  where DATEPART(yyyy,h.Order_Date)='" + year + "' and r.Division_Code='" + divcode + "' group by r.Product_Detail_Code,r.Product_Detail_Name order by value desc";
+
+            try
+            {
+                dsSF = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsSF;
+        }
+ giri 02.0.2017// select distinct Activity_Date,Tour_Date,datename(dw,Tour_Date) Date_Name,(case when Territory_Code1='---Select---' then ' ' else Territory_Code1 end)Territory_Code1,trans_slno,
+ (case when Worked_With_SF_Name='---Select---' then ' ' else Worked_With_SF_Name end)Worked_With_SF_Name,
+ (select case when Tour_Schedule1='0' THEN Worktype_Name_B else Tour_Schedule1  end) Asper_Tp,(select case when FieldWork_Indicator ='F' 
+ THEN (select distinct SDP from DCRDetail_Lst_Trans c where b.Trans_SlNo=c.Trans_SlNo and 
+ a.Tour_Date=b.Activity_Date and c.SDP =a.Territory_Code1) else Work_Type end) ASper_Dcr, 
+ (select distinct (case when Worked_With_SF_Name='---Select---' then ' '  else Worked_With_SF_Name end)Worked_With_SF_Name)dcr_dis,  
+ (select case when FieldWork_Indicator ='F' THEN (select top(1) SDP_Name  from DCRDetail_Lst_Trans c 
+  where b.Trans_SlNo=c.Trans_SlNo and a.Tour_Date=b.Activity_Date and c.SDP !=a.Territory_Code1) 
+  else WorkType_Name end) ASper_Dcr_match,WorkType_Name,Worktype_Name_B from Trans_TP a inner join DCRMain_Trans b on a.SF_Code=b.Sf_Code 
+  where MONTH(b.Activity_Date)='11' and YEAR(b.Activity_Date)='2016' and 
+  MONTH(a.Tour_Date)='11' and YEAR(a.Tour_Date)='2016' 
+  and a.Tour_Date=b.Activity_Date and a.SF_Code=('MR0010') and a.Division_Code='1' order by Tour_Date  

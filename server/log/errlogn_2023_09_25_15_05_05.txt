@@ -1,0 +1,4 @@
+FMCG_ENGLISH Error:select isnull(closing_monthwise,1) closing_monthwise from Access_Master where division_code=190
+|param:
+|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'closing_monthwise'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'closing_monthwise'."}]
+data:

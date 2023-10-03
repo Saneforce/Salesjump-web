@@ -1,0 +1,7 @@
+FMCG_RAD Error:select count(CustID) Cnt from Mas_CusFCMToken where CustID=''
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_CusFCMToken'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_CusFCMToken'."}]
+data:[{"deviceid":"deviceToken","mobile":"5448484848"}]FMCG_RAD Error:insert into Mas_CusFCMToken select '','deviceToken'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_CusFCMToken'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_CusFCMToken'."}]
+data:[{"deviceid":"deviceToken","mobile":"5448484848"}]

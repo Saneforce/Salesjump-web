@@ -1,0 +1,93 @@
+<ion-view>
+
+    <ion-content>
+      
+        <div class="list list-inset"   ng-if="ViewRCPA==0">
+          <div style="font-size: small;padding: 0px 9px;color: #f8920b;margin-top: 21px;text-align: center;"  ng-click="vibrate();AddMore()">Add More+</div>
+             <div  ng-repeat="(i,item) in fmcgData.Compititor | limitTo:limit"  style=" margin-top: 22px;">
+                        <div class="row" >
+                            <p class="col col-50" style="border: 1px;color: block;">{{i+1}}.Name </p>
+                           <p class="col col-50"   style="width: 96px;border: solid white;background: white;border-radius: 5px;" class="efield" ng-click="openModal(RcpaProduct, 46,i)">
+                            {{item.Name || "Select The Name"}}
+                         </p>
+
+                        </div>
+                             <div class="row" >
+                            <p class="col col-50" style="border: 1px;color: block;">Product </p>
+                            <p class="col col-50"  style="width: 96px;border: solid white;background: white;border-radius: 5px;" class="efield" ng-click="openModal(RcpaBrand, 47,i,item.id)">{{item.BName || "Select The Product"}}  </p>
+                        </div>
+                            <div class="row" >
+                            <p class="col col-50" style="border: 1px;color: block;">Rate </p>
+                            <p class="col col-50"  ><input type="number" style="width: 126px; border: solid white;background: white;border-radius: 3px;border: solid rgba(0, 0, 0, 0.3) 1px;text-align: center;" ng-model="item.Rate" placeholder="Rate"class="efield"/></p>
+                        </div>
+                          
+                      <div class="row">
+                            <p class="col col-50" style="border: 1px;color: block;">Qty </p>
+                            <p class="col col-50"  style="border: 1px;text-align: right;color: coral;"><input type="number" style="width: 126px; border: solid white;background: white;border-radius: 3px;border: solid rgba(0, 0, 0, 0.3)  1px;text-align: center;" ng-model="item.Qty" placeholder="Qty"class="efield"/> </p>
+                        </div>
+
+                        <hr style="border: 0px;border-bottom: dotted 1px #498f24;">
+              </div>
+                       
+                    
+                </div>
+
+
+
+                <div class="list list-inset"   ng-if="ViewRCPA==1">
+                   <div class="label">
+                    <div class="label-text">Existing Competitor <label  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal(RcpaProduct, 205)">
+                             {{RCPA.SelectedName.subordinate.name || "Select Existing Competitor"}}
+                        </div>
+                    </div>
+                </div>
+         <div class="select-component"  ng-hide="RCPA.NC_Name==1">
+                <div class="label">
+                    <div class="label-text">New Competitor  <label  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="data.brandName" placeholder=" Enter the New Competitor" maxlength="75">     
+                    </div>
+                </div>
+            </div> 
+
+
+         <div class="select-component" >
+                <div class="label">
+                    <div class="label-text">Product Name <label  style="color: red;">&nbsp; *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="data.Productname" placeholder="Enter product Name" maxlength="75">     
+                    </div>
+                </div>
+            </div> 
+                                     
+                    </div>
+                   
+             
+
+    </ion-content>
+<ion-footer-bar class="bar-dark">
+  <button ng-if=" fmcgData.editableOrder!=1 && !ViewRCPA" class="button button-assertive buttonClear pull-left" ng-click="vibrate();
+         goBack()">
+      &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+      </button>
+
+       <button ng-if="ViewRCPA"  ng-if=" fmcgData.editableOrder!=1" class="button button-assertive buttonClear pull-left" ng-click="vibrate();
+        Close()">
+    Close
+      </button>
+ <button ng-if=" fmcgData.editableOrder!=1" class="button button-assertive buttonClear pull-right" ng-click="vibrate();
+         Save()">Save
+      </button>
+      
+</ion-footer-bar>
+</ion-view>
+
+

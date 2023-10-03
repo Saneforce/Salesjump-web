@@ -1,0 +1,71 @@
+<ion-view>
+    <ion-content>
+
+        <div class="list list-inset" >
+            <ion-radio style="display: none" ng-model="fmcgData.rx" ng-value="1" ng-init="fmcgData.rx = 1">Rx</ion-radio>
+            <ion-radio style="display: none" ng-model="fmcgData.rx" ng-value="0">Non Rx</ion-radio>
+            <br>
+            <div class="select-component" ng-if="fmcgData.worktype.selected.FWFlg == 'F'">
+
+                <div class="label">
+                    <div class="label-text" >Call Feedback</div>                    
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div  class="input-css"  ng-if="fmcgData.rx" ng-click="vibrate();openModal('report_template_master', 12)">
+                            {{(fmcgData.rx_t| getValueforIDD : {'collection' : reportTemplates}).name || "Select the Call Feedback"}}
+                        </div>                       
+                                            
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+
+                <div class="label">
+                    <div class="label-text" >Template</div>                    
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                       <div  class="input-css"  ng-click="vibrate();openModal('nonreport_template_master', 15)">
+                            {{(fmcgData.nrx_t| getValueforIDD : {'collection' : nonreportTemplates}).name || "Select the Template"}}
+                        </div>                     
+                                            
+                    </div>
+                </div>
+            </div>
+
+            <div class="select-component1">
+
+                <div class="label">
+                    <div class="label-text">Remarks</div>
+                </div>
+                <textarea ng-model="fmcgData.remarks" rows="5" class="textarea-css" ng-click="vibrate();" placeholder="Enter the Remarks ( or ) Select from Template">
+                     
+                </textarea>
+            </div>
+        </div>
+        <div class="row moveDown">            
+            <div class="col" style="display:none">
+                <div class='buttonC-container left-sidepull' ng-click="vibrate();openOptMenu()">
+                    <div class="buttonC">
+                        <i class="icon ion-images footer-icon" style="line-height: 45px;"></i>
+                    </div>
+                    <div class='buttonC-text'>Event Captures</div>
+                </div>
+            </div>
+        </div>
+        <div style="height: 75px">
+
+        </div>
+
+
+    </ion-content>
+
+
+    <ion-footer-bar class="bar-dark">
+        <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+            &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+        </button>
+        <button class="button buttonClear  button-balanced pull-right" ng-click="vibrate();save()">Final Submit</button>
+    </ion-footer-bar>
+</ion-view>

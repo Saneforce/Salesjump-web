@@ -1,0 +1,103 @@
+﻿<ion-view>
+      <div ng-if="mailType=='viewFolders'">
+        <div class="bar bar-subheader noborder">
+            <div class="item item-input item-selectH noborder">
+              <!--  <div class="input-label cwhite">Folders :</div>-->
+                <div class="cwhite" style="width:80%;border-bottom:solid #4cff00 1px;" ng-click="openModal(Folders,200)">
+                    {{(folder.selected.id| getValueforIDD : {'collection' : Folders}).name || "Select the Folders"  }}
+                </div>
+            </div>
+        </div>
+        <div class="bar bar-subheader noborder"  style="top:88px;">
+            <select  ng-model="month" ng-change="showSelectMonth(month)">
+                 <option value="1">January</option>
+                 <option value="2">February</option>
+                 <option value="3">March</option>  
+                <option value="4">April</option>  
+                <option value="5">May</option> 
+                 <option value="6">June</option>  
+                <option value="7">July</option>  
+                <option value="8">August</option>  
+                <option value="9">September</option>  
+                <option value="10">October</option> 
+                 <option value="9">November</option>  
+                <option value="12" selected>December</option>  
+            </select>
+            <select ng-model="year" ng-change="showSelectYear(year)" >
+              <option ng-repeat="item in years" ng-selected="{{item.val==year}}" value="{{item.val}}">{{item.val}}</option>
+        
+            </select>
+               <button class="button button-small button-balanced" style="float:right"  ng-click="vibrate();compose()">Compose</button>
+               
+        </div>
+    </div>
+     <ion-content>
+
+         <div ng-if="mailType=='View'">
+               <div style="margin-top:20px;"></div>
+             
+              <ion-item>
+                   <h3 style="color:#39ac08;"><span class="item-note propCase" style="color:#39ac08;white-space:nowrap !important;"> {{fmcgData.date}}</span></h3>
+
+                              <div style="color:#4800ff;font-weight:bold">From : <span style="font-weight:normal;text-transform: capitalize;font-size:14px;color:#666">{{fmcgData.from}}</span></div>
+            <div style="color:#4800ff;font-weight:bold">To : <span style="font-weight:normal;text-transform: capitalize;font-size:14px;color:#666">{{fmcgData.to}}</span></div>
+            <div style="color:#4800ff;font-weight:bold">CC : <span style="font-weight:normal;text-transform: capitalize;font-size:14px;color:#666">{{fmcgData.cc}}</span></div>
+             <div style="color:#39ac08;" ng-bind-html="sub"></div>
+               
+                  <div style="color:#4800ff;font-weight:bold">Message:</div>
+                 
+        </ion-item>
+                  
+
+              <div class="row" style="background-color:#fff;">
+                  <div class="col">
+                    <div name="content" rows="50" cols="50"  ng-bind-html="fmcgData.msg"
+         
+          ></div>
+       </div>
+               </div>
+             <div class="row" style="background-color:#fff;border-top:solid #ddd 1px;" ng-if="fmcgData.AttachName">
+                <div class="col">           {{fmcgData.AttachName}}   
+              
+
+                <img src="img/download.png" title="Download" style="height:30px;width:30px;float:right" ng-click="downloadFile()"/>
+                            <img src="img/view.png" title="View" style="height:30px;width:30px;float:right;margin-right:30px;" ng-click="view()"/>
+                </div>   
+           
+             </div>
+      
+        </div>
+         <div ng-if="mailType=='viewFolders'">
+                 <div style="margin-top:120px;"></div>
+
+          <ion-item ng-repeat="mails in Mails" ng-click="viewMail(mails.Staffid_Id,mails.Mail_vc_ViewFlag,mails.Mail_int_Det_No,mails.Mail_Sent_Time,mails.Mail_Attachement,mails.From_Name,mails.To_sfName,mails.cc_sfName,mails.Mail_subject,mails.Mail_content)">
+
+            <h3 style="color:#39ac08;"><b>{{mails.Mail_Sent_Time}}</b><span class="item-note propCase"  ng-if="mails.Mail_Attachement">
+                <img style="width:20px;height:20px" src="img/Attach-48.png" /> </span></h3>
+            <div class="propCase" ng-if="folder.selected.id!='Sent'">From : <b style="color:#4800ff">{{mails.From_Name}}</b></div>
+            <div class="propCase" ng-if="folder.selected.id=='Sent'">To : <b style="color:#4800ff">{{mails.To_sfName}}</b></div>
+              
+              <p class="propCase" ng-bind-html="mails.Mail_subject"></p>
+         
+         <!--  ng-click="downloadFile()" -->
+        </ion-item>
+         </div>
+     
+
+    </ion-content>
+    <ion-footer-bar class="bar-dark" style="background-color:lightyellow" ng-if="mailType!='viewFolders'">
+        <div style="width:100%" ng-if="mailType=='View'">
+        <button class="button button-assertive buttonClear" ng-click="vibrate();goBack()">
+            &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+        </button>
+                     <img src="img/forward.png" title="Forward" style="height:30px;width:30px;float:right;" ng-click="forward()"/>
+                                  <img src="img/delete.png" title="Delete"  style="height:30px;width:30px;float:right;margin-right:20px;" ng-click="delete()"/>
+                                 <img src="img/move.png" title="Move" style="height:30px;width:30px;float:right;margin-right:20px;" ng-click="openModal(SubFolders,201)"/>
+
+                     <img src="img/reply.png" title="Reply" ng-if="folder.selected.id!='Sent'" style="height:30px;width:30px;float:right;margin-right:20px;" ng-click="reply()"/>
+
+
+      </div>
+  
+        </ion-footer-bar>
+</ion-view>

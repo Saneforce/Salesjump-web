@@ -1,0 +1,197 @@
+<style>
+    .custom .ro .co:first-child{
+        width: 30%;
+    }
+</style>
+<div class="modal">
+    <ion-header-bar class="bar bar-header bar-positive">
+        <h1 class="title">Preview Data</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="data-table custom"  id="idOrdDetail">        
+            
+            <div class="ro" ng-if="modal.draft.doctor">
+                <div class="co">
+                    {{modal.par.DrCap}} Name
+                </div>
+                <div class="co">
+                    {{modal.draft.doctor.name}}
+
+                </div>                        
+            </div>
+            <div class="ro" ng-if="modal.draft.stockist">
+                <div class="co">
+                    {{modal.par.StkCap}} Name
+                </div>
+                <div class="co">
+                    {{modal.draft.stockist.name }}
+                </div>                        
+            </div>
+            <div class="ro" ng-if="modal.draft.chemist">
+                <div class="co">
+                    {{modal.par.ChmCap}} Name
+                </div>
+                <div class="co">
+                    {{modal.draft.chemist.name}}
+                </div>                        
+            </div>
+            <div class="ro" ng-if="modal.draft.uldoctor">
+                <div class="co">
+                    {{modal.par.NLCap}} Name
+                </div>
+                <div class="co">
+                    {{modal.draft.uldoctor.name}}
+                </div>                        
+            </div>
+            
+            <div class="ro">
+                <div class="co">
+                    Route
+                </div>
+                <div class="co">
+                    {{modal.draft.cluster.name}}
+                </div>                        
+            </div>
+            <div class="ro">
+                <div class="co">
+                    JointWork
+                </div>
+                <div class="co">
+                    <span ng-repeat="jointSelection in modal.draft.jontWorkSelectedList">
+                        {{jointSelection.jointworkname}}
+                        <span ng-if=!$last>,</span>
+                    </span>
+
+                </div>                        
+            </div>
+            <div class="ro" ng-if="((modal.draft.customer.selected.id == 1 && modal.par.DPNeed==0) || (modal.draft.customer.selected.id == 2 && modal.par.CPNeed==0) || (modal.draft.customer.selected.id == 3) || (modal.draft.customer.selected.id == 4 && modal.par.NPNeed==0) || (modal.draft.customer.selected.id == 8))">
+                <div class="co">
+                    Products
+                </div>
+                <div class="co" style="width: 100%">
+                    <div class="row">
+                        <div class="col"><b>Product</b></div>
+                        <div class="col" ng-if="(modal.draft.customer.selected.id == 2 || modal.draft.customer.selected.id == 3 || modal.draft.customer.selected.id == 8)"><b>{{modal.par.QCap}}</b></div>
+                        
+                        <div class="col" ng-if="(modal.draft.customer.selected.id == 1 || modal.draft.customer.selected.id == 4 )"><b>{{modal.par.RxCap}}</b></div>
+
+                         <div class="col" ng-if="modal.draft.customer.selected.id == 3 ||modal.draft.customer.selected.id == 8"><b>Value</b></div>
+                        <div class="col" ng-if="(modal.draft.customer.selected.id == 1 || modal.draft.customer.selected.id == 4 )"><b>{{modal.par.SmplCap}}</b></div>
+                    </div>
+                    <div ng-repeat="productSelection in modal.draft.productSelectedList">
+                        <div class="row">
+                            <div class="col">{{(productSelection.product| getValueforIDD : {'collection' : modal.par.products}).name}}</div>
+                            <div class="col">{{productSelection.rx_qty|| 0}}</div><div class="col" ng-if="(modal.draft.customer.selected.id == 1 || modal.draft.customer.selected.id == 4 || modal.draft.customer.selected.id == 3 || modal.draft.customer.selected.id == 8 )">{{productSelection.sample_qty}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ro" ng-if="((modal.draft.customer.selected.id == 1 && modal.par.DINeed==0) || (modal.draft.customer.selected.id == 2 && modal.par.CINeed==0) || (modal.draft.customer.selected.id == 3 && modal.par.SINeed==0) || (modal.draft.customer.selected.id == 4 && modal.par.NINeed==0))">
+                <div class="co">
+                    Inputs
+                </div>
+                <div class="co" style="width: 100%">
+                    <div class="row">
+                        <div class="col"><b>Input</b></div><div class="col"><b>Qty</b></div>
+                    </div>
+                    <div ng-repeat="giftSelection in modal.draft.giftSelectedList">
+                        <div class="row">
+                            <div class="col">{{(giftSelection.gift| getValueforIDD : {'collection' : modal.par.gifts}).name}}</div><div class="col">{{giftSelection.sample_qty}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ro">
+                <div class="co">
+                    Meet Time
+                </div>
+                <div class="co">
+                    {{modal.draft.entryDate| date:'medium'}}
+                </div>                        
+            </div>
+             <div class="ro">
+                <div class="co">
+                    Modified Time
+                </div>
+                <div class="co">
+                    {{modal.draft.modifiedDate| date:'medium'}}
+                </div>                        
+            </div>
+         <!--   <div class="ro">
+                <div class="co">
+                    POB
+                </div>
+                <div class="co">
+                    {{modal.draft.pob}}
+                </div>                        
+            </div>-->
+            <div class="ro" ng-if="modal.draft.stockist">
+                <div class="co">
+                    POB
+                </div>
+                <div class="co">
+                    {{modal.draft.pob}}
+                </div>                        
+            </div>
+             <div class="ro" ng-if="modal.draft.customer.selected.id==8">
+                <div class="co">
+                    POB
+                </div>
+                <div class="co">
+                    {{modal.draft.pob}}
+                </div>                        
+            </div>
+             <div class="ro" ng-if="modal.draft.doctor">
+                <div class="co">
+                    Order Value
+                </div>
+                <div class="co">
+                    {{modal.draft.orderValue}}
+                </div>                        
+            </div>
+            <div class="ro" ng-if="modal.draft.rx">
+                <div class="co">
+               Call FeedBack
+                </div>
+                <div class="co">
+                  {{(modal.draft.rx_t| getValueforIDD : {'collection' : modal.par.reportTemplates}).name }}
+                </div>                        
+            </div>
+            
+           <!-- <div class="ro" ng-if="!modal.draft.rx">
+                <div class="co">
+                 Non RX
+                </div>
+                <div class="co">
+                  {{(modal.draft.nrx_t| getValueforIDD : {'collection' : modal.par.nonreportTemplates}).name }}
+                </div>                        
+            </div>        -->    
+            <div class="ro">
+                <div class="co">
+                    Remarks
+                </div>
+                <div class="co">
+                    {{modal.draft.remarks}}
+                </div>                        
+            </div>          
+        </div>     
+        <div class="row moveDown">
+            <div class="col">
+                <div class='buttonC-container left-sidepull' ng-click="vibrate();modal.sendWhatsApp(modal.draft.productSelectedList)">
+                    <img src="img/WhatsApp.png" />
+                    <div class='buttonC-text' style="white-space:nowrap">Whats App</div>
+
+                </div>
+            </div>
+          <!--  <div class="col">
+                <div class='buttonC-container left-sidepull' ng-click="vibrate();modal.sendEmail()">
+                    <img src="img/Email.png" />
+                    <div class='buttonC-text' style="white-space:nowrap">E-Mail</div>
+                </div>
+            </div>-->
+        </div>       
+    </ion-content>
+    <ion-footer-bar class="bar bar-footer bar-dark">
+        <button class="button button-clear button-primary"  ng-click="vibrate();modal.hide()">Close</button>
+    </ion-footer-bar>
+</div>

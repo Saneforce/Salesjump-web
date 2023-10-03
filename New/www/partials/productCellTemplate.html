@@ -1,0 +1,4 @@
+<div>
+{{row.entity[col.field] | selectMap:{'collection' : products} }}
+<input type="text" class="gridsubfield" style="font-size: 15px;color: #4c749c;" placeholder="{{col.subfield}}" ng-if="col.subfield && col.showSubField" ng-input="SUB_FIELD" ng-model="SUB_FIELD" />
+</div>

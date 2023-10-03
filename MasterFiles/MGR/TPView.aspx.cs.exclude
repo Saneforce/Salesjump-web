@@ -1,0 +1,281 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using Bus_EReport;
+
+public partial class MasterFiles_MR_TPView : System.Web.UI.Page
+{
+    #region "Declaration"
+    DataSet dsTP = null;
+    string sfCode = string.Empty;
+    DateTime ServerStartTime;
+    DataSet dsSalesForce = null;
+    string div_code = string.Empty;
+    DateTime ServerEndTime;
+    int time;
+    #endregion
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        sfCode = Session["sf_code"].ToString();
+        div_code = Session["div_code"].ToString();
+
+        if (!Page.IsPostBack)
+        {
+            FillManagers();
+            FillColor();
+            TourPlan tp = new TourPlan();
+            dsTP = tp.Get_TP_Edit_Year(div_code);
+            if (dsTP.Tables[0].Rows.Count > 0)
+            {
+                for (int k = Convert.ToInt16(dsTP.Tables[0].Rows[0]["Year"]); k <= DateTime.Now.Year + 1; k++)
+                {
+                    ddlYear.Items.Add(k.ToString());
+                    ddlYear.SelectedValue = DateTime.Now.Year.ToString();
+                    ddlMonth.SelectedValue = DateTime.Now.Month.ToString();
+                }
+            }   
+            tblStatus.Visible = false;
+            grdTP.Visible = false;
+            //FillTourPlan();
+            menu1.Title = this.Page.Title;
+            menu1.FindControl("btnBack").Visible = false;
+            ServerStartTime = DateTime.Now;
+            base.OnPreInit(e);
+        }
+
+    }
+    protected override void OnLoadComplete(EventArgs e)
+    {
+
+        ServerEndTime = DateTime.Now;
+        TrackPageTime();//It will give you page load time  
+    }
+    public void TrackPageTime()
+    {
+        TimeSpan serverTimeDiff = ServerEndTime.Subtract(ServerStartTime);
+        time = serverTimeDiff.Minutes;
+    } 
+    private void FillTourPlan()
+    {
+        if ((ddlMonth.SelectedIndex > 0) && (ddlYear.SelectedIndex > 0))
+        {
+            TourPlan tp = new TourPlan();
+            //dsTP = tp.get_TP_Entry(sfCode, Convert.ToInt32(ddlMonth.SelectedValue), Convert.ToInt32(ddlYear.SelectedValue));
+            if (dsTP.Tables[0].Rows.Count > 0)
+            {
+                grdTP.Visible = true;
+                grdTP.DataSource = dsTP;
+                grdTP.DataBind();
+            }
+            else
+            {
+                grdTP.Visible = true;
+                grdTP.DataSource = dsTP;
+                grdTP.DataBind();
+            }
+            dsTP = tp.get_TP_Status(sfCode, Convert.ToInt32(ddlMonth.SelectedValue), Convert.ToInt32(ddlYear.SelectedValue));
+            if (dsTP.Tables[0].Rows.Count > 0)
+            {
+                tblStatus.Visible = true;
+                lblCompletedDate.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+                lblApprovedDate.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(1).ToString());
+                lblStatusDesc.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(2).ToString());
+                DateTime dtCompleted = Convert.ToDateTime(lblCompletedDate.Text.ToString());
+                //lblCompletedDate.Text = dtCompleted.ToString("MM/dd/yyyy");
+                lblCompletedDate.Text = dtCompleted.ToString("dd/MM/yyyy");
+                if (lblApprovedDate.Text.Trim().Length > 0)
+                {
+                    DateTime dtApproved = Convert.ToDateTime(lblApprovedDate.Text.ToString());
+                    //lblApprovedDate.Text = dtApproved.ToString("MM/dd/yyyy");
+                    lblApprovedDate.Text = dtApproved.ToString("dd/MM/yyyy");
+                }
+            }
+        }
+    }
+
+
+    protected void grdTP_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            Label lblTourPlan = (Label)e.Row.FindControl("lblTourPlan");
+            Label lblterr = (Label)e.Row.FindControl("lblterr");
+            Label lblWorkType = (Label)e.Row.FindControl("lblWorkType");
+            Label lblObjective = (Label)e.Row.FindControl("lblObjective");
+            
+            DateTime dtTourPlan = Convert.ToDateTime(lblTourPlan.Text.ToString());
+            if (lblterr != null)
+            {
+                //lblTourPlan.Text = dtTourPlan.ToString("MM/dd/yyyy");
+                lblTourPlan.Text = dtTourPlan.ToString("dd/MM/yyyy");
+                TourPlan tp = new TourPlan();
+                dsTP = tp.FetchTerritory(sfCode, lblterr.Text);
+                if (dsTP.Tables[0].Rows.Count > 0)
+                {
+                    lblterr.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+                }
+                else
+                {
+                    dsTP = tp.FetchWorkType(lblterr.Text);
+                    if (dsTP.Tables[0].Rows.Count > 0)
+                    {
+                        lblterr.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+                    }
+                }
+
+                if (lblterr.Text == "0")
+                {
+                    lblterr.Text = "";
+                    lblWorkType.Text = lblObjective.Text;
+                    lblObjective.Text = "";
+                }
+                else
+                {
+                    lblWorkType.Text = "Field Work";
+                }
+                
+            }
+        }
+    }
+    
+
+    protected void btnEntry_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("TPEntry.aspx");
+    }
+
+    private void FillSF_Alpha()
+    {
+        SalesForce sf = new SalesForce();
+        dsSalesForce = sf.TPviewGetAlphapetMgr(div_code,sfCode);
+        if (dsSalesForce.Tables[0].Rows.Count > 0)
+        {
+            ddlAlpha.DataTextField = "sf_name";
+            ddlAlpha.DataValueField = "sf_name";
+            ddlAlpha.DataSource = dsSalesForce;
+            ddlAlpha.DataBind();
+            ddlAlpha.SelectedIndex = 0;
+        }
+    }
+    protected void btnEdit_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("TPEdit.aspx");
+    }
+    private void FillManagers()
+    {
+        SalesForce sf = new SalesForce();
+
+        if (ddlFFType.SelectedValue.ToString() == "1")
+        {
+            FillSF_Alpha();
+            ddlAlpha.Visible = true;
+            dsSalesForce = sf.SalesForceListMgrGet(div_code, sfCode);
+            
+            if (dsSalesForce.Tables[0].Rows.Count > 0)
+            {
+                ddlFieldForce.DataTextField = "sf_name";
+                ddlFieldForce.DataValueField = "sf_code";
+                ddlFieldForce.DataSource = dsSalesForce;
+                ddlFieldForce.DataBind();
+
+                ddlSF.DataTextField = "sf_color";
+                ddlSF.DataValueField = "sf_code";
+                ddlSF.DataSource = dsSalesForce;
+                ddlSF.DataBind();
+            }
+        }
+        else if (ddlFFType.SelectedValue.ToString() == "0")
+        {
+            ddlAlpha.Visible = false;           
+            dsSalesForce = sf.SalesForceListMgrGet(div_code, sfCode);
+        }
+        //else if (ddlFFType.SelectedValue.ToString() == "1")
+        //{
+        //    dsSalesForce = sf.UserList_HQ(div_code, "admin");
+        //}
+
+        if (dsSalesForce.Tables[0].Rows.Count > 0)
+        {
+            ddlFieldForce.DataTextField = "sf_name";
+            ddlFieldForce.DataValueField = "sf_code";
+            ddlFieldForce.DataSource = dsSalesForce;
+            ddlFieldForce.DataBind();
+
+            ddlSF.DataTextField = "sf_color";
+            ddlSF.DataValueField = "sf_code";
+            ddlSF.DataSource = dsSalesForce;
+            ddlSF.DataBind();
+
+        }
+    }
+
+    private void FillColor()
+    {
+        int j = 0;
+
+
+        foreach (ListItem ColorItems in ddlSF.Items)
+        {
+            //ddlFieldForce.Items[j].Selected = true;
+
+            if (ColorItems.Text == "Level1")
+                //ColorItems.Attributes.Add("style", "background-color: Wheat");
+                ddlFieldForce.Items[j].Attributes.Add("style", "background-color: Wheat");
+
+            if (ColorItems.Text == "Level2")
+                //ColorItems.Attributes.Add("style", "background-color: Blue");
+                ddlFieldForce.Items[j].Attributes.Add("style", "background-color: LightGreen");
+
+            if (ColorItems.Text == "Level3")
+                //ColorItems.Attributes.Add("style", "background-color: Cyan");
+                ddlFieldForce.Items[j].Attributes.Add("style", "background-color: Pink");
+
+            if (ColorItems.Text == "Level4")
+                //ColorItems.Attributes.Add("style", "background-color: Lavendar");
+                ddlFieldForce.Items[j].Attributes.Add("style", "background-color: Lavendar");
+
+            j = j + 1;
+
+        }
+    }
+    protected void btnGo_Click(object sender, EventArgs e)
+    {
+        System.Threading.Thread.Sleep(time);
+        //FillTourPlan();
+
+        string sURL = "rptTPView.aspx?sf_code=" + ddlFieldForce.SelectedValue + "&cur_month=" + ddlMonth.SelectedValue + "&cur_year=" + ddlYear.SelectedValue +"";
+
+        string newWin = "window.open('" + sURL + "',null,'resizable=yes,toolbar=no,scrollbars=yes,menubar=no,status=no,width=700,height=800,left=0,top=100');";
+        ClientScript.RegisterStartupScript(this.GetType(), "pop", newWin, true);
+
+    }
+    protected void ddlFFType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        FillManagers();
+        //FillColor();
+
+    }
+    protected void ddlAlpha_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        SalesForce sf = new SalesForce();
+        dsSalesForce = sf.UserListTP_AlphasearchMgr(div_code, sfCode, ddlAlpha.SelectedValue);
+        if (dsSalesForce.Tables[0].Rows.Count > 0)
+        {
+            ddlFieldForce.DataTextField = "sf_name";
+            ddlFieldForce.DataValueField = "sf_code";
+            ddlFieldForce.DataSource = dsSalesForce;
+            ddlFieldForce.DataBind();
+
+            ddlSF.DataTextField = "sf_color";
+            ddlSF.DataValueField = "sf_code";
+            ddlSF.DataSource = dsSalesForce;
+            ddlSF.DataBind();
+
+        }
+    }
+}

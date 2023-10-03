@@ -1,0 +1,8 @@
+FMCG_Live Error:insert into Mas_Leave_Form(Leave_Id,Leave_Type,From_Date,To_Date,Reason,sf_code,Division_Code,Leave_Active_Flag,Created_Date,No_of_Days,Address,First_or_Second) select '20614','275','2023-09-29','2023-09-30','Good morning sir 
+As I have Rituals ceremony in vellankani church. I couldn’t do office work for two days. kindly grant leave today & tomorrow (29.09.23,30.09.23).
+Regard’s 
+Cristo Selvaraj
+Gobi depo..','MR5240','106','0','2023-09-29 10:12:44',2,'',''
+|param:
+|error:[{"0":"22001","SQLSTATE":"22001","1":8152,"code":8152,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]String or binary data would be truncated.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]String or binary data would be truncated."},{"0":"01000","SQLSTATE":"01000","1":3621,"code":3621,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The statement has been terminated.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The statement has been terminated."}]
+data:[{"LeaveForm_New":{"Leave_Type":"'275'","From_Date":"2023-09-29","To_Date":"'2023-09-30'","No_of_Days":2,"Reason":"'Good morning sir \nAs I have Rituals ceremony in vellankani church. I couldn’t do office work for two days. kindly grant leave today & tomorrow (29.09.23,30.09.23).\nRegard’s \nCristo Selvaraj\nGobi depo..'","address":"''","halfday":"''"}}]

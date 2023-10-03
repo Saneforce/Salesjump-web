@@ -1,0 +1,43 @@
+
+<!-- <div id="viewport" buffered-scroll="increaseLimit();" ng-init="limit=15;">
+    <table>
+      <tbody>
+        <tr ng-repeat="draft in drafts | limitTo:limit" >
+
+          <td>{{draft.name}}</td>
+          <td>{{draft.town_name}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ -->
+
+<!--  ng-init="limit=15;"
+ng-repeat="draft in drafts | limitTo:limit" -->
+ <ion-view>
+    <ion-content>
+        <ion-list  id="viewport" >
+            <ion-item class="item"  ng-repeat="(i,draft) in Doctor_Special" >
+                <div class="data-table">
+                  
+                    <div class="ro"  >
+                        <div class="co">
+                            {{(i+1)+ draft.name}}<span class="badge badge-assertive" style="top: 14px;right: 16px;" >{{draft.RC}}</span>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                 
+                  <div ng-if="myChoice==1" class="toggle-swipe button button-icon ion-arrow-right-b">
+                </div>
+            </ion-item>
+            
+        </ion-list>
+    </ion-content>
+    <ion-footer-bar class="bar-dark bar bar-footer">
+    <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+</ion-footer-bar>
+</ion-view> 

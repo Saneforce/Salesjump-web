@@ -1,0 +1,10 @@
+Error:exec GetPOSProdBrand_App '14909'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProdBrand_App'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProdBrand_App'."}]
+data:{"SF":"14909","Stk":"14909","div":"4,"}Error:exec getPrimaryOrderDashBoard_modNew '14909','2023-06-20','All','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'."}]
+data:{"login_sfCode":"14909","Stk":"14909","div":"4,","Dt":"2023-06-20","Grpcode":"All","loginType":"Distributor"}Error:exec getSecOrderDashBoard_mod '14909','2023-06-20','Distributor',''
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'."}]
+data:{"login_sfCode":"14909","Stk":"14909","div":"4,","Dt":"2023-06-20","Grpcode":"All","loginType":"Distributor"}

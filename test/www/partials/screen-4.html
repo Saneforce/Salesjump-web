@@ -1,0 +1,48 @@
+<ion-view>
+    <ion-content>
+
+        <div class="list list-inset"> <div class="select-component" >
+               <div class="label">
+                    <div class="label-text">Input</div>
+                </div>
+            <div class="select-box">
+                <div class="input-box">
+                    <div  class="input-css" ng-click="vibrate();openModal('gift_master', 10)">                    
+                        {{(fmcgData.gift.selected.id| getValueforIDD : {'collection' : gifts}).name || "Select the Input"}}
+                    </div>   
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="gridStyle" ng-grid="gridOptions" style="height: 500px">
+        </div>
+        <div>
+            <div class="row moveDown">
+                <div class="col"> <div class='buttonC-container left-sidepull' ng-click="vibrate();save()"  ng-if="((!fmcgData.arc))">
+                        <div class="buttonC">
+                            <i class="icon ion-archive footer-icon"></i>
+                        </div>
+                        <div class='buttonC-text'  >Save To Draft</div>
+                    </div></div>
+                <!--<div class="col"><div class='buttonC-container right-sidepull' ng-click="vibrate();showModal()">
+                        <div class="buttonC">
+                            <i class="icon ion-clipboard footer-icon"></i>
+                        </div>
+                        <div class='buttonC-text'>Summary</div>
+                    </div></div>-->
+
+            </div>
+        </div>
+         <div style="height: 75px">
+
+        </div>
+    </ion-content>
+<ion-footer-bar class="bar-dark">
+    <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+
+
+    <button class="button button-assertive buttonClear pull-right"ng-click="vibrate();goNext()">&nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-right-c"></i>&nbsp;&nbsp;&nbsp;</button>
+</ion-footer-bar>
+</ion-view>

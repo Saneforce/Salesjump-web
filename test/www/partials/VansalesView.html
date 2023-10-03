@@ -1,0 +1,48 @@
+<ion-view>
+    <ion-content ion-sticky>
+        <div class="select-component">
+            <div class="label">
+                <div class="label-text">Stock From</div>
+            </div>
+            <div class="select-box">
+                <div class="input-box">
+                    <div class="input-css" >
+                        {{vansalesviewStk}}
+                    </div>  
+                </div>
+            </div>
+        </div>
+        <ion-list>
+           
+            <div ng-repeat="item in ProductsList | orderBy:OrderFields" style="border-bottom:solid 1px #f9f1f1">
+                <div class="row item-divider" ng-if="$index==0||ProductsList[$index-1].cateid!=item.cateid">
+                    <div class="col col-70">{{(item.cateid| getValueforIDD : {'collection' : CategoryList}).name || " "}}</div><div class="col col-15">{{CaseShCap}}</div><div class="col col-15">{{PiecShCap}}</div>
+                </div>
+                <div class="row" style="background-color:#ffffff;">
+                    <div class="col col-70">{{item.name}}</div>
+                    <div class="col col-15" style="text-align:right;">
+                        <input type="number" ng-model="item.Qty" class="efield"
+                               style="height:25px;padding: 5px;font-size: 15px;line-height: 15px;text-align:right;" readonly/>
+                    </div>
+                    <div class="col col-15" style="text-align:right;">
+                        <input type="number" ng-model="item.PQty" value="" class="efield"
+                               style="height:25px;padding: 5px;font-size: 15px;line-height: 15px;text-align:right;" readonly />
+                    </div>
+                </div>
+                <div class="row" ng-if="SF_type==2 && DayInv.EMode == 0" style="background-color:#ffffff;padding:0px;margin-top: -18px;">
+                    <div style="min-width: 35%;padding:0px;">
+                        <div class="row" style="padding:0px;">
+                            <div style="padding:0px 15px;min-width:25%;color: #bbbab9;">Sl</div><div style="padding:0px;min-width:25%;color:#6c3;">{{item.UCQty||0}}</div><div style="padding:0px;min-width:25%;color:#6c3;">{{item.UPQty||0}}</div>
+                        </div>
+                    </div>
+                    <div style="min-width: 35%;padding:0px;">
+                        <div class="row" style="padding:0px">
+                            <div style="padding:0px;min-width:25%;color: #bbbab9;">Cl</div><div style="padding:0px;min-width:25%;color:#4a87ee;">{{item.ClCQty||0}}</div><div style="padding:0px;min-width:25%;color:#4a87ee;">{{item.ClPQty||0}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ion-list>
+       
+    </ion-content>
+</ion-view>

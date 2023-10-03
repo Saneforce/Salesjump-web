@@ -1,0 +1,4 @@
+FMCG_Live Error:update Trans_TP_One set Change_Status=1,Confirmed=1 where Tour_Month=10 and Tour_Year=2023 and Sf_Code='MR1167'
+|param:
+|error:[{"0":"40001","SQLSTATE":"40001","1":1205,"code":1205,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Transaction (Process ID 144) was deadlocked on lock resources with another process and has been chosen as the deadlock victim. Rerun the transaction.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Transaction (Process ID 144) was deadlocked on lock resources with another process and has been chosen as the deadlock victim. Rerun the transaction."}]
+data:[{"TourPlanSubmit":{}}]

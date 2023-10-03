@@ -1,0 +1,4 @@
+Error:select Code,[Name] from Mas_Payment_Type WITH (NOLOCK) where CHARINDEX(',150,',','+Division_Code+',')>0 and Active_Flag=0
+|param:
+|error:[{"0":"22018","SQLSTATE":"22018","1":245,"code":245,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Conversion failed when converting the varchar value ',' to data type tinyint.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Conversion failed when converting the varchar value ',' to data type tinyint."}]
+data:{"divisionCode":"150,"}

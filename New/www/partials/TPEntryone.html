@@ -1,0 +1,244 @@
+<!-- Git Repo: https://github.com/Russian60/flex-calendar -->
+<ion-view>
+    <ion-content>
+
+
+ <div class="card Tbrd1" style="border-radius:19px;" ng-if="show== 0"> 
+<div class="row"  >
+  <div class="col col-50" style="color:black;font-weight:bold">
+     Emp Code:
+  </div>
+  <div class="col col-50" >
+    :{{Employee_Id}}
+  </div>
+</div>
+<div class="row"  >
+  <div class="col col-50" style="color:black;font-weight:bold">
+    Employee Name
+  </div>
+  <div class="col col-50" >
+    :{{EmpName}}
+  </div>
+</div>
+<div class="row"  >
+  <div class="col col-50" style="color:black;font-weight:bold">
+    HQ
+  </div>
+  <div class="col col-50" >
+    :{{Sf_HQ}}
+  </div>
+</div>
+<div class="row"  >
+  <div class="col col-50" style="color:black;font-weight:bold">
+    Target Commitment
+  </div>
+  <div class="col col-50" style="color:black;font-weight:bold;color: white;background: #FF920B;border-radius: 13px;height: 33px;border: dashed;text-align: center;">
+    {{data.POBSOB||0}}
+  </div>
+</div>
+</div>
+
+        <div  style="margin-top: 1px;margin-bottom: 37px;" ng-if="show == 0">
+            <flex-calendar options="options" events="events"></flex-calendar>
+        </div>
+        <div class="list list-inset" ng-if="show== 1">
+        <div style="display:block;background-color:#f5b6b6;border:solid 1px #e45a5a;padding:4px;font-weight:bolder">Date:{{clickdate}}</div>
+        <br/>
+            <div class="select-component">
+
+                <div class="label">
+                    <div class="label-text">Work Type</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div  class="input-css" ng-click="vibrate();
+                            openModal('mas_worktype', 101)">
+                            {{(Mypln.worktype.selected.id| getValueforIDD : {'collection' : worktypes}).name || "Select the Work Type" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="select-component" ng-hide="view_MR" ng-if="Mypln.worktype.selected.FWFlg == 'F'  && SF_type==2">
+                <div class="label">
+                    <div class="label-text">Headquarters</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('subordinate_master', 103,5558)">
+                            {{(Mypln.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Fieldforce"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+           <!--  <div class="select-component" ng-if="Mypln.worktype.selected.FWFlg == 'F' && DistBased==1">
+                <div class="label">
+                    <div class="label-text">{{StkCap}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal('stockist_master', 104, Mypln.subordinate.selected.id)">
+                            {{(Mypln.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+          <!-- <div class="select-component" ng-hide="view_MR" ng-if="Mypln.worktype.selected.FWFlg == 'F' && SF_type!==2">
+                <div class="label">
+                    <div class="label-text">Distributors</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css"
+                            ng-click="vibrate();openModal(allstockists,43)">
+                            {{(BrndSumm.stockist.selected.id| getValueforIDD : {'collection' : allstockists}).name || "Select "+StkCap}}
+
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+  <div class="select-component" ng-if="Mypln.worktype.selected.FWFlg == 'F'">
+                <div class="label">
+                    <div class="label-text">{{StkRoute}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('town_master', 110, Mypln.subordinate.selected.id)">
+                            {{(Mypln.cluster.selected.id| getValueforIDD : {'collection' : myTpTwns}).name || "Select the Cluster"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>   
+<div class="select-component" ng-if="Mypln.worktype.selected.FWFlg == 'F'">
+                <div class="label">
+                    <div class="label-text">Distributors</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css"
+                            ng-click="vibrate();openModal('stockist_master',92,Mypln.subordinate.selected.id)">
+                            {{(BrndSumm.stockist.selected.id| getValueforIDD : {'collection' : allstockists}).name || "Select "+StkCap}}
+
+                        </div>
+                    </div>
+                </div>
+    </div>
+
+<!-- <div class="select-component" ng-if="Mypln.worktype.selected.FWFlg == 'F'">
+
+                <div class="label">
+                    <div class="label-text">{{StkRoute}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                            openModal('town_master', 89, Mypln.subordinate.selected.id)">
+                            {{fmcgData.jointwork.name|| "Select Route"}}
+                        </div>
+
+                    </div>
+                </div>
+            </div> -->
+
+<!-- <div class="gridStyle" ng-grid="gridOptionsroute" style="height: 500px" ng-if="(',F,IH,DH,').indexOf(','+Mypln.worktype.selected.FWFlg+',')>-1">
+
+            </div> -->
+
+            <div class="gridStyle" ng-grid="gridOptionsDistri" style="height: 500px" ng-if="(',F,IH,DH,').indexOf(','+Mypln.worktype.selected.FWFlg+',')>-1">
+
+            </div> 
+
+<div class="select-component" style="
+    margin-top: 26px;
+" ng-if="Mypln.worktype.selected.FWFlg == 'F'">
+                <div class="label">
+                    <div class="label-text">Retailer</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('doctor_master', 90, Mypln.subordinate.selected.id)">
+                           Select retailer 
+                        </div>
+                    </div>
+                </div>
+            </div> 
+<div class="gridStyle" ng-grid="gridOptionretailer" style="height: 500px" ng-if="(',F,IH,DH,').indexOf(','+Mypln.worktype.selected.FWFlg+',')>-1">
+            </div>
+             <div style="margin-top: 22px;" class="select-component" ng-if="(',F,IH,DH,').indexOf(','+Mypln.worktype.selected.FWFlg+',')>-1">
+
+                <div class="label">
+                    <div class="label-text">Work With</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                            openModal('salesforce_master', 8, Mypln.subordinate.selected.id)">
+                            {{fmcgData.jointwork.name|| "Select Work With"}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+             <div class="gridStyle" ng-grid="gridOptions" style="height: 500px" ng-if="(',F,IH,DH,').indexOf(','+Mypln.worktype.selected.FWFlg+',')>-1">
+
+            </div>
+
+             <div class="select-component" ng-if="Mypln.worktype.selected.FWFlg == 'F'" style="margin-top: 10px;">
+                <div class="label">
+                    <div class="label-text">SOB</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="number" ng-model="data.SOB" class="input-css" placeholder="Enter the SOB"> 
+
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" ng-if="Mypln.worktype.selected.FWFlg == 'F'" style="margin-top: 10px;">
+                <div class="label">
+                    <div class="label-text">POB</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="number" ng-model="data.POB" class="input-css" placeholder="Enter the POB"> 
+
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" style="margin-top: 10px;">
+                <div class="label">
+                    <div class="label-text">Remarks</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input ng-model="data.remarks" class="input-css" placeholder="Enter the  Remarks" ng-click="vibrate();"> 
+
+                    </div>
+                </div>
+            </div>
+
+            <br />
+        </div>
+       
+
+    </ion-content>
+    <ion-footer-bar class="bar-dark" ng-if="!((submitApproval==1 || show==1) && Confirmed!=1&& Confirmed!=3)">
+        <button class="button button-clear button-primary" ng-click="vibrate();GoBack()">Change Month</button>
+    </ion-footer-bar>
+    <ion-footer-bar class="bar-dark" ng-if="(submitApproval==1 || show==1) && Confirmed!=1&& Confirmed!=3">
+
+      <div class="row">
+         <div  class = "col col-50">
+            <button class="button  button-balanced pull-right" ng-click="vibrate();
+            close()"  ng-if="show==1">Close
+            </button>
+        </div>
+        <div  class = "col col-50">
+            <button class="button  button-balanced pull-right"  ng-if="show==1" ng-click="vibrate();
+      save()">Save</button>
+       <button class="button  button-balanced pull-right" ng-if="submitApproval==1 && show == 0" ng-click="vibrate();
+             submit()">Submit For Approval</button>
+         </div>
+         </div>
+        </ion-footer-bar>
+    
+</ion-view>

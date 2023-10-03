@@ -1,0 +1,24 @@
+FMCG_AJANTA Error:select  C.ListeddrCode cust_code,C.Listeddr_Name cust_name, GiftSlabID id,month(From_Date) Month, GiftMinVal MinVal,GiftMaxVal MaxVal,
+year(From_Date)GiftYear, GiftName name,isnull(Claim_deadline,convert(date,getdate())) Claim_deadline , 
+DATEDIFF(day, getdate(), isnull(Claim_deadline,convert(date,getdate())))daydif, 
+GiftDesc Desc,CONVERT(varchar,To_Date, 101) To_Date,CONVERT(varchar,From_Date, 101) From_Date
+ from  Mas_Gift_Slab S
+ inner join Gift_Map_Customer C on c.Slab_Id=S.GiftSlabID
+ inner join vwDoctor_Master_APP D with(nolock) on D.Doctor_Code=C.ListeddrCode
+ where Doctor_Active_flag=0 and charindex(',AJANMGR0005,',','+Field_Code+',')>0 and isnull(Claim_deadline,convert(date,getdate()))>=convert(date,getdate()) and claim_tab='P'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":156,"code":156,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'Desc'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'Desc'."},{"0":"42000","SQLSTATE":"42000","1":319,"code":319,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'with'. If this statement is a common table expression, an xmlnamespaces clause or a change tracking context clause, the previous statement must be terminated with a semicolon.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'with'. If this statement is a common table expression, an xmlnamespaces clause or a change tracking context clause, the previous statement must be terminated with a semicolon."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}FMCG_AJANTA Error:select  C.ListeddrCode cust_code,C.Listeddr_Name cust_name, GiftSlabID id,month(From_Date) Month, GiftMinVal MinVal,GiftMaxVal MaxVal,
+year(From_Date) Year, GiftName name,isnull(Claim_deadline,convert(date,getdate())) Claim_deadline , 
+DATEDIFF(day, getdate(), isnull(Claim_deadline,convert(date,getdate())))daydif, 
+GiftDesc Desc,CONVERT(varchar,To_Date, 101)To_Date,CONVERT(varchar,From_Date, 101) From_Date
+ from  Mas_Gift_Slab S
+ inner join Gift_Map_Customer C on c.Slab_Id=S.GiftSlabID
+ inner join vwDoctor_Master_APP D with(nolock) on D.Doctor_Code=C.ListeddrCode
+ where Doctor_Active_flag=0 and charindex(',AJANMGR0005,',','+Field_Code+',')>0 and isnull(Claim_deadline,convert(date,getdate()))>=convert(date,getdate()) and claim_tab='S'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":156,"code":156,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'Desc'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'Desc'."},{"0":"42000","SQLSTATE":"42000","1":319,"code":319,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'with'. If this statement is a common table expression, an xmlnamespaces clause or a change tracking context clause, the previous statement must be terminated with a semicolon.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'with'. If this statement is a common table expression, an xmlnamespaces clause or a change tracking context clause, the previous statement must be terminated with a semicolon."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}FMCG_ARBRO Error:insert into Trans_TP_Hist(SF_Code,Tour_Month,Tour_Year,Submission_date,Tour_Date,WorkType_Code_B,Worktype_Name_B,Tour_Schedule1,Objective,Worked_With_SF_Code,Division_Code,Territory_Code1,Worked_With_SF_Name,TP_Sf_Name,HQ_Code,HQ_Name,Confirmed,Change_Status,JointWork_Name,Retailer_Code,Retailer_Name,Place_Inv) select 'ARPHMGR0744',MONTH('2023-10-06'),YEAR('2023-10-06'),getdate(),'2023-10-06','1','Field Work','1544','','',176,'KhardahaSodepur','','TAPASHI CHATTERJEE','ARPHMGR0744','',0,0,'','','' ,''
+|param:
+|error:[{"0":"22001","SQLSTATE":"22001","1":8152,"code":8152,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]String or binary data would be truncated.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]String or binary data would be truncated."},{"0":"01000","SQLSTATE":"01000","1":3621,"code":3621,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The statement has been terminated.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The statement has been terminated."}]
+data:[{"Tour_Plan":{"worktype_code":"'1'","worktype_name":"'Field Work'","Worked_with_Code":"''","Worked_with_Name":"''","sfName":"'TAPASHI CHATTERJEE'","Place_Inv":"","objective":"''","Tour_Date":"'2023-10-06'","Multiretailername":"''","MultiretailerCode":"''","worked_with":"''","HQ_Code":"'ARPHMGR0744'","HQ_Name":"''","SOB":"","POB":"","AppVersion":"V_6.4.1.119","location":"22.8379723:88.3942434","dcr_activity_date":"'2023-09-30 12:57:24'","worked_withname":"''","RouteName":"'KhardahaSodepur'","RouteCode":"'1544'"}}]

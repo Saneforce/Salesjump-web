@@ -1,0 +1,10 @@
+Error:exec getService_OutletSummary_Channelwise '4','190'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getService_OutletSummary_Channelwise'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getService_OutletSummary_Channelwise'."}]
+data:{"sfCode":"4","divCode":"190,","dt":"2023-03-10","loginType":"Distributor"}Error:exec getPOSProductTypeList '4'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductTypeList'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductTypeList'."}]
+data:{"SF":"4","Stk":"4","div":"190,"}Error:exec GetPOSProducts_App '4'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'."}]
+data:{"SF":"4","Stk":"4","div":"190,"}

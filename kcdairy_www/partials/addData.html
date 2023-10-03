@@ -1,0 +1,228 @@
+<ion-view>
+
+    <ion-content>
+        <div class="list list-inset">
+<!--                        <div class="select-component">
+                            <div class="label">
+                                <div class="label-text">Cluster</div>
+                            </div>
+                            <div class="select-box">
+                                <div class="input-box">
+                                    <div class="input-css" ng-click="openModal('town_master', 2,sfCode)">
+                                        {{(fmcgData.cluster.selected.id| getValueforIDD : {'collection' : clusters}).name || "Select the Cluster" }}
+                                    </div>                       
+                                </div>
+                            </div>
+                        </div>-->
+  <!--<div class="select-component">
+                <div class="label">
+                    <div class="label-text">Territory</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                            openModal('town_master', 32, precall.subordinate.selected.id)">
+                            {{(precall.cluster.selected.id| getValueforIDD : {'collection' : clusters}).name  || "Select the Territory"}}
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+              <div class="select-component" ng-hide="view_MR">
+                <div class="label">
+                    <div class="label-text">Headquarters</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('subordinate_master', 103)">
+                            {{(Mypln.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Fieldforce"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="select-component">
+                <div class="label">
+                    <div class="label-text">{{StkCap}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal('stockist_master', 104, Mypln.subordinate.selected.id)">
+                            {{(Mypln.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div ng-if="fmcgData.RouteAdd==1">
+               
+                  <button class="button button-small button-balanced" style="float:right" ng-click="vibrate();
+            addRoute(0)">New
+            </button>
+                
+                </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Route</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('town_master', 102, Mypln.subordinate.selected.id)">
+                            {{(Mypln.cluster.selected.id| getValueforIDD : {'collection' : myTpTwns}).name || "Select the Cluster"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>  
+          
+            <div class="select-component" style="padding-bottom:10px;height:auto" ng-if="CusOrder==1">
+                <div class="label">
+                    <div class="label-text">Walking Sequence</div>
+                </div>
+               <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                
+                    openModal('doctor_master',  109, Mypln.subordinate.selected.id)">
+                    {{(Mypln.handover.selected.id| getValueforIDD : {'collection' : doctors}).name  || "Select The Existing Customer Name"}}
+                        </div></div></div>
+            </div>
+<!--            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Cluster</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                            openModal('town_master', 32, precall.subordinate.selected.id)">
+                            {{(precall.cluster.selected.id| getValueforIDD : {'collection' : clusters}).name  || "Select the Territory"}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" style="padding-bottom:10px;height:auto">
+                <div class="label">
+                    <div class="label-text">Walking Sequence</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+
+                            openModal('doctor_master', 36, precall.subordinate.selected.id)">
+                            {{(precall.doctor.selected.id| getValueforIDD : {'collection' : doctors}).name  || "Select The Existing Customer Name"}}
+                        </div></div></div>
+            </div>-->
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Name</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="data.name" placeholder="{{NmCap}} Name">     
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Contact Person Name</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="data.Contact_Person_Name" placeholder="Contact Person Name">     
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" style="padding:2px;height:160px">
+
+                <div class="label">
+                    <div class="label-text">Address</div>
+                </div>
+                <div class="select-box">
+                    <textarea ng-model="data.address" rows="5" placeholder="Enter the Address" class="textarea-css" ng-click="vibrate();">                     
+
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Phone</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="tel" class="input-css" ng-model="data.phone" placeholder="Enter the Phone No">     
+                    </div>
+                </div>
+            </div>
+<!--            <div class="select-component" ng-hide="view_chemist">
+                <div class="label">
+                    <div class="label-text">Qulification</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('Qualifications', 112)">
+                            {{(fmcgData.qulification.selected.id| getValueforIDD : {'collection' : qulifications}).name  || "Select the Qulification" }}
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+            <div class="select-component" ng-hide="view_chemist">
+                <div class="label">
+                    <div class="label-text">Class</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('class_master', 113)">
+                            {{(fmcgData.class.selected.id| getValueforIDD : {'collection' : class_master}).name  || "Select the Class" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" ng-hide="view_chemist">
+                <div class="label">
+                    <div class="label-text">Customer Channel</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('Doctor_Specialty', 16)">
+                            {{(fmcgData.speciality.selected.id| getValueforIDD : {'collection' : specialitys}).name  || "Select the Customer Channel" }}
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <!--<div class="select-component" ng-hide="view_chemist">
+
+                <div class="label">
+                    <div class="label-text">Category</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('Doctor_Category', 17)">
+                            {{(fmcgData.category.selected.id| getValueforIDD : {'collection' : categorys}).name  || "Select the Category"}}
+                        </div> 
+                    </div>
+                </div>
+            </div>-->
+
+        </div>
+
+    </ion-content>
+
+</ion-view>
+<div class="bar bar-dark bar-footer">
+    <button class="button buttonClear pull-left" ng-click="vibrate();
+        goBack()">
+        <i class="icon ion-ios7-arrow-back"></i>
+    </button>
+
+
+    <button class="button buttonClear pull-right"ng-click="vibrate();
+        goNext()"><i class="icon ion-ios7-arrow-forward"></i></button>
+</div>
+<ion-footer-bar class="bar-dark">
+    <button class="button buttonClear pull-left" ng-click="vibrate();
+        goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+
+
+    <button class="button buttonClear pull-right" ng-click="vibrate();
+        save()">Save</button>
+</ion-footer-bar>
+

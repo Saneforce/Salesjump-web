@@ -1,0 +1,132 @@
+<ion-view>
+    <ion-content>
+      <div class="list list-inset">
+<div class="select-component" ng-if="SF_type!=1" ng-if="(',F,IH,DH,').indexOf(','+Mypln.worktype.selected.FWFlg+',')>-1">
+                <div class="label">
+                    <div class="label-text">Headquarter</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('subordinate_master', 107)">
+                            {{(Mypln.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Fieldforce"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="select-component" ng-if='fmcgData.customer.selected.id==3 || DistBased==1' >
+                <div class="label">
+                    <div class="label-text">{{StkCap}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal('stockist_master', 105, Mypln.subordinate.selected.id)">
+                            {{(Mypln.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">{{StkRoute}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click=" SaveOrder(0)">
+                            {{(precall.cluster.selected.id| getValueforIDD : {'collection' : myTpTwns}).name || "Select the Route"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div style="margin-top:10px;">
+                      <div  style="color:green;font-weight:bolder">Order Date {{MSDDATES}}</div>
+                    <div   ng-model="item.id" class="col col-100 gh" style="text-align:right;color:#6e7173;" ><input type="search" placeholder="Search Name"    ng-model="searchText"></div> 
+        <div class="row"  style="background-color:#f6eeee">
+             <div class="col col-10" style="color:black;font-weight:bold;">Sl.No</div>
+              <div  class="col col-20" style="color:black;font-weight:bold;">Visit</div>
+             <div ng-if="fmcgData.customer.selected.id==1" class="col col-35" style="color:black;font-weight:bold;">RetailerName</div>
+              <div ng-if="fmcgData.customer.selected.id==3" class="col col-35" style="color:black;font-weight:bold;">DistributorName</div>
+
+              <div class="col col-20" style="color:black;font-weight:bold;">Order</div>
+            
+              
+ 
+          </div></div>
+            <div ng-repeat="(i,x) in fmcgData.MsdRetailerName | filter:searchText" style="background-color: rgb(241, 241, 241)">
+                <div class="row">
+                    <div class="col col-10">
+                        {{i+1}}
+                    </div>
+                     <div class="col col-20" >
+                        
+                            <input type="checkbox" id="check1_{{$index}}" ng-model="x.Avail"  ng-change="insertinvited(x)"/>
+                            <label for="check1_{{$index}}"></label>
+                        
+                    </div>
+                    <div ng-if="fmcgData.customer.selected.id==1" class="col col-35">
+                        {{x.name}}
+                    </div>
+                     <div ng-if="fmcgData.customer.selected.id==3" class="col col-35">
+                        {{x.name}}
+                    </div>
+                    <div class="col col-20"  ng-if="x.Avail" ng-hide="x.Ordered==1">
+                       <button  class="button button-small  button-calm" ng-click="MissedOrder(x,$index,0)">Order</button>
+                    </div>
+                   
+                    
+                   <div class="col col-20"  ng-hide="x.Ordered!==1"  >
+                       <button ng-if="x.Avail" class="button  button-small buttonClear button-balanced pull-right" ng-click="MissedOrder(x,$index,1)">Edit</button>
+                    </div>
+                    
+                   
+               </div>
+                 <div class="label-text" ng-if="x.Avail"><p style="color:lightslategrey;font-weight:bolder;margin: 0 0 -19px;">Remarks</p> <span style="float:right;font-size: small;padding: 0px 9px;color: #05e68a;" ng-click="vibrate();openModal('nonreport_template_master', 5555,i)">Templates  <span style="color:#989898;font-size: x-small;">v</span></span>
+                  <textarea ng-model="x.remarks" rows="2" class="textarea-css" ng-click="vibrate();" placeholder="Enter the Remarks ( or ) Select from Template">
+                     
+                    </textarea>
+                    </div>
+              
+            </div>
+                    
+                    
+                </div>
+            </div>
+
+
+
+
+
+
+
+<div style="
+    float:  right;
+    margin-right: 66px;
+">
+
+  </div>
+</div>
+
+    </ion-content>
+<ion-footer-bar class="bar-dark bar bar-footer">
+    <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+ <!-- <button  class="button buttonClear  button-calm pull-right" style="margin-right: 67px;"  ng-click="vibrate();
+         SaveOrder();">
+      Save
+      </button>
+       <button   ng-click="vibrate();
+         submit()" >Submit</button> -->
+
+
+<!-- <button  class="button buttonClear  button-calm pull-right" style="margin-right: 84px;"  ng-click="vibrate();
+         SaveOrder()">Save
+      
+      </button> -->
+ <button  class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+          SaveOrder(1);" >Save</button>
+      
+
+
+   
+</ion-footer-bar>
+</ion-view>

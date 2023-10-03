@@ -1,0 +1,371 @@
+<ion-view>
+
+    <ion-content style="
+   
+    padding: 9px;
+">    
+<div style="margin: 8px 0px;" >
+
+               <div class="label">
+                    <div class="label-text">{{StkRoute}}<label style="color: red;"> &nbsp;    *</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('town_master', 102, Mypln.subordinate.selected.id)">
+                            {{(Mypln.cluster.selected.id| getValueforIDD : {'collection' : myTpTwns}).name || "Select the Route"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+     <div  style="margin: 8px 0px;">
+                <div class="label">
+                    <div class="label-text">Customer Category<label style="color: red;"> &nbsp;*</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('Doctor_Specialty', 16)">
+                            {{(fmcgData.speciality.selected.id| getValueforIDD : {'collection' : specialitys}).name  || "Select the Customer Category  " }}
+                        </div> 
+                    </div>
+                </div>
+            </div>
+    <!-- <div  style="margin: 8px 0px;">
+                <div class="label">
+                    <div class="label-text">Customer Class<label style="color: red;"> &nbsp;*</label></div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('class_master', 113)">
+                            {{(fmcgData.class.selected.id| getValueforIDD : {'collection' : class_master}).name  || "Select the Customer Class" }}
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            
+
+           
+        
+            <div style="margin: 8px 0px;">
+
+               <div class="label">
+                   <div class="label-text">Customer Name <label style="color: red;"> &nbsp;    *</label></div>
+
+               </div>
+               <div class="select-box">
+                   <div class="input-box">
+                       <input type="text"   class="input-css" ng-model="fmcgData.FormarName" placeholder="Enter the Customer Name"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+            <div style="margin: 8px 0px;">
+               <div class="label">
+                  <!--ng-if="template==1"-->
+                  <div class="label-text">Address</span></div>
+               </div>
+               <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="fmcgData.Address" placeholder=" Enter the Address"  maxlength="75">     
+                    </div>
+                </div>
+            </div>
+
+            <div  >
+                <div class="label">
+                    <div class="label-text">Area Name</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <input type="text" class="input-css" ng-model="fmcgData.areaname" placeholder=" Enter the Area Name"  maxlength="75">     
+                    </div>
+                </div>
+            </div>
+
+            <div  >
+
+                <div class="label">
+                    <div class="label-text">City </div>
+                </div>
+                <div class="select-box">
+                    <input type="text" ng-model="fmcgData.cityname" rows="5" placeholder="Enter the City" class="input-css" ng-click="vibrate();" maxlength="50">                     
+
+                   
+                </div>
+            </div>
+              <div>
+
+                <div class="label">
+                    <div class="label-text">LandMark </div>
+                </div>
+                <div class="select-box">
+                    <input type="text" ng-model="fmcgData.landmark" rows="5" placeholder="Enter the Landmark" class="input-css" ng-click="vibrate();" maxlength="50">                     
+
+                   
+                </div>
+            </div>
+
+<div style="margin: 8px 0px;">
+
+               <div class="label">
+                   <div class="label-text">Contact Number<label  style="color: red;">&nbsp; *</label> </div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box" >
+                       <input type="text"  class="input-css" ng-model="fmcgData.ContactNumber" placeholder="Enter the Contact Number"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+             <div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Email</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box"  >
+                       <input type="text"   class="input-css" ng-model="fmcgData.Email" placeholder="Enter the Email"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+
+
+<div   ng-if="(','+fmcgData.speciality.name+',').indexOf(',DF,')>-1"  >
+
+  <div >
+
+                <div class="label">
+                    <div class="label-text">Breed</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                            openModal('BreedCategory', 88)">
+                            {{fmcgData.BreedCategory.name|| "Select Breed"}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+<div class="gridStyle" ng-grid="gridOptions" style="height: 500px" >
+
+            </div>
+            <div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">{{FormerCaption}}<label style="color: red;"> &nbsp;*</label></div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box">
+                       <input type="number"   class="input-css" ng-model="fmcgData.DFCrop" placeholder="Enter No of Animal"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+
+
+ <div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Daily Milk Prod</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box"  >
+                       <input type="text"   class="input-css" ng-model="fmcgData.DFDairyMP" placeholder="Enter the Daily Milk Prod"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+
+  <div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Currently Using FSD</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box">
+                       <!-- <input type="text"   class="input-css" ng-model="fmcgData.DFFSD" placeholder="Enter the FSD"   maxlength="150">  -->    
+
+       <div class="input-css" ng-click="vibrate();openModal(CurrentlyUsing,118)">
+                     {{(fmcgData.CurrentlyUsing.selected.id| getValueforIDD : {'collection' : CurrentlyUsing}).name || "Currently Using FSD"}}
+                  </div>
+
+                   </div>
+               </div>
+            </div>
+           <!-- <div style="margin: 8px 0px;">
+
+               <div class="label">
+                   <div class="label-text">Potential FSD Month</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box">
+                       <input type="text"   class="input-css" ng-model="fmcgData.DFPFSDM" placeholder="Enter the Potential FSD"   maxlength="150">     
+                   </div>
+               </div>
+            </div> -->
+
+
+     <!--  <div style="margin: 8px 0px;">
+
+               <div class="label">
+                   <div class="label-text">Frequency</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box"  >
+                       <input type="text"   class="input-css" ng-model="fmcgData.DFFreq" placeholder="Enter the Frequency"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+ -->
+
+          </div>
+
+
+<div ng-if="(','+fmcgData.speciality.name+',').indexOf(',AIT,')>-1">
+
+<div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Monthly AI's</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box"  >
+                       <input type="text"   class="input-css" ng-model="fmcgData.AITMAI" placeholder="Enter the Monthly AI's"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+
+           <div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Currently Using</div>
+
+               </div>
+               <div class="select-box" >
+                  <!--  <div class="input-box"  >
+                       <input type="text"   class="input-css" ng-model="fmcgData.AITCU" placeholder="Enter the Currently Using"   maxlength="150">     
+                   </div> -->
+
+                    <div class="input-css" ng-click="vibrate();openModal(CurrentlyUsing,118)">
+                     {{(fmcgData.CurrentlyUsing.selected.id| getValueforIDD : {'collection' : CurrentlyUsing}).name || "Currently Using FSD"}}
+                  </div>
+               </div>
+            </div>
+
+            <div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Montly Potential</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box"  >
+                       <input type="text"   class="input-css" ng-model="fmcgData.AITMP" placeholder="Enter the Montly Potential"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+
+</div>
+
+
+<div  ng-if="(','+fmcgData.speciality.name+',').indexOf(',MCC,')>-1" >
+<div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">No of farmers Pouring Milk</div>
+               </div>
+               <div class="select-box" >
+                   <div class="input-box">
+                       <input type="text"   class="input-css" ng-model="fmcgData.MCCNFPM" placeholder="Enter the Pouring Milk"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+
+<div style="margin: 8px 0px;">
+
+               <div class="label">
+                   <div class="label-text">Milk collection(ltrs) daily</div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box"  >
+                       <input type="text"   class="input-css" ng-model="fmcgData.MCCMilkColDaily" placeholder="Enter the collection(ltrs) daily"   maxlength="150">     
+                   </div>
+               </div>
+            </div>
+
+</div>
+
+<div   ng-if="(','+fmcgData.speciality.name+',').indexOf(',VETS,')>-1">
+<div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Montly Potential</div>
+               </div>
+               <div class="select-box">
+                   <div class="input-box">
+                       <input type="text"   class="input-css" ng-model="fmcgData.VetsMP" placeholder="Enter the Montly Potential"   maxlength="150">     
+                   </div>
+               </div>
+            </div>                                              
+       </div>
+
+<!-- <div style="margin: 8px 0px;"  >
+
+                <div class="label">
+                    <div class="label-text">Frequency of visit</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                            openModal(FrequencyOfVisit, 117)">
+                               {{(fmcgData.FrequencyOfVisit.selected.id| getValueforIDD : {'collection' : FrequencyOfVisit}).name || "Select Frequency of Visit"}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+ -->
+          
+           
+            <!-- <div style="margin: 8px 0px;" >
+
+               <div class="label">
+                   <div class="label-text">Used Semen<label style="color: red;"> &nbsp;*</label></div>
+
+               </div>
+               <div class="select-box" >
+                   <div class="input-box"  >
+                       <input type="text"   class="input-css"  ng-model="fmcgData.Semen" placeholder="Enter Semen"   maxlength="150">     
+                   </div>
+               </div>
+            </div> -->
+          <div >
+               <div class="label">
+                  <!--ng-if="template==1"-->
+                  <div class="label-text">Remarks <span style="float:right;font-size: small;padding: 0px 9px;color: #05e68a;" ng-click="vibrate();openModal('nonreport_template_master', 15)">Templates  <span style="color:#989898;font-size: x-small;">v</span></span></div>
+               </div>
+               <textarea ng-model="fmcgData.remarks" rows="5" class="textarea-css" ng-click="vibrate();" placeholder="Enter the Remarks ( or ) Select from Template">
+                     
+                    </textarea>
+            </div>
+         
+      </ion-content>
+</ion-view>
+<ion-footer-bar class="bar-dark">
+  <button class="button buttonClear pull-left" ng-click="vibrate();
+        goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+
+ <button  class="button buttonClear  button-balanced pull-right" ng-click="vibrate();
+         Save()">Submit</button>
+    <!-- <button  class="button buttonClear  button-calm pull-right" style="margin-right: {{100*((fmcgData.customer.selected.id!=3)?fmcgData.customer.selected.id:0)}}px;" ng-click="vibrate();
+         goNext()">PromoInput</button> -->
+    
+</ion-footer-bar>
+

@@ -1,0 +1,396 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using Bus_EReport;
+using System.Data.SqlClient;
+using System.Web.Services;
+using System.Configuration;  
+using DBase_EReport;
+
+public partial class MIS_Reports_Product_Tax_Allocation : System.Web.UI.Page
+{
+    string div_code = string.Empty;
+    DataSet dsSalesForce = null;
+    DataSet dsUserList = null;
+    DataSet dsDoc = null;
+    DataSet dsDCR = null;
+    int product_total = 0;
+    int FWD_total = 0;
+    DateTime dtCurrent;
+    DataSet dsProduct = null;
+    DataSet dsCatg = null;
+    int MonColspan = 0;
+    DataSet dsTP = null;
+    string tot_dr = string.Empty;
+    string sCurrentDate = string.Empty;
+    string sf_code = string.Empty;
+    DataSet dsSf = null;
+    string sf_type = string.Empty;
+    DateTime ServerStartTime;
+    DateTime ServerEndTime;
+    Notice Addcomment = new Notice();
+    DataSet dsState = new DataSet();
+    string state_code = string.Empty;
+    string sub_code = string.Empty;
+    string sState = string.Empty;
+    DataSet dsDivision = null;
+    string[] statecd;
+    string state_cd = string.Empty;
+    DataSet dsSub = null;
+	
+    protected override void OnPreInit(EventArgs e)
+    {
+        base.OnPreInit(e);
+        sf_type = Session["sf_type"].ToString();
+        if (sf_type == "3")
+        {
+            this.MasterPageFile = "~/Master.master";
+        }
+        else if (sf_type == "2")
+        {
+            this.MasterPageFile = "~/Master_MGR.master";
+        }
+        else if (sf_type == "1")
+        {
+            this.MasterPageFile = "~/Master_MR.master";
+        }
+    }
+    protected void Page_Load(object sender, EventArgs e)
+    {
+       
+        div_code = Session["div_code"].ToString();
+        if (!Page.IsPostBack)
+        {
+            submit1.Visible = false;
+            Button1.Visible = false;
+            FillState(div_code);
+        }
+    }
+    private void FillState(string div_code)
+    {
+
+        Division dv = new Division();
+        dsDivision = dv.getStatePerDivision(div_code);
+        if (dsDivision.Tables[0].Rows.Count > 0)
+        {
+            int i = 0;
+            state_cd = string.Empty;
+            sState = dsDivision.Tables[0].Rows[0].ItemArray.GetValue(0).ToString();
+            statecd = sState.Split(',');
+            foreach (string st_cd in statecd)
+            {
+                if (i == 0)
+                {
+                    state_cd = state_cd + st_cd;
+                }
+                else
+                {
+                    if (st_cd.Trim().Length > 0)
+                    {
+                        state_cd = state_cd + "," + st_cd;
+                    }
+                }
+                i++;
+            }
+
+            State st = new State();
+            dsState = st.getState_new(state_cd);
+            ddlState.DataTextField = "statename";
+            ddlState.DataValueField = "state_code";
+            ddlState.DataSource = dsState;
+            ddlState.DataBind();
+            ddlState.Items.Insert(0, new ListItem("--Select--", "0"));
+        }
+    }
+   
+    protected void btnstate_Click(object sender, EventArgs e)
+    {
+
+       
+         BindGridd();
+         submit1.Visible = true;
+         Button1.Visible = true;
+
+       
+    }
+    
+    protected void BindGridd()
+    {
+
+        Notice gg = new Notice();
+        DataSet ff = new DataSet();
+
+       
+        
+            ff = gg.Getproductstatewise1(div_code, ddlState.SelectedValue.ToString());
+             if (ff.Tables.Count > 0)
+        {
+            if (ff.Tables[0].Rows.Count > 0)
+            {
+
+
+                GridView1.DataSource = ff;
+                GridView1.DataBind();
+
+
+            }
+        }
+}
+    [WebMethod]
+    public static string deletedata(string state_code)
+    {
+        string msg = "";
+        //string Product_namee = Product_name.Trim();
+
+        string State_Codee = state_code.Trim();
+        //string Discounte = Discount.Trim();
+        //string Packagee = Package.Trim();
+        //string myString = string.Empty;
+
+
+        string divcode = null;
+
+        if (HttpContext.Current.Session["div_code"] != null)
+        {
+            if (HttpContext.Current.Session["div_code"].ToString() != "")
+            {
+                divcode = HttpContext.Current.Session["div_code"].ToString();
+
+            }
+        }
+        if (State_Codee != "")
+        {
+
+            SqlConnection con = new SqlConnection(Globals.ConnString);
+            con.Open();
+
+            //SqlCommand cmdp = new SqlCommand("delete from Mas_StateProduct_TaxDetails  where state_code='" + State_Codee + "' ", con);
+
+            //using (SqlDataReader rdr = cmdp.ExecuteReader())
+            //{
+            //    while (rdr.Read())
+            //    {
+            //        myString = rdr["Inv_ID"].ToString(); ; //The 0 stands for "the 0'th column", so the first column of the result.
+
+
+            //    }
+            //}
+
+            SqlCommand cmd = new SqlCommand("delete from Mas_StateProduct_TaxDetails  where state_code='" + State_Codee + "' and Division_Code='"+divcode+"' ", con);
+
+            //cmd.Parameters.AddWithValue("@Product_name", Product_namee);
+            //cmd.Parameters.AddWithValue("@Product_code", Product_codee);
+            //cmd.Parameters.AddWithValue("@Scheme", Schemee);
+            //cmd.Parameters.AddWithValue("@Free", Freee);
+            //cmd.Parameters.AddWithValue("@Discount", Discounte);
+            //cmd.Parameters.AddWithValue("@Package", Packagee);
+
+
+            int i = cmd.ExecuteNonQuery();
+            if (i == 1)
+            {
+                msg = "true";
+            }
+            else
+            {
+                msg = "false";
+            }
+            //}
+
+
+        }
+        return msg;
+    }
+    [WebMethod]
+    public static string insertdata(string Product_code, string Tax_code, string State_Code)
+    {
+      
+        string msg = "";
+        //string Product_namee = Product_name.Trim();
+        string Product_codee = Product_code.Trim();
+        string Tax_codee = Tax_code.Trim();
+        string State_Codee = State_Code.Trim();
+        //string Discounte = Discount.Trim();
+        //string Packagee = Package.Trim();
+        //string myString = string.Empty;
+
+        string divcode=null;
+
+        if (HttpContext.Current.Session["div_code"] != null)
+        {
+            if (HttpContext.Current.Session["div_code"].ToString() != "")
+            {
+                divcode = HttpContext.Current.Session["div_code"].ToString();
+              
+            }
+        }
+
+
+
+
+        if (Tax_codee != "" && Tax_codee != "undefined" && Product_codee != "" && Product_codee != "undefined" && State_Codee != "")
+        {
+			int iReturn = -1;
+            int S_No = -1;
+            try
+            {
+
+                DB_EReporting db = new DB_EReporting();
+
+                string strQry = "insert into Mas_StateProduct_TaxDetails(State_Code,Product_Code,Tax_Id,Division_Code) values('" + State_Codee + "', '" + Product_codee + "','" + Tax_codee + "','" + divcode + "')";
+                S_No = db.Exec_Scalar(strQry);
+
+                if (S_No > 0)
+                {
+                    msg = "true";
+                }
+                else
+                {
+                    msg = "false";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            //SqlConnection con = new SqlConnection(Globals.ConnString);
+            //con.Open();
+
+            //SqlCommand cmdp = new SqlCommand("delete from Mas_StateProduct_TaxDetails  where state_code='" + State_Codee + "' ", con);
+
+            //using (SqlDataReader rdr = cmdp.ExecuteReader())
+            //{
+            //    while (rdr.Read())
+            //    {
+            //        myString = rdr["Inv_ID"].ToString(); ; //The 0 stands for "the 0'th column", so the first column of the result.
+
+
+            //    }
+            //}
+
+            //SqlCommand cmd = new SqlCommand("insert into Mas_StateProduct_TaxDetails(State_Code,Product_Code,Tax_Id,Division_Code) values('" + State_Codee + "', '" + Product_codee + "','" + Tax_codee + "','" + divcode + "')", con);
+
+          
+
+            //int i = cmd.ExecuteNonQuery();
+            //if (i == 1)
+            //{
+             //   msg = "true";
+            //}
+            //else
+            //{
+                //msg = "false";
+            //}
+            //}
+
+
+        }
+        return msg;
+    }
+    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+
+        ntc gg = new ntc();
+        DataSet ff1 = new DataSet();
+
+
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            ff1 = gg.Gettaxdetails(div_code);
+            if (ff1.Tables.Count > 0)
+            {
+                if (ff1.Tables[0].Rows.Count > 0)
+                {
+
+                    DropDownList DropDownList1 =
+
+            (DropDownList)e.Row.FindControl("drptax_detail");
+                    DropDownList1.DataSource = ff1;
+
+                    DropDownList1.DataTextField = "Tax_Name";
+
+                    DropDownList1.DataValueField = "Tax_Id";
+                    HiddenField hdn = (HiddenField)e.Row.FindControl("HiddenField1");
+                    if (hdn.Value == "")
+                    {
+                        DropDownList1.SelectedValue = "0";
+                    }
+                    else
+                    {
+                        DropDownList1.SelectedValue = hdn.Value;
+
+                    }
+                    DropDownList1.DataBind();
+
+                }
+            }
+
+
+
+
+
+        }
+
+    }
+
+    protected void gridView_PreRender(object sender, EventArgs e)
+    {
+        //GridDecorator.MergeRows(GridView1);
+    }
+
+public class ntc
+    {
+        public DataSet Gettaxdetails(string div_code)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsDivision = null;
+
+
+
+            string strQry = "SELECT 0 as Tax_Id,'---Select---' as Tax_Name union all select Tax_Id,Tax_Name+'@'+convert(varchar,Value) Tax_Name  " +
+                "from Tax_Master where Tax_Active_Flag=0 AND dIVISION_CODE='" + div_code + "' ";
+
+
+            try
+            {
+                dsDivision = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsDivision;
+        }
+    }
+
+    public class GridDecorator
+    {
+        public static void MergeRows(GridView gridView)
+        {
+            for (int rowIndex = gridView.Rows.Count - 2; rowIndex >= 0; rowIndex--)
+            {
+                GridViewRow row = gridView.Rows[rowIndex];
+                GridViewRow previousRow = gridView.Rows[rowIndex + 1];
+
+                for (int i = 0; i < row.Cells.Count; i++)
+                {
+                    if (row.Cells[i].Text == previousRow.Cells[i].Text)
+                    {
+                        row.Cells[i].RowSpan = previousRow.Cells[i].RowSpan < 2 ? 2 :
+                                               previousRow.Cells[i].RowSpan + 1;
+                        previousRow.Cells[i].Visible = false;
+                    }
+                }
+            }
+        }
+    }
+
+   
+     
+    }

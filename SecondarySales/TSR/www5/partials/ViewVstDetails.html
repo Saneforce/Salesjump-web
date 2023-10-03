@@ -1,0 +1,133 @@
+﻿<div class="modal">
+    <ion-header-bar class="bar bar-header bar-positive">
+        <h1 class="title">{{modal.rptTitle}}</h1>
+    </ion-header-bar>
+    <ion-content style="background-color:#f6eeee;">
+        <div id="vstpreview">
+        <ion-list  ng-if="modal.type==9" >
+            <ion-item ng-repeat="Vstlist in modal.vwVstlists" class="propCase" ng-style="Vstlist.orderValue>0 && {'background-color': ' #f1f1f1'}"><span ng-if="Vstlist.orderValue>0" class="ion-star" style="color: red;float: right"></span>
+                <h2 style="color:#39ac08;"><b>{{Vstlist.name}}</b><span class="item-note propCase" style="color:#39ac08;white-space:nowrap !important;">{{Vstlist.vtime}}</span></h2>
+                <p>Route : <b style="color:#7e0ca5">{{Vstlist.Territory}}</b></p>
+                <p ng-if="Vstlist.WWith" style="white-space:pre-wrap !important">Joint Work : <b style="color:#7e0ca5">{{Vstlist.WWith}}</b></p>
+                <p ng-if="Vstlist.products" style="white-space:pre-wrap !important">Product : <b style="color:#7e0ca5">{{Vstlist.products}}</b></p>
+                <p ng-if="Vstlist.gifts" style="white-space:pre-wrap !important">Input : <b style="color:#7e0ca5">{{Vstlist.gifts}}</b></p>
+                <p style="white-space:pre-wrap !important;padding: 20px 5px 0px 5px;">Remarks : <b style="color:#7e0ca5">{{Vstlist.remarks}}</b></p>
+            </ion-item>
+        </ion-list>
+             <ion-list  ng-if="modal.type==null || modal.type==0" >
+                             <ion-item ng-repeat="Vstlist in modal.vwVstlists" class="propCase" ng-style="Vstlist.orderValue>0 && {'background-color': ' #f1f1f1'}"><span ng-if="Vstlist.orderValue>0" class="ion-star" style="color: red;float: right"></span>
+                                 <div class="ro" style="padding-top:0px;padding-bottom:3px">
+                                     <h2 style="color:#39ac08;"><b>{{Vstlist.name}}</b><span class="item-note propCase" style="color:#39ac08;white-space:nowrap !important;">{{Vstlist.vtime}}</span></h2>
+
+                                 </div>
+                                 <div class="ro" style="padding-top:5px;padding-bottom:0px">
+                                     <p>Route : <b style="color:#7e0ca5">{{Vstlist.Territory}}</b></p>
+
+                                 </div>               
+                                 <div class="ro" style="padding-top:5px;padding-bottom:0px">
+                                    <p ng-if=" vstlist.wwith" style="white-space:pre-wrap !important">Joint Work : <b style="color:#7e0ca5">{{Vstlist.WWith}}</b></p>
+                                 </div>                   
+                                          
+                                 <!--<div class="ro" ng-if="Vstlist.productSelectedList">
+                                    <table style="width: 100%;" border="1">
+                                        <tr style="background-color:#eae9e9">
+                                            <th style="text-align:left;padding:5px;font-size:100%;">Product</th>
+                                            <th style="text-align:left;padding:5px;font-size:100%;">Qty</th>
+                                            <th style="text-align:left;padding:5px;font-size:100%;" ng-if="modal.SlTyp==1">Value</th>
+                                        </tr>
+                                        <tr ng-repeat="productSelection in Vstlist.productSelectedList">
+                                            <td style ="text-align:left;padding:2px 5px;font-size:100%;">{{productSelection.product_Nm}}</td>
+                                            <td style="text-align:right;padding:2px 5px;font-size:100%;background: #e7e7fb;">{{productSelection.rx_qty|| 0}}</td>
+                                            <td style="text-align:right;padding:2px 5px;font-size:100%;" ng-if="modal.SlTyp==1">{{productSelection.sample_qty}}</td>
+                                        </tr>
+                                    </table>
+                                </div>-->
+                                <div class="ro">                
+                                    <p style="white-space:pre-wrap !important;padding: 20px 5px 0px 5px;">Remarks : <b style="color:#7e0ca5">{{Vstlist.remarks}}</b></p>
+                                </div>                    
+                             </ion-item>
+        </ion-list>
+
+            <ion-list ng-if="modal.type==null || modal.type==0">
+                <ion-item ng-repeat="Vstlist in modal.vwVstlists" class="propCase" ng-style="Vstlist.orderValue>0 && {'background-color': ' #f1f1f1'}">
+                    <div class="ro" ng-if="Vstlist.productSelectedList">
+                        <table style="width: 100%;" border="1">
+                            <tr style="background-color:#eae9e9">
+                                <th style="text-align:left;padding:5px;font-size:100%;">Product</th>
+                                <th style="text-align:left;padding:5px;font-size:100%;">Qty</th>
+                                <th style="text-align:left;padding:5px;font-size:100%;" ng-if="modal.SlTyp==1">Value</th>
+                            </tr>
+                            <tr ng-repeat="productSelection in Vstlist.productSelectedList">
+                                <td style="text-align:left;padding:2px 5px;font-size:100%;">{{productSelection.product_Nm}}</tdstyle>
+                                <td style="text-align:right;padding:2px 5px;font-size:100%;background: #e7e7fb;">{{productSelection.rx_qty|| 0}}</td>
+                                <td style="text-align:right;padding:2px 5px;font-size:100%;" ng-if="modal.SlTyp==1">{{productSelection.sample_qty}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </ion-item>
+            </ion-list>
+          <ion-list  ng-if="modal.type==10" >
+            <ion-item ng-repeat="Vstlist in modal.vwVstlists" class="propCase">
+                <h2 style="color:#39ac08;"><b>{{Vstlist.name}}</b><span style="float:right"><b>{{Vstlist.orderValue}}</b></span><span class="item-note propCase" style="color:#39ac08;white-space:nowrap !important;">{{Vstlist.vtime}}</span></h2>
+                <p>{{SDPCap}} : <b style="color:#7e0ca5">{{Vstlist.Territory}}</b></p>
+             <p style="white-space:pre-wrap !important">Collected Amount : <b style="color:#7e0ca5">{{Vstlist.Activity_POB_Val}}</b></p>
+             <p style="white-space:pre-wrap !important">Outstanding Amount : <b style="color:#7e0ca5">{{Vstlist.orderValue-Vstlist.Activity_POB_Val}}</b></p>
+
+            </ion-item>
+        </ion-list>
+            <ion-list  ng-if="modal.type==1" >
+            <ion-item ng-repeat="Vstlist in modal.vwVstlists" class="propCase">
+                        <div class="ro">
+                               <h2 style="color:#39ac08;"><b>{{Vstlist.name}}</b><span style="float:right"><b>{{Vstlist.orderValue}}</b></span><span class="item-note propCase" style="color:#39ac08;white-space:nowrap !important;">{{Vstlist.vtime}}</span></h2>
+                    
+            </div>
+                <div class="ro" style="padding-top:5px;padding-bottom:5px">
+                    <p>Route : <b style="color:#7e0ca5">{{Vstlist.Territory}}</b></p>
+                </div>
+                <div class="ro" ng-if="Vstlist.productSelectedList">
+                    <table style="width: 100%;" border="1">
+                        <tr style="background-color:#eae9e9">
+                            <th style="text-align:left;padding:5px;font-size:100%;">Product</th>
+                            <th style="text-align:left;padding:5px;font-size:100%;">Qty</th>
+                            <th style="text-align:left;padding:5px;font-size:100%;" ng-if="modal.SlTyp==1">Value</th>
+                        </tr>
+                        <tr ng-repeat="productSelection in Vstlist.productSelectedList">
+                            <td style="text-align:left;padding:2px 5px;font-size:100%;">{{productSelection.product_Nm}}</tdstyle>
+                            <td style="text-align:right;padding:2px 5px;font-size:100%;background: #e7e7fb;">{{productSelection.rx_qty|| 0}}</td>
+                            <td style="text-align:right;padding:2px 5px;font-size:100%;" ng-if="modal.SlTyp==1">{{productSelection.sample_qty}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="ro" style="padding-top:5px;padding-bottom:5px;" ng-if="CollectedAmountSetup==1">
+                    <p style="white-space:pre-wrap !important">Collected Amount : <b style="color:#7e0ca5">{{Vstlist.Activity_POB_Val}}</b></p>
+                </div>
+                <div class="ro" style="padding-top:5px;padding-bottom:5px" ng-if="CollectedAmountSetup==1">
+                    <p style="white-space:pre-wrap !important">Outstanding Amount : <b style="color:#7e0ca5">{{Vstlist.orderValue-Vstlist.Activity_POB_Val}}</b></p>
+                </div>
+            
+            </ion-item>
+        </ion-list>
+        </div>
+                <div class="row moveDown">
+            <div class="col">
+                <div class='buttonC-container left-sidepull' ng-click="vibrate();modal.sendWhatsApp()">
+                    <img src="img/WhatsApp.png" />
+                    <div class='buttonC-text' style="white-space:nowrap">Whats App</div>
+
+                </div>
+            </div>
+            <div class="col">
+                <div class='buttonC-container left-sidepull' ng-click="vibrate();modal.sendEmail()">
+                    <img src="img/Email.png" />
+                    <div class='buttonC-text' style="white-space:nowrap">E-Mail</div>
+                </div>
+            </div>
+        </div>
+        <!-- <a href="#" id="btn-Convert-Html2Image">s</a> -->
+    </ion-content>
+    <ion-footer-bar class="bar bar-footer bar-dark">
+        <button class="button button-clear button-primary" ng-click="vibrate();modal.hide()">Close</button>
+    </ion-footer-bar>
+</div>
+

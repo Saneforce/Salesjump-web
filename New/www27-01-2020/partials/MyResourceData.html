@@ -1,0 +1,17 @@
+
+
+<ion-view>
+    <ion-content>
+                <ion-list>
+                       
+                    <ion-item href="#/fmcg/MyResourceDataView?myChoice={{customer.id}}" class="item-card" ng-repeat="customer in customers" >
+
+                        {{ customer.name}}
+                        <span class="badge badge-assertive" style="top: 14px;right: 16px;" ng-if="customer.count">{{customer.count}}</span>
+                    </ion-item>
+              
+                </ion-list>
+         
+        
+    </ion-content>
+</ion-view>

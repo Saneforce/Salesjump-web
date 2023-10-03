@@ -1,0 +1,4 @@
+FMCG_ADDAS Error:exec Get_Product_Target_vs_Sal_app 'ADDAMGR0065'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'Get_Product_Target_vs_Sal_app'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'Get_Product_Target_vs_Sal_app'."}]
+data:{"orderBy":"[\"name asc\"]","desig":"mgr"}

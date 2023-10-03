@@ -1,0 +1,65 @@
+<ion-view>
+    <ion-content>
+      <div class="list list-inset">
+        <div style="margin-top:10px;">
+                      <div  style="color:green;font-weight:bolder">Collection Details On {{date|date:'dd-MM-yyyy'}}</div>
+        <div class="row"  style="background-color:#f6eeee">
+             <div class="col col-20" style="color:black;font-weight:bold;">Sl.No</div>
+             <div class="col col-30" style="color:black;font-weight:bold;">Target</div>
+              <div class="col col-20" style="color:black;font-weight:bold;">
+     Achieve
+  </div>
+            
+            <div class="col" style="color:black;font-weight:bold;">
+    Balance
+  </div>
+ 
+</div></div>
+            <div ng-repeat="(i,x) in Today_Collection_values track by $index" style="background-color: rgb(241, 241, 241)">
+                <div class="row">
+                    <div class="col col-20">
+                        {{i+1}}
+                    </div>
+                    <div class="col col-30">
+                        {{GetCustomername(x.Cust_Code)}}
+                    </div>
+                    <div class="col col-20">
+                        {{x.BillNo}}
+                    </div>
+                   
+                    <div class="col" ng-if="x.CollAmt!=null">
+                        {{x.CollAmt}}
+                    </div>
+                    
+                </div>
+            </div>
+
+
+
+
+
+
+
+<div style="
+    float:  right;
+    margin-right: 66px;
+">
+
+   <div    style="border-top:1px solid #dcdcdc;border-bottom:double #dcdcdc;text-align:right;padding:5px;">Total :<span style="color:green;font-weight:bold" class="ng-binding">
+                      
+                   {{getqtyTotal()}}    </span></div></div>
+
+ <div  style="color:green;font-weight:bolder"   ng-show="thiru">No Collections</div>
+
+
+</div>
+<ion-footer-bar class="bar-dark bar bar-footer">
+    <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+
+   
+</ion-footer-bar>
+    </ion-content>
+
+</ion-view>

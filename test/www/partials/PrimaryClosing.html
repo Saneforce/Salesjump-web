@@ -1,0 +1,71 @@
+<ion-view>
+    <ion-content>
+        <div class="list list-inset">
+            <div class="select-component">
+
+                <div class="label">
+                    <div class="label-text" style="margin-top: 19px;">{{StkCap}}</div>
+                </div>
+                <div class="select-box">
+                      <div class="input-box" ng-if="fmcgData.customer.selected.id == 3">
+                 <div class="input-css" ng-click="vibrate();
+                     openModal('stockist_master', 4, fmcgData.subordinate.selected.id)">
+                     {{(fmcgData.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+
+                  </div>
+               </div>
+                </div>
+              
+            </div>
+        </div>
+         <div class="select-component1" >
+               <div class="label">
+                  <!--ng-if="template==1"-->
+                  <div class="label-text">Remarks <span style="float:right;font-size: small;padding: 0px 9px;color: #f8920b;" ng-click="vibrate();openModal('nonreport_template_master', 15)">Templates  <span style="color:#989898;font-size: x-small;">v</span></span></div>
+               </div>
+              <textarea ng-model="fmcgData.remarks" rows="5"  ng-click="vibrate();" placeholder="Enter the Remarks ( or ) Select from Template">
+                     
+                    </textarea> 
+
+                 
+                
+            </div>
+        <ion-list class="container">
+            <div class="row" style="background-color:#43cee6;">
+                 <div class="col col-80" style="color: white;">Product Name</div>
+                <div class="col col-20" style="color: white;">Closing</div>
+               
+                
+            </div>
+            <div ng-repeat="item in ProductList">
+                <div class="row" style="background-color:#ffffff">
+                    
+                    <div class="col col-85" style="font-size:large;padding:5px 0px;color:#6c3;margin-left: 14px;">{{item.name}}</div>
+                    <div class="col col-15" style="border: burlywood;border-radius: 12px;margin-left: -13px;border: solid #aaa;">
+                       
+                            <input type="number" style="text-align: center;" ng-model="item.Closing" />
+                            
+                        
+                    </div>
+                     
+                   
+                </div>
+                  <hr style="border-top: 1px dashed #655f59;"/>
+            </div>
+
+
+
+
+
+
+
+            
+        </ion-list>
+        <div>
+            
+        </div>
+    </ion-content>
+    <ion-footer-bar class="bar-dark">
+        <button class="button  button-balanced buttonClear pull-right" ng-click="vibrate();SaveProductAvail()">Submit</button>
+    </ion-footer-bar>
+</ion-view>

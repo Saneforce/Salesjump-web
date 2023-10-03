@@ -1,0 +1,7 @@
+Error:exec GetConversion '150'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Mas_PrimaryConversion'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Mas_PrimaryConversion'."}]
+data:{"div":"150,","SF":"426","Stk":"426"}Error:exec getAppPrimaryTax '150','426'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getAppPrimaryTax'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getAppPrimaryTax'."}]
+data:{"distributorid":"426","divisionCode":"150,"}

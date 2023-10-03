@@ -1,0 +1,27 @@
+<ion-view>
+    <ion-content>
+        <ion-list>
+            <div ng-if="fmcgData.EOrders.length==0" style="color:red;font-weight: bold;">
+                No Orders....
+            </div>
+            <ion-item ng-repeat="order in fmcgData.EOrders" class="propCase">
+                <div class="row">
+                    <div class="col col-90">
+                        <h2 style="color:#39ac08;"><b>ORD{{order.Trans_Sl_No}}</b></h2>
+                        <p ng-if="order.Products" style="white-space:pre-wrap !important">Product : <b style="color:#7e0ca5">{{order.Products}}</b></p>
+                        <p ng-if="order.POB" style="white-space:pre-wrap !important">POB : <b style="color:#7e0ca5">{{order.POB}}</b></p>
+                        <p style="white-space:pre-wrap !important">Order Value : <b style="color:#7e0ca5">{{order.POB_Value}}</b></p>
+                    </div>
+                    <div class="col col-10" style="float:right">
+                        <button class="button buttonClear  button-calm"
+                                ng-click="vibrate();
+                                        edit(order)">
+                            Edit
+                        </button>
+                    </div></div>
+     
+            </ion-item>
+        </ion-list>
+       
+    </ion-content>
+</ion-view>

@@ -1,0 +1,44 @@
+<ion-view>
+
+    <ion-content>
+         <div class="list list-inset">
+        <div class="select-component" ng-if="SF_type==1">
+                <div class="label">
+                    <div class="label-text">{{StkCap}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal(allstockists,44)">
+                            {{(stockUpdation.stockist.selected.id| getValueforIDD : {'collection' : allstockists}).name || "Select "+StkCap}}
+                       </div>
+                    </div>
+                </div>
+            </div>
+              <div style="margin-bottom: 10px;"></div>
+                  <h4><div style="background-color:lightgray;font-weight:bold;color:red">Last Updation Date: <span>{{LastUpdationDate}}</span></div></h4>
+             </div>
+        <ion-list>
+            <ion-item  ng-repeat="item in currentStocks">
+                <div class = "row">
+                    <div class = "col col-30">Product Name</div>
+                    <div class = "col">: {{item.product_Nm|| "-"}}</div>
+                </div>
+                <div class = "row">
+                    <div class = "col col-30">Rec.Qty</div>
+                    <div class = "col" style="color: #B3B3B3">: {{item.recv_qty|| "-"}}</div>
+                </div>
+                <div class = "row">
+                    <div class = "col col-30">Cb.Qty</div>
+                    <div class = "col" style="color: #B3B3B3">: {{item.cb_qty|| "-"}}.{{item.pieces}}</div>
+                </div>
+
+            </ion-item>
+
+        </ion-list>
+    </ion-content>
+     <ion-footer-bar class="bar-dark" ng-if="editing==0" >
+         
+        <button class="button buttonClear  button-balanced pull-left" ng-click="vibrate();editprimary()">Edit Primary</button>
+        <button class="button buttonClear  button-balanced pull-right" ng-click="vibrate();edit()">Edit Closing</button>
+    </ion-footer-bar>
+</ion-view>

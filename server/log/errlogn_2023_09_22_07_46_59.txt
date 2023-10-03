@@ -1,0 +1,4 @@
+FMCG_Live Error:exec getAPPSetups 'MR6655'
+|param:
+|error:[{"0":"22003","SQLSTATE":"22003","1":244,"code":244,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The conversion of the varchar value '1198' overflowed an INT1 column. Use a larger integer column.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The conversion of the varchar value '1198' overflowed an INT1 column. Use a larger integer column."}]
+data:
