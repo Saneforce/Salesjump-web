@@ -463,9 +463,13 @@
                                     </table>
                                 </div>
                             </div> 
-                             <div class="col-lg-12">
+                            <div class="col-lg-12 labelnames" style="width:100%;">
+
+                            </div>
+                            <br />
+                            <%-- <div class="col-lg-12">
                                  <asp:Panel ID="pnl2" runat="server">
-                                     <table border="0" cellpadding="0" cellspacing="0" id="tbladdtional" style="width:  100%;">
+                                     <table border="0" cellpadding="0" cellspacing="0" id="tbladdtional" style="width: 100%;">
                                          <tr>
                                              <td rowspan="" class="style65" align="left" style="background-color: #19a4c6; color: white;font-weight:bold; padding: 6px;">
                                                  &nbsp;Additional Fields&nbsp;                            
@@ -473,13 +477,13 @@
                                          </tr>
                                      </table>
                                      <br />
-                                     <div class="labelnames"></div>
+                                     
                                      <br />
                                      <table border="0" cellpadding="2" cellspacing="2" id="RetaileradditionalField" style="width: 100%;margin-bottom: 0px; margin-right: 0px; margin-top: 15px;">
                                          <tbody></tbody>    
                                      </table>   
                                  </asp:Panel>
-                             </div>        
+                             </div>   --%>        
                         </div>
                     </div>
 
@@ -496,9 +500,11 @@
 
           
             <script type="text/javascript">
-                var listeddrcode = 0; var CFBindData = []; var MasFrms = [];
-                var scontrolId = '';
+                var listeddrcode = 0; var CFBindData = []; var MasFrms = []; var MasFrmsGroup = [];
+                var rbm; var cbm; var smdropdown; var CMfiltmgr = []; var RMfiltmgr = [];
+                var SSMList = []; var ssmtablename = ''; var scontrolId = '';
                 var mdcontrolId = '';
+
                 $(document).ready(function () {
 
                     var pageURL = window.location.search.substring(2);
@@ -515,177 +521,176 @@
                     else { listeddrcode = 0; }
 
                     //console.log(listeddrcode);
-
+                    GetCustomFormsFieldsGroup();
                     GetCustomFormsFields();
 
                     if (listeddrcode > 0) {
-
                         BindCustomFieldData(listeddrcode);
                     }
 
                     $('#example-multiple-selected').hide()
                     $('#<%=lblDMP.ClientID%>').hide();
-                    $('#<%=txtDMP.ClientID%>').hide()
-                    $('#<%=lblCC.ClientID%>').hide();
-                    $('#<%=ddlCC.ClientID%>').hide();
-                    $('#<%=lblmonA.ClientID%>').hide();
-                    $('#<%=txtmonA.ClientID%>').hide();
-                    $('#<%=lblMCL.ClientID%>').hide();
-                    $('#<%=txtMCL.ClientID%>').hide();
-                    $('#<%=lblMFPM.ClientID%>').hide();
-                    $('#<%=txtMFPM.ClientID%>').hide();
-                    $('#<%=lblfzy.ClientID%>').hide();
-                    $('#<%=ddlfzy.ClientID%>').hide();
-                    $('#<%=Label4.ClientID%>').hide();
-                    $('#<%=creditdays.ClientID%>').hide();
+                        $('#<%=txtDMP.ClientID%>').hide()
+                        $('#<%=lblCC.ClientID%>').hide();
+                        $('#<%=ddlCC.ClientID%>').hide();
+                        $('#<%=lblmonA.ClientID%>').hide();
+                        $('#<%=txtmonA.ClientID%>').hide();
+                        $('#<%=lblMCL.ClientID%>').hide();
+                        $('#<%=txtMCL.ClientID%>').hide();
+                        $('#<%=lblMFPM.ClientID%>').hide();
+                        $('#<%=txtMFPM.ClientID%>').hide();
+                        $('#<%=lblfzy.ClientID%>').hide();
+                        $('#<%=ddlfzy.ClientID%>').hide();
+                        $('#<%=Label4.ClientID%>').hide();
+                        $('#<%=creditdays.ClientID%>').hide();
 
-                    $('input:text:first').focus();
+                        $('input:text:first').focus();
 
-                    $('input:text').bind("keydown", function (e) {
-                        var n = $("input:text").length;
-                        if (e.which == 13) { //Enter key
-                            e.preventDefault(); //to skip default behavior of the enter key
-                            var curIndex = $('input:text').index(this);
+                        $('input:text').bind("keydown", function (e) {
+                            var n = $("input:text").length;
+                            if (e.which == 13) { //Enter key
+                                e.preventDefault(); //to skip default behavior of the enter key
+                                var curIndex = $('input:text').index(this);
 
-                            if ($('input:text')[curIndex].attributes['onfocus'].value != "this.style.backgroundColor='LavenderBlush'" && ($('input:text')[curIndex].value == '')) {
-                                $('input:text')[curIndex].focus();
-                            }
-                            else {
-                                var nextIndex = $('input:text').index(this) + 1;
-
-                                if (nextIndex < n) {
-                                    e.preventDefault();
-                                    $('input:text')[nextIndex].focus();
+                                if ($('input:text')[curIndex].attributes['onfocus'].value != "this.style.backgroundColor='LavenderBlush'" && ($('input:text')[curIndex].value == '')) {
+                                    $('input:text')[curIndex].focus();
                                 }
                                 else {
-                                    $('input:text')[nextIndex - 1].blur();
-                                    $('#btnSave').focus();
+                                    var nextIndex = $('input:text').index(this) + 1;
+
+                                    if (nextIndex < n) {
+                                        e.preventDefault();
+                                        $('input:text')[nextIndex].focus();
+                                    }
+                                    else {
+                                        $('input:text')[nextIndex - 1].blur();
+                                        $('#btnSave').focus();
+                                    }
                                 }
                             }
+                        });
+
+                        $("input:text").on("keypress", function (e) {
+                            if (e.which === 32 && !this.value.length)
+                                e.preventDefault();
+                        });
+
+                        $('#<%=btnSave.ClientID%>').click(function () {
+
+                            if ($('#<%=Txt_id.ClientID%>').val() == "") { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); return false; }
+                            if ($('#<%=txtName.ClientID%>').val() == "") { alert("Enter Retailer Name."); $('#<%=txtName.ClientID%>').focus(); return false; }
+
+                            var spec = $('#<%=ddlSpec.ClientID%> :selected').text();
+                            if (spec == "---Select---") { alert("Select Channel."); $('#<%=ddlSpec.ClientID%>').focus(); return false; }
+
+                            var clas = $('#<%=ddlClass.ClientID%> :selected').text();
+                            if (clas == "---Select---") { alert("Select Class."); $('#<%=ddlClass.ClientID%>').focus(); return false; }
+
+                            var Rou = $('#<%=ddlTerritory.ClientID%> :selected').text();
+                            if (Rou == "---Select---") { alert("Select Route."); $('#<%=ddlTerritory.ClientID%>').focus(); return false; }
+
+                            if ($('#<%=txtAddress.ClientID%>').val() == "") { alert("Enter Address."); $('#<%=txtAddress.ClientID%>').focus(); return false; }
+
+                            var sbreed = '';
+                            $('#example-multiple-selected  > option:selected').each(function () {
+                                sbreed += $(this).text() + ',';
+                            });
+                            $('#<%=hdnbreedname.ClientID%>').val(sbreed)
+
+                        });
+
+                        $('.numberVal').keypress(function (event) {
+
+                            return isNumber(event, this)
+                        });
+
+                        function isNumber(evt, element) {
+
+                            var charCode = (evt.which) ? evt.which : evt.keyCode
+
+                            if ((charCode != 46 || $(element).val().indexOf('.') != -1) && (charCode < 48 || charCode > 57)) { return false; }
+                            else { return true; }
                         }
-                    });
 
-                    $("input:text").on("keypress", function (e) {
-                        if (e.which === 32 && !this.value.length)
-                            e.preventDefault();
-                    });
-
-                    $('#<%=btnSave.ClientID%>').click(function () {
-
-                        if ($('#<%=Txt_id.ClientID%>').val() == "") { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); return false; }
-                        if ($('#<%=txtName.ClientID%>').val() == "") { alert("Enter Retailer Name."); $('#<%=txtName.ClientID%>').focus(); return false; }
-
-                        var spec = $('#<%=ddlSpec.ClientID%> :selected').text();
-                        if (spec == "---Select---") { alert("Select Channel."); $('#<%=ddlSpec.ClientID%>').focus(); return false; }
-
-                        var clas = $('#<%=ddlClass.ClientID%> :selected').text();
-                        if (clas == "---Select---") { alert("Select Class."); $('#<%=ddlClass.ClientID%>').focus(); return false; }
-
-                        var Rou = $('#<%=ddlTerritory.ClientID%> :selected').text();
-                        if (Rou == "---Select---") { alert("Select Route."); $('#<%=ddlTerritory.ClientID%>').focus(); return false; }
-
-                        if ($('#<%=txtAddress.ClientID%>').val() == "") { alert("Enter Address."); $('#<%=txtAddress.ClientID%>').focus(); return false; }
-
-                        var sbreed = '';
-                        $('#example-multiple-selected  > option:selected').each(function () {
-                            sbreed += $(this).text() + ',';
-                        });
-                        $('#<%=hdnbreedname.ClientID%>').val(sbreed)
-
-                    });
-
-                    $('.numberVal').keypress(function (event) {
-
-                        return isNumber(event, this)
-                    });
-
-                    function isNumber(evt, element) {
-
-                        var charCode = (evt.which) ? evt.which : event.keyCode
-
-                        if ((charCode != 46 || $(element).val().indexOf('.') != -1) && (charCode < 48 || charCode > 57)) { return false; }
-                        else { return true; }
-                    }
-
-                    if ($('#<%=divcode.ClientID%>').val() == 70) {
-                        $.ajax({
-                            type: "Post",
-                            contentType: "application/json; charset=utf-8",
-                            url: "ListedDr_DetailAdd_Custom.aspx/Fillddlbreed",
-                            data: {},
-                            dataType: "json",
-                            async: false,
-                            success: function (data) {
-                                var Datas = data.d;
-                                if (Datas.length > 0) {
-                                    $.each(data.d, function () {
-                                        $('#example-multiple-selected').append($("<option></option>").val(this['id']).html(this['name']));
-                                    });
-                                    $('#example-multiple-selected').multiselect({
-                                        columns: 3,
-                                        placeholder: 'Select Breed',
-                                        search: true,
-                                        searchOptions: {
-                                            'default': 'Search Breed'
-                                        },
-                                        selectAll: true
-                                    }).multiselect('reload');
-                                    //$('.ms-options ul').css('column-count', '3');
-                                }
-                            },
-                            error: function (result) {
-                                alert(JSON.stringify(result));
-                            }
-                        });
-                        var ddlbreed = $('#<%=hdnbreedname.ClientID%>').val();
-                        if (ddlbreed != "") {
-                            var breedname = ddlbreed.split(",")
-                            $('#example-multiple-selected  > option').each(function () {
-                                for (var i = 0; i < breedname.length; i++) {
-                                    if (breedname[i] == $(this).text()) { $(this).prop('selected', true); $('#example-multiple-selected').multiselect('reload') }
+                        if ($('#<%=divcode.ClientID%>').val() == 70) {
+                            $.ajax({
+                                type: "Post",
+                                contentType: "application/json; charset=utf-8",
+                                url: "ListedDr_DetailAdd_Custom.aspx/Fillddlbreed",
+                                data: {},
+                                dataType: "json",
+                                async: false,
+                                success: function (data) {
+                                    var Datas = data.d;
+                                    if (Datas.length > 0) {
+                                        $.each(data.d, function () {
+                                            $('#example-multiple-selected').append($("<option></option>").val(this['id']).html(this['name']));
+                                        });
+                                        $('#example-multiple-selected').multiselect({
+                                            columns: 3,
+                                            placeholder: 'Select Breed',
+                                            search: true,
+                                            searchOptions: {
+                                                'default': 'Search Breed'
+                                            },
+                                            selectAll: true
+                                        }).multiselect('reload');
+                                        //$('.ms-options ul').css('column-count', '3');
+                                    }
+                                },
+                                error: function (result) {
+                                    alert(JSON.stringify(result));
                                 }
                             });
-                        }
-                        $('#<%=lblQual.ClientID%>').text('*Customer Code')
-                        $('#<%=lblName.ClientID%>').text('*Name Of Customer')
-                        $('#<%=lblSpec.ClientID%>').text('*Category')
-                        $('#<%=Lab_Type.ClientID%>').text('Customer Type')
-                        $('#<%=TinNO.ClientID%>').hide()
-                        $('#<%=lblCC.ClientID%>').show();
-                        $('#<%=ddlCC.ClientID%>').show()
-                        $('#<%=lblfzy.ClientID%>').show()
-                        $('#<%=ddlfzy.ClientID%>').show()
-                        $('#<%=lblCatg.ClientID%>').text('*Breed')
+                            var ddlbreed = $('#<%=hdnbreedname.ClientID%>').val();
+                            if (ddlbreed != "") {
+                                var breedname = ddlbreed.split(",")
+                                $('#example-multiple-selected  > option').each(function () {
+                                    for (var i = 0; i < breedname.length; i++) {
+                                        if (breedname[i] == $(this).text()) { $(this).prop('selected', true); $('#example-multiple-selected').multiselect('reload') }
+                                    }
+                                });
+                            }
+                            $('#<%=lblQual.ClientID%>').text('*Customer Code')
+                            $('#<%=lblName.ClientID%>').text('*Name Of Customer')
+                            $('#<%=lblSpec.ClientID%>').text('*Category')
+                            $('#<%=Lab_Type.ClientID%>').text('Customer Type')
+                            $('#<%=TinNO.ClientID%>').hide()
+                            $('#<%=lblCC.ClientID%>').show();
+                            $('#<%=ddlCC.ClientID%>').show()
+                            $('#<%=lblfzy.ClientID%>').show()
+                            $('#<%=ddlfzy.ClientID%>').show()
+                            $('#<%=lblCatg.ClientID%>').text('*Breed')
                         // $('#<%=lblCatg.ClientID%>').hide()
-                        // $('#example-multiple-selected').hide()
-                        $('#<%=Label4.ClientID%>').text('No of Animals')
-                        if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'AIT') {
-                            $('#<%=lblmonA.ClientID%>').show()
+                            // $('#example-multiple-selected').hide()
+                            $('#<%=Label4.ClientID%>').text('No of Animals')
+                            if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'AIT') {
+                                $('#<%=lblmonA.ClientID%>').show()
                             $('#<%=txtmonA.ClientID%>').show()
                             //  $('#<%=lblCatg.ClientID%>').text('*Breed')
                             //   $('#<%=lblCatg.ClientID%>').show()  
-                            //   $('#example-multiple-selected').show()
+                                //   $('#example-multiple-selected').show()
 
-                        }
-                        if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {
-                            $('#<%=Label4.ClientID%>').show()
+                            }
+                            if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {
+                                $('#<%=Label4.ClientID%>').show()
                             $('#<%=creditdays.ClientID%>').show()
                             $('#<%=lblDMP.ClientID%>').show()
                             $('#<%=txtDMP.ClientID%>').show()
                             // $('#<%=lblCatg.ClientID%>').text('*Breed')
                             // $('#<%=lblCatg.ClientID%>').show()
-                            //$('#example-multiple-selected').show()
-                        }
-                        if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'MCC') {
-                            $('#<%=lblMCL.ClientID%>').show()
+                                //$('#example-multiple-selected').show()
+                            }
+                            if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'MCC') {
+                                $('#<%=lblMCL.ClientID%>').show()
                             $('#<%=txtMCL.ClientID%>').show()
                             $('#<%=lblMFPM.ClientID%>').show()
                             $('#<%=txtMFPM.ClientID%>').show()
                             // $('#example-multiple-selected').hide()
                             $('#<%=creditdays.ClientID%>').hide()
-                        }
-                        $('#<%=ddlSpec.ClientID%>').on('change', function () {
-                            if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {
+                            }
+                            $('#<%=ddlSpec.ClientID%>').on('change', function () {
+                                if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {
                                 $('#<%=Label4.ClientID%>').show();
                                 $('#<%=creditdays.ClientID%>').show();
                                 $('#<%=lblDMP.ClientID%>').show();
@@ -763,55 +768,58 @@
                     }, 200);
                 }
 
-                function GetCustomFormsFields() {
-
-                    var furl = "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsFieldsList";
-
-                    //alert(furl);
-
-                    var sselectionType; var mselectionType; var cbselectionType; var rbselectionType; var ssmtablename; var ssmcolumnname; 
-                    var smmtablename; var smmcolumnname;  var cmmtablename; var cmmcolumnname; var cmrmtablename; var cmrmcolumnname;
+                function GetCustomFormsFieldsGroup() {
+                    var furl = "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsFieldsGroups";
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
-                        async: false,
-                        /*url: "MR/ListedDoctor/ListedDR_DetailAdd.aspx/GetCustomFormsFieldsList",*/
+                        async: false,                       
                         url: furl,
                         data: "{'divcode':'<%=Session["div_code"]%>','ModuleId':'3'}",
                         dataType: "json",
                         success: function (data) {
-                            MasFrms = JSON.parse(data.d) || [];
-                            //console.log(MasFrms);
-
-                            if (MasFrms.length > 0) {
-                                //var str = '<table id="RouteadditionalField" class="RouteadditionalField table-responsive">';
+                            $(".labelnames").html('');
+                            MasFrmsGroup = JSON.parse(data.d) || [];
+                            if (MasFrmsGroup.length > 0) {
                                 var str = "";
                                 var str1 = "";
                                 j = 0;
-                                str += "<tr>";
-                                var n = 0;
-                                for (var k = 0; k < MasFrms.length; k++) {
-                                    var FldType = MasFrms[k].Fld_Type;
-                                    var Mandate = MasFrms[k].Mandate;
-                                    if (FldType == "L") {
-                                        str1 += "<label for=" + MasFrms[k].Field_Col + " value=" + MasFrms[k].Field_Name + "><span>" + MasFrms[k].Field_Name + "</span></label>";
-                                    }
-                                    else {
-                                        str += "<td class='space' align='left'><label for=" + MasFrms[k].Field_Col + " value=" + MasFrms[k].Field_Name + ">" + ((Mandate == "Yes") ? "<span class='fldm' style='Color:Red'>*</span>" : "<span />") + MasFrms[k].Field_Name + "</label></td>";
+                                GetCustomFormsFields();
+                                //console.log(MasFrms);
+                                for (var j = 0; j < MasFrmsGroup.length; j++) {
+
+                                    var GroupName = MasFrmsGroup[j].FGroupName;
+                                    var FGTableName = MasFrmsGroup[j].FGTableName;
+
+                                    let filtered = MasFrms.filter(function (a) {
+                                        return a.FGroupName == GroupName;
+                                    });
+
+                                    str += "<div class='dynamic' style='width:100%;'><h4 class='" + FGTableName + "' role='heading' aria-level='1'  style='background-color:#19a4c6;color:white;padding:5px;font-weight:bold;'>" + GroupName + "</h4>";
+
+                                    str += "<table id='" + FGTableName + "' style='width:100%;' class='table-responsive  " + FGTableName + "'>";
+
+                                    str += "<tr>";
+                                    var m = 0;
+                                    for (var k = 0; k < filtered.length; k++) {
+
+                                        var FldType = filtered[k].Fld_Type;
+                                        var Mandate = filtered[k].Mandate;
+                                        str += "<td class='space' align='left'><label for='" + filtered[k].Field_Col + "' value='" + filtered[k].Field_Name + "'>" + ((Mandate == "Yes") ? "<span class='fldm' style='Color:Red'>*</span>" : "<span />") + filtered[k].Field_Name + "</label></td>";
                                         switch (FldType) {
                                             case 'TA':
-                                                if (MasFrms[k].Mandate == "Yes") { str += "<td class='stylespc' align='left'><input type='text' id=" + MasFrms[k].Field_Col + "' name=" + MasFrms[k].Field_Col + " class='form-control required frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>"; }
-                                                else { str += "<td class='stylespc' align='left'><input type='text' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control notrequired frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>"; }
+                                                if ((filtered[k].Mandate == "Yes")) { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
+                                                else { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
                                                 break;
                                             case 'TAS':
-                                                if (MasFrms[k].Mandate == "Yes") { str += "<td class='stylespc' align='left'><input type='text' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control required frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>"; }
-                                                else { str += "<td class='stylespc' align='left'><input type='text' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control notrequired frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>"; }
+                                                if ((filtered[k].Mandate == "Yes")) { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
+                                                else { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
                                                 break;
                                             case 'TAM':
-                                                if (MasFrms[k].Mandate == "Yes") {
-                                                    str += "<td class='stylespc' align='left'><textarea type='text' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control required frmddl' maxLength=" + MasFrms[k].Fld_Length + "></textarea></td>";
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    str += "<td class='stylespc' align='left'><textarea type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "'></textarea></td>";
                                                 }
-                                                else { str += "<td class='stylespc' align='left'><textarea type='text' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control notrequired frmddl' maxLength=" + MasFrms[k].Fld_Length + "></textarea></td>"; }
+                                                else { str += "<td class='stylespc' align='left'><textarea type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "'></textarea></td>"; }
                                                 break;
                                             case 'NC':
                                                 str += "<td class='stylespc' align='left'>";
@@ -819,13 +827,13 @@
                                                 str += "<div class='col-sm-6'>";
                                                 str += "<div class='input-group input-group-sm mb-3' style='display: flex'>";
                                                 str += "<div class='input-group-prepend'>";
-                                                str += "<div class='input-group-text' style='width:50px; padding: 5px 2px 5px 5px; background: #868383; color: white; border-radius: 4px 0px 0px 4px;' id='NCS'>" + MasFrms[k].Fld_Symbol + "</div>";
+                                                str += "<div class='input-group-text' style='width:50px; padding: 5px 2px 5px 5px; background: #868383; color: white; border-radius: 4px 0px 0px 4px;' id='NCS'>" + filtered[k].Fld_Symbol + "</div>";
                                                 str += "</div>";
-                                                if (MasFrms[k].Mandate == "Yes") {
-                                                    str += "<input type='number' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control required  frmddl' maxLength=" + MasFrms[k].Fld_Length + "/>";
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    str += "<input type='number' onfocus='this.style.backgroundColor='LavenderBlush'' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "' />";
                                                 }
                                                 else {
-                                                    str += "<input type='number' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control notrequired  frmddl' maxLength=" + MasFrms[k].Fld_Length + "/>";
+                                                    str += "<input type='number' onfocus='this.style.backgroundColor='LavenderBlush'' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' />";
                                                 }
                                                 str += "</div>";
                                                 str += "</div>";
@@ -833,193 +841,654 @@
                                                 str += "</td>";
                                                 break;
                                             case 'NP':
-                                                if (MasFrms[k].Mandate == "Yes") {
-                                                    str += "<td class='stylespc' align='left'><input type='number' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + " class='form-control required  frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>";
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
                                                 }
-                                                else { str += "<td class='stylespc' align='left'><input type='number' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control notrequired  frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>"; }
+                                                else { str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
                                                 break;
                                             case 'N':
-                                                if (MasFrms[k].Mandate == "Yes") {
-                                                    str += "<td class='stylespc' align='left'><input type='number' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + " class='form-control required  frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>";
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
                                                 }
                                                 else {
-                                                    str += "<td class='stylespc' align='left'><input type='number' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + " class='form-control notrequired  frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>";
+                                                    str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>";
                                                 }
                                                 break;
                                             case 'DR':
 
-                                                if (MasFrms[k].Mandate == "Yes") {
-                                                    str += "<td class='stylespc' align='left'><input type='date' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control required  frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>";
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' /></td>";
                                                 }
-                                                else { str += "<td class='stylespc' align='left'><input type='date' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control notrequired  frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>"; }
+                                                else { str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired'  /></td>"; }
                                                 break;
                                             case 'D':
-                                                if (MasFrms[k].Mandate == "Yes") {
-                                                    str += "<td class='stylespc' align='left'><input type='date' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + " class='form-control required  frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>";
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
                                                 }
-                                                else { str += "<td class='stylespc' align='left'><input type='date' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control notrequired   frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>"; }
+                                                else { str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
                                                 break;
                                             case 'TR':
-                                                if (MasFrms[k].Mandate == "Yes") {
-                                                    str += "<td class='stylespc' align='left'><input type='time' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + " class='form-control required  frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>";
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
                                                 }
-                                                else { str += "<td class='stylespc' align='left'><input type='time' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control notrequired  frmddl' maxLength=" + MasFrms[k].Fld_Length + "/></td>"; }
+                                                else { str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
                                                 break;
                                             case 'T':
-                                                if (MasFrms[k].Mandate == "Yes") {
-                                                    str += "<td class='stylespc' align='left'><input type='time' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control required  frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>";
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
                                                 }
                                                 else {
-                                                    str += "<td class='stylespc' align='left'><input type='time' id=" + MasFrms[k].Field_Col + " name=" + MasFrms[k].Field_Col + "  class='form-control notrequired  frmddl' maxLength=" + MasFrms[k].Fld_Length + " /></td>";
+                                                    str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>";
                                                 }
                                                 break;
-                                            case 'SSM':
-                                                if (MasFrms[k].Mandate == "Yes") {
-                                                    str += "<td class='stylespc' align='left'><select name=" + MasFrms[k].Field_Col + " id=" + MasFrms[k].Field_Col + " class='form-control required   frmddl'></select></td>";
+                                            case 'SSM':                                              
+                                                ssmtablename = filtered[k].Fld_Src_Name;
+                                                scontrolId = filtered[k].Field_Col;
+
+                                                BindDropdown(ssmtablename);     
+
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    
+                                                    str += "<td class='stylespc' align='left'>";
+
+                                                    str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
+                                                    str += "<option value='0'>Select</option>";
+                                                    //$('.SSMDetails').append('<option value="0">Select</option>');
+                                                    for (var j = 0; j < SSMList.length; j++) {
+                                                        str += "<option value='" + SSMList[j].IDCol + "'>" + SSMList[j].TextVal + "</option>";
+                                                        //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
+                                                    }
+                                                    str += "</select>";                 
+                                                   
+                                                    str += "</td>";
                                                 }
-                                                else { str += "<td class='stylespc' align='left'><select name=" + MasFrms[k].Field_Col + " id=" + MasFrms[k].Field_Col + " class='form-control notrequired  frmddl'></select></td>"; }
-                                                ssmtablename = MasFrms[k].Fld_Src_Name; ssmcolumnname = MasFrms[k].Fld_Src_Field;
-                                                scontrolId = MasFrms[k].Field_Col;
-                                                sselectionType = "SingleSelectionddl";
+                                                else {
+                                                    str += "<td class='stylespc' align='left'>";
+
+                                                    str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
+                                                    str += "<option value='0'>Select</option>";
+                                                    //$('.SSMDetails').append('<option value="0">Select</option>');
+                                                    for (var j = 0; j < SSMList.length; j++) {
+                                                        str += "<option value='" + SSMList[j].IDCol + "'>" + SSMList[j].TextVal + "</option>";
+                                                        //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
+                                                    }
+                                                    str += "</select>";    
+
+                                                    str += "</td>";                                               
+                                                }                                              
+                                                
                                                 break;
-                                            case 'SMM':
-                                                if (MasFrms[k].Mandate == "Yes") {
-                                                    str += "<td class='stylespc' align='left'><select name=" + MasFrms[k].Field_Col + " id=" + MasFrms[k].Field_Col + "  class='form-control required multiddl'></select></td>";
+                                            case 'SSO':
+                                                const SSOArray = filtered[k].Fld_Src_Field.split(",");
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    if (SSOArray.length > 0) {
+
+                                                        if ((SSOArray.length = 2)) {
+                                                            str += "<td class='stylespc' align='left'>";
+
+                                                            str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
+                                                            str += "<option value='0'>Select</option>";
+                                                            //$('.SSMDetails').append('<option value="0">Select</option>');
+                                                            for (var j = 0; j < SSOArray.length; j++) {
+                                                                str += "<option value='" + SSOArray[j] + "'>" + SSOArray[j] + "</option>";
+                                                                //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
+                                                            }
+                                                            str += "</select>";
+
+                                                            str += "</td>";
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                            for (var ro = 0; ro < SSOArray.length; ro++) {
+                                                                str += "<input type='checkbox' id='" + SSOArray[ro] + "' value='" + SSOArray[ro] + "' />&nbsp;&nbsp;<label>" + SSOArray[ro] + "<lable>&nbsp;&nbsp;";
+                                                            }
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                        str += "<input type='checkbox' id='" + SSOArray[0] + "' value='" + SSOArray[0] + "' />&nbsp;<label>" + SSOArray[0] + "<lable>&nbsp;";
+                                                        str += "</div>";
+                                                        str += "</td>";
+                                                    }
                                                 }
-                                                else { str += "<td class='stylespc' align='left'><select name=" + MasFrms[k].Field_Col + "  id=" + MasFrms[k].Field_Col + " class='form-control notrequired  multiddl'></select></td>"; }
-                                                smmtablename = MasFrms[k].Fld_Src_Name; smmcolumnname = MasFrms[k].Fld_Src_Field;
-                                                mdcontrolId = MasFrms[k].Field_Col;
-                                                mselectionType = "MultipleSelectionddl";
+                                                else {
+                                                    if (SSOArray.length > 0) {
+
+                                                        if ((SSOArray.length = 2)) {
+                                                            str += "<td class='stylespc' align='left'>";
+
+                                                            str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control notrequired'>";
+                                                            str += "<option value='0'>Select</option>";
+                                                            //$('.SSMDetails').append('<option value="0">Select</option>');
+                                                            for (var j = 0; j < SSOArray.length; j++) {
+                                                                str += "<option value='" + SSOArray[j] + "'>" + SSOArray[j] + "</option>";
+                                                                //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
+                                                            }
+                                                            str += "</select>";
+
+                                                            str += "</td>";
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                            for (var ro = 0; ro < SSOArray.length; ro++) {
+                                                                str += "<input type='checkbox' id='" + SSOArray[ro] + "' value='" + SSOArray[ro] + "' />&nbsp;&nbsp;<label>" + SSOArray[ro] + "<lable>&nbsp;&nbsp;";
+                                                            }
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                        str += "<input type='checkbox' id='" + SSOArray[0] + "' value='" + SSOArray[0] + "' />&nbsp;<label>" + SSOArray[0] + "<lable>&nbsp;";
+                                                        str += "</div>";
+                                                        str += "</td>";
+                                                    }
+                                                }
+                                                break;
+                                            case 'SMM':                                               
+
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    var crmn = filtered[k].Fld_Src_Name;
+                                                    BindCheckboxs(crmn);
+                                                    str += "<td class='stylespc' align='left'><br \>";
+                                                    str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                    if (CMfiltmgr.length > 0) {
+                                                        str += "<table id='tblsmm" + k + "' class='table-responsive'>";
+
+                                                        str += "<tr>";
+                                                        var g = 0;
+                                                        for (var f = 0; f < CMfiltmgr.length; f++) {
+
+                                                            str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "'";
+                                                            str += "name='" + filtered[k].Field_Col + "' class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
+                                                            
+                                                            g++;
+                                                            if (g == 2) {
+                                                                str += "</tr><tr>";
+                                                                g = 0;
+                                                            }
+                                                        }
+                                                        str += "</tr>";
+                                                        str += "</table>";
+                                                    }
+
+                                                    str += "</div>";
+
+                                                    str += "</td>";
+
+                                                }
+                                                else {
+                                                    var crmn = filtered[k].Fld_Src_Name;
+                                                    BindCheckboxs(crmn);
+                                                    str += "<td class='stylespc' align='left'>";
+                                                    str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                    if (CMfiltmgr.length > 0) {
+                                                        str += "<table id='tblsmm" + k + "' class='table-responsive'>";
+
+                                                        str += "<tr>";
+                                                        var g = 0;
+                                                        for (var f = 0; f < CMfiltmgr.length; f++) {
+
+                                                            str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "'";
+                                                            str += "name='" + filtered[k].Field_Col + "' class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";                                                           
+                                                            g++;
+                                                            if (g == 2) {
+                                                                str += "</tr><tr>";
+                                                                g = 0;
+                                                            }
+                                                        }
+                                                        str += "</tr>";
+                                                        str += '</table>';
+                                                    }
+
+                                                    str += "</div>";
+                                                    str += "</td>";
+                                                }
+                                             
+                                                break;
+                                            case 'SMO':
+                                                const SMOArray = filtered[k].Fld_Src_Field.split(",");
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    if (SMOArray.length > 0) {
+
+
+                                                        if ((SMOArray.length == 2)) {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                            for (var ro = 0; ro < SMOArray.length; ro++) {
+                                                                str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + SMOArray[ro] + "' class='rbnsnRow' value='" + SMOArray[ro] + "' />&nbsp;&nbsp;<label>" + SMOArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                            }
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'><br \>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                            str += "<table id='tblsmo" + k + "'  class='table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < SMOArray.length; f++) {
+
+                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + SMOArray[f] + "'";
+                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + SMOArray[f] + "' />&nbsp;<label class='text-wrap' for='" + SMOArray[f] + "'>" + SMOArray[f] + " </label></td>";
+
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += "</table>";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                        str += "<input type='checkbox' id='" + SMOArray[0] + "' value='" + SMOArray[0] + "' />&nbsp<label>" + SMOArray[0] + "</lable>";
+                                                        str += "</div>";
+                                                        str += "</td>";
+                                                    }
+                                                }
+                                                else {
+                                                    if (SMOArray.length > 0) {
+                                                        if ((SMOArray.length == 2)) {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                            for (var ro = 0; ro < SMOArray.length; ro++) {
+                                                                str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + SMOArray[ro] + "' class='rbnsnRow' value='" + SMOArray[ro] + "' />&nbsp;&nbsp;<label>" + SMOArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                            }
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'><br \>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                            str += "<table id='tblsmo" + k + "'  class='table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < SMOArray.length; f++) {
+
+                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + SMOArray[f] + "'";
+                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + SMOArray[f] + "' />&nbsp;<label class='text-wrap' for='" + SMOArray[f] + "'>" + SMOArray[f] + " </label></td>";
+
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += "</table>";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                        str += "<input type='checkbox' id='" + SMOArray[0] + "' value='" + SMOArray[0] + "' />&nbsp<label>" + SMOArray[0] + "</lable>";
+                                                        str += "</div>";
+                                                        str += "</td>";
+                                                    }
+                                                }
+                                                break;                                           
+                                            case 'CO':
+                                                const COArray = filtered[k].Fld_Src_Field.split(",");
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    if ((COArray.length > 0)) {
+
+                                                        if ((COArray.length == 2)) {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                            for (var ro = 0; ro < COArray.length; ro++) {
+                                                                str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + COArray[ro] + "' class='rbnsnRow' value='" + COArray[ro] + "' />&nbsp;&nbsp;<label>" + COArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                            }
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'><br \>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                            str += "<table id='tblco" + k + "' class='table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < COArray.length; f++) {
+
+                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + COArray[f] + "'";
+                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + COArray[f] + "' />&nbsp;<label class='text-wrap' for='" + COArray[f] + "'>" + COArray[f] + " </label></td>";
+
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += "</table>";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                        str += "<input type='radio' id='" + COArray[0] + "' value='" + COArray[0] + "' />&nbps<label>" + COArray[0] + "</lable></td>";
+                                                        str += "</div>";
+                                                        str += "</td>";
+                                                    }
+                                                }
+                                                else {
+                                                    if ((COArray.length > 0)) {
+                                                        if ((COArray.length == 2)) {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                            for (var ro = 0; ro < COArray.length; ro++) {
+                                                                str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + COArray[ro] + "' class='rbnsnRow' value='" + COArray[ro] + "' />&nbsp;&nbsp;<label>" + COArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                            }
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'><br \>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                            str += "<table id='tblco" + k + "'  class='table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < COArray.length; f++) {
+
+                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + COArray[f] + "'";
+                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + COArray[f] + "' />&nbsp;<label class='text-wrap' for='" + COArray[f] + "'>" + COArray[f] + " </label></td>";
+
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += "</table>";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }                                                      
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                        str += "<input type='radio' id='" + COArray[0] + "' value='" + COArray[0] + "' />&nbps<label>" + COArray[0] + "</lable>";
+                                                        str += "</div>";
+                                                        str += "</td>";
+                                                    }
+                                                }
                                                 break;
                                             case 'CM':
-                                                str += "<td class='stylespc' align='left'><div name=" + MasFrms[k].Field_Col + " id=" + MasFrms[k].Field_Col + " class='notrequired ChbControl'></div></td>";
-                                                cmmtablename = MasFrms[k].Fld_Src_Name; cmmcolumnname = MasFrms[k].Fld_Src_Field;
-                                                cbselectionType = "CheckboxListControl";
+                                                var crmn = filtered[k].Fld_Src_Name;
+                                                BindCheckboxs(crmn);
+                                                
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    str += "<td class='stylespc' align='left'><br />";
+                                                    str += "<div name='" + filtered[k].Field_Col + "' id=" + filtered[k].Field_Col + " class='required'  style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                    if (CMfiltmgr.length > 0) {
+                                                        str += "<table id='tblcm" + k + "' class='tChblControl table-responsive'>";
+
+                                                        str += "<tr>";
+                                                        var g = 0;
+                                                        for (var f = 0; f < CMfiltmgr.length; f++) {
+
+                                                            str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "''";
+                                                            str += "name='" + filtered[k].Field_Col + "'  class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
+                                                           
+                                                            g++;
+                                                            if (g == 2) {
+                                                                str += "</tr><tr>";
+                                                                g = 0;
+                                                            }
+                                                        }
+                                                        str += "</tr>";
+                                                        str += '</table>';
+                                                    }
+
+                                                    str += "</div>";
+                                                    str += "</td> ";
+                                                }
+                                                else {
+                                                    str += "<td class='stylespc' align='left'><br />";
+                                                    str += "<div name='" + filtered[k].Field_Col + "' id=" + filtered[k].Field_Col + " class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                    if (CMfiltmgr.length > 0) {
+                                                        str += "<table id='tblcm" + k + "'  class='tChblControl table-responsive'>";
+
+                                                        str += "<tr>";
+                                                        var g = 0;
+                                                        for (var f = 0; f < CMfiltmgr.length; f++) {
+
+                                                            str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "''";
+                                                            str += "name='" + filtered[k].Field_Col + "'  class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
+                                                            //str += "<td></td>";
+
+                                                            g++;
+                                                            if (g == 2) {
+                                                                str += "</tr><tr>";
+                                                                g = 0;
+                                                            }
+                                                        }
+                                                        str += "</tr>";
+                                                        str += '</table>';
+                                                    }
+
+                                                    str += "</div>";
+                                                    str += "</td> ";
+                                                }
                                                 break;
                                             case 'RM':
-                                                str += "<td class='stylespc' align='left'><div name=" + MasFrms[k].Field_Col + " id=" + MasFrms[k].Field_Col + " class='notrequired RbtnlControl'></div></td>";
-                                                cmrmtablename = MasFrms[k].Fld_Src_Name; cmrmcolumnname = MasFrms[k].Fld_Src_Field;
-                                                rbselectionType = "RadiobuttonListControl";
+                                                var rbm = filtered[k].Fld_Src_Name;  
+                                                //console.log(rbm)
+                                                BindRadiobutton(rbm);
+                                                //console.log(RMfiltmgr);
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    str += "<td class='stylespc' align='left'><br/>";
+                                                    str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                    if (RMfiltmgr.length > 0) {
+                                                        str += "<table id='tblrm" + k + "' class='RbtnlControl table-responsive'>";
+
+                                                        str += "<tr>";
+                                                        var g = 0;
+                                                        for (var f = 0; f < RMfiltmgr.length; f++) {
+
+                                                            str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + RMfiltmgr[f].IDCol + "'";
+                                                            str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + RMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + RMfiltmgr[f].IDCol + "'>" + RMfiltmgr[f].TextVal + " </label></td>";
+                                                            //str += "<td><label class='text-wrap' for='" + RMfiltmgr[f].IDCol + "'>" + RMfiltmgr[f].TextVal + " </label></td>";
+
+                                                            g++;
+                                                            if (g == 2) {
+                                                                str += "</tr><tr>";
+                                                                g = 0;
+                                                            }
+                                                        }
+                                                        str += "</tr>";
+                                                        str += '</table>';
+                                                    }
+                                                    str += "</div>";
+                                                    str += "</td> ";
+                                                }
+                                                else {
+                                                    str += "<td class='stylespc' align='left'><br />";
+                                                    str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                    if (RMfiltmgr.length > 0) {
+                                                        str += "<table id='tblrm" + k + "'  class='table-responsive'>";
+
+                                                        str += "<tr>";
+                                                        var g = 0;
+                                                        for (var f = 0; f < RMfiltmgr.length; f++) {
+
+                                                            str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + RMfiltmgr[f].IDCol + "'";
+                                                            str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + RMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + RMfiltmgr[f].IDCol + "'>" + RMfiltmgr[f].TextVal + " </label></td>";
+                                                           
+                                                            g++;
+                                                            if (g == 2) {
+                                                                str += "</tr><tr>";
+                                                                g = 0;
+                                                            }
+                                                        }
+                                                        str += "</tr>";
+                                                        str += "</table>";
+                                                    }
+                                                    str += "</div>";
+                                                    str += "</td>";
+                                                }
+                                                break;
+                                            case 'RO':
+                                                const ROArray = filtered[k].Fld_Src_Field.split(",");        
+                                                if ((filtered[k].Mandate == "Yes")) {
+                                                    if ((ROArray.length > 0)) {
+                                                        if ((ROArray.length == 2)) {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                            for (var ro = 0; ro < ROArray.length; ro++) {
+                                                                str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[ro] + "' class='rbnsnRow' value='" + ROArray[ro] + "' />&nbsp;&nbsp;<label>" + ROArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                            }
+                                                            str += "</div>";
+                                                            str += "</td> ";
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'><br />";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                            str += "<table id='tblro" + k + "' class='table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < ROArray.length; f++) {
+
+                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + ROArray[f] + "'";
+                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + ROArray[f] + "' />&nbsp;<label class='text-wrap' for='" + ROArray[f] + "'>" + ROArray[f] + " </label></td>";
+                                                                
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += '</table>';
+                                                            str += "</div>";
+                                                            str += "</td> ";
+                                                        }
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                        str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[0] + "' value='" + ROArray[0] + "' />&nbps<label>" + ROArray[0] + "</lable>";
+                                                        str += "</div>";
+                                                        str += "</td>";
+                                                    }
+                                                }
+                                                else {
+                                                    if ((ROArray.length > 0)) {
+                                                        if ((ROArray.length == 2)) {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                            for (var ro = 0; ro < ROArray.length; ro++) {
+                                                                str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[ro] + "' class='rbnsnRow' value='" + ROArray[ro] + "' />&nbsp;&nbsp;<label>" + ROArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                            }
+                                                            str += "</div>";
+                                                            str += "</td> ";
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'><br />";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                            str += "<table id='tblro" + k + "' class='table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < ROArray.length; f++) {
+
+                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + ROArray[f] + "'";
+                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + ROArray[f] + "' />&nbsp;<label class='text-wrap' for='" + ROArray[f] + "'>" + ROArray[f] + " </label></td>";
+                                                               
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += '</table>';
+
+                                                            str += "</div>";
+                                                            str += "</td> ";
+                                                        }
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                        str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[0] + "' value='" + ROArray[0] + "' />&nbps<label>" + ROArray[0] + "</lable>&nbps";
+                                                        str += "</div>";
+                                                        str += "</td>";
+                                                    }
+                                                }
                                                 break;
                                             case 'FS':
-                                                str += "<td class='stylespc' align='left'><input type='file'  id = " + MasFrms[k].Field_Col + " name = " + MasFrms[k].Field_Col + "  accept='image/png, image/jpeg' class='form-control notrequired  frmddl' /></td>";
+                                                str += "<td class='stylespc' align='left'><input type='file'  id='" + filtered[k].Field_Col + "' name = " + filtered[k].Field_Col + "  accept='image/png, image/jpeg' class='form-control notrequired' /></td>";
                                                 break;
                                             case 'FSC':
-                                                str += "<td class='stylespc' align='left'><input type='file'  id = " + MasFrms[k].Field_Col + " name = " + MasFrms[k].Field_Col + "  accept='image/png, image/jpeg' class='form-control notrequired  frmddl' /></td>";
+                                                str += "<td class='stylespc' align='left'><input type='file'  id='" + filtered[k].Field_Col + "' name = " + filtered[k].Field_Col + "  accept='image/png, image/jpeg' class='form-control notrequired' /></td>";
                                                 break;
                                             case 'FC':
-                                                str += "<td class='stylespc' align='left'><input type='file'  id = " + MasFrms[k].Field_Col + " name = " + MasFrms[k].Field_Col + "  accept='image/png, image/jpeg' class='form-control notrequired  frmddl' /></td>";
+                                                str += "<td class='stylespc' align='left'><input type='file'  id='" + filtered[k].Field_Col + "' name = " + filtered[k].Field_Col + "  accept='image/png, image/jpeg' class='form-control notrequired' /></td>";
                                                 break;
                                             default:
                                                 break
                                         }
+
+                                        m++;
+                                        if (m == 2) {
+                                            str += "</tr><tr>";
+                                            m = 0;
+                                        }                                        
                                     }
 
-                                    n++;
-                                    if (n == 2) {
-                                        str += "</tr><tr>";
-                                        n = 0;
-                                    }
+                                    str += "</tr>";
+                                    str += '</table>';
+                                
+                                    str += "</div>";
+
                                 }
-                                str += "</tr>";
-                                //str += '</table>';
-                                //$(".afdata").append(str);
-
-                                $("#RetaileradditionalField tbody").append(str);
-                                $(".labelnames").append("<div>" + str1 + "</div>");
-                                //$("# tbody").append('<tr class="alcode">' + str + '</tr>');
-
-                                if (sselectionType == "SingleSelectionddl") {
-                                    BindDropdown(ssmtablename, ssmcolumnname, scontrolId);
-                                }
-
-                                if (mselectionType == "MultipleSelectionddl") {
-                                    BindDropdown(smmtablename, smmcolumnname, mdcontrolId);
-                                }
-
-                                if (cbselectionType == "CheckboxListControl") {
-                                    var filtcmgr = [];
-                                    $.ajax({
-                                        type: "POST",
-                                        contentType: "application/json; charset=utf-8",
-                                        async: false,
-                                        url: "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsSeclectionMastesList",
-                                        data: "{'TableName':'" + cmmtablename + "','ColumnsName':'" + cmmcolumnname + "'}",
-                                        dataType: "json",
-                                        success: function (data) {
-                                            filtcmgr = JSON.parse(data.d) || [];
-                                            //console.log(filtcmgr);
-                                            //alert('#' + ssmcontrolerId + '');
-                                            var html = '<table id="tChblControl" style="width:1000%;height:200px;" class="tChblControl table-responsive">';
-
-                                            //var html = '';
-                                            html += "<tr>";
-                                            var m = 0;
-                                            for (var k = 0; k < filtcmgr.length; k++) {
-
-                                                html += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + filtcmgr[k].IDCol + "''";
-                                                html += "name = 'tfieldforce' class='chkfnRow' value = '" + filtcmgr[k].IDCol + "' /></td>";
-                                                html += "<td><label class='text-wrap' for='" + filtcmgr[k].IDCol + "'>" + filtcmgr[k].TextVal + " </label></td>";
-
-                                                //html += "<td><input type='radio' id='" + filtcmgr[k].IDCol + "' value='" + filtcmgr[k].IDCol + "' ></td>";
-                                                //html += "<td><label class='text-wrap' for='" + filtcmgr[k].IDCol + "'>" + filtcmgr[k].TextVal + " </label></td>";
-                                                m++;
-                                                if (m == 4) {
-                                                    html += "</tr><tr>";
-                                                    m = 0;
-                                                }
-                                            }
-                                            html += "</tr>";
-                                            html += '</table>';
-                                            $(".ChbControl").append(html);
-                                        }
-                                    });
-                                    //BindDropdown(cmmtablename, cmmcolumnname, cmmcontrolerId, cbselectionType);
-                                }
-
-                                if (rbselectionType == "RadiobuttonListControl") {
-                                    var filtcmgr = [];
-                                    $.ajax({
-                                        type: "POST",
-                                        contentType: "application/json; charset=utf-8",
-                                        async: false,
-                                        url: "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsSeclectionMastesList",
-                                        data: "{'TableName':'" + cmrmtablename + "','ColumnsName':'" + cmrmcolumnname + "'}",
-                                        dataType: "json",
-                                        success: function (data) {
-                                            filtcmgr = JSON.parse(data.d) || [];
-                                            //console.log(filtcmgr);
-                                            //alert('#' + ssmcontrolerId + '');
-                                            var html = '<table id="tRbtnlControl" width="600" class="tRbtnlControl table-responsive">';
-
-                                            //var html = '';
-                                            html += "<tr>";
-                                            var m = 0;
-                                            for (var k = 0; k < filtcmgr.length; k++) {
-
-                                                html += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + filtcmgr[k].IDCol + "''";
-                                                html += "name = 'tfieldforce' class='chkfnRow' value = '" + filtcmgr[k].IDCol + "' /></td>";
-                                                html += "&nbsp;& nbsp;<td><label class='text-wrap' for='" + filtcmgr[k].IDCol + "'>" + filtcmgr[k].TextVal + " </label></td>";
-
-                                                //html += "<td><input type='radio' id='" + filtcmgr[k].IDCol + "' value='" + filtcmgr[k].IDCol + "' ></td>";
-                                                //html += "<td><label class='text-wrap' for='" + filtcmgr[k].IDCol + "'>" + filtcmgr[k].TextVal + " </label></td>";
-
-                                                m++;
-                                                if (m == 4) {
-                                                    html += "</tr><tr>";
-                                                    m = 0;
-                                                }
-                                            }
-                                            html += "</tr>";
-                                            html += '</table>';
-                                            $(".RbtnlControl").append(html);
-                                        }
-                                    });
-                                    //BindDropdown(cmmtablename, cmmcolumnname, cmmcontrolerId, cbselectionType);
-                                }
+                                $(".labelnames").append(str);  
+                                                         
                             }
+                        }
+                    });
+                }
 
-
+                function GetCustomFormsFields() {             
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        async: false,                     
+                        url: "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsFieldsList",
+                        data: "{'divcode':'<%=Session["div_code"]%>','ModuleId':'3'}",
+                        dataType: "json",
+                        success: function (data) {
+                            MasFrms = JSON.parse(data.d) || [];                         
                         },
                         error: function (data) {
                             alert(JSON.stringify(data.d));
@@ -1028,24 +1497,54 @@
                     });
                 }
 
-                function BindDropdown(tablename, columnname, controlId) {
-                    var filtmgr = [];
+                function BindCheckboxs(tablename) {
+                    CMfiltmgr = [];
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        async: false,
+                        url: "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsSeclectionMastesList",
+                        data: "{'TableName':'" + tablename + "'}",
+                        dataType: "json",
+                        success: function (data) {
+                            CMfiltmgr = JSON.parse(data.d) || [];                            
+                        }
+                    });
+                }
+
+                function BindRadiobutton(tablename) {
+                    RMfiltmgr = [];
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        async: false,
+                        url: "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsSeclectionMastesList",
+                        data: "{'TableName':'" + tablename + "'}",
+                        dataType: "json",
+                        success: function (data) {
+                            RMfiltmgr = JSON.parse(data.d) || [];                           
+                        }
+                    });
+                }
+
+                function BindDropdown(tablename) {
+                    SSMList = [];
 
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         async: false,
                         url: "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsSeclectionMastesList",
-                        data: "{'TableName':'" + tablename + "','ColumnsName':'" + columnname + "'}",
+                        data: "{'TableName':'" + tablename + "'}",
                         dataType: "json",
                         success: function (data) {
-                            filtmgr = JSON.parse(data.d) || [];
+                            SSMList = JSON.parse(data.d) || [];
+                            //$('.SSMDetails').empty();
+                            //$('.SSMDetails').append('<option value="0">Select</option>');
+                            //for (var j = 0; j < SSMList.length; j++) {
+                            //    $('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
+                            //}
 
-                            $('#' + controlId + '').empty();
-                            $('#' + controlId + '').append('<option value="0">Select</option>');
-                            for (var j = 0; j < filtmgr.length; j++) {
-                                $('#' + controlId + '').append('<option value="' + filtmgr[j].IDCol + '">' + filtmgr[j].TextVal + '</option>');
-                            }
                         }
                     });
                 }
@@ -1059,6 +1558,7 @@
                     var retailermainflds = new Array();
 
                     var addfields = new Array();
+                    var addfieldsG = new Array();
                     var vflag = true;
 
                     if ($('#<%=Txt_id.ClientID%>').val() == "") { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); vflag = false; return vflag; }
@@ -1083,99 +1583,74 @@
 
                     $('#<%=hdnbreedname.ClientID%>').val(sbreed);
 
+                   
+                    $('.required').each(function () {
+                        //alert('hi');
+                        var adDetail = {};
+                        var fval = $(this).val();
+                        var fid = `${this.id}`;
+                        values = ""; fields = "";
+                        fields = fid;
+                        var $label = $("label[for='" + fid + "']");
+                        //var msg = "Please Fill The " + $label.text() + "";
+                        //if ((fval == null || fval == "" || fval == "0")) {
+                        //    alert(msg);
+                        //    $(fid).focus();
+                        //    vflag = false;
+                        //    return vflag;
+                        //}
 
-                    var values = ""; var fields = "";
-                    var rowcount = $('#RetaileradditionalField tr').length;
-                    if (rowcount > 0) {
-                        $('.required').each(function () {
-                            //alert('hi');
-                            var adDetail = {};
-                            var fval = $(this).val();
-                            var fid = `${this.id}`;
-                            values = ""; fields = "";
-                            fields = fid;
-                            var $label = $("label[for='" + fid + "']");
-                            var msg = "Please Fill The " + $label.text() + "";
-                            if ((fval == null || fval == "" || fval == "0")) {
-                                alert(msg);
-                                $(fid).focus();
-                                vflag = false;
-                                return vflag;
-                            }
+                        $(this).find('input[type="checkbox"]:checked').each(function () {
+                            //console.log($(this).value);
+                            //console.log($(this).val());
+                            fval += this.value + ",";
 
-                            //if ($(this).find('input[type=checkbox]:checked').length == 0) {
-                            //    alert('Please select atleast one checkbox');
-                            //    vflag = false;
-                            //    return vflag;
-                            //}
-
-                            //if ($(this).find('input[type=radio]:checked').length == 0) {
-                            //    alert('Please select atleast one radio button');
-                            //    vflag = false;
-                            //    return vflag;
-                            //}
-
-                            $(this).find('input[type="checkbox"]:checked').each(function () {
-                                console.log($(this).value);
-                                console.log($(this).val());
-                                fval += this.value + ",";
-                                
-                            });
-                        
-                            //if ((chbval == '' || chbval.length < 0 || chbval == 0)) {
-                            //    msg = "Please Select At Least On Check Box";
-                            //    alert(msg);
-                            //    vflag = false;
-                            //    return vflag;
-                            //}
-
-                            var rbval = '';
-
-                            $(this).find('input[type="radio"]:checked').each(function () {
-                                console.log(this.value);
-                                fval += this.value + ",";                                
-                            });
-
-                            //if ((rbval == '' || rbval.length < 0 || rbval == 0)) {
-                            //    msg = "Please Select At Least On Radio Button";
-                            //    alert(msg);
-                            //    vflag = false;
-                            //    return vflag;
-                            //}
-
-                            values = fval;
-                            adDetail.Fields = fields;
-                            adDetail.Values = values;
-
-                            addfields.push(adDetail);
                         });
 
-                        $('.notrequired').each(function () {
 
-                            var adDetail = {};
-                            var fval = $(this).val();
-                            var fid = `${this.id}`;
-                            fields = "";
-                            fields = fid;
+                        var rbval = '';
 
-                            $(this).find('input[type="checkbox"]:checked').each(function () {
-                                console.log(this.value);
-                                fval += this.value + ",";
-                                console.log(fval);
-                            });
+                        $(this).find('input[type="radio"]:checked').each(function () {
+                            //console.log(this.value);
+                            fval += this.value + ",";
+                        });
 
-                            $(this).find('input[type="radio"]:checked').each(function () {
-                                console.log(this.value);
-                                fval += this.value + ",";
-                            });
 
-                            values = fval;
-                            adDetail.Fields = fields;
-                            adDetail.Values = values;
-                            addfields.push(adDetail);
-                        })
-                    }
+                        values = fval;
 
+                        adDetail.Fields = fields;
+                        adDetail.Values = values;
+
+                        addfields.push(adDetail);
+                    });
+
+                    $('.notrequired').each(function () {
+
+                        var adDetail = {};
+                        var fval = $(this).val();
+                        var fid = `${this.id}`;
+                        fields = "";
+                        fields = fid;
+
+                        $(this).find('input[type="checkbox"]:checked').each(function () {
+                            //console.log(this.value);
+                            fval += this.value + ",";
+                            //console.log(fval);
+                        });
+
+                        $(this).find('input[type="radio"]:checked').each(function () {
+                            //console.log(this.value);
+                            fval += this.value + ",";
+                        });
+
+                        values = fval;
+
+                        adDetail.Fields = fields;
+                        adDetail.Values = values;
+                        addfields.push(adDetail);
+                    });
+
+                    //console.log(addfields);
 
                     if (vflag) {
                         var Maindata = {};
@@ -1194,9 +1669,9 @@
 
                         Maindata.DR_Class = $('#<%=ddlClass.ClientID%> option:selected').val();
                         Maindata.drcategory = $('#<%=DDL_category.ClientID%> option:selected').val();
-                    <%--Maindata.dscategoryName = $('#<%=DDL_category.ClientID%>').text();--%>
+                        <%--Maindata.dscategoryName = $('#<%=DDL_category.ClientID%>').text();--%>
                         Maindata.dscategoryName = $('#<%=DDL_category.ClientID%> option:selected').text();
-                  <%--  Maindata.dr_class_name = $('#<%=ddlClass.ClientID%>').text();--%>
+                        <%--Maindata.dr_class_name = $('#<%=ddlClass.ClientID%>').text();--%>
                         Maindata.dr_class_name = $('#<%=ddlClass.ClientID %> option:selected').text();
 
                         Maindata.ad = $('#<%=Txt_advanceamt.ClientID%>').val();
@@ -1228,7 +1703,7 @@
 
                         retailermainflds.push(Maindata);
                         var fdata1 = JSON.stringify({ retailermainflds });
-                       
+
 
                         var fdata = {
                             "DR_Name": $('#<%=txtName.ClientID%>').val(),
@@ -1273,33 +1748,32 @@
                             "ukeys": $('#<%=hdnukey.ClientID%>').val(),
                             "curentCom": $('#<%=ddlCC.ClientID%> option:selected').val(),
                             "curentCompitat": $('#<%=ddlCC.ClientID%> option:selected').text(),
-                            "Email": $('#<%=txtmail.ClientID%>').val(),
-
+                            "Email": $('#<%=txtmail.ClientID%>').val(),                            
                             "Additionsfld": addfields
                         };
 
-                        console.log(fdata);
+                        //console.log(fdata);
 
 
                         $.ajax({
                             type: "POST",
                             contentType: "application/json; charset=utf-8",
                             async: false,
-                            url: "ListedDr_DetailAdd_Custom.aspx/SaveAdditionalField", 
-                            /* data: JSON.stringify({ retailermainflds }),*/                            
-                            data: "{'fdata':'" + JSON.stringify(fdata) + "'}",                             
+                            url: "ListedDr_DetailAdd_Custom.aspx/SaveAdditionalField",
+                            /* data: JSON.stringify({ retailermainflds }),*/
+                            data: "{'fdata':'" + JSON.stringify(fdata) + "'}",
                             dataType: "json",
                             success: function (msg) {
                                 if (msg.d == "Updated Successfully") {
                                     alert(msg.d);
-                                    
+
                                     ClearControls();
 
                                     window.location.href = '../Retailer_Details_New.aspx';
                                 }
                                 else if (msg.d == "Created Successfully") {
                                     alert(msg.d);
-                                    
+
                                     ClearControls();
 
                                     window.location.href = '../Retailer_Details_New.aspx';
@@ -1523,7 +1997,6 @@
                                                 break;
                                             default:
                                                 break;
-
                                         }
                                     }
                                 }
@@ -1594,7 +2067,7 @@
                     $('#<%=txtlong.ClientID%>').val("");
                 }
 
-                $('#btngoback').on('click', function () {                   
+                $('#btngoback').on('click', function () {
                     window.location.href = '../Retailer_Details_New.aspx';
                 });
             </script>

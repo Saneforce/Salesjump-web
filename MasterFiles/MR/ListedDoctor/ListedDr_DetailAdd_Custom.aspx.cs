@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Data;
 using Bus_EReport;
 using Newtonsoft.Json;
 using System.Web.Services;
 using DBase_EReport;
-using iTextSharp.tool.xml.html.head;
 using System.Data.SqlClient;
-using System.Windows.Interop;
-
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
 {
@@ -54,10 +49,14 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     public static string STATE = string.Empty;
     public static string HQ = string.Empty;
     public static string HQNm = string.Empty;
+    public static string baseUrl = "";
     #endregion
 
     protected override void OnPreInit(EventArgs e)
     {
+        baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/Index.apx";
+        //if ((Convert.ToString(Session["sf_type"]) != null || Convert.ToString(Session["sf_type"]) != ""))
+        //{
         base.OnPreInit(e);
         sf_type = Session["sf_type"].ToString();
         if (sf_type == "3")
@@ -72,10 +71,17 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         {
             this.MasterPageFile = "~/Master_MR.master";
         }
+        //}
+        //else { Page.Response.Redirect(baseUrl, true); }
+
     }
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        //baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/Index.apx";
+
+        //if ((Convert.ToString(Session["div_code"]) != null || Convert.ToString(Session["div_code"]) != ""))
+        //{
         divcode.Value = Session["div_code"].ToString();
         div_code = Session["div_code"].ToString();
         try
@@ -157,6 +163,9 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 }
             }
         }
+        //}
+        //else { Page.Response.Redirect(baseUrl, true); }
+
     }
 
     protected override void OnLoadComplete(EventArgs e)
@@ -416,15 +425,60 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     }
 
     [WebMethod]
-    public static string GetCustomFormsSeclectionMastesList(string TableName, string ColumnsName)
+    public static string GetCustomFormsFieldsGroups(string divcode, string ModuleId)
+    {
+        DataSet ds = new DataSet();
+
+        //AdminSetup Ad = new AdminSetup();
+
+        lisdr Ad = new lisdr();
+
+        ds = Ad.GetCustomFormsFieldsGroupData(divcode, ModuleId);
+        return JsonConvert.SerializeObject(ds.Tables[0]);
+    }
+
+
+    [WebMethod]
+    public static string GetCustomFormsSeclectionMastesList(string TableName)
     {
         DataSet ds = new DataSet();
         lisdr ad = new lisdr();
-        ds = ad.GetCustomFormsSeclectionMastesList(TableName, ColumnsName);
-        //AdminSetup Ad = new AdminSetup();
-        //ds = Ad.GetCustomFormsSeclectionMastesList(TableName, ColumnsName);
-        return JsonConvert.SerializeObject(ds.Tables[0]);
+
+        string DivCode = Convert.ToString(HttpContext.Current.Session["div_Code"]);
+
+        if ((DivCode == null || DivCode == ""))
+        { DivCode = "0"; }
+
+        ds = GetCustomMatersData(TableName, DivCode);
+        DataTable dt = new DataTable();
+        dt = ds.Tables[0];
+
+        return JsonConvert.SerializeObject(dt);
     }
+
+    public static DataSet GetCustomMatersData(string TableName, string Divcode)
+    {
+        DB_EReporting db_ER = new DB_EReporting();
+
+        DataSet dsAdmin = null;
+
+        //strQry = "EXEC [Get_CustomForms_SeclectionMastesList] '" + TableName + "' ,'" + ColumnsName + "'";
+
+        string strQry = "EXEC [Get_CustomForms_MastesTablesData] '" + TableName + "' ," + Divcode + "";
+
+        try
+        {
+            dsAdmin = db_ER.Exec_DataSet(strQry);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return dsAdmin;
+    }
+
+
+
 
     [WebMethod]
     public static string GetBindCustomFieldData(string listeddrcode)
@@ -571,7 +625,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 else if (iReturn == -2)
                 {
 
-                    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(' Name Already Exist');</script>");
+                    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Name Already Exist');</script>");
 
                 }
                 else if (iReturn == -3)
@@ -604,17 +658,17 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 else if (iReturn == -2)
                 {
 
-                    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(' Name Already Exist');</script>");
+                    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Name Already Exist');</script>");
 
                 }
                 else if (iReturn == -3)
                 {
-                    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(' Code Already Exist');</script>");
+                    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Code Already Exist');</script>");
 
                 }
                 else if (iReturn == -4)
                 {
-                    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(' ERP Code Already Exist');</script>");
+                    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('ERP Code Already Exist');</script>");
 
                 }
 
@@ -683,19 +737,144 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         }
     }
 
-    [WebMethod]
+    public class AddtionalfieldDetails
+    {
+
+        [JsonProperty("Fields")]
+        public string Fields { get; set; }
+
+        [JsonProperty("Values")]
+        public string Values { get; set; }
+    }
+
+
+    public class RetailerMainfld
+    {
+        [JsonProperty("DR_Name")]
+        public string DR_Name { get; set; }
+
+        [JsonProperty("Mobile_No")]
+        public string Mobile_No { get; set; }
+
+        [JsonProperty("retail_code")]
+        public string retail_code { get; set; }
+
+        [JsonProperty("ERBCode")]
+        public string ERBCode { get; set; }
+
+        [JsonProperty("advance_amount")]
+        public string advance_amount { get; set; }
+
+        [JsonProperty("DR_Spec")]
+        public string DR_Spec { get; set; }
+
+        [JsonProperty("dr_spec_name")]
+        public string dr_spec_name { get; set; }
+
+        [JsonProperty("sales_Tax")]
+        public string sales_Tax { get; set; }
+
+        [JsonProperty("Tinno")]
+        public string Tinno { get; set; }
+
+        [JsonProperty("DR_Terr")]
+        public string DR_Terr { get; set; }
+
+        //string dr_terr_name { get; set; }
+
+        [JsonProperty("credit_days")]
+        public string credit_days { get; set; }
+
+        [JsonProperty("DR_Class")]
+        public string DR_Class { get; set; }
+
+        [JsonProperty("drcategory")]
+        public string drcategory { get; set; }
+
+        [JsonProperty("dscategoryName")]
+        public string dscategoryName { get; set; }
+
+        [JsonProperty("dr_class_name")]
+        public string dr_class_name { get; set; }
+
+        [JsonProperty("ad")]
+        public string ad { get; set; }
+
+        [JsonProperty("DR_Address1")]
+        public string DR_Address1 { get; set; }
+
+        [JsonProperty("DR_Address2")]
+        public string DR_Address2 { get; set; }
+
+        [JsonProperty("Milk_pon")]
+        public string Milk_pon { get; set; }
+
+        [JsonProperty("UOM_Name")]
+        public string UOM_Name { get; set; }
+
+        [JsonProperty("UOM")]
+        public string UOM { get; set; }
+
+        [JsonProperty("DDL_Re_Type")]
+        public string DDL_Re_Type { get; set; }
+
+        [JsonProperty("outstandng")]
+        public string outstandng { get; set; }
+
+        [JsonProperty("creditlmt")]
+        public string creditlmt { get; set; }
+
+        [JsonProperty("Cus_Alter")]
+        public string Cus_Alter { get; set; }
+
+        [JsonProperty("latitude")]
+        public string latitude { get; set; }
+
+        [JsonProperty("longitude")]
+        public string longitude { get; set; }
+
+        [JsonProperty("DFDairyMP")]
+        public string DFDairyMP { get; set; }
+
+        [JsonProperty("MonthlyAI")]
+        public string MonthlyAI { get; set; }
+
+        [JsonProperty("MCCNFPM")]
+        public string MCCNFPM { get; set; }
+
+        [JsonProperty("MCCMilkColDaily")]
+        public string MCCMilkColDaily { get; set; }
+
+        [JsonProperty("FrequencyOfVisit")]
+        public string FrequencyOfVisit { get; set; }
+
+        [JsonProperty("Breed")]
+        public string Breed { get; set; }
+
+        [JsonProperty("ukeys")]
+        public string ukeys { get; set; }
+
+        [JsonProperty("curentCom")]
+        public string curentCom { get; set; }
+
+        [JsonProperty("curentCompitat")]
+        public string curentCompitat { get; set; }
+
+        [JsonProperty("Email")]
+        public string Email { get; set; }
+
+        [JsonProperty("Additionsfld")]
+        public List<AddtionalfieldDetails> Additionsfld { get; set; }
+    }
+
+    [WebMethod(EnableSession = true)]
     public static string SaveAdditionalField(string fdata)
     {
         string msg = "";
-        System.Threading.Thread.Sleep(time);
 
+        RetailerMainfld sd = JsonConvert.DeserializeObject<RetailerMainfld>(fdata);
 
-        lisdr.RetailerMainfld sd = JsonConvert.DeserializeObject<lisdr.RetailerMainfld>(fdata);
-
-        List<lisdr.AddtionalfieldDetails> addfields = sd.Additionsfld;
-
-        DB_EReporting db_ER = new DB_EReporting();
-        DataSet ds = new DataSet();
+        List<AddtionalfieldDetails> addfields = sd.Additionsfld;
 
         string DR_Name = Convert.ToString(sd.DR_Name);
         string Mobile_No = Convert.ToString(sd.Mobile_No);
@@ -761,52 +940,26 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 if (iReturn > 0)
                 {
 
-                    // menu1.Status = "Sub Division created Successfully ";
-                    //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Created Successfully');</script>");
-                    string fld = ""; string val = "";
-                    int i = 0;
+                    string Squery = "SELECT MAX(ListedDrCode) ListedDrCode FROM Mas_ListedDr  Where Division_Code=" + div_code + "";
+
+                    DB_EReporting db_ER = new DB_EReporting();
+                    DataSet ds = db_ER.Exec_DataSet(Squery);
+
+                    string RetailerID = Convert.ToString(ds.Tables[0].Rows[0]["ListedDrCode"]);
 
                     if (addfields.Count > 0)
                     {
+                        int i = 0; string fld = ""; string val = "";
 
                         for (int k = 0; k < addfields.Count; k++)
                         {
-                            if ((addfields[k].Fields == "'undefined'" || addfields[k].Fields == "undefined") && (addfields[k].Values == "'undefined'" || addfields[k].Values == "undefined"))
+                            if ((addfields[k].Fields != "'undefined'" || addfields[k].Fields != "undefined") && (addfields[k].Values != "'undefined'" || addfields[k].Values != "undefined"))
                             {
-
+                                fld = addfields[k].Fields;
+                                val = addfields[k].Values;
+                                string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + RetailerID + "'";
+                                i = db_ER.ExecQry(uquery);
                             }
-                            else
-                            {
-                                fld += addfields[k].Fields + ",";
-
-                                if (addfields[k].Values == null || addfields[k].Values == "")
-                                {
-                                    val += "'',";
-                                }
-                                else
-                                {
-                                    val += "'" + addfields[k].Values + "',";
-                                }
-                            }
-                        }
-
-                        ds = new DataSet();
-                        string Squery = "SELECT MAX(ListedDrCode) ListedDrCode FROM Mas_ListedDr  Where Division_Code = " + div_code + "";
-
-                        db_ER = new DB_EReporting();
-
-                        ds = db_ER.Exec_DataSet(Squery);
-
-                        if (ds.Tables[0].Rows.Count > 0)
-                        {
-                            string RetailerID = Convert.ToString(ds.Tables[0].Rows[0]["ListedDrCode"]);
-
-                            string Iquery = "Insert Into Trans_Retailer_Custom_Field(RetailerID, " + fld.TrimEnd(',') + ") Values(" + RetailerID + "," + val.TrimEnd(',') + ")";
-
-                            i = db_ER.ExecQry(Iquery);
-
-                            if (i > 0)
-                            { msg = "Created Successfully"; }
                         }
                     }
 
@@ -846,93 +999,23 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
                 if (iReturn == 1)
                 {
-                    // menu1.Status = "Sub Division Updated Successfully ";
-                    //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Updated Successfully');window.location='../Retailer_Details.aspx';</script>");
 
-                    db_ER = new DB_EReporting();
-                    ds = new DataSet();
+                    DB_EReporting db_ER = new DB_EReporting();
 
-                    string Squery = "SELECT *FROM  Trans_Retailer_Custom_Field WHERE RetailerID = " + doctorcode + "";
-                    ds = db_ER.Exec_DataSet(Squery);
-
-                    if (ds.Tables[0].Rows.Count > 0)
+                    if (addfields.Count > 0)
                     {
+                        int i = 0; string fld = ""; string val = "";
 
-                        string fld = ""; string val = "";
-
-                        if (addfields.Count > 0)
+                        for (int k = 0; k < addfields.Count; k++)
                         {
-                            int i = 0;
-
-                            for (int k = 0; k < addfields.Count; k++)
+                            if ((addfields[k].Fields != "'undefined'" || addfields[k].Fields != "undefined") && (addfields[k].Values != "'undefined'" || addfields[k].Values != "undefined"))
                             {
-                                if ((addfields[k].Fields == "'undefined'" || addfields[k].Fields == "undefined") && (addfields[k].Values == "'undefined'" || addfields[k].Values == "undefined"))
-                                {
-
-                                }
-                                else
-                                {
-                                    //fld += addfields[k].Fields + ","; //val += "'" + addfields[k].Values + "',";
-                                    fld = addfields[k].Fields;
-
-                                    if (addfields[k].Values == null || addfields[k].Values == "")
-                                    { val = "''"; }
-                                    else
-                                    {
-                                        val = "'" + addfields[k].Values + "'";
-                                    }
-
-                                    string uquery = "UPDATE Trans_Retailer_Custom_Field  SET " + fld + " = " + val.TrimEnd(',') + " WHERE RetailerID = " + doctorcode + " ";
-                                    i = db_ER.ExecQry(uquery);
-                                }
+                                fld = addfields[k].Fields;
+                                val = addfields[k].Values;
+                                string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
+                                i = db_ER.ExecQry(uquery);
                             }
-
-                            if (i > 0)
-                            { msg = "Updated Successfully"; }
                         }
-
-                    }
-                    else
-                    {
-                        string fld = ""; string val = "";
-                        int i = 0;
-
-                        if (addfields.Count > 0)
-                        {
-                            for (int k = 0; k < addfields.Count; k++)
-                            {
-                                if ((addfields[k].Fields == "'undefined'" || addfields[k].Fields == "undefined") && (addfields[k].Values == "'undefined'" || addfields[k].Values == "undefined"))
-                                {
-
-                                }
-                                else
-                                {
-                                    fld += addfields[k].Fields + ",";
-
-                                    if (addfields[k].Values == null || addfields[k].Values == "")
-                                    {
-                                        val += "'',";
-                                    }
-                                    else
-                                    {
-                                        val += "'" + addfields[k].Values + "',";
-                                    }
-                                }
-                            }
-                            if ((fld != null || fld != "") && (val != null || val != ""))
-                            {
-
-                                string Iquery = "Insert Into Trans_Retailer_Custom_Field(RetailerID, " + fld.TrimEnd(',') + ")Values(" + doctorcode + "," + val.TrimEnd(',') + ")";
-
-                                db_ER = new DB_EReporting();
-
-                                i = db_ER.ExecQry(Iquery);
-                            }
-
-                            if (i > 0)
-                            { msg = "Updated Successfully"; }
-                        }
-                        //else { msg = "Error"; }
                     }
 
                     msg = "Updated Successfully";
@@ -1420,134 +1503,40 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
     public class lisdr
     {
-
-        public class AddtionalfieldDetails
+        public DataTable GetCustomFieldsDetailsdetails(string div_code)
         {
-            [JsonProperty("Fields")]
-            public string Fields { get; set; }
 
-            [JsonProperty("Values")]
-            public string Values { get; set; }
+            DataTable dsAdmin = new DataTable();
+
+            string strQry = " SELECT Field_Col,CF.FieldGroupId,CF.FGTableName,MFG.FGroupName FROM Trans_Custom_Fields_Details CF (NOLOCK) ";
+            strQry += " INNER JOIN Mas_FieldGroupTable MFG (NOLOCK) ON CF.FieldGroupId = MFG.FieldGroupId ";
+            strQry += " WHERE CF.ModuleId=3 AND Div_code=@Division_Code ";
+
+            try
+            {
+                using (var con = new SqlConnection(Globals.ConnString))
+                {
+                    using (var cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = strQry;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@Division_Code", Convert.ToInt32(div_code));
+                        SqlDataAdapter dap = new SqlDataAdapter();
+                        dap.SelectCommand = cmd;
+                        con.Open();
+                        dap.Fill(dsAdmin);
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+            return dsAdmin;
         }
 
-        public class RetailerMainfld
-        {
-            [JsonProperty("DR_Name")]
-            public string DR_Name { get; set; }
-
-            [JsonProperty("Mobile_No")]
-            public string Mobile_No { get; set; }
-
-            [JsonProperty("retail_code")]
-            public string retail_code { get; set; }
-
-            [JsonProperty("ERBCode")]
-            public string ERBCode { get; set; }
-
-            [JsonProperty("advance_amount")]
-            public string advance_amount { get; set; }
-
-            [JsonProperty("DR_Spec")]
-            public string DR_Spec { get; set; }
-
-            [JsonProperty("dr_spec_name")]
-            public string dr_spec_name { get; set; }
-
-            [JsonProperty("sales_Tax")]
-            public string sales_Tax { get; set; }
-
-            [JsonProperty("Tinno")]
-            public string Tinno { get; set; }
-
-            [JsonProperty("DR_Terr")]
-            public string DR_Terr { get; set; }
-
-            //string dr_terr_name { get; set; }
-
-            [JsonProperty("credit_days")]
-            public string credit_days { get; set; }
-
-            [JsonProperty("DR_Class")]
-            public string DR_Class { get; set; }
-
-            [JsonProperty("drcategory")]
-            public string drcategory { get; set; }
-
-            [JsonProperty("dscategoryName")]
-            public string dscategoryName { get; set; }
-
-            [JsonProperty("dr_class_name")]
-            public string dr_class_name { get; set; }
-
-            [JsonProperty("ad")]
-            public string ad { get; set; }
-
-            [JsonProperty("DR_Address1")]
-            public string DR_Address1 { get; set; }
-
-            [JsonProperty("DR_Address2")]
-            public string DR_Address2 { get; set; }
-
-            [JsonProperty("Milk_pon")]
-            public string Milk_pon { get; set; }
-
-            [JsonProperty("UOM_Name")]
-            public string UOM_Name { get; set; }
-
-            [JsonProperty("UOM")]
-            public string UOM { get; set; }
-
-            [JsonProperty("DDL_Re_Type")]
-            public string DDL_Re_Type { get; set; }
-
-            [JsonProperty("outstandng")]
-            public string outstandng { get; set; }
-
-            [JsonProperty("creditlmt")]
-            public string creditlmt { get; set; }
-
-            [JsonProperty("Cus_Alter")]
-            public string Cus_Alter { get; set; }
-
-            [JsonProperty("latitude")]
-            public string latitude { get; set; }
-
-            [JsonProperty("longitude")]
-            public string longitude { get; set; }
-
-            [JsonProperty("DFDairyMP")]
-            public string DFDairyMP { get; set; }
-
-            [JsonProperty("MonthlyAI")]
-            public string MonthlyAI { get; set; }
-
-            [JsonProperty("MCCNFPM")]
-            public string MCCNFPM { get; set; }
-
-            [JsonProperty("MCCMilkColDaily")]
-            public string MCCMilkColDaily { get; set; }
-
-            [JsonProperty("FrequencyOfVisit")]
-            public string FrequencyOfVisit { get; set; }
-
-            [JsonProperty("Breed")]
-            public string Breed { get; set; }
-
-            [JsonProperty("ukeys")]
-            public string ukeys { get; set; }
-
-            [JsonProperty("curentCom")]
-            public string curentCom { get; set; }
-
-            [JsonProperty("curentCompitat")]
-            public string curentCompitat { get; set; }
-
-            [JsonProperty("Email")]
-            public string Email { get; set; }
-
-            [JsonProperty("Additionsfld")]
-            public List<AddtionalfieldDetails> Additionsfld { get; set; }
-        }
 
         string strQry = string.Empty;
         public DataSet ViewListedDr(string drcode)
@@ -1716,7 +1705,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                             //           "'" + DR_Address2 + "', '" + Division_Code + "',0,getdate(),getdate(),'" + Milk_pot + "','" + Uom + "','" + Uom_Name + "','" + sf_code + "','" + distname + "','" + re_type + "','" + outstanding + "'," +
                             //           "'" + credit_limit + "','" + Cus_Alt + "','" + drcategory + "','" + drcategoryName + "','" + latitude + "','" + longitude + "'," +
                             //           " '" + Breed + "','" + UKey + "','" + credit_days + "','Web','" + txtmail + "')";                          
-                          
+
 
                             //iReturn = db.ExecQry(strQry);
 
@@ -1765,7 +1754,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
                             string Division_Code = "-1";
 
-                           
+
                             //Listed_DR_Code = -1;
 
                             //strQry = "SELECT ISNULL(MAX(ListedDrCode),0)+1 FROM Mas_ListedDr";
@@ -1979,24 +1968,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             return bRecordExist;
         }
 
-        public DataSet GetCustomFormsSeclectionMastesList(string TableName, string ColumnsName)
-        {
-            DB_EReporting db_ER = new DB_EReporting();
 
-            DataSet dsAdmin = null;
-
-            strQry = "EXEC [Get_CustomForms_SeclectionMastesList] '" + TableName + "' ,'" + ColumnsName + "'";
-
-            try
-            {
-                dsAdmin = db_ER.Exec_DataSet(strQry);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return dsAdmin;
-        }
 
         public DataSet get_RetailerCustomField(string listeddrcode)
         {
@@ -2040,7 +2012,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         public int Recordupdate_detail1(string Dr_Code, string curentCompitat, string DR_Name, string sf_code, string Mobile_No, string retail_code, string advance_amount, string DR_Spec, string dr_spec_name, string sales_Tax, string Tinno, string DR_Terr, string credit_days, string DR_Class, string dr_class_name, string ad, string DR_Address1, string DR_Address2, string div_code, string Milk_Potential, string UOM, string UOM_Name, string Retailer_Type, string outstanding, string credit_limit, string Cus_alt, string catgoryCode, string catgoryName, string erbCode, string latitude, string longitude, string DFDairyMP, string MonthlyAI, string MCCNFPM, string MCCMilkColDaily, string FrequencyOfVisit, string Breed, string curentCom, string ukey, string txtmail)
         {
-            int iReturn = -1;          
+            int iReturn = -1;
             DB_EReporting db = new DB_EReporting();
             if (!sRecordExist1(erbCode, Dr_Code, div_code))
             {
@@ -2130,7 +2102,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         new SqlParameter("@MonthlyAI", Convert.ToString(MonthlyAI)),
                         new SqlParameter("@curentCompitat", Convert.ToString(curentCompitat)),
                         new SqlParameter("@MCCNFPM", Convert.ToString(MCCNFPM)),
-                        new SqlParameter("@MCCMilkColDaily", Convert.ToString(MCCMilkColDaily)),                                
+                        new SqlParameter("@MCCMilkColDaily", Convert.ToString(MCCMilkColDaily)),
                         new SqlParameter("@Dr_Code", Convert.ToString(Dr_Code)),
                         new SqlParameter("@DR_Spec", Convert.ToString(DR_Spec)),
                         new SqlParameter("@Milk_Potential", Convert.ToString(Milk_Potential)),
@@ -2141,11 +2113,11 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         new SqlParameter("@erbCode", Convert.ToString(erbCode)),
                         new SqlParameter("@terr_code", Convert.ToString(terr_code)),
                         new SqlParameter("@distname", Convert.ToString(distname)),
-                        new SqlParameter("@Mobile_No", Convert.ToString(Mobile_No)),                                
+                        new SqlParameter("@Mobile_No", Convert.ToString(Mobile_No)),
                         new SqlParameter("@advance_amount", Convert.ToString(advance_amount)),
                         new SqlParameter("@dr_spec_name", Convert.ToString(dr_spec_name)),
                         new SqlParameter("@sales_Tax", Convert.ToString(sales_Tax)),
-                        new SqlParameter("@Tinno", Convert.ToString(Tinno)),                                
+                        new SqlParameter("@Tinno", Convert.ToString(Tinno)),
                         new SqlParameter("@credit_days", Convert.ToString(credit_days)),
                         new SqlParameter("@dr_class_name", Convert.ToString(dr_class_name)),
                         new SqlParameter("@ad", Convert.ToString(ad)),
@@ -2161,7 +2133,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         new SqlParameter("@catgoryName", Convert.ToString(catgoryName)),
                         new SqlParameter("@latitude", Convert.ToString(latitude)),
                         new SqlParameter("@longitude", Convert.ToString(longitude)),
-                        new SqlParameter("@div_code", Convert.ToString(Division_Code)),                                                                                         
+                        new SqlParameter("@div_code", Convert.ToString(Division_Code)),
                         new SqlParameter("@Breed", Convert.ToString(Breed)),
                         new SqlParameter("@txtmail", Convert.ToString(txtmail))
                     };
@@ -2284,7 +2256,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         new SqlParameter("@advance_amount", Convert.ToString(advance_amount)),
                         new SqlParameter("@dr_spec_name", Convert.ToString(dr_spec_name)),
                         new SqlParameter("@sales_Tax", Convert.ToString(sales_Tax)),
-                        new SqlParameter("@Tinno", Convert.ToString(Tinno)),                                
+                        new SqlParameter("@Tinno", Convert.ToString(Tinno)),
                         new SqlParameter("@credit_days", Convert.ToString(credit_days)),
                         new SqlParameter("@dr_class_name", Convert.ToString(dr_class_name)),
                         new SqlParameter("@ad", Convert.ToString(ad)),
@@ -2339,6 +2311,25 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             }
             return bRecordExist;
         }
-       
+
+        public DataSet GetCustomFormsFieldsGroupData(string divcode, string ModeleId)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsAdmin = null;
+
+            strQry = "EXEC [Get_CustomForms_FieldsGroups] '" + divcode + "' ,'" + ModeleId + "' ";
+
+            try
+            {
+                dsAdmin = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsAdmin;
+        }
+
     }
 }
