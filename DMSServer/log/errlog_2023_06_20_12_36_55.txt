@@ -1,4 +1,0 @@
-Error:exec GetProducts_App '14909'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetProducts_App'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetProducts_App'."}]
-data:{"SF":"14909","Stk":"14909","outletId":"OutletCode","div":"4,","loginType":"Distributor"}

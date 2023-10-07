@@ -1,4 +1,0 @@
-FMCG_TSR Error:exec getDayDCR_LPC_ReportApp 'TSRMR0082','2023-09-23'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":530,"code":530,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The statement terminated. The maximum recursion 100 has been exhausted before statement completion.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The statement terminated. The maximum recursion 100 has been exhausted before statement completion."}]
-data:{"tableName":"vwMyDayPlan","coloumns":"[\"worktype\",\"FWFlg\",\"sf_member_code as subordinateid\",\"cluster as clusterid\",\"ClstrName\",\"remarks\",\"stockist as stockistid\",\"worked_with_code\",\"worked_with_name\",\"dcrtype\",\"location\",\"name\",\"Sprstk\",\"Place_Inv\",\"WType_SName\"]","desig":"mgr"}

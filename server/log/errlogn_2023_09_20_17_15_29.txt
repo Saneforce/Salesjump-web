@@ -1,4 +1,0 @@
-FMCG_Live Error:exec getCustomEntryId '12','2023-09-20','2023-09-20'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":201,"code":201,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Procedure or function 'getCustomEntryId' expects parameter '@sf', which was not supplied.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Procedure or function 'getCustomEntryId' expects parameter '@sf', which was not supplied."}]
-data:

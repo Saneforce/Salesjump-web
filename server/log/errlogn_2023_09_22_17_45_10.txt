@@ -1,7 +1,0 @@
-FMCG_RAD Error:select count(CustID) Cnt from Mas_CusFCMToken where CustID='96'
-|param:
-|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_CusFCMToken'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_CusFCMToken'."}]
-data:[{"mobile":"9342117731","deviceid":"ddfXMMUCThu1DOM8GYISsr:APA91bH9RugU629d8eH9DPgqfAUb579u7UGnTWGEtXgtUDD9BqAKDYCY_GQgeAtdv_k6SIBx5bok8cLMv39dD3IPuZ9gzUT5vGb5a2AuUtVSZydTiFu0s2z3fGzjGsDBFvUtQUdUfwFA"}]FMCG_RAD Error:insert into Mas_CusFCMToken select '96','ddfXMMUCThu1DOM8GYISsr:APA91bH9RugU629d8eH9DPgqfAUb579u7UGnTWGEtXgtUDD9BqAKDYCY_GQgeAtdv_k6SIBx5bok8cLMv39dD3IPuZ9gzUT5vGb5a2AuUtVSZydTiFu0s2z3fGzjGsDBFvUtQUdUfwFA'
-|param:
-|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_CusFCMToken'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'Mas_CusFCMToken'."}]
-data:[{"mobile":"9342117731","deviceid":"ddfXMMUCThu1DOM8GYISsr:APA91bH9RugU629d8eH9DPgqfAUb579u7UGnTWGEtXgtUDD9BqAKDYCY_GQgeAtdv_k6SIBx5bok8cLMv39dD3IPuZ9gzUT5vGb5a2AuUtVSZydTiFu0s2z3fGzjGsDBFvUtQUdUfwFA"}]

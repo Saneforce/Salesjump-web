@@ -1,4 +1,0 @@
-FMCG_Live Error:SELECT Last_Updation_Date FROM SSvwlastupdationdate as tab WHERE tab.SF_Code='MR6998' ORDER BY name asc
-|param:
-|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'SSvwlastupdationdate'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'SSvwlastupdationdate'."}]
-data:{"tableName":"SSvwlastupdationdate","coloumns":"[\"Last_Updation_Date\"]","orderBy":"[\"name asc\"]","desig":"mgr"}

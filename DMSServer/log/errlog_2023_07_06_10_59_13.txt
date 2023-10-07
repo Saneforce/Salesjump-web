@@ -1,4 +1,0 @@
-Error:exec get_App_tax_Details '172','189','393'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'get_App_tax_Details'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'get_App_tax_Details'."}]
-data:{"distributorid":"189","divisionCode":"172,","retailorId":"393"}

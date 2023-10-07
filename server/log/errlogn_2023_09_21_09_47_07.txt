@@ -1,7 +1,0 @@
-FMCG_ENGLISH Error:SELECT id as id,content as name FROM vwDevRmksTemplate as tab WHERE tab.Division_Code=190 and isnull(ActFlag,0)=0 ORDER BY name asc
-|param:
-|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'vwDevRmksTemplate'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'vwDevRmksTemplate'."}]
-data:{"tableName":"vwDevRmksTemplate","coloumns":"[\"id as id\",\"content as name\"]","where":"[\"isnull(ActFlag,0)=0\"]","sfCode":0,"orderBy":"[\"name asc\"]","desig":"mgr"}FMCG_Live Error:SELECT Last_Updation_Date FROM SSvwlastupdationdate as tab WHERE tab.SF_Code='MR8177' ORDER BY name asc
-|param:
-|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'SSvwlastupdationdate'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'SSvwlastupdationdate'."}]
-data:{"tableName":"SSvwlastupdationdate","coloumns":"[\"Last_Updation_Date\"]","orderBy":"[\"name asc\"]","desig":"mgr"}

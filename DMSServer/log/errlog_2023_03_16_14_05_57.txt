@@ -1,4 +1,0 @@
-Error:select ID,FCapacity from FreezerCapacity where DivisionCode='190' and ActiveFlag=0
-|param:
-|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'FreezerCapacity'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'FreezerCapacity'."}]
-data:{"divisionCode":"190,"}

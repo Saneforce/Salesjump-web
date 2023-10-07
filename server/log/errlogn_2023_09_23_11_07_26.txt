@@ -1,4 +1,0 @@
-FMCG_TSR Error:exec Get_FieldForce_Acheive 'TSRMGR0006','09','2023','156' 
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":530,"code":530,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The statement terminated. The maximum recursion 100 has been exhausted before statement completion.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]The statement terminated. The maximum recursion 100 has been exhausted before statement completion."}]
-data:{"orderBy":"[\"name asc\"]","desig":"mgr"}

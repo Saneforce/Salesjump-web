@@ -1,4 +1,0 @@
-Error:select th.Trans_Sl_No TransactionNo,pd.Product_Detail_Name Product_Name,td.Quantity from Trans_priOrder_Head th WITH (NOLOCK) inner join Trans_priOrder_Details td WITH (NOLOCK) on td.Trans_Sl_No=th.Trans_Sl_No inner join Mas_Product_Detail pd WITH (NOLOCK) on pd.Product_Detail_Code=td.Product_Code where th.stockist_code='443' and cast(Order_Date as date)='2023-04-10 00:00:00'
-|param:
-|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid column name 'Quantity'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid column name 'Quantity'."}]
-data:{"SF":"443","Stk":"443","mode":"order","loginType":"SuperStockist"}

@@ -1,7 +1,0 @@
-FMCG_Live Error:SELECT Last_Updation_Date FROM SSvwlastupdationdate as tab WHERE tab.SF_Code='MR2056' ORDER BY name asc
-|param:
-|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'SSvwlastupdationdate'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'SSvwlastupdationdate'."}]
-data:{"tableName":"SSvwlastupdationdate","coloumns":"[\"Last_Updation_Date\"]","orderBy":"[\"name asc\"]","desig":"mgr"}FMCG_EJINDIA Error:select File_Name offerimg from product_new_launch where  division_code='238' and cast(Effective_From as date)<=CAST(getdate() as date) and CAST(getdate() as date)<=CAST(Effective_To as date)
-|param:
-|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'division_code'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'division_code'."}]
-data:

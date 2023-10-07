@@ -1,7 +1,0 @@
-Error:exec getcategorywiseretailerdata '426','150'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getcategorywiseretailerdata'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getcategorywiseretailerdata'."}]
-data:{"distributorCode":"426","divisionCode":"150"}Error:exec getTodaycategorywiseretailerdata '426','150'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getTodaycategorywiseretailerdata'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getTodaycategorywiseretailerdata'."}]
-data:{"distributorCode":"426","divisionCode":"150"}

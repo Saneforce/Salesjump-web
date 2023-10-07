@@ -1,4 +1,0 @@
-FMCG_Live Error:exec getPrimaryDistiWise 'ABIOMR0123','124', '','',''  
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":8144,"code":8144,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Procedure or function getPrimaryDistiWise has too many arguments specified.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Procedure or function getPrimaryDistiWise has too many arguments specified."}]
-data:{"orderBy":"[\"name asc\"]","desig":"mgr"}

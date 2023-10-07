@@ -1,7 +1,0 @@
-Error:exec getSlottime '426','1'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'."}]
-data:{"distributorCode":"426","GrpCode":"1"}Error:exec getAppPrimaryTax '150','426'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getAppPrimaryTax'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getAppPrimaryTax'."}]
-data:{"distributorid":"426","divisionCode":"150,"}

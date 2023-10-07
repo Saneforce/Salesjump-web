@@ -1,7 +1,0 @@
-Error:exec getPOSProductGroupList 'SS161'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductGroupList'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductGroupList'."}]
-data:{"SF":"SS161","Stk":"SS161","div":"108,"}Error:exec GetPOSProducts_App 'SS161'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetPOSProducts_App'."}]
-data:{"SF":"SS161","Stk":"SS161","div":"108,"}

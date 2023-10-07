@@ -1,7 +1,0 @@
-FMCG_DARLING Error:select top 1 SFCode,LeaveCode,LeaveValue,LeaveAvailability,LeaveTaken,Leave_SName,Leave_Name from MasEntitlement
-|param:
-|error:[{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_SName'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_SName'."},{"0":"42S22","SQLSTATE":"42S22","1":207,"code":207,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_Name'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid column name 'Leave_Name'."}]
-data:{"orderBy":"[\"name asc\"]","desig":"mgr"}FMCG_ENGLISH Error:SELECT id as id,content as name FROM vwDevRmksTemplate as tab WHERE tab.Division_Code=190 and isnull(ActFlag,0)=0 ORDER BY name asc
-|param:
-|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'vwDevRmksTemplate'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'vwDevRmksTemplate'."}]
-data:{"tableName":"vwDevRmksTemplate","coloumns":"[\"id as id\",\"content as name\"]","where":"[\"isnull(ActFlag,0)=0\"]","sfCode":0,"orderBy":"[\"name asc\"]","desig":"mgr"}

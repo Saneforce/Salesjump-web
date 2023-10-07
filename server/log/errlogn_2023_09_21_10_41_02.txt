@@ -1,4 +1,0 @@
-FMCG_Live Error:update vwDoctor_Master_APP set ListedDr_Address1 ='Q629+2V6 Salaudi Singha's Salodi Punjab 141417 India' where Doctor_Code='2417687'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near 's'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near 's'."},{"0":"42000","SQLSTATE":"42000","1":105,"code":105,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Unclosed quotation mark after the character string ''.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Unclosed quotation mark after the character string ''."}]
-data:[{"Map_GEO_Customers":{"Cust_Code":"'2417687'","lat":"'30.7497551'","long":"'76.2198735'","StatFlag":"0","address":"Q629+2V6 Salaudi Singha's Salodi Punjab 141417 India"}}]

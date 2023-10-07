@@ -1,4 +1,0 @@
-FMCG_DARLING Error:select * from vwRejectLeaveDet where sf_code='DMPLMR0014' and from_date1>=dateadd(month,-6,getdate()) order by from_date1 desc
-|param:
-|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'vwRejectLeaveDet'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid object name 'vwRejectLeaveDet'."}]
-data:{"orderBy":"[\"name asc\"]","desig":"mgr"}

@@ -1,4 +1,0 @@
-Error:exec GetCustPayLedger '1','407','2022-12-02 00:00:00','2022-12-02 00:00:00'
-|param:
-|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Customer_Month_Outstanding'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Customer_Month_Outstanding'."}]
-data:{"retailerCode":"407","distributorcode":"1"}

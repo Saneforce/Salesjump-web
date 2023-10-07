@@ -1,4 +1,0 @@
-FMCG_MEDVEU Error:select Approve_Flag approve_flag from Trans_Expense_Head_Periodic where sf_code = 'MEREMGR0007' and Periodic_ID = 'null' and Expense_Month = '' and Expense_Year = ''
-|param:
-|error:[{"0":"22018","SQLSTATE":"22018","1":245,"code":245,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value 'null' to data type int.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value 'null' to data type int."}]
-data:{}

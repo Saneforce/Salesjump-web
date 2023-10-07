@@ -1,7 +1,0 @@
-Error:exec getProductGroupList_mod '14909','Distributor'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getProductGroupList_mod'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getProductGroupList_mod'."}]
-data:{"SF":"14909","Stk":"14909","outletId":"OutletCode","div":"4,","loginType":"Distributor"}Error:exec getPrimaryOrderDashBoard_modNew '14909','2023-06-20','All','Distributor'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'."}]
-data:{"login_sfCode":"14909","Dt":"2023-06-20","Grpcode":"All","loginType":"Distributor","distributorcode":""}

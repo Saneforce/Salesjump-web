@@ -1,5 +1,0 @@
-FMCG_Live Error:select isnull(SS_Base_Rate, '0') SS_Base_Rate,isnull(SS_Case_Rate, '0') SS_Case_Rate,State_Code, Division_Code,Distributor_Price,Retailor_Price,DistCasePrice,
-		RetailCasePrice, MRP_Price,VanSale_Price, Product_Detail_Code from vwProductStateRates where Division_code='4' and State_Code=
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '='.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '='."}]
-data:{"tableName":"distributroRate","coloumns":"[\"sf_code as id\",\"sf_name as name\"]","orderBy":"[\"name asc\"]","desig":"mgr","date":"2023-09-24"}

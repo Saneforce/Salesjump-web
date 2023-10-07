@@ -1,4 +1,0 @@
-FMCG_Live Error:select * from vwProductStateRates where Division_code='' and State_Code=
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '='.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '='."}]
-data:{"tableName":"vwProductStateRates","coloumns":"[\"State_Code\",\"Division_Code\",\"Distributor_Price\",\"Product_Detail_Code\"]","where":"[\"isnull(State_Code,0)=24\"]","orderBy":"[\"name asc\"]","sfCode":0,"desig":"mgr"}

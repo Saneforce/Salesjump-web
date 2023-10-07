@@ -1,4 +1,0 @@
-FMCG_Live Error:exec TourPlan_Holyday_Auto_Insert 'GPPMR0086' ,'undefined','undefined',' '
-|param:
-|error:[{"0":"22018","SQLSTATE":"22018","1":245,"code":245,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value 'undef' to data type int.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value 'undef' to data type int."}]
-data:{"tableName":"vwTourPlan","coloumns":"[\"date\",\"remarks\",\"worktype_code\",\"worktype_name\",\"RouteCode\",\"RouteName\",\"Worked_with_Code\",\"Worked_with_Name\",\"JointWork_Name\",\"Retailer_Code\",\"Retailer_Name\",\"Place_Inv\"]","orderBy":"[\"name asc\"]","desig":"mgr"}

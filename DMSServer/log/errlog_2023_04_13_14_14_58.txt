@@ -1,4 +1,0 @@
-Error:select h.Trans_Sl_No OrderID,dr.Stockist_Name OutletName,CONVERT(varchar,h.Order_Date,103)[Date],h.Order_Value,case when h.Order_Flag=1 then 'Completed' when h.Order_Flag=0 then 'Pending' else '' end [Status] from Trans_priOrder_Head h WITH (NOLOCK) left join Mas_Stockist dr WITH (NOLOCK) on h.Stockist_Code=CAST(dr.Stockist_Code as varchar) where CONVERT(date,h.Order_Date) between '2023-04-13' and '2023-4-13'  and h.Sf_Code='443' Order_Value>0 order by Order_Date
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Incorrect syntax near 'Order_Value'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Incorrect syntax near 'Order_Value'."}]
-data:{"distributorid":"443","fdt":"2023-04-13","tdt":"2023-4-13","loginType":"SuperStockist"}

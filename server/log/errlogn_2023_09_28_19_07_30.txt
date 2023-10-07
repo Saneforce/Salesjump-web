@@ -1,4 +1,0 @@
-FMCG_AACHI Error:update TP_Attendance_App set Duty_Mode=2,Rmks='',End_Time='2023-09-28 19:07:25' ,End_Lat= '12.9652865' ,End_Long ='77.5389629' where  Sf_Code='AACHMR0241'  and login_date='2023-09-28'
-|param:
-|error:[{"0":"40001","SQLSTATE":"40001","1":1205,"code":1205,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Transaction (Process ID 109) was deadlocked on lock | communication buffer resources with another process and has been chosen as the deadlock victim. Rerun the transaction.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Transaction (Process ID 109) was deadlocked on lock | communication buffer resources with another process and has been chosen as the deadlock victim. Rerun the transaction."}]
-data:{"Lattitude":"12.9652865","Langitude":"77.5389629","StartTime":0,"currentTime":"2023-09-28 19:07:25","date_time":"'2023-09-28 19:07:25'","date":"'2023-09-28'","time":"19:07:25"}

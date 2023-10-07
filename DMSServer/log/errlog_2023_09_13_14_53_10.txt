@@ -1,7 +1,0 @@
-Error:select State_Code, Division_Code,Distributor_Price,Retailor_Price,MRP_Price,Product_Detail_Code from vwProductStateRates where Division_code='29' and State_Code=
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '='.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '='."}]
-data:{"SF":"SS443","Stk":"SS443","div":"29,"}Error:exec getDistStockLedger 'SS443','2021-04-01','2023-09-13 00:00:00'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":201,"code":201,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Procedure or function 'getDistStockLedger' expects parameter '@Div', which was not supplied.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Procedure or function 'getDistStockLedger' expects parameter '@Div', which was not supplied."}]
-data:{"Stk":"SS443"}

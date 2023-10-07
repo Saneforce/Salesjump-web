@@ -1,5 +1,0 @@
-FMCG_NNPMS Error:insert into Trans_OrderCNF_Head 
-		select Trans_Sl_No,Sf_Code,Cust_Code,Stockist_Code,Route_Target,Order_No,Order_Date,DCR_Code,Order_Value,Collected_Amount,Route,net_weight_value,Order_Flag,Remarks,discount_price,rateMode,CL_Stock,Div_ID,OrderID,OrderType,TDPercent,rejRemarks from Trans_Order_Head where Trans_Sl_No='NNPMMR0005-23-24-SO-1590'
-|param:
-|error:[{"0":"21S01","SQLSTATE":"21S01","1":213,"code":213,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Column name or number of supplied values does not match table definition.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Column name or number of supplied values does not match table definition."}]
-data:{}

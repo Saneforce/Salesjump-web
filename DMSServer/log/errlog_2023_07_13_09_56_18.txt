@@ -1,4 +1,0 @@
-Error:exec getCumulative_AppDashboard '189','172','2023-07-13'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getCumulative_AppDashboard'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getCumulative_AppDashboard'."}]
-data:{"sfCode":"189","divCode":"172,","dt":"2023-07-13","loginType":"Distributor"}

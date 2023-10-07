@@ -1,4 +1,0 @@
-FMCG_Live Error:SELECT  FROM  as tab WHERE tab.SF_Code='MR2620'
-|param:
-|error:[{"0":"42000","SQLSTATE":"42000","1":156,"code":156,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'FROM'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near the keyword 'FROM'."}]
-data:
