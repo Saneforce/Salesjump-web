@@ -1,0 +1,16 @@
+Error:select isnull(sum(Order_Amount),0) Order_Amount from Trans_Distributor_OrderWallet WITH (NOLOCK) where Dist_ERPCode='' and flag=0
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Trans_Distributor_OrderWallet'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Trans_Distributor_OrderWallet'."}]
+data:{"StkERP":""}Error:exec GetConversion '190'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Mas_PrimaryConversion'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Mas_PrimaryConversion'."}]
+data:{"div":"190,","SF":"14","Stk":"14"}Error:exec getService_OutletSummary_Channelwise '14','190'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getService_OutletSummary_Channelwise'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getService_OutletSummary_Channelwise'."}]
+data:{"sfCode":"14","divCode":"190,","dt":"2023-03-21","loginType":"Distributor"}Error:exec getPOSProductGroupList '14'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductGroupList'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductGroupList'."}]
+data:{"SF":"14","Stk":"14","div":"190,"}Error:exec getPOSProductTypeList '14'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductTypeList'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPOSProductTypeList'."}]
+data:{"SF":"14","Stk":"14","div":"190,"}

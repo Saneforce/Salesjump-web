@@ -1,0 +1,9 @@
+﻿<div class="modal">
+    <ion-header-bar class="bar bar-header bar-positive">
+        <div class="SearchBx" ng-hide="modalMap.vTyp"><span><i style="font-size:10px" class="icon-search"></i></span><input id="pac-input" ng-model="place" class="control" type="text" placeholder="Search places..." /></div>
+        <button class="button buttonClear  button-positive pull-right" ng-click="console.log($('.pac-container').length);$('.pac-container').remove();modalMap.hide();">Close</button>
+    </ion-header-bar>
+    <ion-content>
+        <div id="map_canvas"></div>
+    </ion-content>
+</div>

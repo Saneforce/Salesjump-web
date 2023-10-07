@@ -1,0 +1,10 @@
+Error:select State_Code, Division_Code,Distributor_Price,Retailor_Price,MRP_Price,Product_Detail_Code from vwProductStateRates where Division_code='29' and State_Code=
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '='.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Incorrect syntax near '='."}]
+data:Error:exec GetPriProducts_App_Mod '42005','Distributor'
+|param:
+|error:[{"0":"22018","SQLSTATE":"22018","1":245,"code":245,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value '35,24' to data type tinyint.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the varchar value '35,24' to data type tinyint."}]
+data:{"div":"29,","SF":"SS470","Stk":"42005","loginType":"Distributor"}Error:exec getSlottime 'SS470','56'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'."}]
+data:{"distributorCode":"SS470","GrpCode":"56"}

@@ -1,0 +1,265 @@
+update JioMoneyTxns set message = '{
+  "transaction" : {
+    "id" : "10132324566481191000",
+    "originalId" : "10132324566481191000",
+    "idempotentKey" : "rjjtBYAM",
+    "initiatingEntityTimestamp" : "2023-09-02T18:27:48.000Z",
+    "created" : "2023-09-02T18:28:01.191Z",
+    "currency" : 356,
+    "metadata" : {
+      "response" : {
+        "msg" : "RP8UATIOT|1900155289952121|U1230003143516|1|00009766.66|123|NA|01|INR|DIRECT|NA|NA|00.00|02-09-2023 18:28:02|0300|NA|MUMBAI01-2023-2024-SO-75|NA|NA|NA|NA|NA|NA|NA|NA|F56EFC8EB49CBE000E7D49306D23D065195CCCE6965FB9500341611F94FB3D18",
+        "hidRequestId" : "PGIBL1000",
+        "hidOperation" : "B101"
+      }
+    },
+    "mode" : 1,
+    "method" : {
+      "type" : 110,
+      "subType" : 581
+    },
+    "status" : "SUCCESS",
+    "application" : 8000,
+    "livemode" : true,
+    "initiatingEntity" : {
+      "entityId" : 2103,
+      "callbackUrl" : "https://rad.salesjump.in/server/Reliance_JioMoney/S2S.php",
+      "returnUrl" : "https://rad.salesjump.in/server/Reliance_JioMoney/MyResponse.php"
+    },
+    "invoice" : "MUMBAI01-2023-2024-SO-75",
+    "responseTime" : "2023-09-02T18:29:01.191Z",
+    "processorTransactionId" : "U1230003143516",
+    "intentId" : "10122324566453608000",
+    "referenceNumber" : "190015528995",
+    "description" : "Payment"
+  },
+  "amount" : {
+    "netAmount" : 9766.66,
+    "grossAmount" : 9766.66
+  },
+  "payer" : {
+    "bankId" : "1038",
+    "bankName" : "State Bank of India",
+    "type" : 11
+  },
+  "payee" : {
+    "terminalId" : "10308707",
+    "merchantId" : "100001000293397",
+    "name" : "JioMoneyAnimalHealthCRM",
+    "email" : "swapnali.dalvi@ril.com",
+    "mobile" : {
+      "countryCode" : "+91",
+      "number" : "9820957349"
+    },
+    "vpa" : "2324066220924@jiopay",
+    "type" : 16
+  }
+}', status = 'SUCCESS', tidResponse = '10132324566481191000', updatedDate = getdate() where tid = '10122324566453608000'update JioMoneyTxns set message = '{
+  "transactionList" : [ {
+    "transaction" : {
+      "id" : "10132324566481191000",
+      "originalId" : "10132324566481191000",
+      "idempotentKey" : "rjjtBYAM",
+      "initiatingEntityTimestamp" : "2023-09-02T18:27:48.000Z",
+      "created" : "2023-09-02T18:28:01.191Z",
+      "currency" : 356,
+      "metadata" : {
+        "response" : {
+          "msg" : "RP8UATIOT|1900155289952121|U1230003143516|1|00009766.66|123|NA|01|INR|DIRECT|NA|NA|00.00|02-09-2023 18:28:02|0300|NA|MUMBAI01-2023-2024-SO-75|NA|NA|NA|NA|NA|NA|NA|NA|F56EFC8EB49CBE000E7D49306D23D065195CCCE6965FB9500341611F94FB3D18",
+          "hidRequestId" : "PGIBL1000",
+          "hidOperation" : "B101"
+        }
+      },
+      "mode" : 1,
+      "method" : {
+        "type" : 110,
+        "subType" : 581
+      },
+      "status" : "SUCCESS",
+      "application" : 8000,
+      "livemode" : true,
+      "initiatingEntity" : {
+        "entityId" : 2103,
+        "callbackUrl" : "https://rad.salesjump.in/server/Reliance_JioMoney/S2S.php",
+        "returnUrl" : "https://rad.salesjump.in/server/Reliance_JioMoney/MyResponse.php"
+      },
+      "invoice" : "MUMBAI01-2023-2024-SO-75",
+      "responseTime" : "2023-09-02T18:29:01.191Z",
+      "processorTransactionId" : "U1230003143516",
+      "intentId" : "10122324566453608000",
+      "referenceNumber" : "190015528995",
+      "description" : "Payment"
+    },
+    "amount" : {
+      "netAmount" : 9766.66,
+      "grossAmount" : 9766.66
+    },
+    "payer" : {
+      "bankId" : "1038",
+      "bankName" : "State Bank of India",
+      "type" : 11
+    },
+    "payee" : {
+      "terminalId" : "10308707",
+      "merchantId" : "100001000293397",
+      "name" : "JioMoneyAnimalHealthCRM",
+      "email" : "swapnali.dalvi@ril.com",
+      "mobile" : {
+        "countryCode" : "+91",
+        "number" : "9820957349"
+      },
+      "vpa" : "2324066220924@jiopay",
+      "type" : 16
+    }
+  } ],
+  "intentDetails" : {
+    "id" : "10122324566453608000",
+    "idempotentKey" : "75584367",
+    "initiatingEntityTimestamp" : "2023-09-02T18:27:48.000Z",
+    "created" : "2023-09-02T18:27:33.608Z",
+    "currency" : 356,
+    "status" : "SUCCESS",
+    "invoice" : "MUMBAI01-2023-2024-SO-75",
+    "responseTime" : "2023-09-02T18:28:33.608Z",
+    "amount" : {
+      "netAmount" : 9766.66,
+      "grossAmount" : 9766.66
+    },
+    "metadata" : {
+      "x-appid-token" : "AW6nGuFcvr9bOsmUJcs4VEIUzL+nmjzIwel5S55MTxkonMckj1FPImL2pn8iUv9Mn7l8MzuJsaXW7q+2HrVqN7pAOrv38WxWzfD01A04o9NkgrVswbyx+bIybvQTkAbCYb4t9oZwT8wnODJXemxA0eFrjcnTyCpsFUL2m+1gZ6srA34WUNfp4LiFrBDJdzuo7L3Twm4KrwuZrtBZW7uPoKAZ2Yd+amzM3TKgWV32WwxyEud0eNQ+/c+SSVPvQ5nm3Kcoc1te1ijmDN0Qkzn4TLmVXviM81AysiLHRnU1fAHTjD9fUKEF+W1gRmRO0HJMX95MdX5IClcDs5KAep+5p4d2Uc++2TCII5fbOe7tzITleG40tAPP2SOIY90FGuv6mNIJjmy4TafuKtNRYAWkqP2KbYX1yVQ/IQIt5ehZ6bT5WrKhfpZjrGNeTEfa6iGD6K19g8piX7KePhm/C6UzutMi63/QqPwb+BpSy1O6doTdg8wzcYDCqY2w3/SEF9bV6nhUnO9mGeF7aQ0TtJl46iscKDnis0v1WE+R5UW+GTWl/4XG6G5yPANYBfvu6Lgh7YhoAsE8bNEfuiuukpfCQqrcoHtEasqrUH2aLfyVCp3y3m5Ewmw48K5HMcHiv3aaLSd03GGiBzzZ2/Pim+L8l+nEXXz4p/uqe2kGg5YnSfi+76fDao28WftY9dmfYbfbXzpGzxoUx9zun01w5k4g5a5msAKBqGoJsNR8qiuWLbBdGhLNiSxpR8n1YaUxglvWsAT7AKb7EyXXoDbRhq0YooCNXw7Uqxc42ouL+rdCb4OUgO2tntD1+UyLgPQaV+pNqHJ5ZS6LFwmc/jzMe8QqZNfjIN8itgZeRnMZuA8RB3jAeizLpL4GvaHLwwnETgdVwevovKHPrdcA6YFzHeKpd5jZOUCsbtLZzN+tDNmyKttZnzJCd5d8TZR0x9Rs+6aa/gl1O9/svSkEjeJCVy1BhPa//VKrh6+ZsCjQlTxUUOUWY03B0P7ZNsV3sjCxBEliXtQb68eLtHyXhKiifseF3uVCv5t1mfNwGEvOOl/7ZM/TJSuwopU5hYZi8SLz35Go6uciId1gjmwU3WgJISV2QCJRmV5XIJsZvL/2rNTJ/VQzOE0eDMNB4mqhVUQk1CEznSGxTVyJT2bTyMEFhovNY+LA6zlFzazbTJSjiLJgvzn9zzCjNbNJrMKbA/Q6kClHK9A+YD8Y91uLzI03amrivg==",
+      "x-app-access-token" : "60ac30aa-3b6b-4334-a2d4-c8d632354a41APPACCESS"
+    }
+  }
+}', status = '', tidResponse = '', updatedDate = getdate() where tid = ''update JioMoneyTxns set message = '{
+  "transaction" : {
+    "id" : "10132324566770678000",
+    "originalId" : "10132324566770678000",
+    "idempotentKey" : "cgKJOMWh",
+    "initiatingEntityTimestamp" : "2023-09-02T18:32:38.000Z",
+    "created" : "2023-09-02T18:32:50.678Z",
+    "currency" : 356,
+    "metadata" : {
+      "response" : {
+        "msg" : "RP8UATIOT|1900155289972121|U1230003143518|1|00032936.32|123|NA|01|INR|DIRECT|NA|NA|00.00|02-09-2023 18:32:52|0300|NA|MUMBAI01-2023-2024-SO-76|NA|NA|NA|NA|NA|NA|NA|NA|95D7C04D9F8BCDE2281945E49BCBAAEE922E859504243FE0773DEBFA42AA0D2A",
+        "hidRequestId" : "PGIBL1000",
+        "hidOperation" : "B101"
+      }
+    },
+    "mode" : 1,
+    "method" : {
+      "type" : 110,
+      "subType" : 581
+    },
+    "status" : "SUCCESS",
+    "application" : 8000,
+    "livemode" : true,
+    "initiatingEntity" : {
+      "entityId" : 2103,
+      "callbackUrl" : "https://rad.salesjump.in/server/Reliance_JioMoney/S2S.php",
+      "returnUrl" : "https://rad.salesjump.in/server/Reliance_JioMoney/MyResponse.php"
+    },
+    "invoice" : "MUMBAI01-2023-2024-SO-76",
+    "responseTime" : "2023-09-02T18:33:50.678Z",
+    "processorTransactionId" : "U1230003143518",
+    "intentId" : "10132324566758644000",
+    "referenceNumber" : "190015528997",
+    "description" : "Payment"
+  },
+  "amount" : {
+    "netAmount" : 32936.32,
+    "grossAmount" : 32936.32
+  },
+  "payer" : {
+    "bankId" : "1038",
+    "bankName" : "State Bank of India",
+    "type" : 11
+  },
+  "payee" : {
+    "terminalId" : "10308707",
+    "merchantId" : "100001000293397",
+    "name" : "JioMoneyAnimalHealthCRM",
+    "email" : "swapnali.dalvi@ril.com",
+    "mobile" : {
+      "countryCode" : "+91",
+      "number" : "9820957349"
+    },
+    "vpa" : "2324066220924@jiopay",
+    "type" : 16
+  }
+}', status = 'SUCCESS', tidResponse = '10132324566770678000', updatedDate = getdate() where tid = '10132324566758644000'update JioMoneyTxns set message = '{
+  "transactionList" : [ {
+    "transaction" : {
+      "id" : "10132324566770678000",
+      "originalId" : "10132324566770678000",
+      "idempotentKey" : "cgKJOMWh",
+      "initiatingEntityTimestamp" : "2023-09-02T18:32:38.000Z",
+      "created" : "2023-09-02T18:32:50.678Z",
+      "currency" : 356,
+      "metadata" : {
+        "response" : {
+          "msg" : "RP8UATIOT|1900155289972121|U1230003143518|1|00032936.32|123|NA|01|INR|DIRECT|NA|NA|00.00|02-09-2023 18:32:52|0300|NA|MUMBAI01-2023-2024-SO-76|NA|NA|NA|NA|NA|NA|NA|NA|95D7C04D9F8BCDE2281945E49BCBAAEE922E859504243FE0773DEBFA42AA0D2A",
+          "hidRequestId" : "PGIBL1000",
+          "hidOperation" : "B101"
+        }
+      },
+      "mode" : 1,
+      "method" : {
+        "type" : 110,
+        "subType" : 581
+      },
+      "status" : "SUCCESS",
+      "application" : 8000,
+      "livemode" : true,
+      "initiatingEntity" : {
+        "entityId" : 2103,
+        "callbackUrl" : "https://rad.salesjump.in/server/Reliance_JioMoney/S2S.php",
+        "returnUrl" : "https://rad.salesjump.in/server/Reliance_JioMoney/MyResponse.php"
+      },
+      "invoice" : "MUMBAI01-2023-2024-SO-76",
+      "responseTime" : "2023-09-02T18:33:50.678Z",
+      "processorTransactionId" : "U1230003143518",
+      "intentId" : "10132324566758644000",
+      "referenceNumber" : "190015528997",
+      "description" : "Payment"
+    },
+    "amount" : {
+      "netAmount" : 32936.32,
+      "grossAmount" : 32936.32
+    },
+    "payer" : {
+      "bankId" : "1038",
+      "bankName" : "State Bank of India",
+      "type" : 11
+    },
+    "payee" : {
+      "terminalId" : "10308707",
+      "merchantId" : "100001000293397",
+      "name" : "JioMoneyAnimalHealthCRM",
+      "email" : "swapnali.dalvi@ril.com",
+      "mobile" : {
+        "countryCode" : "+91",
+        "number" : "9820957349"
+      },
+      "vpa" : "2324066220924@jiopay",
+      "type" : 16
+    }
+  } ],
+  "intentDetails" : {
+    "id" : "10132324566758644000",
+    "idempotentKey" : "34335433",
+    "initiatingEntityTimestamp" : "2023-09-02T18:32:38.000Z",
+    "created" : "2023-09-02T18:32:38.644Z",
+    "currency" : 356,
+    "status" : "SUCCESS",
+    "invoice" : "MUMBAI01-2023-2024-SO-76",
+    "responseTime" : "2023-09-02T18:33:38.644Z",
+    "amount" : {
+      "netAmount" : 32936.32,
+      "grossAmount" : 32936.32
+    },
+    "metadata" : {
+      "x-appid-token" : "AW6nGuFcvr9bOsmUJcs4VEIUzL+nmjzIwel5S55MTxkonMckj1FPImL2pn8iUv9Mn7l8MzuJsaXW7q+2HrVqN7pAOrv38WxWzfD01A04o9NkgrVswbyx+bIybvQTkAbCYb4t9oZwT8wnODJXemxA0eFrjcnTyCpsFUL2m+1gZ6srA34WUNfp4LiFrBDJdzuo7L3Twm4KrwuZrtBZW7uPoKAZ2Yd+amzM3TKgWV32WwxyEud0eNQ+/c+SSVPvQ5nm3Kcoc1te1ijmDN0Qkzn4TCbNqUqC06USARlyIedjSnScQ2WF8JH+2Xc9xXbMcVn8E/c+hV9iHXxtDBsIk3sblXsH76qqEqWXHZnhwccmevGF0iXqyLsxuHFBy6Zuy8g1wWbOR2R5FwRmDDsZxS7rAtWpTiGXQ3uyfzbIF5zRX4B79fMobe4fpffxfvFYv1ueZHiM5pJRqBz9ZDiO3SezkT+QZYth8hxieAc6D8ExCfrOVhiz07Sa9qUeGHq/nwdIvrx1R7xVwlDvLZFe8Vcy+9VTxj0cHVHkjMwFe6Sqr2U/8WreGiVLHVIOyLIx7x8+JsSZAWuAH/j0LtFw1GsUMxJITyxYSExrLPtatWvaV3g8Zq0yzddJGDUilMU6o1kQlGc75bseHtSAcwVBIBO86hYfXcoxdMV3TTxvt5KvWOyKjZjmvZkGICn++b8Mr2OpxDlkXuDwGHrjC70It8Yj7ezRHKYezdajByRsaD0biVFlGKO+3+ec8ox+8VoVA3SmZDkH8YbeDW5g4RneHZNbmzVF0RyMvBc0d/j7YZ+mAjDgUMfEz+ZcwQ62MEGfezIYLoIbC8NkzgvyNcSvyGtuV17/jw+nQPqYGyIqZnPsZWc1gslGeJeaE6oCWRzydirfsa7pcx8THh0SKQSVj5s3eMxbIwUfAbuaInt3wUBO/uu9Gyvppa6BkmpT1Lh+a+qej0Ecl1kvChO2asstBvai2qO+T0tXn0Mnz4F5XQtFFpsfFZekRJ0dDNmM9zfHc/EfwypjW6hOaiYCEiGaZIF7YX9X2Pi4MM1Q48QuwSnZcyzYTDZ3eU0pHv7JOw+HIQBIGUzP1ubWZlGbahaJe2PNitxKt86iSd5RjLVCBHg+Bz02UI5vS5mj0hDWOS+I4B70gVo+ReziBDWa6xJQ7bBYRrSmR1k2ftjuAvD0Rg225agTwUBiTwbxQfsgOR6HPrrprLfenxraz5VrlbdrsvKsAA==",
+      "x-app-access-token" : "cf79bf4c-5d4c-47e8-b180-ef7183bbde41APPACCESS"
+    }
+  }
+}', status = '', tidResponse = '', updatedDate = getdate() where tid = ''update JioMoneyTxns set message = '', status = 'SUCCESS', tidResponse = '10122324567049834000', updatedDate = getdate() where tid = '10132324567051447000'update JioMoneyTxns set message = '', status = '', tidResponse = '', updatedDate = getdate() where tid = ''

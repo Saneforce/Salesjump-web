@@ -1,0 +1,523 @@
+ #region Quiz
+
+        /*-------------------------- Process Quiz User List(29/01/2018) -------------------------------------*/
+        public DataSet Process_UserList(string div_Code, string Sf_Code)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsUserList = null;
+            strQry = " EXEC [dbo].[sp_UserList_Process_Quiz] '" + div_Code + "', '" + Sf_Code + "'";
+
+            try
+            {
+                dsUserList = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsUserList;
+        }
+
+        /*-------------------------- Add Processing  User Details(29/01/2018) -------------------------------------*/
+
+        public int AddProcessing_Details(string Sf_Code, string Sf_Name, string HQ, string Desig, string State, string Time, string P_Date, string Type, string No_Attempt, int Sf_UID, string Div_Code, string Survey_Id, string Month, string Year)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            int iReturn;
+
+            int ProcessID = -1;
+
+            strQry = "SELECT ISNULL(MAX(ProcessId),0)+1 FROM dbo.Processing_UserList ";
+            ProcessID = db_ER.Exec_Scalar(strQry);
+
+            strQry = " EXEC [dbo].[SP_Add_UserListProcessing] " + ProcessID + ", '" + Sf_Code + "','" + Sf_Name + "','" + HQ + "','" + Desig + "','" + State + "','" + Time + "','" + P_Date + "','" + Type + "','" + No_Attempt + "','0'," + Sf_UID + ",'" + Div_Code + "','" + Survey_Id + "','" + Month + "','" + Year + "'";
+
+            try
+            {
+                iReturn = db_ER.ExecQry(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return iReturn;
+        }
+
+
+        /*-------------------------- Process Zone Selected UserList (29/01/2018) -------------------------------------*/
+        public DataSet Process_SelectedUser_List(string div_Code, string Survey_ID)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsProcess = null;
+            strQry = "select ProcessId,Sf_Code,Sf_Name from dbo.Processing_UserList where SurveyId='" + Survey_ID + "' and Div_Code='" + div_Code + "'";
+
+            try
+            {
+                dsProcess = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsProcess;
+        }
+
+        /*-------------------------- Add Quiz Category Details(29/01/2018) -------------------------------------*/
+
+        public int AddQuiz_Category_Details(string Category_SName, string Category_Name, string Div_Code)
+        {
+
+
+            int iReturn = -1;
+            if (!S_RecordQuiz_SubName(Category_SName, Div_Code))
+            {
+                if (!Record_Category_Name(Category_Name, Div_Code))
+                {
+                    try
+                    {
+                        DB_EReporting db = new DB_EReporting();
+
+                        int CategoryId = -1;
+                        strQry = "SELECT ISNULL(MAX(Category_Id),0)+1 FROM dbo.QuizCategory_Creation ";
+                        CategoryId = db.Exec_Scalar(strQry);
+
+                        strQry = "INSERT INTO dbo.QuizCategory_Creation(Category_Id,Category_ShortName,Category_Name,Created_Date,Division_Code,Category_Active)" +
+                                 "values(" + CategoryId + ",'" + Category_SName + "', '" + Category_Name + "',GETDATE(),'" + Div_Code + "',0) ";
+
+                        iReturn = db.ExecQry(strQry);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+                else
+                {
+                    iReturn = -2;
+                }
+            }
+            else
+            {
+                iReturn = -3;
+            }
+            return iReturn;
+
+        }
+
+        /*-------------------------- Quiz Category SubName Exist(29/01/2018) -------------------------------------*/
+
+        public bool S_RecordQuiz_SubName(string Category_SName, string divcode)
+        {
+
+            bool bRecordExist = false;
+            try
+            {
+                DB_EReporting db = new DB_EReporting();
+
+                strQry = "SELECT * FROM dbo.QuizCategory_Creation WHERE Category_ShortName='" + Category_SName + "' and Division_Code= '" + divcode + "' and Category_Active=0 ";
+                int iRecordExist = db.Exec_Scalar(strQry);
+
+                if (iRecordExist > 0)
+                    bRecordExist = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return bRecordExist;
+        }
+
+        /*-------------------------- Quiz Category Name Exist(29/01/2018) -------------------------------------*/
+
+        public bool Record_Category_Name(string Category_Name, string divcode)
+        {
+
+            bool bRecordExist = false;
+            try
+            {
+                DB_EReporting db = new DB_EReporting();
+
+                strQry = "SELECT * FROM dbo.QuizCategory_Creation WHERE Category_Name='" + Category_Name + "' and Division_Code= '" + divcode + "' and Category_Active=0 ";
+                int iRecordExist = db.Exec_Scalar(strQry);
+
+                if (iRecordExist > 0)
+                    bRecordExist = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return bRecordExist;
+        }
+
+        /*-------------------------- Quiz Category List (29/01/2018) -------------------------------------*/
+
+        public DataSet Quiz_Category_List(string divCode)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsCategory = null;
+            strQry = "select Category_Id,Category_ShortName,Category_Name from dbo.QuizCategory_Creation where Division_Code='" + divCode + "' and Category_Active=0 ORDER BY Category_Name";
+
+            try
+            {
+                dsCategory = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsCategory;
+        }
+
+
+
+        // Sorting
+        public DataTable Quiz_Category_List_Sorting(string divcode)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataTable dtCategory = null;
+
+            strQry = "select Category_Id,Category_ShortName,Category_Name from dbo.QuizCategory_Creation where Division_Code='" + divcode + "' and Category_Active=0 ORDER BY Category_ShortName,Category_Name";
+
+            try
+            {
+                dtCategory = db_ER.Exec_DataTable(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dtCategory;
+        }
+
+
+        /*-------------------------- Update Quiz Category Details(29/01/2018) -------------------------------------*/
+
+        public int Update_Quiz_Category(string Category_SName, string Category_Name, string Div_Code, int CategoryId)
+        {
+            int iReturn = -1;
+            if (!S_RecordQuiz_SubName(Category_SName, Div_Code))
+            {
+                if (!Record_Category_Name(Category_Name, Div_Code))
+                {
+                    try
+                    {
+
+                        DB_EReporting db = new DB_EReporting();
+
+                        strQry = "UPDATE dbo.QuizCategory_Creation SET Category_ShortName = '" + Category_SName + "',Category_Name = '" + Category_Name + "',Last_Update_Date = GETDATE(),Division_Code='" + Div_Code + "' WHERE Category_Id = " + CategoryId + "";
+
+
+                        iReturn = db.ExecQry(strQry);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+                else
+                {
+                    iReturn = -2;
+                }
+            }
+            else
+            {
+                iReturn = -3;
+            }
+            return iReturn;
+
+        }
+
+        /*-------------------------- Edit Quiz Category Details(29/01/2018) -------------------------------------*/
+
+        public DataSet Get_Quiz_Category(string divcode, int Category_Id)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsCategory = null;
+
+            strQry = "SELECT Category_ShortName,Category_Name " +
+                     " FROM dbo.QuizCategory_Creation WHERE Category_Id= '" + Category_Id + "' AND Division_Code= '" + divcode + "' and Category_Active=0 " +
+                     " ORDER BY 2";
+            try
+            {
+                dsCategory = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsCategory;
+        }
+
+        /*-------------------------- Deactivate Quiz Category Details(29/01/2018) -------------------------------------*/
+        public int DeActivate_Category(int CategoryId)
+        {
+            int iReturn = -1;
+
+            try
+            {
+
+                DB_EReporting db = new DB_EReporting();
+
+                strQry = "UPDATE dbo.QuizCategory_Creation SET Category_Active=1,Last_Update_Date = GETDATE() WHERE Category_Id = " + CategoryId + "";
+
+
+                iReturn = db.ExecQry(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return iReturn;
+
+        }
+
+
+        /*-------------------------- Deactivate Quiz Title Details(29/01/2018) -------------------------------------*/
+        public int DeActivate_QuizTitle(int SurveyID)
+        {
+            int iReturn = -1;
+
+            try
+            {
+                DB_EReporting db = new DB_EReporting();
+
+                strQry = "UPDATE dbo.QuizTitleCreation SET Active=1,LastUpdate_Date=getdate() WHERE Survey_Id = " + SurveyID + "";
+                iReturn = db.ExecQry(strQry);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return iReturn;
+
+        }
+        /*-------------------------- Get Quiz Input Option (29/01/2018) -------------------------------------*/
+        public DataSet GetQuizInputOption(int QueId, string DivCode)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsOption = null;
+
+            strQry = "select Input_Id,Correct_Ans from dbo.AddInputOptions where Question_Id=" + QueId + " and Division_Code='" + DivCode + "'";
+            try
+            {
+                dsOption = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsOption;
+
+        }
+
+        /*-------------------------- Update Quiz Input Option (29/01/2018) -------------------------------------*/
+        public int QuizOption_Update(int QusId, int InputOpt_Id, string AnsOpt, string CorAns)
+        {
+            int iReturn = -1;
+
+            try
+            {
+                DB_EReporting db = new DB_EReporting();
+
+                strQry = " update dbo.AddInputOptions set Input_Text='" + AnsOpt + "', Correct_Ans='" + CorAns + "' where Input_Id=" + InputOpt_Id + " and Question_Id=" + QusId + "";
+                iReturn = db.ExecQry(strQry);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return iReturn;
+
+        }
+
+        /*-------------------------- Update Quiz Question (29/01/2018) -------------------------------------*/
+        public int Quiz_Update_Question(int QusId, string Ques_text, string DivCode)
+        {
+            int iReturn = -1;
+
+            try
+            {
+                DB_EReporting db = new DB_EReporting();
+
+                strQry = "update dbo.AddQuestions set Question_Text='" + Ques_text + "', Division_Code='" + DivCode + "' where Question_Id=" + QusId + "";
+                iReturn = db.ExecQry(strQry);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return iReturn;
+
+        }
+  public DataSet Process_UserList_jod(string div_Code, string Sf_Code, string imonth, string iyear, string st)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsUserList = null;
+
+
+            //sp_UserList_Process
+
+            //sp_SalesForceMgrGet
+
+            strQry = " EXEC [dbo].[UserList_Process_Quiz_Jod] '" + div_Code + "', '" + Sf_Code + "', '" + imonth + "','" + iyear + "','" + st + "'";
+
+            try
+            {
+                dsUserList = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsUserList;
+        }
+
+        //PS Ends 1.57 p.m 
+        public DataSet Process_UserList_Subdiv(string div_Code, string Sf_Code, string sub_div)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsUserList = null;
+            strQry = " EXEC [dbo].[UserList_Process_Quiz_Subdiv] '" + div_Code + "', '" + Sf_Code + "', '" + sub_div + "'";
+
+            try
+            {
+                dsUserList = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsUserList;
+        }
+     
+        public DataSet Process_UserList_Desig(string div_Code, string Sf_Code, string desig)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsUserList = null;
+            strQry = " EXEC [dbo].[UserList_Process_Quiz_Desig] '" + div_Code + "', '" + Sf_Code + "', '" + desig + "'";
+
+            try
+            {
+                dsUserList = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsUserList;
+        }
+ public DataSet Get_Question_AnsOption(string div_code, string Survey_Id)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+            comm = new SqlCommand();
+            DataSet dsProduct = null;
+
+            strQry = "Exec SP_Get_QuestionAnswer_Option '" + div_code + "'," + Survey_Id + "";
+
+            try
+            {
+                dsProduct = db_ER.Exec_DataSet(strQry, comm);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog err = new ErrorLog();
+                iErrReturn = err.LogError(Convert.ToInt32(div_code), ex.Message.ToString().Trim(), "Sec Sales Transaction", "Get_Question_Ans()");
+            }
+            return dsProduct;
+        }
+
+        /*------------------------------------------- Get Quiz TimeLimit (04/04/2018) ---------------*/
+        public DataSet Get_QuizTimeLimit(string div_code, string Survey_Id, string Sf_Code)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+            comm = new SqlCommand();
+            DataSet dsProduct = null;
+
+            strQry = "Exec [dbo].[SP_Get_Quiz_TimeLimit] '" + div_code + "','" + Survey_Id + "','" + Sf_Code + "'";
+
+            try
+            {
+                dsProduct = db_ER.Exec_DataSet(strQry, comm);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog err = new ErrorLog();
+                iErrReturn = err.LogError(Convert.ToInt32(div_code), ex.Message.ToString().Trim(), "Sec Sales Transaction", "Get_QuizTimeLimit()");
+            }
+            return dsProduct;
+        }
+  public DataSet Quiz_Survey_id(string divcode, string sf_code, string month, string year)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsSF = null;
+            strQry = " select Survey_Id from QuizTitleCreation where  Division_Code='" + divcode + "' and Month = '" + month + "' and Year = '" + year + "' and Active=0 ";
+
+
+            try
+            {
+                dsSF = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsSF;
+        }
+        public DataSet Quiz_Status_Temp(string divcode, string sf_code, string month, string year)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsSF = null;
+            strQry = " select Survey_Id from QuizTitleCreation where  Division_Code='" + divcode + "' and Month = '" + month + "' and Year = '" + year + "' and Active=0 ";
+            dsSF = db_ER.Exec_DataSet(strQry);
+            if (dsSF.Tables[0].Rows.Count > 0)
+            {
+                strQry = " EXEC Quiz_Status_temp '" + divcode + "', '" + sf_code + "', '" + month + "', '" + year + "', '" + dsSF.Tables[0].Rows[0][0].ToString() + "'  ";
+            }
+            try
+            {
+                dsSF = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsSF;
+        }
+        public DataSet getSfName_quiz(string sfcode)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+            DataSet dsSF = null;
+            strQry = " SELECT Sf_Name +' - '+sf_Designation_Short_Name + ' - ' + sf_hq as sf_Name,Sf_HQ,sf_Designation_Short_Name FROM  Mas_Salesforce " +
+                     " WHERE sf_code= '" + sfcode + "' ";
+
+            try
+            {
+                dsSF = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsSF;
+        }
+        #endregion

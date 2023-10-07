@@ -1,0 +1,66 @@
+﻿<ion-view>
+    <ion-content>
+        <div class="list list-inset">
+            <div class="select-component" ng-hide="view_MR">
+                <div class="label">
+                    <div class="label-text">Headquarters</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('subordinate_master', 48)">
+                            {{(RMCL.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Headquarters"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">{{DrCap}} Name</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal('doctor_master', 46, RMCL.subordinate.selected.id)">
+                            {{(RMCL.doctor.selected.id| getValueforIDD : {'collection' : doctors}).name  || "Select " + DrCap + " Name"}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Joint Work</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal('salesforce_master', 41, RMCL.subordinate.selected.id)">
+                            {{RMCL.JntWrkNms  || "Select the Joint Work"}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Product</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openMProduct('product_master', 49)">
+                            Select the Product
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gridStyle" ng-grid="gridOptions" style="height: 500px">
+
+            </div><br /><br />
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Remarks</div>
+                </div>
+                <textarea ng-model="RMCL.remarks" rows="5" class="textarea-css" ng-click="vibrate();" placeholder="Enter the Remarks"></textarea>
+            </div>
+        </div>
+    </ion-content>
+    <ion-footer-bar class="bar-dark">
+        <button class="button buttonClear  button-balanced pull-right" ng-click="vibrate();save()">Submit</button>
+    </ion-footer-bar>
+</ion-view>

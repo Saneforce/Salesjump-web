@@ -1,0 +1,105 @@
+
+<ion-view>
+    <ion-content>
+
+        <!--        <a-select ng-model="currentSelection.name" field="name" data-options="worktype" data-label="{{'Select an option'}}"  data-change-callback="callback(value)">
+        
+                </a-select>-->
+        <div class="list list-inset">
+            <div class="select-component" ng-if="Myplns[0]['dcrtype'] != 'Route Wise'">
+
+                <div class="label">
+                    <div class="label-text">Work Type</div>
+                </div>
+                <div class="select-box">
+
+                    <div class="input-box">
+
+                        <div  class="input-css"  ng-click="vibrate();openModal('mas_worktype', 1)">
+                            {{(fmcgData.worktype.selected.id| getValueforIDD : {'collection' : worktypes}).name || "Select the Work Type"}}
+                        </div>
+                        <!--
+                            <select  data-ui-select2="{}" data-ng-model="fmcgData.worktype.selected.id" data-placeholder="Select Work Type">
+                                <option value=""></option>
+                                <option data-ng-repeat="worktype in worktypes | filter: $select.search" value="{{worktype.id}}">
+                                    {{worktype.name}}
+                                </option>
+                            </select>
+                       -->
+                    </div>
+                </div>
+            </div>
+    
+            <div class="select-component" ng-hide="view_MR" ng-if="fmcgData.worktype.selected.FWFlg == 'F'||fmcgData.worktype.selected.FWFlg == 'DH'">
+                <div class="label">
+                    <div class="label-text">Headquarters</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="openModal('subordinate_master', 18)">
+                            {{(fmcgData.subordinate.selected.id| getValueforIDD : {'collection' : subordinates}).name || "Select the Headquarters"  }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" ng-if="fmcgData.worktype.selected.FWFlg == 'F'">
+                <div class="label">
+                    <div class="label-text">{{StkCap}}</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();
+                            openModal('stockist_master', 4, fmcgData.subordinate.selected.id)">
+                            {{(fmcgData.stockist.selected.id| getValueforIDD : {'collection' : stockists}).name || "Select "+StkCap}}
+                        </div>    
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" ng-if="fmcgData.worktype.selected.FWFlg == 'F'">
+                <div class="label">
+                    <div class="label-text">Route</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal('town_master', 2, fmcgData.subordinate.selected.id)">
+
+                            {{(fmcgData.cluster.selected.id| getValueforIDD : {'collection' : clusters}).name || "Select the Route"}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="select-component" ng-if="fmcgData.worktype.selected.FWFlg == 'F'&&fmcgData.worktype.selected.FWFlg != 'DH'&&Myplns[0]['dcrtype'] != 'Route Wise'">
+
+                <div class="label">
+                    <div class="label-text">Visit To</div>
+                </div>
+                <div class="select-box">
+                    <div class="input-box">
+                        <div class="input-css" ng-click="vibrate();openModal(customers, 3)">
+                            {{(fmcgData.customer.selected.id| getValueforIDD : {'collection' : customers}).name || "Select the Visit To"}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>       
+        </div>
+        <div class="row moveDown">
+            <div class="col">
+                <div class='buttonC-container left-sidepull' ng-click="vibrate();openOptMenu()">
+                    <div class="buttonC">
+                        <i class="icon ion-images footer-icon" style="line-height: 45px;"></i>
+                    </div>
+                    <div class='buttonC-text'>Event Captures</div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+    <ion-footer-bar class="bar-dark">
+    <button class="button button-assertive buttonClear pull-left" ng-click="vibrate();goBack()">
+        &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+    </button>
+
+
+    <button class="button button-assertive buttonClear pull-right" ng-click="vibrate();goNext()">&nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-right-c"></i>&nbsp;&nbsp;&nbsp;</button>
+</ion-footer-bar>
+</ion-view>

@@ -1,0 +1,24 @@
+<ion-view>
+    <ion-content>               
+        <div class="select-component" style="padding:2px;height:250px">
+            <div class="label">
+                <div class="label-text">Day Activity Remarks</div>
+            </div>
+            <div class="input-box">
+                <textarea ng-model="dyRmks.remarks" rows="10" class="textarea-css" ng-click="vibrate();" placeholder="Enter the Day Activity Remarks"></textarea>
+            </div>
+        </div>
+
+        <div class="select-component" ng-if="HlfNeed" style="padding:2px;height:200px">
+            <div class="label">
+                <div class="label-text">Halfday Work</div>
+            </div>
+            <ion-checkbox ng-repeat="item in HalfdayWorks | orderBy:OrderFields" ng-model="item.checked" ng-checked="item.checked" ng-click="vibrate();selHlfDy(item)">
+                <div>{{item.name}}</div>
+            </ion-checkbox>
+        </div>
+</ion-content>
+    <ion-footer-bar class="bar-dark">
+        <button class="button buttonClear  button-balanced pull-right" ng-click="vibrate();save()">Submit</button>
+    </ion-footer-bar>
+</ion-view>

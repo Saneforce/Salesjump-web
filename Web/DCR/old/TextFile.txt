@@ -1,0 +1,101 @@
+﻿
+                <asp:Panel ID="idD" class="wTab" runat="server">
+                    <table ID="tbD" class="fg-group" runat="server" border=1>
+                        <tr><th>Session</th><th>Time</th><th>Listed Doctor Name</th><th>Joint Work</th><th>Product</th><th>Input</th><th>Go</th></tr>
+                        <tr>
+                            <td><div class="ddl-Box" style="width:80px;" data-value="" data-text="- Ses -" data-inwidth='120px' data-src="d_Ses"></div></td> 
+                            <td><input type="text" id="tmr_Dtm1" size="10" style="width:90px;"   /></td> 
+                            <td><div class="ddl-Box search" style="width:250px" data-value="" data-text="- Select The Listed Doctor -" data-inwidth='300px' data-src="d_Doc"></div></td>
+                            <td><div class="ddl-Box multi" style="width:90px" data-value="" data-text="- JW -" data-inwidth='300px' data-src="d_JW"></div></td> 
+                            <td><div class="ddl-Box wind" style="width:90px" data-value="" data-text="- Product -" data-src="wProd"></div></td> 
+                            <td><div class="ddl-Box wind" style="width:90px" data-value="" data-text="- Input -" data-src="wInput"></div></td> 
+                            <td><a href="#" class="button go-bt">GO</a></td>
+                        </tr>                        
+                    </table><br />
+                    <div>
+                        <table ID="Table6" class="fg-grid" runat="server" border=1>                            
+                            <tr><th style="width:80px;">Session</th><th style="width:90px;">Time</th><th style="width:250px">Listed Doctor Name</th><th style="width:250px">Joint Work</th><th style="width:50px">Del</th></tr>
+                            <tr><td style="width:80px;">Session</td><td style="width:90px;">Time</td><td style="width:250px">Listed Doctor Name</td><td style="width:250px">Joint Work</td><td style="width:50px"><a href="#" class="button button-red go-bt">-</a></td></tr>
+                            <tr><td style="width:80px;">Session</td><td style="width:90px;">Time</td><td style="width:250px">Listed Doctor Name</td><td style="width:250px">Joint Work</td><td style="width:50px"><a href="#" class="button button-red go-bt">-</a></td></tr>
+                            <tr><td style="width:80px;">Session</td><td style="width:90px;">Time</td><td style="width:250px">Listed Doctor Name</td><td style="width:250px">Joint Work</td><td style="width:50px"><a href="#" class="button button-red go-bt">-</a></td></tr>
+                            <tr><td style="width:80px;">Session</td><td style="width:90px;">Time</td><td style="width:250px">Listed Doctor Name</td><td style="width:250px">Joint Work</td><td style="width:50px"><a href="#" class="button button-red go-bt">-</a></td></tr>
+                            <tr><td style="width:80px;">Session</td><td style="width:90px;">Time</td><td style="width:250px">Listed Doctor Name</td><td style="width:250px">Joint Work</td><td style="width:50px"><a href="#" class="button button-red go-bt">-</a></td></tr>
+                            <tr><td style="width:80px;">Session</td><td style="width:90px;">Time</td><td style="width:250px">Listed Doctor Name</td><td style="width:250px">Joint Work</td><td style="width:50px"><a href="#" class="button button-red go-bt">-</a></td></tr>
+                        </table>           
+                    </div>
+                </asp:Panel>
+                <asp:Panel ID="idWC" class="wTab" runat="server">
+                    <table ID="Table1" class="fg-group" runat="server" border=1>
+                        <tr><th>Session</th><th>Time</th><th>Chemist Name</th><th>Joint Work</th><th>Product</th><th>Input</th><th>Go</th></tr>
+                        <tr>
+                            <td><div class="ddl-Box" style="width:80px;" data-value="" data-text="- Ses -" data-src="d_Ses"></div></td> 
+                            <td><div class="ddl-Box" style="width:90px;" data-value="" data-text="- Time -" data-src="d_Tm"></div></td> 
+                            <td><div class="ddl-Box search" style="width:250px" data-value="" data-text="- Select The Chemist -" data-src="d_Chm"></div></td> 
+                            <td><div class="ddl-Box Multi" style="width:90px" data-value="" data-text="- JW -" data-src="d_JW"></div></td> 
+                            <td><div class="ddl-Box wind" style="width:90px" data-value="" data-text="- Product -" data-src="wProd"></div></td> 
+                            <td><div class="ddl-Box wind" style="width:90px" data-value="" data-text="- Input -" data-src="wInput"></div></td> 
+                            <td><a href="#" class="button go-bt">GO</a></td>
+                        </tr>
+                    </table>
+                </asp:Panel>
+                <asp:Panel ID="idWS" class="wTab" runat="server">
+                    <table ID="Table4" class="fg-group" runat="server" border=1>
+                        <tr><th>Session</th><th>Time</th><th>Stockist Name</th><th>Joint Work</th><th>Product</th><th>Input</th><th>Go</th></tr>
+                        <tr>
+                            <td><div class="ddl-Box" style="width:80px;" data-value="" data-text="- Ses -" data-src="d_Ses"></div></td> 
+                            <td><div class="ddl-Box" style="width:90px;" data-value="" data-text="- Time -" data-src="d_Tm"></div></td> 
+                            <td><div class="ddl-Box search" style="width:250px" data-value="" data-text="- Select The Stockist -" data-src="d_Chm"></div></td> 
+                            <td><div class="ddl-Box Multi" style="width:90px" data-value="" data-text="- JW -" data-src="d_JW"></div></td> 
+                            <td><div class="ddl-Box wind" style="width:90px" data-value="" data-text="- Product -" data-src="wProd"></div></td> 
+                            <td><div class="ddl-Box wind" style="width:90px" data-value="" data-text="- Input -" data-src="wInput"></div></td> 
+                            <td><a href="#" class="button go-bt">GO</a></td>
+                        </tr>
+                    </table>
+                </asp:Panel>
+                <asp:Panel ID="idWU" class="wTab" runat="server">
+                    <table ID="Table5" class="fg-group" runat="server" border=1>
+                        <tr><th>Session</th><th>Time</th><th>Unlised Doctor Name</th><th>Joint Work</th><th>Product</th><th>Input</th><th>Go</th></tr>
+                        <tr>
+                            <td><div class="ddl-Box" style="width:80px;" data-value="" data-text="- Ses -" data-src="d_Ses"></div></td> 
+                            <td><div class="ddl-Box" style="width:90px;" data-value="" data-text="- Time -" data-src="d_Tm"></div></td> 
+                            <td><div class="ddl-Box search" style="width:250px" data-value="" data-text="- Select The Unlised Doctor -" data-src="d_Chm"></div></td> 
+                            <td><div class="ddl-Box Multi" style="width:90px" data-value="" data-text="- JW -" data-src="d_JW"></div></td> 
+                            <td><div class="ddl-Box wind" style="width:90px" data-value="" data-text="- Product -" data-src="wProd"></div></td> 
+                            <td><div class="ddl-Box wind" style="width:90px" data-value="" data-text="- Input -" data-src="wInput"></div></td> 
+                            <td><a href="#" class="button go-bt">GO</a></td>
+                        </tr>
+                    </table>
+                </asp:Panel>
+                <asp:Panel ID="idWR" class="wTab" runat="server">
+                </asp:Panel>
+                <asp:Panel ID="idWP" class="wTab" runat="server">
+
+                </asp:Panel>    
+
+
+
+
+
+				__Wndw = [{ id: 'D', fields: [{ c: _C.ses, sh: 1 }, { c: _C.tm, sh: 1 }, { c: { id: 'dr', cap: 'Listed Doctor Name', w: '250', src: 'd_Drs', df: '-- Listed Doctor Name --', val: '', ty: 'ddl-Box search', iw: '300' }, sh: 1 }, { c: _C.jw, sh: 1 }, { c: _C.prd, sh: 1 }, { c: _C.inp, sh: 1 }, { c: _C.go, sh: 1}] },
+                  { id: 'C', fields: [{ c: _C.ses, sh: 1 }, { c: _C.tm, sh: 1 }, { c: { id: 'chm', cap: 'Chemist Name', w: '250', src: 'd_chm', df: '-- Chemist Name --', val: '', ty: 'ddl-Box search', iw: '300' }, sh: 1 }, { c: _C.jw, sh: 1 }, { c: _C.prd, sh: 1 }, { c: _C.inp, sh: 1 }, { c: _C.go, sh: 1}] },
+                  { id: 'H', fields: [{ c: _C.ses, sh: 1 }, { c: _C.tm, sh: 1 }, { c: { id: 'hos', cap: 'Hospital Name', w: '250', src: 'd_hos', df: '-- Hospital Name --', val: '', ty: 'ddl-Box search', iw: '300' }, sh: 1 }, { c: _C.jw, sh: 1 }, { c: _C.prd, sh: 1 }, { c: _C.inp, sh: 1 }, { c: _C.go, sh: 1}] },
+                  { id: 'S', fields: [{ c: _C.ses, sh: 1 }, { c: _C.tm, sh: 1 }, { c: { id: 'stk', cap: 'Stockist Name', w: '250', src: 'd_chm', df: '-- Stockist Name --', val: '', ty: 'ddl-Box search', iw: '300' }, sh: 1 }, { c: _C.jw, sh: 1 }, { c: _C.prd, sh: 1 }, { c: _C.inp, sh: 1 }, { c: _C.go, sh: 1}] },
+                  { id: 'U', fields: [{ c: _C.ses, sh: 1 }, { c: _C.tm, sh: 1 }, { c: { id: 'chm', cap: 'Unlised Doctor Name', w: '250', src: 'd_chm', df: '-- Unlised Doctor Name --', val: '', ty: 'ddl-Box search', iw: '300' }, sh: 1 }, { c: _C.jw, sh: 1 }, { c: _C.prd, sh: 1 }, { c: _C.inp, sh: 1 }, { c: _C.go, sh: 1}] },
+                  { id: 'R' }, { id: 'P' }]
+
+
+
+				  __Wndw = [{ id: 'D', fields: [_C.ses, _C.tm, _C.cus, _C.jw, _C.prd, _C.inp, _C.go] },
+                  { id: 'C', fields: [_C.ses, _C.tm, { id: 'chm', cap: 'Chemist Name', w: '250', src: 'd_chm', df: '-- Chemist Name --', val: '', ty: 'ddl-Box search', iw: '300' }, _C.jw, _C.prd, _C.inp, _C.go] },
+                  { id: 'H', fields: [_C.ses, _C.tm, { id: 'hos', cap: 'Hospital Name', w: '250', src: 'd_hos', df: '-- Hospital Name --', val: '', ty: 'ddl-Box search', iw: '300' }, _C.jw, _C.prd, _C.inp, _C.go] },
+                  { id: 'S', fields: [_C.ses, _C.tm, { id: 'stk', cap: 'Stockist Name', w: '250', src: 'd_chm', df: '-- Stockist Name --', val: '', ty: 'ddl-Box search', iw: '300' }, _C.jw, _C.prd, _C.inp, _C.go] },
+                  { id: 'U', fields: [_C.ses, _C.tm, { id: 'chm', cap: 'Unlised Doctor Name', w: '250', src: 'd_chm', df: '-- Unlised Doctor Name --', val: '', ty: 'ddl-Box search', iw: '300' }, _C.jw, _C.prd, _C.inp, _C.go] },
+                  { id: 'R' }, { id: 'P'}]
+
+
+				  
+        for
+        with (__Wndw.D.fields.cus) {cap = "Listed Doctor Name"; df = "-- " + cap + " --"; src = 'd_Drs'; }
+        with (__Wndw.D.fields.cus) {cap = "Chemist Name"; df = "-- " + cap + " --"; src = 'd_Drs'; }
+        with (__Wndw.D.fields.cus) { id = "dr"; cap = "Listed Doctor Name"; df = "-- " + cap + " --"; src = 'd_Drs'; }
+        with (__Wndw.D.fields.cus) { id = "dr"; cap = "Listed Doctor Name"; df = "-- " + cap + " --"; src = 'd_Drs'; }

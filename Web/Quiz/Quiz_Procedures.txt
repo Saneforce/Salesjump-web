@@ -1,0 +1,2849 @@
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[AddSurveyQuestions_Answer]    Script Date: 5/18/2020 7:14:13 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[AddSurveyQuestions_Answer]
+(
+	@SurveyID int,
+	@Question_Type_Id int,
+	@Question_Text varchar(500),
+	@inputOptions varchar(500), 
+	@div_code varchar(50), 
+	@Correct_Ans varchar(100)
+)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	declare @questionId int
+	insert into AddQuestions values(@SurveyID,@Question_Type_Id,@Question_Text, @div_code )
+	select @questionId=max(Question_Id) from AddQuestions  
+	if object_id('tempdb..#tblInput') is not null        
+	DROP TABLE  #tblInput         
+	Create table #tblInput(R_id int identity(1,1),AnsOption varchar(100))
+	;with cte as
+	(
+		Select CAST( '<i>'+replace (@inputOptions ,'***','</i><i>')+'</i>'  as XML) as word
+	)
+	insert into #tblInput(AnsOption) 
+	Select x.i.value ('.','nvarchar(100)')  as Items
+	from cte
+	cross apply word.nodes('/i') as X(i)
+	Declare @Cnt int 
+	Set @Cnt=(select count(*) from #tblInput where AnsOption!='')
+	Declare @MnCnt int 
+	Set @MnCnt=1
+	Declare @InputOpt varchar(100)
+	Declare @C_Ans varchar(10)
+	while(@MnCnt<=@Cnt)
+	begin
+		Set @InputOpt=(select AnsOption from #tblInput where R_id=@MnCnt)
+		
+		if(@InputOpt=@Correct_Ans)
+		begin
+			set @C_Ans='1'
+		end
+		else
+		begin
+			set @C_Ans='0'
+		end
+		 
+		 insert into  AddInputOptions values(@questionId,@InputOpt,@div_code, @C_Ans)
+		 Set @MnCnt+=1
+	end
+END
+GO
+
+---------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[AddSurveyQuestions_Answer_Excel_Upload]    Script Date: 5/18/2020 7:14:34 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[AddSurveyQuestions_Answer_Excel_Upload]  
+
+(       
+
+	 @Div_Code varchar(100),
+
+	 @Question_Type_Name varchar(max),
+
+	 @XMLQuestion_Det xml
+
+)       
+
+AS    
+
+BEGIN    
+
+ SET NOCOUNT ON;    
+
+	DECLARE @ErrorMsg VARCHAR(2000) --error strings 
+
+    DECLARE @ERR VARCHAR    
+
+	Declare @questionId int
+
+	Declare @Question_Type_Id varchar(max)
+
+	Declare @QCnt int 
+
+	Set @QCnt=(select count(*) from [dbo].[QuestionType] where 
+
+	Question_Type_Name=@Question_Type_Name and Division_Code=@div_code)
+
+	
+
+	if(@QCnt>0)
+
+	begin		
+
+		set @Question_Type_Id=(select Question_Type_Id from [dbo].[QuestionType] where 
+
+		Question_Type_Name=@Question_Type_Name and Division_Code=@div_code)		
+
+	end
+
+	else
+
+	begin		
+
+		Declare @SlNo int
+
+		set @SlNo=(select max(Question_Type_Id)+1 from [dbo].[QuestionType])
+
+		insert into [dbo].[QuestionType](Question_Type_Name,Division_Code)
+
+		values(@Question_Type_Name,@div_code)
+
+		set @Question_Type_Id=(select Question_Type_Id from [dbo].[QuestionType] where 
+
+		Question_Type_Name=@Question_Type_Name and Division_Code=@div_code)
+
+	end
+
+	if object_id('tempdb..#tblQuestion') is not null        
+
+	DROP TABLE  #tblQuestion   
+
+	Create table #tblQuestion(R_Id int identity(1,1),Survey_ID varchar(50),Question_Text varchar(max),
+
+	inputOptions varchar(max),Correct_Ans varchar(max))
+
+	insert into #tblQuestion(Survey_ID,Question_Text,inputOptions,Correct_Ans)
+
+	SELECT         
+
+    CONVERT(varchar(50),TempTranse_Value.X.value('@Survey_ID', 'VARCHAR(50)')),        
+
+    CONVERT(varchar(max),TempTranse_Value.X.value('@Question_Text', 'VARCHAR(max)')),        
+
+    CONVERT(varchar(max),TempTranse_Value.X.value('@inputOptions', 'VARCHAR(max)')),        
+
+    CONVERT(varchar(max),TempTranse_Value.X.value('@Correct_Ans', 'VARCHAR(max)')) 
+
+    FROM @XMLQuestion_Det.nodes('/root/QuestionData') AS TempTranse_Value(X)      
+
+	Declare @Cnt int
+
+	Set @Cnt=(select count(*) from #tblQuestion )
+
+	Declare @MCnt int
+
+	Set @MCnt=1
+
+	Declare @Survey_Id varchar(100)
+
+	Declare @Question_Text varchar(max)
+
+	Declare @Input_Option varchar(max)
+
+	Declare @CorrectAns varchar(max)
+
+	while(@MCnt<=@Cnt)
+
+	begin
+
+		set @Survey_Id=(select Survey_ID from #tblQuestion where R_Id=@MCnt)
+
+		set @Question_Text=(select Question_Text from #tblQuestion where R_Id=@MCnt)
+
+		set @Input_Option=(select inputOptions from #tblQuestion where R_Id=@MCnt)
+
+		set @CorrectAns=(select Correct_Ans from #tblQuestion where R_Id=@MCnt)
+
+		insert into AddQuestions values(@Survey_Id,@Question_Type_Id,@Question_Text, @div_code)
+
+		select @questionId=max(Question_Id) from AddQuestions  
+
+	
+
+		--set @Input_Option = [dbo].[RemoveSplChars](@Input_Option)
+
+		select @Input_Option = replace(@Input_Option, '&', '&amp;')
+
+		select @Input_Option = replace(@Input_Option, '<', '&lt;')
+
+		select @Input_Option = replace(@Input_Option, '>', '&gt;')
+
+		select @Input_Option = replace(@Input_Option, '<', '&lt;')
+
+		select @Input_Option = replace(@Input_Option, '"', '&quot;')
+
+		if object_id('tempdb..#tblInput') is not null        
+
+		DROP TABLE  #tblInput         
+
+		Create table #tblInput(R_id int identity(1,1),AnsOption varchar(max))	
+
+		if object_id('tempdb..#test') is not null        
+
+		DROP TABLE  #test     
+
+		Create table #test
+
+		(
+
+			[Data] XML
+
+		);
+
+		INSERT INTO #test ([Data])
+
+		SELECT  CAST( '<i>'+replace (@Input_Option ,'***','</i><i>')+'</i>'  as XML) as AnsOption
+
+		insert into #tblInput(AnsOption)
+
+		SELECT 
+
+		--T.c.query('.') AS [Value_XML] ,
+
+		T.c.value('.[1]', 'varchar(max)') AS [Data_Value]
+
+		FROM #test DS
+
+		CROSS APPLY [Data].nodes('/i')  AS T(c)
+
+		
+
+			Declare @Cnt_Ans int
+
+			set @Cnt_Ans=(select count(*) from #tblInput where AnsOption!='')
+
+			Declare @MCnt_A int 
+
+			set @MCnt_A=1
+
+			Declare @InputOpt varchar(max)
+
+			Declare @C_Ans varchar(max)
+
+			while(@MCnt_A<=@Cnt_Ans)
+
+			begin
+
+				Set @InputOpt=(select AnsOption from #tblInput where R_id=@MCnt_A)
+
+		
+
+			if(@InputOpt=@CorrectAns)
+
+			begin
+
+				set @C_Ans='1'
+
+			end
+
+			else
+
+			begin
+
+				set @C_Ans='0'
+
+			end		 
+
+				insert into AddInputOptions values(@questionId,@InputOpt,@div_code, @C_Ans)
+
+				set @MCnt_A+=1
+
+			end
+
+		set @MCnt+=1
+
+	end
+
+END 
+GO
+
+---------------------------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[Quiz_deactivation]    Script Date: 5/18/2020 7:17:13 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+ create PROC [dbo].[Quiz_deactivation](@SurveyID varchar(25))   
+
+  
+
+ AS  
+
+ BEGIN TRAN  
+
+ declare @Ques_id int  
+
+
+ BEGIN TRY   
+
+  
+
+            
+  delete from Quiz_Result where Survey_Id=@SurveyID
+
+    delete from Processing_UserList where SurveyId=@SurveyID
+
+	delete from AddInputOptions where Question_Id in ( select Question_Id from AddQuestions where SurveyID=@SurveyID)
+
+	delete from AddQuestions where SurveyID=@SurveyID
+                   
+UPDATE dbo.QuizTitleCreation SET Active=1,LastUpdate_Date=getdate() WHERE Survey_Id = @SurveyID
+  
+
+   --print'8'                                                                                                                                                  
+
+ END TRY  
+
+ BEGIN CATCH  
+
+   IF @@TRANCOUNT > 0  
+
+   --print'9'  
+
+     ROLLBACK  
+
+      declare @ErrMsg nvarchar(4000), @ErrSeverity int, @ErrProc sysname, @ErrLine varchar(10)
+
+
+
+      SELECT  
+
+        ERROR_NUMBER() AS ErrorNumber  
+
+        ,ERROR_SEVERITY() AS ErrorSeverity  
+
+        ,ERROR_STATE() AS ErrorState  
+
+        ,ERROR_PROCEDURE() AS ErrorProcedure  
+
+        ,ERROR_LINE() AS ErrorLine  
+
+        ,ERROR_MESSAGE() AS ErrorMessage;  
+
+raiserror(@ErrMsg, @ErrSeverity, 1) 
+
+
+
+ END CATCH  
+
+ --If we didn't rollback, @@TRANCOUNT should be > 0 and we should commit  
+
+ IF @@TRANCOUNT > 0   
+
+   COMMIT  
+
+     
+
+GO
+
+-----------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[Quiz_Graph]    Script Date: 5/18/2020 7:17:30 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+--Quiz_Graph '22','MR3844',4,2019,2
+ CREATE procedure [dbo].[Quiz_Graph](@div_Code varchar(50),@sf_code varchar(50),@month int,@year int,@survey_id int )
+
+AS 
+
+begin
+
+ CREATE TABLE #sf_code (                  
+
+SNo int,sf_code varchar(100), sf_name VARCHAR(1000),desg varchar(200), hq varchar(100),clr VARCHAR(100)        
+
+)   
+
+CREATE TABLE #tmpTbl (                  
+
+para varchar(500),col int
+
+)                  
+
+insert into #tmpTbl(para,col)
+
+values
+
+('0 - 20','1'),
+
+('30 - 40','2'),
+
+('50 - 60','3'),
+
+('70 - 80','4'),
+
+('90 - 100','5')
+
+declare @cnt int
+
+CREATE TABLE #tmpValTbl (                  
+
+valuess VARCHAR(50), cnt varchar(max)          
+
+)
+
+CREATE TABLE #tmpValTbl2 (                  
+
+valuess VARCHAR(50), cnt varchar(max)          
+
+)
+
+ insert into #sf_code exec ViewDetails_DrsTmp @div_Code,@sf_code
+
+
+ set @cnt=( select COUNT(Question_Id) Qus from AddQuestions where Division_Code=@div_code and SurveyID = @survey_id)
+
+ select  s.sf_code,round(cast(count(q.Input_Id) as float)/cast(@cnt as float)*100 ,0) as  Ans  into #first
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t, #sf_code s   
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+
+                       and s.sf_code=q.Sf_Code -- and q.sf_code=s.sf_code
+
+                       and Correct_Ans=1 and Month = @month and Year= @year 
+
+                        and q.Survey_Id = t.Survey_Id 
+
+						group by s.sf_code
+
+						
+
+						 select  s.sf_code,round(cast(count(q.Second_Input_Id) as float)/cast(@cnt as float)*100 ,0) as Ans  into #second
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t, #sf_code s   
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Second_Input_Id   
+
+                       and s.sf_code=q.Sf_Code -- and q.sf_code=s.sf_code
+
+                       and Correct_Ans=1 and Month = @month and Year= @year 
+
+                        and q.Survey_Id = t.Survey_Id 
+
+						group by s.sf_code
+
+					
+
+						select f.sf_code,f.Ans as fir, d.Ans as sec into #Final from #first f left join #second d on f.sf_code=d.sf_code
+
+					
+
+					insert into #tmpValTbl
+
+						select  '1' as valuess,  count(sf_code) cnt from #Final where  fir between 0 and 20 and  fir !='' 
+
+						union all
+
+						select  '2' as valuess,  count(sf_code) cnt from #Final where  fir between 30 and 40 and  fir !='' 
+
+							union all
+
+						select  '3' as valuess,  count(sf_code) cnt from #Final where  fir between 50 and 60 and  fir !='' 
+
+							union all
+
+						select  '4' as valuess,  count(sf_code) cnt from #Final where  fir between 70 and 80 and  fir !='' 
+
+							union all
+
+						select  '5' as valuess,  count(sf_code) cnt from #Final where  fir between 90 and 100 and  fir !='' 
+
+						insert into #tmpValTbl2
+
+						select  '1' as valuess,  count(sf_code) cnt from #Final where  sec between 0 and 20 and  sec !='' 
+
+						union all
+
+						select  '2' as valuess,  count(sf_code) cnt from #Final where  sec between 30 and 40 and  sec !='' 
+
+							union all
+
+						select  '3' as valuess,  count(sf_code) cnt from #Final where  sec between 50 and 60 and  sec !='' 
+
+							union all
+
+						select  '4' as valuess,  count(sf_code) cnt from #Final where  sec between 70 and 80 and  sec !='' 
+
+							union all
+
+						select  '5' as valuess,  count(sf_code) cnt from #Final where  sec between 90 and 100 and  sec !='' 
+
+						
+
+						select para,b.cnt as 'First',c.cnt as 'Second' from #tmpTbl a left join #tmpValTbl b on a.col=b.valuess left join #tmpValTbl2 c on b.valuess=c.valuess
+
+   --select Para,
+
+   --(select '1' as num ,count(fir) from #Final where num=a.col and  fir between 0 and 20 and  fir !='' group by col, num) as one,
+
+   --  (select '2' as num ,count(fir) from #Final where num=a.col and  fir between 21 and 40 and  fir !=''  group by col,num) as one1
+
+	-- ,
+
+ --(select count(fir) from #Final where 3=a.col and  #Final between 41 and 60 and  value !=''  group by col) as two,
+
+ --(select count(fir) from #Final where 4=a.col and  #Final between 61 and 80 and  value !=''  group by col) as three,
+
+ -- (select count(fir) from #Final where 5=a.col and  #Final between 81 and 100 and  value !=''  group by col) as four 
+
+ --   from #tmpTbl a 
+
+	--group by Para
+
+ -- 	drop table #sf_code
+
+   end
+GO
+
+-------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[Quiz_Result_Month_Daywise]    Script Date: 5/18/2020 7:17:44 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+    --  Quiz_Result_Month_Daywise '44','MGR1047'
+--ALTER PROCEDURE [dbo].[Quiz_Result_Month_Daywise] (@Div_Code INT, @Msf_code VARCHAR(15))        
+CREATE PROCEDURE [dbo].[Quiz_Result_Month_Daywise] (@Div_Code INT, @Msf_code VARCHAR(15), @MnthTbl MnthTbl READONLY, @Mgr_Codes SfCodes READONLY)          
+AS          
+BEGIN          
+SET DEADLOCK_PRIORITY high          
+--CREATE TABLE #tmpTbl (          
+--sno INT, sf_code VARCHAR(10),sf_name VARCHAR(150), desg VARCHAR(50), hq VARCHAR(150), clr VARCHAR(20)           
+--)          
+ TRUNCATE TABLE Hirarchy_Coverage        
+  INSERT INTO Hirarchy_Coverage EXEC ViewDetails_Hierarchy_Quiz @Div_Code, @Msf_code       
+create table #days      
+(      
+day_s varchar(100)      
+)                        
+--INSERT INTO #tmpTbl EXEC get_Rep_access_Sale @Msf_code , @Div_Code              
+CREATE TABLE #tmpValTbl (            
+sf_code VARCHAR(15), cnt INT,dt INT, VST varchar(50)             
+)          
+--DECLARE @MnthTbl TABLE (INX INT, MNTH INT, YR INT)      
+--INSERT INTO @MnthTbl VALUES (1,2,2020)--,(2,07,2016)--,(3,06,2016),(4,07,2016)          
+DECLARE @MinInx INT, @MaxInx INT, @cMnth varchar(50), @cYr varchar(50), @cDate VARCHAR(15), @cMn INT, @cYrs INT          
+ declare @surveyId varchar(150)         
+ --DECLARE @Mgr_Codes TABLE (INX INT, SfCd VARCHAR(20))      
+--INSERT INTO @Mgr_Codes VALUES (2,'1')--,(2,'30')--,(4,07,2016)          
+DECLARE @sf_Min INT, @sf_Max INT, @cSf_code VARCHAR(15) , @cnt varchar(15) ,@mdate varchar(15)     
+SELECT @MinInx=MIN(INX), @MaxInx=MAX(INX) FROM @MnthTbl          
+DECLARE @cat_slno INT=1          
+WHILE @MinInx<=@MaxInx          
+BEGIN          
+ --          
+ SELECT @cMnth = MNTH, @cYr=YR FROM @MnthTbl WHERE INX=@MinInx          
+ SET @cMn=@cMnth+1          
+ IF @cMN=13          
+ BEGIN          
+  SET @cMN=01; SET @cYrs=@cYr+1;          
+ END          
+ ELSE          
+  SET @cYrs=@cYr          
+ SET @cDate=CAST(@cMn AS VARCHAR)+'-01-'+CAST(@cYrs AS VARCHAR)          
+    --select @cMnth        
+   --   INSERT INTO #days EXEC [Month_date] @cMnth       
+ --select * from #days        
+ --SELECT c.*,d.CHR_ORDER INTO #cat FROM #days c LEFT OUTER JOIN ASCII_CHAR_FOR_SlNo d ON c.day_s=d.INX       
+ select @sf_Min=min(INX), @sf_Max=max(INX) from @Mgr_Codes          
+ while @sf_Min<=@sf_Max          
+ begin          
+  select @cSf_code=INX,@mdate=sfcd from @Mgr_Codes where INX=@sf_Min          
+        CREATE TABLE #Qus (          
+ques_id INT )
+   select @cnt=CHR_ORDER from ASCII_CHAR_FOR_SlNo where INX=@sf_Min    
+       set @surveyId=(  select top(1) SurveyId from Processing_UserList where Div_Code= @Div_Code and Month =@cMnth and Year=@cYr
+                       and day(From_Date)=@mdate  )
+					
+					   insert into #Qus
+					   select count(distinct Question_Id) as Question_Id from AddQuestions    where SurveyID =@surveyId
+					  
+ ;WITH CteTtl AS          
+ (          
+  SELECT 'TMP' AS sf_code, 0 AS cnt,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_AAT' AS VST -- from #cat       
+  UNION ALL          
+               select  sf_code, (select ques_id from #qus) Qus   ,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_AAT' AS VST
+        from  Hirarchy_Coverage 
+        union all          
+     SELECT 'TMP' AS sf_code, 0 AS cnt,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_ABT' AS VST -- from #cat       
+      union all        
+     select q.Sf_Code,  COUNT(q.Input_Id) Ans  ,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_ABT' AS VST  
+        from AddInputOptions b, Quiz_Result q, QuizTitleCreation t    
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+                       and q.Sf_Code  in (select sf_code from Hirarchy_Coverage)
+                       and Correct_Ans=1 and Month = @cMnth and Year= @cYr
+                       and q.Survey_Id = t.Survey_Id  and q.Survey_Id  =@surveyId
+					   group by q.Sf_Code
+					     union all          
+     SELECT 'TMP' AS sf_code, 0 AS cnt,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_ACT' AS VST
+      )     
+ INSERT INTO #tmpValTbl SELECT * FROM CteTtl           
+        drop table #qus     
+    --insert into #tmpValTbl SELECT ListedDrCode AS Trans_Detail_Info_Code, 0 AS cnt, CAST(@cat_slno AS VARCHAR)+'_0_ABT' AS VST FROM Listeddr_Report          
+ set @sf_Min+=1          
+ end          
+ SET @MinInx+=1          
+ SET @cat_slno+=1          
+ -- NEXT MONTH          
+END 
+DECLARE @ColumnName NVARCHAR(max), @DynamicPivotQuery NVARCHAR(max),@ColumnName2 NVARCHAR(max)              
+SELECT @ColumnName=isnull(@ColumnName+',','')+'isnull(cast('+Quotename(VST)+' as varchar),''-'') as '+Quotename(VST) FROM (SELECT DISTINCT VST FROM #tmpValTbl) AS main ORDER BY VST              
+ SELECT @ColumnName2=isnull(@ColumnName2+',','')+Quotename(VST) FROM (SELECT DISTINCT VST FROM #tmpValTbl) AS main ORDER BY VST              
+ SET @DynamicPivotQuery =               
+  N'SELECT sf_code,' + @ColumnName + ' into ##tmp              
+  FROM (select sf_code, cnt, VST from #tmpValTbl)x              
+  PIVOT(SUM(cnt)               
+    FOR VST IN (' + @ColumnName2 + ')) AS PVTTable'              
+ --Execute the Dynamic Pivot Query              
+  EXEC sp_executesql @DynamicPivotQuery 
+SELECT * FROM Hirarchy_Coverage p LEFT OUTER JOIN ##tmp s ON p.sf_code=s.sf_code     order by SNo      
+--select * from #tmpValTbl where VST like '%_ABT' and Trans_Detail_Info_Code!='tmp' order by VST, Trans_Detail_Info_Code, dt          
+--SELECT distinct a.Trans_Detail_Info_Code, a.VST, STUFF((SELECT distinct ', ' + QUOTENAME(b.dt)          
+--           FROM #tmpValTbl b WHERE a.Trans_Detail_Info_Code = b.Trans_Detail_Info_Code and b.VST = a.vst          
+--          FOR XML PATH('')), 1, 2, '') dt, 0 as cnt into #tst          
+--FROM #tmpValTbl a where a.VST like '%_ABT'          
+--GROUP BY a.Trans_Detail_Info_Code, a.vst           
+DROP TABLE ##tmp              
+DROP TABLE #tmpValTbl              
+--DROP TABLE #tmpTbl          
+ TRUNCATE TABLE Hirarchy_Coverage        
+---          
+END 
+GO
+
+----------------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[Quiz_Result_Month_Daywise_New]    Script Date: 5/18/2020 7:17:56 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+    --  Quiz_Result_Month_Daywise_New '37','MGR1530'
+CREATE PROCEDURE [dbo].[Quiz_Result_Month_Daywise_New] (@Div_Code INT, @Msf_code VARCHAR(15))        
+--CREATE PROCEDURE [dbo].[Quiz_Result_Month_Daywise_New] (@Div_Code INT, @Msf_code VARCHAR(15), @MnthTbl MnthTbl READONLY, @Mgr_Codes SfCodes READONLY)          
+AS          
+BEGIN          
+SET DEADLOCK_PRIORITY high          
+--CREATE TABLE #tmpTbl (          
+--sno INT, sf_code VARCHAR(10),sf_name VARCHAR(150), desg VARCHAR(50), hq VARCHAR(150), clr VARCHAR(20)           
+--)          
+ TRUNCATE TABLE Hirarchy_Coverage        
+  INSERT INTO Hirarchy_Coverage EXEC ViewDetails_Hierarchy_Quiz @Div_Code, @Msf_code       
+create table #days      
+(      
+day_s varchar(100)      
+)                        
+--INSERT INTO #tmpTbl EXEC get_Rep_access_Sale @Msf_code , @Div_Code              
+CREATE TABLE #tmpValTbl (            
+sf_code VARCHAR(15), cnt INT,dt INT, VST varchar(50)             
+)          
+DECLARE @MnthTbl TABLE (INX INT, MNTH INT, YR INT)      
+INSERT INTO @MnthTbl VALUES (1,2,2020)--,(2,07,2016)--,(3,06,2016),(4,07,2016)          
+DECLARE @MinInx INT, @MaxInx INT, @cMnth INT, @cYr INT, @cDate VARCHAR(15), @cMn INT, @cYrs INT          
+ declare @surveyId varchar(150)         
+ DECLARE @Mgr_Codes TABLE (INX INT, SfCd VARCHAR(20))      
+INSERT INTO @Mgr_Codes VALUES (2,'1')--,(2,'30')--,(4,07,2016)          
+DECLARE @sf_Min INT, @sf_Max INT, @cSf_code VARCHAR(15) , @cnt varchar(15) ,@mdate varchar(15)     
+SELECT @MinInx=MIN(INX), @MaxInx=MAX(INX) FROM @MnthTbl          
+DECLARE @cat_slno INT=1          
+WHILE @MinInx<=@MaxInx          
+BEGIN          
+ --          
+ SELECT @cMnth = MNTH, @cYr=YR FROM @MnthTbl WHERE INX=@MinInx          
+ SET @cMn=@cMnth+1          
+ IF @cMN=13          
+ BEGIN          
+  SET @cMN=01; SET @cYrs=@cYr+1;          
+ END          
+ ELSE          
+  SET @cYrs=@cYr          
+ SET @cDate=CAST(@cMn AS VARCHAR)+'-01-'+CAST(@cYrs AS VARCHAR)          
+    --select @cMnth        
+   --   INSERT INTO #days EXEC [Month_date] @cMnth       
+ --select * from #days        
+ --SELECT c.*,d.CHR_ORDER INTO #cat FROM #days c LEFT OUTER JOIN ASCII_CHAR_FOR_SlNo d ON c.day_s=d.INX       
+ select @sf_Min=min(INX), @sf_Max=max(INX) from @Mgr_Codes          
+ while @sf_Min<=@sf_Max          
+ begin          
+  select @cSf_code=INX,@mdate=sfcd from @Mgr_Codes where INX=@sf_Min          
+        CREATE TABLE #Qus (          
+ques_id INT )
+   select @cnt=CHR_ORDER from ASCII_CHAR_FOR_SlNo where INX=@sf_Min    
+       set @surveyId=(  select top(1) SurveyId from Processing_UserList where Div_Code= @Div_Code and Month = @cMnth and Year= @cYr
+                       and day(From_Date)=@mdate  )
+					
+					   insert into #Qus
+					   select count(distinct Question_Id) as Question_Id from AddQuestions    where SurveyID =@surveyId
+					  
+ ;WITH CteTtl AS          
+ (          
+  SELECT 'TMP' AS sf_code, 0 AS cnt,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_AAT' AS VST -- from #cat       
+  UNION ALL          
+               select  sf_code, (select ques_id from #qus) Qus   ,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_AAT' AS VST
+        from  Hirarchy_Coverage 
+        union all          
+     SELECT 'TMP' AS sf_code, 0 AS cnt,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_ABT' AS VST -- from #cat       
+      union all        
+     select q.Sf_Code,  COUNT(q.Input_Id) Ans  ,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_ABT' AS VST  
+        from AddInputOptions b, Quiz_Result q, QuizTitleCreation t    
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+                       and q.Sf_Code  in (select sf_code from Hirarchy_Coverage)
+                       and Correct_Ans=1 and Month = @cMnth and Year= @cYr
+                       and q.Survey_Id = t.Survey_Id  and q.Survey_Id  =@surveyId
+					   group by q.Sf_Code
+					     union all          
+     SELECT 'TMP' AS sf_code, 0 AS cnt,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_ACT' AS VST
+      )     
+	   
+ INSERT INTO #tmpValTbl SELECT * FROM CteTtl           
+        drop table #qus     
+    --insert into #tmpValTbl SELECT ListedDrCode AS Trans_Detail_Info_Code, 0 AS cnt, CAST(@cat_slno AS VARCHAR)+'_0_ABT' AS VST FROM Listeddr_Report          
+ set @sf_Min+=1          
+ end          
+ SET @MinInx+=1          
+ SET @cat_slno+=1          
+ -- NEXT MONTH          
+END 
+
+DECLARE @ColumnName NVARCHAR(max), @DynamicPivotQuery NVARCHAR(max),@ColumnName2 NVARCHAR(max)              
+SELECT @ColumnName=isnull(@ColumnName+',','')+'isnull(cast('+Quotename(VST)+' as varchar),''-'') as '+Quotename(VST) FROM (SELECT DISTINCT VST FROM #tmpValTbl) AS main ORDER BY VST              
+ SELECT @ColumnName2=isnull(@ColumnName2+',','')+Quotename(VST) FROM (SELECT DISTINCT VST FROM #tmpValTbl) AS main ORDER BY VST              
+ SET @DynamicPivotQuery =               
+  N'SELECT sf_code,' + @ColumnName + ' into ##tmp              
+  FROM (select sf_code, cnt, VST from #tmpValTbl)x              
+  PIVOT(SUM(cnt)               
+    FOR VST IN (' + @ColumnName2 + ')) AS PVTTable'              
+ --Execute the Dynamic Pivot Query              
+  EXEC sp_executesql @DynamicPivotQuery 
+
+  
+SELECT * FROM Hirarchy_Coverage p LEFT OUTER JOIN ##tmp s ON p.sf_code=s.sf_code     order by SNo      
+--select * from #tmpValTbl where VST like '%_ABT' and Trans_Detail_Info_Code!='tmp' order by VST, Trans_Detail_Info_Code, dt          
+--SELECT distinct a.Trans_Detail_Info_Code, a.VST, STUFF((SELECT distinct ', ' + QUOTENAME(b.dt)          
+--           FROM #tmpValTbl b WHERE a.Trans_Detail_Info_Code = b.Trans_Detail_Info_Code and b.VST = a.vst          
+--          FOR XML PATH('')), 1, 2, '') dt, 0 as cnt into #tst          
+--FROM #tmpValTbl a where a.VST like '%_ABT'          
+--GROUP BY a.Trans_Detail_Info_Code, a.vst           
+DROP TABLE ##tmp              
+DROP TABLE #tmpValTbl              
+--DROP TABLE #tmpTbl          
+ TRUNCATE TABLE Hirarchy_Coverage        
+---          
+END 
+GO
+
+-------------------------------------
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[Quiz_Result_Month_Daywise_TST]    Script Date: 5/18/2020 7:18:10 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+    --  Quiz_Result_Month_Daywise_TST '37','MGR0794'
+CREATE PROCEDURE [dbo].[Quiz_Result_Month_Daywise_TST] (@Div_Code INT, @Msf_code VARCHAR(15))        
+--CREATE PROCEDURE [dbo].[Quiz_Result_Month_Daywise_TST] (@Div_Code INT, @Msf_code VARCHAR(15), @MnthTbl MnthTbl READONLY, @Mgr_Codes SfCodes READONLY)          
+AS          
+BEGIN          
+SET DEADLOCK_PRIORITY high          
+--CREATE TABLE #tmpTbl (          
+--sno INT, sf_code VARCHAR(10),sf_name VARCHAR(150), desg VARCHAR(50), hq VARCHAR(150), clr VARCHAR(20)           
+--)          
+ TRUNCATE TABLE Hirarchy_Coverage        
+  INSERT INTO Hirarchy_Coverage EXEC ViewDetails_Hierarchy @Div_Code, @Msf_code       
+create table #days      
+(      
+day_s varchar(100)      
+)                        
+--INSERT INTO #tmpTbl EXEC get_Rep_access_Sale @Msf_code , @Div_Code              
+CREATE TABLE #tmpValTbl (            
+sf_code VARCHAR(15), cnt INT,dt INT, VST varchar(50)             
+)          
+DECLARE @MnthTbl TABLE (INX INT, MNTH INT, YR INT)      
+INSERT INTO @MnthTbl VALUES (1,2,2020)         
+DECLARE @MinInx INT, @MaxInx INT, @cMnth varchar(50), @cYr varchar(50), @cDate VARCHAR(15), @cMn INT, @cYrs INT          
+ declare @surveyId varchar(50)   
+ DECLARE @Mgr_Codes TABLE (INX INT, SfCd VARCHAR(20))      
+INSERT INTO @Mgr_Codes VALUES (2,'1')--,(2,'30')--,(4,07,2016)   
+DECLARE @sf_Min INT, @sf_Max INT, @cSf_code VARCHAR(15) , @cnt varchar(15) ,@mdate varchar(15)     
+SELECT @MinInx=MIN(INX), @MaxInx=MAX(INX) FROM @MnthTbl          
+DECLARE @cat_slno INT=1          
+WHILE @MinInx<=@MaxInx          
+BEGIN          
+ --          
+ SELECT @cMnth = MNTH, @cYr=YR FROM @MnthTbl WHERE INX=@MinInx          
+ SET @cMn=@cMnth+1          
+ IF @cMN=13          
+ BEGIN          
+  SET @cMN=01; SET @cYrs=@cYr+1;          
+ END          
+ ELSE          
+  SET @cYrs=@cYr          
+ SET @cDate=CAST(@cMn AS VARCHAR)+'-01-'+CAST(@cYrs AS VARCHAR)          
+    --select @cMnth        
+   --   INSERT INTO #days EXEC [Month_date] @cMnth       
+ --select * from #days        
+ --SELECT c.*,d.CHR_ORDER INTO #cat FROM #days c LEFT OUTER JOIN ASCII_CHAR_FOR_SlNo d ON c.day_s=d.INX       
+ select @sf_Min=min(INX), @sf_Max=max(INX) from @Mgr_Codes          
+ while @sf_Min<=@sf_Max          
+ begin          
+  select @cSf_code=INX,@mdate=sfcd from @Mgr_Codes where INX=@sf_Min          
+        CREATE TABLE #Qus (          
+ques_id INT )
+   select @cnt=CHR_ORDER from ASCII_CHAR_FOR_SlNo where INX=@sf_Min  
+       set @surveyId=(select top(1) SurveyId from Processing_UserList where Div_Code= @Div_Code  and Month = @cMnth and Year=@cYr    and day(From_Date)=@mdate  )
+	    
+					   insert into #Qus
+					   select count(distinct Question_Id) as Question_Id from AddQuestions    where SurveyID =@surveyId
+					  
+ ;WITH CteTtl AS          
+ (          
+  SELECT 'TMP' AS sf_code, 0 AS cnt,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_AAT' AS VST -- from #cat       
+  UNION ALL          
+               select  sf_code, (select ques_id from #qus) Qus   ,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_AAT' AS VST
+        from  Hirarchy_Coverage 
+        union all          
+     SELECT 'TMP' AS sf_code, 0 AS cnt,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_ABT' AS VST -- from #cat       
+      union all        
+     select q.Sf_Code,  COUNT(q.Input_Id) Ans  ,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_ABT' AS VST  
+        from AddInputOptions b, Quiz_Result q, QuizTitleCreation t    
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+                       and q.Sf_Code  in (select sf_code from Hirarchy_Coverage)
+                       and Correct_Ans=1 and Month = @cMnth and Year= @cYr
+                       and q.Survey_Id = t.Survey_Id  and q.Survey_Id  =@surveyId
+					   group by q.Sf_Code
+					     union all          
+     SELECT 'TMP' AS sf_code, 0 AS cnt,'0' as dt, CAST(@cat_slno AS VARCHAR)+'_'+cast(@cnt as varchar)+'_ACT' AS VST
+      )     
+ INSERT INTO #tmpValTbl SELECT * FROM CteTtl           
+        drop table #qus     
+    --insert into #tmpValTbl SELECT ListedDrCode AS Trans_Detail_Info_Code, 0 AS cnt, CAST(@cat_slno AS VARCHAR)+'_0_ABT' AS VST FROM Listeddr_Report          
+ set @sf_Min+=1          
+ end          
+ SET @MinInx+=1          
+ SET @cat_slno+=1          
+ -- NEXT MONTH          
+END          
+DECLARE @ColumnName NVARCHAR(max), @DynamicPivotQuery NVARCHAR(max),@ColumnName2 NVARCHAR(max)              
+SELECT @ColumnName=isnull(@ColumnName+',','')+'isnull(cast('+Quotename(VST)+' as varchar),''-'') as '+Quotename(VST) FROM (SELECT DISTINCT VST FROM #tmpValTbl) AS main ORDER BY VST              
+ SELECT @ColumnName2=isnull(@ColumnName2+',','')+Quotename(VST) FROM (SELECT DISTINCT VST FROM #tmpValTbl) AS main ORDER BY VST              
+ SET @DynamicPivotQuery =               
+  N'SELECT sf_code,' + @ColumnName + ' into ##tmp              
+  FROM (select sf_code, cnt, VST from #tmpValTbl)x              
+  PIVOT(SUM(cnt)               
+    FOR VST IN (' + @ColumnName2 + ')) AS PVTTable'              
+ --Execute the Dynamic Pivot Query              
+  EXEC sp_executesql @DynamicPivotQuery              
+SELECT * FROM Hirarchy_Coverage p LEFT OUTER JOIN ##tmp s ON p.sf_code=s.sf_code     order by SNo      
+--select * from #tmpValTbl where VST like '%_ABT' and Trans_Detail_Info_Code!='tmp' order by VST, Trans_Detail_Info_Code, dt          
+--SELECT distinct a.Trans_Detail_Info_Code, a.VST, STUFF((SELECT distinct ', ' + QUOTENAME(b.dt)          
+--           FROM #tmpValTbl b WHERE a.Trans_Detail_Info_Code = b.Trans_Detail_Info_Code and b.VST = a.vst          
+--          FOR XML PATH('')), 1, 2, '') dt, 0 as cnt into #tst          
+--FROM #tmpValTbl a where a.VST like '%_ABT'          
+--GROUP BY a.Trans_Detail_Info_Code, a.vst           
+DROP TABLE ##tmp              
+DROP TABLE #tmpValTbl              
+--DROP TABLE #tmpTbl          
+ TRUNCATE TABLE Hirarchy_Coverage        
+---          
+END 
+GO
+
+----------------------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[Quiz_Result_View]    Script Date: 5/18/2020 7:18:25 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Quiz_Result_View '25','admin'  ,'5' ,'2019' ,4
+
+CREATE PROCEDURE [dbo].[Quiz_Result_View](@div_code varchar(10),@sf_code varchar(25), @month varchar(10), @year varchar(10), @surveyId int)                  
+
+AS                  
+
+BEGIN                  
+
+
+
+;with cte as(                    
+
+ select                     
+
+ Sf_Code,                     
+
+ Sf_Name,Sf_HQ,sf_Designation_Short_Name,                    
+
+ (select b.Desig_Color from Mas_SF_Designation b where a.Designation_Code=b.Designation_Code) as desig_color, sf_type,Division_Code,                   
+
+  TP_Reporting_SF,              
+
+  -- dbo.rtn_DCR_Count(sf_code,@iMonth,@iYear,Substring(@div_Code, 1, (len(@div_Code)-1))) as Count_value,               
+
+   sf_tp_active_flag, sf_status,sf_Emp_Id,                   
+
+  lvl = 0,                     
+
+  Sortid = cast(Sf_Code as varchar(max))                    
+
+ from Mas_Salesforce a                    
+
+ where Sf_Code=@Sf_Code  and  (a.Division_Code like  @div_code +','+'%' or a.Division_Code like '%'+','+@div_code+','+'%')  and  sf_status!=2              
+
+ union all                    
+
+ select                      
+
+  a.Sf_Code,
+
+  a.Sf_Name,a.Sf_HQ,a.sf_Designation_Short_Name,
+
+  (select b.Desig_Color from Mas_SF_Designation b where a.Designation_Code=b.Designation_Code) as desig_color,   a.sf_type, a.Division_Code,                 
+
+  a.TP_Reporting_SF,         
+
+ -- dbo.rtn_DCR_Count(a.sf_code,@iMonth,@iYear,Substring(@div_Code, 1, (len(@div_Code)-1))) as Count_value,              
+
+  a.sf_tp_active_flag, a.sf_status ,a.sf_Emp_Id,   
+
+  lvl = lvl + 1,                     
+
+  Sortid = Sortid + cast(a.sf_code as varchar(max))                    
+
+ from Mas_Salesforce a 
+
+ join cte b                    
+
+ on a.TP_Reporting_SF = b.Sf_Code and (a.Division_Code like  @div_code +','+'%' or a.Division_Code like '%'+','+@div_code+','+'%')  where a.sf_status!=2                
+
+) 
+
+select
+
+Sf_Code,                     
+
+  Sf_Name+'-'+Sf_HQ+'-'+sf_Designation_Short_Name as Sf_Name,sf_type,sf_Designation_Short_Name,Sf_HQ,Division_Code
+ --  (select  COUNT(b.Input_Id) Ans   
+ --       from AddInputOptions b, Quiz_Result q , QuizTitleCreation t   
+ --                      where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+ --                      and cte.sf_code=q.Sf_Code  
+ --                      and Correct_Ans=1   and Month = @month and Year= @year 
+ --                       and q.Survey_Id = t.Survey_Id ) ,        
+ --( select COUNT(Question_Id) Qus from AddQuestions where Division_Code=@div_code and SurveyID = @surveyId)  ,cte.desig_color as Desig_Color,  
+ --(select  COUNT(q.Second_Input_Id) SecondAns   
+ --       from AddInputOptions b, Quiz_Result q, QuizTitleCreation t    
+ --                      where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Second_Input_Id   
+ --                      and cte.sf_code=q.Sf_Code  
+ --                      and Correct_Ans=1  and Month = @month and Year= @year 
+ --                       and q.Survey_Id = t.Survey_Id  )                     
+
+from cte                    
+
+order by Sortid
+
+END 
+GO
+
+-------------------------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[Quiz_Status_Temp]    Script Date: 5/18/2020 7:18:39 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Quiz_Status_Temp '48','MGR1069'  ,'12','2019',59
+
+
+
+CREATE PROCEDURE [dbo].[Quiz_Status_Temp](@div_code varchar(10),@sf_code varchar(25), @month varchar(10), @year varchar(10), @surveyId int)                      
+
+
+
+AS                      
+
+
+
+BEGIN                      
+
+
+
+ DECLARE @sf_Type INT                      
+
+
+
+ DECLARE @cur_sf_code varchar(25)                      
+
+
+
+ DECLARE @Sf_Name varchar(150)                      
+
+
+
+ DECLARE @Sf_UserName varchar(50)                      
+
+
+
+ DECLARE @sf_Designation_Short_Name varchar(50)                      
+
+
+
+ DECLARE @Reporting_To_SF varchar(25)                      
+
+
+
+ DECLARE @sf_hq varchar(75)                      
+
+
+
+ DECLARE @cnt INT                  
+
+
+
+ DECLARE @StateName varchar(50)                      
+
+
+
+DECLARE @Ans varchar(50)      
+
+
+
+DECLARE @SecondAns varchar(50)  
+
+
+
+DECLARE @Qus varchar(50)      
+
+
+
+ DECLARE @Des_Color varchar(20)                
+
+
+
+ Declare @temp_sfcode varchar(20)  
+
+
+
+ DECLARE @Hierarchy TABLE (order_id int,SF_Code varchar(25), Sf_Name varchar(150), Sf_UserName varchar(50), sf_Type int,                       
+
+
+
+       StateName varchar(50),Reporting_To_SF varchar(25),  sf_hq varchar(75), sf_Designation_Short_Name varchar(50),sf_color varchar(20),Ans varchar(50), Qus varchar(50),des_color varchar(20), SecondAns varchar(50))                      
+
+
+
+ set @temp_sfcode = @sf_code                     
+
+
+
+ SET @cnt = 0                      
+
+
+
+ DECLARE curP CURSOR FOR                  
+
+
+
+  SELECT a.sf_Code, a.sf_Name, a.Sf_UserName, a.sf_Type,b.StateName,                       
+
+
+
+  (select sf_name from mas_salesforce where sf_code=a.Reporting_To_SF) as Reporting_To_SF, a.sf_hq, a.sf_Designation_Short_Name ,              
+
+
+
+ (select  COUNT(q.Input_Id) Ans   
+
+
+
+        from AddInputOptions b, Quiz_Result q, QuizTitleCreation t    
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1 and Month = @month and Year= @year
+
+
+
+                       and q.Survey_Id = t.Survey_Id  and q.Survey_Id= @surveyId) ,  
+
+
+
+ ( select COUNT(Question_Id) Qus from AddQuestions where Division_Code=@div_code and SurveyID = @surveyId),d.Desig_Color,  
+
+
+
+  (select  COUNT(q.Second_Input_Id) SecondAns   
+
+
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t     
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Second_Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1 and Month = @month and Year= @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id   and q.Survey_Id= @surveyId)  
+
+
+
+  FROM mas_salesforce a,mas_state b , Mas_SF_Designation d                   
+
+
+
+  WHERE a.SF_Status !=2 and --a.sf_Tp_Active_flag = 0 and           
+
+
+
+ (a.Division_Code like  @div_code +','+'%' or a.Division_Code like '%'+','+@div_code+','+'%') and a.Reporting_To_SF = @sf_code and                      
+
+
+
+  a.State_Code=b.State_Code and a.Designation_Code=d.Designation_Code   -- and a.Sf_Code=c.Sf_Code      
+
+
+
+ OPEN curP                       
+
+
+
+ FETCH NEXT FROM curP INTO @cur_sf_code, @Sf_Name,@Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,@Ans,@Qus,@Des_Color,@SecondAns                     
+
+
+
+ WHILE @@Fetch_Status = 0                       
+
+
+
+ BEGIN                      
+
+
+
+  SET @cnt = @cnt + 1                      
+
+
+
+  INSERT INTO @Hierarchy  VALUES (@cnt, @cur_sf_code, @Sf_Name, @Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,'Level1',@Ans,@Qus,@Des_Color,@SecondAns)                      
+
+
+
+  SET @sf_code = @cur_sf_code                      
+
+
+
+  DECLARE curMgr CURSOR FOR                      
+
+
+
+   SELECT a.sf_Code, a.sf_Name, a.Sf_UserName, a.sf_Type,b.StateName,                       
+
+
+
+   (select sf_name from mas_salesforce where sf_code=a.Reporting_To_SF) as Reporting_To_SF, a.sf_hq, a.sf_Designation_Short_Name,              
+
+
+
+  (select  COUNT(b.Input_Id) Ans   
+
+
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t    
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1 and Month = @month and Year= @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id and q.Survey_Id= @surveyId) ,    
+
+
+
+ ( select COUNT(Question_Id) Qus from AddQuestions where Division_Code=@div_code and SurveyID = @surveyId),d.Desig_Color,  
+
+
+
+  (select  COUNT(q.Second_Input_Id) SecondAns   
+
+
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t     
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Second_Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1 and Month = @month and Year= @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id  and q.Survey_Id= @surveyId)                          
+
+
+
+   FROM mas_salesforce a,mas_state b  , Mas_SF_Designation d                    
+
+
+
+   WHERE a.SF_Status!=2 and --a.sf_Tp_Active_flag = 0 and           
+
+
+
+  (a.Division_Code like  @div_code +','+'%' or a.Division_Code like '%'+','+@div_code+','+'%') and a.Reporting_To_SF = @sf_code and                  
+
+
+
+   a.State_Code=b.State_Code and a.Designation_Code=d.Designation_Code   --and a.Sf_Code=c.Sf_Code                       
+
+
+
+   ORDER BY a.sf_type                     
+
+
+
+  OPEN curMgr                       
+
+
+
+  FETCH NEXT FROM curMgr INTO @cur_sf_code, @Sf_Name,@Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name ,@Ans,@Qus,@Des_Color,@SecondAns                     
+
+
+
+  WHILE @@Fetch_Status = 0 -- ZM MGR Level                      
+
+
+
+  BEGIN                      
+
+
+
+   SET @cnt = @cnt + 1                      
+
+
+
+   INSERT INTO @Hierarchy  VALUES (@cnt, @cur_sf_code, @Sf_Name, @Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,'Level2',@Ans,@Qus,@Des_Color,@SecondAns)                      
+
+
+
+   SET @sf_code = @cur_sf_code                      
+
+
+
+   DECLARE curRM CURSOR FOR                      
+
+
+
+    SELECT a.sf_Code, a.sf_Name, a.Sf_UserName, a.sf_Type,b.StateName,                         
+
+
+
+    (select sf_name from mas_salesforce where sf_code=a.Reporting_To_SF) as Reporting_To_SF, a.sf_hq, a.sf_Designation_Short_Name,              
+
+
+
+    (select  COUNT(b.Input_Id) Ans   
+
+
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t   
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1   and Month = @month and Year= @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id and q.Survey_Id= @surveyId) ,        
+
+
+
+ ( select COUNT(Question_Id) Qus from AddQuestions where Division_Code=@div_code and SurveyID = @surveyId)  ,d.Desig_Color,  
+
+
+
+ (select  COUNT(q.Second_Input_Id) SecondAns   
+
+
+
+        from AddInputOptions b, Quiz_Result q, QuizTitleCreation t    
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Second_Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1  and Month = @month and Year= @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id and q.Survey_Id= @surveyId )              
+
+
+
+    FROM mas_salesforce a,mas_state b, Mas_SF_Designation d                     
+
+
+
+    WHERE a.SF_Status!=2 and --a.sf_Tp_Active_flag = 0 and           
+
+
+
+    (a.Division_Code like  @div_code +','+'%' or a.Division_Code like '%'+','+@div_code+','+'%') and a.Reporting_To_SF = @sf_code                      
+
+
+
+    and a.State_Code=b.State_Code and a.Designation_Code=d.Designation_Code --and a.Sf_Code=c.Sf_Code                       
+
+
+
+    ORDER BY a.sf_type                     
+
+
+
+   OPEN curRM                       
+
+
+
+   FETCH NEXT FROM curRM INTO @cur_sf_code, @Sf_Name,@Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,@Ans,@Qus ,@Des_Color,@SecondAns                     
+
+
+
+  WHILE @@Fetch_Status = 0 -- RM Level                      
+
+
+
+   BEGIN                      
+
+
+
+   SET @cnt = @cnt + 1                      
+
+
+
+    INSERT INTO @Hierarchy  VALUES (@cnt, @cur_sf_code, @Sf_Name, @Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,'Level3',@Ans,@Qus,@Des_Color,@SecondAns)                      
+
+
+
+    SET @sf_code = @cur_sf_code                      
+
+
+
+    DECLARE curAM CURSOR FOR                      
+
+
+
+     SELECT a.sf_Code, a.sf_Name, a.Sf_UserName, a.sf_Type,b.StateName,         
+
+
+
+     (select sf_name from mas_salesforce where sf_code=a.Reporting_To_SF) as Reporting_To_SF, a.sf_hq, a.sf_Designation_Short_Name,              
+
+
+
+    (select  COUNT(b.Input_Id) Ans   
+
+
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t   
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1 and Month = @month and Year= @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id  and q.Survey_Id= @surveyId) ,     
+
+
+
+ ( select COUNT(Question_Id) Qus from AddQuestions where Division_Code=@div_code and SurveyID = @surveyId)  ,d.Desig_Color,  
+
+
+
+ (select  COUNT(q.Second_Input_Id) SecondAns   
+
+
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t   
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Second_Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1  and Correct_Ans=1 and Month = @month and Year= @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id and q.Survey_Id= @surveyId )                   
+
+
+
+     FROM mas_salesforce a,mas_state b, Mas_SF_Designation d                        
+
+
+
+     WHERE a.SF_Status!=2 and --a.sf_Tp_Active_flag = 0 and           
+
+
+
+     (a.Division_Code like  @div_code +','+'%' or a.Division_Code like '%'+','+@div_code+','+'%') and a.Reporting_To_SF = @sf_code and                      
+
+
+
+     a.State_Code=b.State_Code and a.Designation_Code=d.Designation_Code --and a.Sf_Code=c.Sf_Code                   
+
+
+
+     ORDER BY a.sf_type                     
+
+
+
+    OPEN curAM                       
+
+
+
+    FETCH NEXT FROM curAM INTO @cur_sf_code, @Sf_Name,@Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,@Ans,@Qus,@Des_Color,@SecondAns                       
+
+
+
+
+
+
+
+	 
+
+
+
+
+
+
+
+	WHILE @@Fetch_Status = 0  -- fso Level                    
+
+
+
+   BEGIN                      
+
+
+
+    SET @cnt = @cnt + 1                      
+
+
+
+    INSERT INTO @Hierarchy  VALUES (@cnt, @cur_sf_code, @Sf_Name, @Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,'Level3',@Ans,@Qus,@Des_Color,@SecondAns)                      
+
+
+
+    SET @sf_code = @cur_sf_code                      
+
+
+
+    DECLARE curFSO CURSOR FOR                      
+
+
+
+     SELECT a.sf_Code, a.sf_Name, a.Sf_UserName, a.sf_Type,b.StateName,         
+
+
+
+     (select sf_name from mas_salesforce where sf_code=a.Reporting_To_SF) as Reporting_To_SF, a.sf_hq, a.sf_Designation_Short_Name,              
+
+
+
+    (select  COUNT(b.Input_Id) Ans   
+
+
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t   
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1 and Month = @month and Year= @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id and q.Survey_Id= @surveyId ) ,     
+
+
+
+ ( select COUNT(Question_Id) Qus from AddQuestions where Division_Code=@div_code and SurveyID = @surveyId)  ,d.Desig_Color,  
+
+
+
+ (select  COUNT(q.Second_Input_Id) SecondAns   
+
+
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t   
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Second_Input_Id   
+
+
+
+                 and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1  and Correct_Ans=1 and Month = @month and Year= @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id and q.Survey_Id= @surveyId )                   
+
+
+
+     FROM mas_salesforce a,mas_state b, Mas_SF_Designation d      
+
+
+
+     WHERE a.SF_Status!=2 and --a.sf_Tp_Active_flag = 0 and           
+
+
+
+     (a.Division_Code like  @div_code +','+'%' or a.Division_Code like '%'+','+@div_code+','+'%') and a.Reporting_To_SF = @sf_code and                      
+
+
+
+     a.State_Code=b.State_Code and a.Designation_Code=d.Designation_Code --and a.Sf_Code=c.Sf_Code                   
+
+
+
+     ORDER BY a.sf_type     
+
+
+
+
+
+
+
+	  OPEN curFSO 
+
+
+
+	    FETCH NEXT FROM curFSO INTO @cur_sf_code, @Sf_Name,@Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,@Ans,@Qus,@Des_Color,@SecondAns                       
+
+
+
+
+
+
+
+    WHILE @@Fetch_Status = 0 -- AM Level                      
+
+
+
+    BEGIN                      
+
+
+
+     SET @cnt = @cnt + 1                      
+
+
+
+     INSERT INTO @Hierarchy  VALUES (@cnt, @cur_sf_code, @Sf_Name, @Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,'Level4',@Ans,@Qus,@Des_Color,@SecondAns)                      
+
+
+
+     FETCH NEXT FROM curFSO Into @cur_sf_code, @Sf_Name,@Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,@Ans,@Qus ,@Des_Color,@SecondAns                      
+
+
+
+    END -- End of Fetch Fso Level 
+
+
+
+	 CLOSE curFSO        
+
+
+
+    DEALLOCATE curFSO    
+
+
+
+	   FETCH NEXT FROM curAM Into @cur_sf_code, @Sf_Name,@Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,@Ans,@Qus ,@Des_Color,@SecondAns                      
+
+
+
+   END --
+
+
+
+
+
+
+
+    CLOSE curAM                      
+
+
+
+    DEALLOCATE curAM                      
+
+
+
+    FETCH NEXT FROM curRM Into @cur_sf_code, @Sf_Name,@Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,@Ans,@Qus ,@Des_Color,@SecondAns                      
+
+
+
+   END -- End of Fetch RM Level                      
+
+
+
+   CLOSE curRM                      
+
+
+
+   DEALLOCATE curRM                      
+
+
+
+   FETCH NEXT FROM curMgr Into @cur_sf_code, @Sf_Name,@Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,@Ans,@Qus,@Des_Color,@SecondAns                       
+
+
+
+  END -- End of Fetch MGR Level                      
+
+
+
+  CLOSE curMgr                      
+
+
+
+  DEALLOCATE curMgr                      
+
+
+
+  FETCH NEXT FROM curP Into @cur_sf_code, @Sf_Name,@Sf_UserName,@sf_Type,@StateName,@Reporting_To_SF,@sf_hq,@sf_Designation_Short_Name,@Ans,@Qus ,@Des_Color,@SecondAns                      
+
+
+
+ END -- End of Main Level                      
+
+
+
+ CLOSE curP                      
+
+
+
+ DEALLOCATE curP                      
+
+
+
+    SELECT order_id, SF_Code,Sf_Name,Sf_UserName,sf_Type,StateName,Reporting_To_SF,sf_hq,sf_Designation_Short_Name,sf_color,Ans,Qus,des_color,SecondAns FROM @Hierarchy   
+
+
+
+    union all  
+
+
+
+    select '' order_id, SF_Code,Sf_Name,Sf_UserName,sf_Type,'' StateName,'' Reporting_To_SF,sf_hq,sf_Designation_Short_Name, '' sf_color,  
+
+
+
+    (select  COUNT(b.Input_Id) Ans   
+
+
+
+        from AddInputOptions b, Quiz_Result q  , QuizTitleCreation t   
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1  and Month = @month and Year = @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id and q.Survey_Id= @surveyId)  ,    
+
+
+
+ ( select COUNT(Question_Id) Qus from AddQuestions where Division_Code=@div_code and SurveyID = @surveyId)  ,d.Desig_Color,  
+
+
+
+ (select  COUNT(q.Second_Input_Id) SecondAns   
+
+
+
+        from AddInputOptions b, Quiz_Result q , QuizTitleCreation t    
+
+
+
+                       where  b.Question_Id=q.Quiz_Id and b.Input_Id = q.Second_Input_Id   
+
+
+
+                       and a.sf_code=q.Sf_Code  
+
+
+
+                       and Correct_Ans=1  and Month = @month and Year= @year 
+
+
+
+                        and q.Survey_Id = t.Survey_Id and q.Survey_Id= @surveyId)        
+
+
+
+     FROM Mas_Salesforce a , Mas_SF_Designation d    where  a.Designation_Code=d.Designation_Code   
+
+
+
+     and a.Sf_Code= @temp_sfcode  and  (a.Division_Code like  @div_code +','+'%' or a.Division_Code like '%'+','+@div_code+','+'%')           
+
+
+
+      ORDER BY order_id                     
+
+
+
+END -- End of Procedure 
+GO
+
+--------------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[Quiz_Test_Link]    Script Date: 5/18/2020 7:18:51 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+
+--Start--
+
+--Quiz_Test_Link '9','MR2591'
+
+CREATE PROCEDURE [dbo].[Quiz_Test_Link]   
+
+(       
+
+ @Div_Code varchar(100),
+
+ @Sf_Code varchar(100)  
+
+)       
+
+AS    
+
+BEGIN    
+
+ SET NOCOUNT ON;    
+
+ Create table #tblQuiz(S_Id int identity(1,1),ProcessId int,Sf_Code varchar(100),
+
+ Sf_Name varchar(100),Survey_Id varchar(100),res varchar(100))
+
+  Create table #tmp(S_Id int identity(1,1),SurveyId int)
+
+ insert into #tmp(SurveyId)
+
+ -- changes done here ..start -- Reshmi
+
+
+
+ select SurveyId from Processing_UserList p ,QuizTitleCreation q where Sf_Code =@Sf_Code and Div_Code=@Div_Code
+
+ and Process_Status='P' and CAST (GETDATE() AS DATE) BETWEEN From_Date AND To_Date
+
+ and p.SurveyId=q.Survey_Id and q.active=0
+
+
+
+ ---end
+
+
+
+ --select SurveyId from Processing_UserList p where Sf_Code =@Sf_Code and Div_Code=@Div_Code
+
+ --and Process_Status='P' and CAST (GETDATE() AS DATE) BETWEEN From_Date AND To_Date
+
+ Declare @Proc int
+
+ set @Proc=(select count(*) from #tmp)
+
+ --if(@Proc>1)
+
+ --begin
+
+ --update Processing_UserList set Process_Status='NA' where Sf_Code =@Sf_Code and Div_Code=@Div_Code
+
+ --and SurveyId not in(select max(SurveyId) from #tmp) 
+
+ --end
+
+ Declare @SurveyId varchar(100)
+
+
+
+  -- changes done here ..start --Reshmi
+
+
+
+  Set @SurveyId=(select SurveyId from Processing_UserList p ,QuizTitleCreation q  where Sf_Code =@Sf_Code and Div_Code=@Div_Code
+
+ and Process_Status='P' and CAST (GETDATE() AS DATE) BETWEEN From_Date AND To_Date and p.SurveyId=q.Survey_Id and q.active=0 )
+
+
+
+ -- end
+
+
+
+ --Set @SurveyId=(select SurveyId from Processing_UserList p where Sf_Code =@Sf_Code and Div_Code=@Div_Code
+
+ --and Process_Status='P' and CAST (GETDATE() AS DATE) BETWEEN From_Date AND To_Date )
+
+ Declare @Cnt int
+
+ Set @Cnt=(select count(Survey_Id) from QuizTitleCreation where
+
+    Division_Code=@Div_Code and  Active=0 and Survey_Id=@SurveyId)
+
+ if(@Cnt>0)
+
+ begin
+
+  insert into #tblQuiz(ProcessId,Sf_Code,Sf_Name,Survey_Id,res) 
+
+  select ProcessId,Sf_Code,Sf_Name,SurveyId as Survey_Id, 
+
+  (select top(1) status from Quiz_Result where Sf_Code =@Sf_Code
+
+  and Division_Code =@Div_Code and Survey_Id=@SurveyId  order by  status desc) as res 
+
+  from Processing_UserList p where Sf_Code =@Sf_Code and  Div_Code=@Div_Code and SurveyId= @SurveyId
+
+  and Process_Status='P' and CAST (GETDATE() AS DATE) BETWEEN From_Date AND To_Date
+
+ end
+
+ select * from #tblQuiz
+
+ drop table #tblQuiz
+
+ drop table #tmp
+
+END 
+
+--End--
+GO
+
+
+------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[Quiz_Test_Link_bkup]    Script Date: 5/18/2020 7:19:03 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[Quiz_Test_Link_bkup]   
+
+
+
+(       
+
+
+
+ @Div_Code varchar(100),
+
+
+
+ @Sf_Code varchar(100)  
+
+
+
+)       
+
+
+
+AS    
+
+
+
+BEGIN    
+
+
+
+ SET NOCOUNT ON;    
+
+
+
+ Create table #tblQuiz(S_Id int identity(1,1),ProcessId int,Sf_Code varchar(100),
+
+
+
+ Sf_Name varchar(100),Survey_Id varchar(100),res varchar(100))
+
+
+
+  Create table #tmp(S_Id int identity(1,1),SurveyId int)
+
+
+
+ insert into #tmp(SurveyId)
+
+
+
+ select SurveyId from Processing_UserList p where Sf_Code =@Sf_Code and Div_Code=@Div_Code
+
+
+
+ and Process_Status='P'
+
+
+
+ Declare @Proc int
+
+
+
+ set @Proc=(select count(*) from #tmp)
+
+
+
+ if(@Proc>1)
+
+
+
+ begin
+
+
+
+ 
+
+
+
+ update Processing_UserList set Process_Status='NA' where Sf_Code =@Sf_Code and Div_Code=@Div_Code
+
+
+
+ and SurveyId not in(select max(SurveyId) from #tmp) 
+
+
+
+ end
+
+
+
+ Declare @SurveyId varchar(100)
+
+
+
+ Set @SurveyId=(select SurveyId from Processing_UserList p where Sf_Code =@Sf_Code and Div_Code=@Div_Code
+
+
+
+ and Process_Status='P')
+
+
+
+ Declare @Cnt int
+
+
+
+ Set @Cnt=(select count(Survey_Id) from QuizTitleCreation where
+
+
+
+    Division_Code=@Div_Code and  Active=0 and Survey_Id=@SurveyId)
+
+
+
+ if(@Cnt>0)
+
+
+
+ begin
+
+
+
+  insert into #tblQuiz(ProcessId,Sf_Code,Sf_Name,Survey_Id,res) 
+
+
+
+  select ProcessId,Sf_Code,Sf_Name,SurveyId as Survey_Id, 
+
+
+
+  (select top(1) status from Quiz_Result where Sf_Code =@Sf_Code
+
+
+
+  and Division_Code =@Div_Code and Survey_Id=@SurveyId  order by  status desc) as res 
+
+
+
+  from Processing_UserList p where Sf_Code =@Sf_Code and  Div_Code=@Div_Code and SurveyId= @SurveyId
+
+
+
+  and Process_Status='P'
+
+
+
+ end
+
+
+
+ select * from #tblQuiz
+
+
+
+ drop table #tblQuiz
+
+
+
+ drop table #tmp
+
+
+
+END 
+GO
+
+----------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_Add_UserListProcessing_Quiz]    Script Date: 5/18/2020 7:19:32 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+--Start--
+
+CREATE PROCEDURE [dbo].[SP_Add_UserListProcessing_Quiz]   
+
+(       
+
+ @Div_Code varchar(100),
+
+ @SurveyId varchar(100),
+
+ @XMLQuestion_Det xml,
+
+ @Month varchar(10),
+
+ @Year varchar(10),
+
+ @lmonth varchar(10),
+
+ @lyear varchar(10),
+
+ @retValue int OUTPUT   
+
+)       
+
+AS    
+
+BEGIN    
+
+ SET NOCOUNT ON;    
+
+ BEGIN TRANSACTION 
+
+ SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
+
+ DECLARE @ErrorMsg VARCHAR(2000) --error strings 
+
+    DECLARE @ERR VARCHAR    
+
+ Declare @ResultId int
+
+		
+
+		  insert into dbo.Processing_UserList(ProcessId,Sf_Code,Sf_Name,Sf_HQ,
+
+  Designation,[State],TimeLimit,ProcessDate,[Type],NoOfAttempts,[Status],
+
+  Sf_UserID,Div_Code,SurveyId,[Month],[Year],CreatedDate,Process_Status,From_Date,To_Date)
+
+  SELECT   
+
+   (SELECT  isnull(max(cast(ProcessId as int)),0) as Process_Id    
+
+     FROM Processing_UserList)+ ROW_NUMBER() OVER (ORDER BY X) as Process_Id,  
+
+  CONVERT(varchar(250),TempTranse_Value.X.value('@Sf_Code', 'VARCHAR(250)')),      
+
+  CONVERT(varchar(250), TempTranse_Value.X.value('@Sf_Name', 'VARCHAR(250)')),        
+
+  CONVERT(varchar(250), TempTranse_Value.X.value('@Sf_HQ', 'VARCHAR(250)')),        
+
+  CONVERT(varchar(150),TempTranse_Value.X.value('@Designation', 'VARCHAR(150)')),        
+
+  CONVERT(varchar(50),TempTranse_Value.X.value('@State', 'VARCHAR(50)')),
+
+  CONVERT(varchar(50),TempTranse_Value.X.value('@TimeLimit', 'VARCHAR(50)')),      
+
+  CONVERT(varchar(150),TempTranse_Value.X.value('@ProcessDate', 'VARCHAR(150)')),        
+
+  CONVERT(varchar(50),TempTranse_Value.X.value('@Type', 'VARCHAR(50)')),
+
+  CONVERT(varchar(50),TempTranse_Value.X.value('@NoOfAttempts', 'VARCHAR(50)')),
+
+  CONVERT(varchar(50),TempTranse_Value.X.value('@Status', 'VARCHAR(50)')),      
+
+  CONVERT(varchar(50),TempTranse_Value.X.value('@Sf_UserID', 'VARCHAR(50)')),@Div_Code,@SurveyId,        
+
+  CONVERT(varchar(50),TempTranse_Value.X.value('@Month', 'VARCHAR(50)')),
+
+  CONVERT(varchar(50),TempTranse_Value.X.value('@Year', 'VARCHAR(50)')),getdate(),'P',
+
+  CONVERT(varchar(150),TempTranse_Value.X.value('@From_Date', 'VARCHAR(150)')),  
+
+  CONVERT(varchar(150),TempTranse_Value.X.value('@To_Date', 'VARCHAR(150)'))           
+
+  FROM @XMLQuestion_Det.nodes('/root/QuestionData') AS TempTranse_Value(X) 
+
+  IF @@ROWCOUNT = 0 
+
+        BEGIN 
+
+            SET @ErrorMsg = 'Error in Insert'            
+
+            RAISERROR(@ErrorMsg,16,1, -999) 
+
+            GOTO ERR_HANDLER 
+
+        END 
+
+  ELSE
+
+  BEGIN
+
+     SET @retValue=1; 
+
+     COMMIT TRANSACTION 
+
+     return @retValue;               
+
+  END
+
+        IF(@@ERROR <> 0) GOTO ERR_HANDLER 
+
+-- end
+
+ IF @@TRANCOUNT > 0 COMMIT TRANSACTION 
+
+    RETURN 0  
+
+    ERR_HANDLER:  
+
+        IF @@TRANCOUNT > 0   
+
+        ROLLBACK TRANSACTION     
+
+        SELECT @ERR = @@error  
+
+        RETURN @ERR  
+
+END 
+
+--End--
+GO
+
+--------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_AddQuiz_Result_Test]    Script Date: 5/18/2020 7:19:45 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SP_AddQuiz_Result_Test]   
+(       
+	 @Div_Code varchar(100),
+	 @SF_Code varchar(100),
+	 @XMLQuestion_Det xml,
+	 @SurvID varchar(100),
+	 @retValue int OUTPUT   
+)       
+AS    
+BEGIN    
+ SET NOCOUNT ON;    
+ BEGIN TRANSACTION 
+	SET TRANSACTION ISOLATION LEVEL SERIALIZABLE
+	DECLARE @ErrorMsg VARCHAR(2000) --error strings 
+    DECLARE @ERR VARCHAR    
+	Declare @ResultId int
+	set @ResultId=(select  isnull(max(Cast((Result_Id) as int) ),0) + 1 from Quiz_Result)
+	Declare @M_Cnt int
+	Set @M_Cnt=(select count(Sf_Code) from Quiz_Result where Sf_Code =@SF_Code and Division_Code = @Div_Code
+				and Quiz_Id in(SELECT CONVERT(varchar(50),TempTranse_Value.X.value('@Question_Id', 'VARCHAR(50)')) 
+				FROM @XMLQuestion_Det.nodes('/root/QuestionData') AS TempTranse_Value(X)) and  Status=1)
+	Declare @Status int
+	set @Status=(select count(Sf_Code) from Quiz_Result where Sf_Code =@SF_Code and Division_Code = @Div_Code
+				and Quiz_Id in(SELECT CONVERT(varchar(50),TempTranse_Value.X.value('@Question_Id', 'VARCHAR(50)')) 
+				FROM @XMLQuestion_Det.nodes('/root/QuestionData') AS TempTranse_Value(X)) and  Status=2)
+	if(@M_Cnt>0)
+	begin		
+		
+		Update dbo.Processing_UserList set Process_Status='F',Last_Upt_Date=getdate()	
+		where Div_Code=@Div_Code and SurveyId=@SurvID and Sf_Code=@SF_Code
+		UPDATE Quiz_Result  
+		SET Second_Input_Id=CONVERT(varchar(50),TempTransVal.ParamVal.value('@Input_Id', 'varchar(50)')),  
+		Status='2',   
+		Second_Start_time=CONVERT(varchar(50),TempTransVal.ParamVal.value('@StartTime', 'varchar(50)')),        
+		Second_End_time=CONVERT(varchar(50),TempTransVal.ParamVal.value('@EndTime', 'varchar(50)'))		
+		FROM @XMLQuestion_Det.nodes('/root/QuestionData') AS TempTransVal(ParamVal)  
+		WHERE Division_Code=CONVERT(varchar(50),TempTransVal.ParamVal.value('@Div_code', 'VARCHAR(50)'))  
+		and Quiz_Id=CONVERT(varchar(50),TempTransVal.ParamVal.value('@Question_Id', 'VARCHAR(50)'))  
+		and Status=1
+	
+		IF @@ROWCOUNT = 0 
+        BEGIN 
+            SET @ErrorMsg = 'Error in Update'            
+            RAISERROR(@ErrorMsg,16,1, -999) 
+            GOTO ERR_HANDLER 
+        END 
+		ELSE
+		BEGIN
+			  SET @retValue=1; 
+			  COMMIT TRANSACTION 
+			  return @retValue;               
+		END
+        IF(@@ERROR <> 0) GOTO ERR_HANDLER 
+	end
+	else
+	begin		
+		
+		if(@Status=0)
+		begin
+		Update dbo.Processing_UserList set Process_Status='F',Last_Upt_Date=getdate()	
+			where Div_Code=@Div_Code and SurveyId=@SurvID and Sf_Code=@SF_Code
+			INSERT INTO Quiz_Result (Result_Id,Sf_Code,Sf_Name,Division_Code,Quiz_Id,Input_Id,
+			Status,Survey_Id,Created_Date,First_Start_time,First_End_time)  
+			SELECT      
+			 (SELECT  isnull(max(cast(Result_Id as int)),0) as Result_Id    
+			FROM Quiz_Result)+ ROW_NUMBER() OVER (ORDER BY X) as Result_Id,      
+			CONVERT(varchar(50),TempTranse_Value.X.value('@Sf_Code', 'VARCHAR(50)')),      
+			CONVERT(varchar(50), TempTranse_Value.X.value('@Sf_Name', 'VARCHAR(50)')),        
+			CONVERT(varchar(50), TempTranse_Value.X.value('@Div_code', 'VARCHAR(50)')),        
+			CONVERT(varchar(50),TempTranse_Value.X.value('@Question_Id', 'VARCHAR(50)')),        
+			CONVERT(varchar(50),TempTranse_Value.X.value('@Input_Id', 'VARCHAR(50)')),'1', 
+			CONVERT(varchar(50),TempTranse_Value.X.value('@Survey_Id', 'VARCHAR(50)')),getdate(),      
+			CONVERT(varchar(50),TempTranse_Value.X.value('@StartTime', 'VARCHAR(50)')),        
+			CONVERT(varchar(50),TempTranse_Value.X.value('@EndTime', 'VARCHAR(50)'))   
+			FROM @XMLQuestion_Det.nodes('/root/QuestionData') AS TempTranse_Value(X) 
+			
+			
+			IF @@ROWCOUNT = 0 
+			BEGIN 
+				SET @ErrorMsg = 'Error in Insert'            
+				RAISERROR(@ErrorMsg,16,1, -999) 
+				GOTO ERR_HANDLER 
+			END 
+			ELSE
+			BEGIN
+				  SET @retValue=1; 
+				  COMMIT TRANSACTION 
+				  return @retValue;               
+			END
+			IF(@@ERROR <> 0) GOTO ERR_HANDLER 
+		end
+		else
+		begin
+				 SET @retValue=1; 
+				 COMMIT TRANSACTION 
+				 return @retValue; 
+		end
+	end
+	IF @@TRANCOUNT > 0 COMMIT TRANSACTION 
+    RETURN 0  
+    ERR_HANDLER:  
+        IF @@TRANCOUNT > 0   
+        ROLLBACK TRANSACTION     
+        SELECT @ERR = @@error  
+        RETURN @ERR  
+END 
+GO
+
+------------------------------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_AddQuizTitle_Proc]    Script Date: 5/18/2020 7:20:01 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SP_AddQuizTitle_Proc]
+
+(
+
+	@QuizTitle varchar(max),
+
+	@CategoryID varchar(100),	 
+
+    @DivCode varchar(100),
+
+	@SurveyId varchar(100),
+
+	@Month varchar(10),
+
+	@Year varchar(10),
+
+	@lMonth varchar(100),
+
+	@lYear varchar(100),
+
+	@FilePath varchar(max),
+
+	@Effective_Date varchar(max)
+
+)
+
+AS
+
+BEGIN
+
+	
+
+	SET NOCOUNT ON;
+
+	Declare @Return int
+
+	set @Return=0
+
+     IF NOT EXISTS (select * from dbo.QuizTitleCreation where [Month]=@Month and [Year]=@Year 
+
+	 and Survey_Id=@SurveyId and Division_code=@DivCode)
+
+    begin	
+
+		
+
+		--Update dbo.QuizTitleCreation set Status=1,LastUpdate_Date=getDate() where Survey_Id in	
+
+		--(select Survey_Id from dbo.QuizTitleCreation where [Month]=@lMonth and [Year]=@lYear 
+
+		--and Division_code=@DivCode)
+
+
+
+		----Update dbo.QuizTitleCreation set Status=0,LastUpdate_Date=getDate() where Survey_Id in	
+
+		----(select Survey_Id from dbo.QuizTitleCreation where [Month]=@Month and [Year]=@Year 
+
+		----and Division_code=@DivCode)
+
+		insert into dbo.QuizTitleCreation(Quiz_Title,CategoryID,Created_Date,Division_Code,Effective_Date,
+
+		Month,Year,Status,FilePath,Active) values
+
+		(@QuizTitle,@CategoryID,GETDATE(),@DivCode,
+
+		@Effective_Date,@Month,@Year,0,@FilePath,0)
+
+		set @Return=1
+
+		return @Return
+
+    end
+
+	else
+
+	begin
+
+		update QuizTitleCreation set Quiz_Title=@QuizTitle,CategoryId=@CategoryID,Month=@Month,
+
+		Year=@Year,FilePath=@FilePath,LastUpdate_Date=getdate() where Survey_Id=@SurveyId and Division_Code = @DivCode	
+
+		
+
+		set @Return=2
+
+		return @Return
+
+			
+
+	end
+
+END
+GO
+
+-----------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_Get_QuestionAnswer_Option]    Script Date: 5/18/2020 7:21:08 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SP_Get_QuestionAnswer_Option]   
+(       
+	 @Division_Code varchar(100),
+	 @Survey_Id varchar(100)  
+)       
+AS    
+BEGIN    
+ SET NOCOUNT ON;    
+ -- if object_id('tempdb..#tblQus') is not null        
+ -- DROP TABLE  #tblQus     
+	--Create table #tblQus(R_Id int identity(1,1),Question_Id varchar(max),Question_Text varchar(max),
+	--Question_Type_Name varchar(max),Input_Text varchar(max))
+	--;with CTE As
+	--(
+	-- select Q.Question_Id,Q.Question_Text,T.Question_Type_Name,O.Input_Text from AddQuestions Q 
+	-- inner join QuestionType T on Q.Question_type_id=T.Question_type_id
+	-- inner join AddInputOptions O on Q.Question_Id=O.Question_Id
+	-- where SurveyId=@Survey_Id and Q.Division_code =@Division_Code
+	--)
+	--insert into #tblQus(Question_Id,Question_Text,Question_Type_Name,Input_Text)
+	--select Question_Id,Question_Text,Question_Type_Name, Input_Text = 
+	--	STUFF((SELECT '$ ' + Input_Text
+	--		   FROM CTE b 
+	--		   WHERE b.Question_Id = a.Question_Id 
+	--		  FOR XML PATH('')), 1, 2, '')
+	--FROM CTE a
+	--GROUP BY Question_Id,Question_Text,Question_Type_Name
+	--select Q.R_Id,Q.Question_Id,Q.Question_Text,Q.Question_Type_Name,
+	--Q.Input_Text,O.Input_Text as Correct_Ans
+	--from #tblQus Q inner join [dbo].[AddInputOptions] O on
+	--Q.Question_Id=O.Question_Id where O.Division_Code=@Division_Code and O.Correct_Ans=1    
+  if object_id('tempdb..#tblQus') is not null        
+  DROP TABLE  #tblQus 
+Create table #tblQus(R_Id int identity(1,1),Question_Id varchar(max),Question_Text varchar(max),
+	Question_Type_Name varchar(max),Input_Text varchar(max),Input_Id varchar(max))
+	;with CTE As
+	(
+	 select Q.Question_Id,Q.Question_Text,T.Question_Type_Name,O.Input_Text,O.Input_Id from AddQuestions Q 
+	 inner join QuestionType T on Q.Question_type_id=T.Question_type_id
+	 inner join AddInputOptions O on Q.Question_Id=O.Question_Id
+	 where SurveyId=@Survey_Id and Q.Division_code =@Division_Code
+	)
+	insert into #tblQus(Question_Id,Question_Text,Question_Type_Name,Input_Text,Input_Id)
+	select Question_Id,Question_Text,Question_Type_Name, Input_Text = 
+		STUFF((SELECT '$ ' + Input_Text
+			   FROM CTE b 
+			   WHERE b.Question_Id = a.Question_Id 
+			  FOR XML PATH('')), 1, 2, ''),
+			  Input_Id = 
+		STUFF((SELECT ', ' + cast(Input_Id as varchar(100))
+			   FROM CTE b 
+			   WHERE b.Question_Id = a.Question_Id 
+			  FOR XML PATH('')), 1, 2, '')
+	FROM CTE a
+	GROUP BY Question_Id,Question_Text,Question_Type_Name
+	select Q.R_Id,Q.Question_Id,Q.Question_Text,Q.Question_Type_Name,
+	Q.Input_Text,O.Input_Text as Correct_Ans,Q.Input_Id,O.Input_Id as Correct_Id 
+	from #tblQus Q inner join [dbo].[AddInputOptions] O on
+	Q.Question_Id=O.Question_Id where O.Division_Code=@Division_Code and O.Correct_Ans=1   
+END 
+GO
+
+------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[SP_Get_Quiz_TimeLimit]    Script Date: 5/18/2020 7:21:37 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SP_Get_Quiz_TimeLimit]
+(
+	@Div_Code varchar(100),
+	@SurveyId varchar(100),
+	@Sf_Code varchar(max)
+)
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+	
+	Declare @Suffle varchar(100)
+	set @Suffle=(select Distinct NoOfAttempts from [dbo].[Processing_UserList] where SurveyId=@SurveyId 
+	and Div_Code=@Div_Code and Sf_Code=@Sf_Code)
+	Declare @TL varchar(100)
+	set @TL=(select Distinct TimeLimit from [dbo].[Processing_UserList] where SurveyId=@SurveyId and Div_Code=@Div_Code and Sf_Code=@Sf_Code)
+	Declare @TimeLimit varchar(50)
+	set @TimeLimit=@TL+':00'  
+	DECLARE @Sample VARCHAR(10) = @TimeLimit
+	;WITH cteSource(TimeString)
+	AS (
+		SELECT	REPLACE(@Sample, ':', '.')
+	)
+	SELECT	@Suffle as SuffType,3600 * PARSENAME(TimeString, 3) + 60 * PARSENAME(TimeString, 2) + PARSENAME(TimeString, 1) AS Seconds
+	FROM	cteSource
+	 
+END
+GO
+
+--------------------------
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_Get_QuizResult_Avg]    Script Date: 5/18/2020 7:21:50 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+create PROCEDURE [dbo].[sp_Get_QuizResult_Avg] --2,'MGR0003',11,2019,1
+(
+@div_Code varchar(10),
+@Sf_Code varchar(10),
+@iMonth varchar(10),
+@iYear varchar(10),
+@Ans int
+)
+AS
+BEGIN
+
+declare @SurveyId int
+declare @Count int
+declare @CorrectAns int
+
+set @SurveyId=(select Survey_Id from QuizTitleCreation where  Division_Code=@div_Code and Month=@iMonth and Year = @iYear  and active=0)
+set @Count=(select count(Quiz_Id) from Quiz_Result where Sf_Code=@Sf_Code and Survey_Id=@SurveyId)
+
+  if(@Ans=1)
+    BEGIN
+       set @CorrectAns=(select  count(Quiz_Id)  from Quiz_Result q
+       inner join AddInputOptions a on q.Input_Id=a.Input_Id and Correct_Ans=1 and Sf_Code=@Sf_Code and Survey_Id=@SurveyId)
+
+       select @Count 'TotalQuestion',@CorrectAns as 'CorrectAnswer',
+       (select count(Quiz_Id)   from Quiz_Result q
+       inner join AddInputOptions a on q.Input_Id=a.Input_Id and Correct_Ans=0 and Sf_Code=@Sf_Code and Survey_Id=@SurveyId) as 'WrongAnswer',
+       Cast(Cast(ROUND(@CorrectAns*100.0/(@Count),2) as decimal)AS VARCHAR(15))+'%'as Score
+    END
+  Else
+    BEGIN
+       set @CorrectAns=(select  count(Quiz_Id)  from Quiz_Result q
+       inner join AddInputOptions a on q.Second_Input_Id=a.Input_Id and Correct_Ans=1 and Sf_Code=@Sf_Code and Survey_Id=@SurveyId)
+
+       select @Count 'TotalQuestion',@CorrectAns as 'CorrectAnswer',
+       (select count(Quiz_Id)   from Quiz_Result q
+       inner join AddInputOptions a on q.Second_Input_Id=a.Input_Id and Correct_Ans=0 and Sf_Code=@Sf_Code and Survey_Id=@SurveyId) as 'WrongAnswer',
+       Cast(Cast(ROUND(@CorrectAns*100.0/(@Count),2) as decimal)AS VARCHAR(15))+'%'as Score
+    END
+
+END
+
+GO
+
+---------------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_Get_QuizResult_Avg_New]    Script Date: 5/18/2020 7:22:05 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+--exec  sp_Get_QuizResult_Avg 25,'MR1526','2','2020',1,17
+CREATE PROCEDURE [dbo].[sp_Get_QuizResult_Avg_New] 
+(
+@div_Code varchar(10),
+@Sf_Code varchar(10),
+@iMonth varchar(10),
+@iYear varchar(10),
+@Ans int,
+@day int
+)
+AS
+BEGIN
+declare @SurveyId int
+declare @Count int
+declare @CorrectAns int
+--set @SurveyId=(select Survey_Id from QuizTitleCreation where  Division_Code=@div_Code and Month=@iMonth and Year = @iYear  and active=0 and Day(Effective_Date)=@Day)
+set @SurveyId=(select top(1) SurveyId from Processing_UserList where Month = @iMonth and Year=@iYear and day(From_Date)=@Day and Div_Code= @div_Code)
+set @Count=(select count(Quiz_Id) from Quiz_Result where Sf_Code=@Sf_Code and Survey_Id=@SurveyId)
+  if(@Ans=1)
+    BEGIN
+       set @CorrectAns=(select  count(Quiz_Id)  from Quiz_Result q
+       inner join AddInputOptions a on q.Input_Id=a.Input_Id and Correct_Ans=1 and Sf_Code=@Sf_Code and Survey_Id=@SurveyId)
+	--select   @CorrectAns
+       select @Count 'TotalQuestion',@CorrectAns as 'CorrectAnswer',
+       (select count(Quiz_Id)   from Quiz_Result q
+       inner join AddInputOptions a on q.Input_Id=a.Input_Id and Correct_Ans=0 and Sf_Code=@Sf_Code and Survey_Id=@SurveyId) as 'WrongAnswer',
+       Cast(Cast(ROUND(@CorrectAns*100.0/(@Count),2) as decimal)AS VARCHAR(15))+'%'as Score
+    END
+  Else
+    BEGIN
+       set @CorrectAns=(select  count(Quiz_Id)  from Quiz_Result q
+       inner join AddInputOptions a on q.Second_Input_Id=a.Input_Id and Correct_Ans=1 and Sf_Code=@Sf_Code and Survey_Id=@SurveyId)
+       select @Count 'TotalQuestion',@CorrectAns as 'CorrectAnswer',
+       (select count(Quiz_Id)   from Quiz_Result q
+       inner join AddInputOptions a on q.Second_Input_Id=a.Input_Id and Correct_Ans=0 and Sf_Code=@Sf_Code and Survey_Id=@SurveyId) as 'WrongAnswer',
+       Cast(Cast(ROUND(@CorrectAns*100.0/(@Count),2) as decimal)AS VARCHAR(15))+'%'as Score
+    END
+END
+GO
+
+--------------------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_UserList_Process_Quiz]    Script Date: 5/18/2020 7:22:55 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_UserList_Process_Quiz](@div_code varchar(10),@sf_code varchar(25))      
+AS      
+BEGIN      
+   Create table #tempUser(order_id int identity(1,1),SF_Code varchar(25), Sf_Name varchar(150),
+ sf_hq varchar(75),Designation varchar(75),StateName varchar(100)) 
+ ;with cte as(                                                      
+ select                                                       
+  Sf_Code,                                                       
+  Sf_Name ,Sf_HQ,sf_Designation_Short_Name,
+  (select b.StateName from Mas_State b where a.State_Code=b.State_Code) as StateName,                                                   
+  Sortid = cast(Sf_Code as varchar(max))                                                      
+ from Mas_Salesforce_Three a                                                      
+ where Sf_Code = 'admin'   and sf_status != 2 and   (Division_Code like  @div_code +','+'%' or Division_Code like '%'+','+@div_code+','+'%') --and  sf_tp_active_flag=0                                                   
+  union all                                                      
+ select                                                        
+  a.Sf_Code,                                                       
+  a.Sf_Name,a.Sf_HQ,a.sf_Designation_Short_Name,                                                          
+  (select b.StateName from Mas_State b where a.State_Code=b.State_Code) as StateName, 
+  Sortid = Sortid + cast(a.sf_code as varchar(max))                                                      
+ from Mas_Salesforce_Three a                                                      
+ join cte b                                                      
+ on a.TP_Reporting_SF = b.Sf_Code and a.sf_status != 2 and (Division_Code like  @div_code +','+'%' or Division_Code like '%'+','+@div_code+','+'%')--and  a.sf_tp_active_flag=0                                                     
+)    
+insert into #tempUser
+select                                                       
+Sf_Code,Sf_Name,Sf_HQ,sf_Designation_Short_Name,StateName
+ FROM cte                           
+ order by Sortid    
+ select * from #tempUser      
+  drop table #tempUser
+END -- End of Procedure
+GO
+
+------------------------------------
+
+USE [Sanforce_Fifteen]
+GO
+
+/****** Object:  StoredProcedure [dbo].[ViewDetails_Hierarchy_Quiz]    Script Date: 5/18/2020 7:23:56 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+--ViewDetails_Hierarchy_Quiz '25','admin'
+CREATE PROCEDURE [dbo].[ViewDetails_Hierarchy_Quiz](@div_code varchar(10),@sf_code varchar(25))                        
+AS                        
+BEGIN   
+	
+ ;with cte as(                                                    
+ select                                                     
+  Sf_Code,sf_Name, sf_Type,
+   (select sf_name from mas_salesforce where sf_code=a.Reporting_To_SF) as Reporting_To_SF,                                                     
+ a.sf_hq, b.Designation_Short_Name ,b.Desig_Color,b.Designation_Code ,a.sf_emp_id,
+ convert(char(10),a.Sf_Joining_Date,105) Sf_Joining_Date,             
+  lvl = 0,                                                     
+  Sortid = cast(Sf_Code as varchar(max))                                                    
+ from Mas_Salesforce a, Mas_SF_Designation b                                                           
+ where Sf_Code = @Sf_Code   and sf_status!=2 and a.Designation_Code=b.Designation_Code and  (a.Division_Code like  @div_code +','+'%' or a.Division_Code like '%'+','+@div_code+','+'%')  and  a.sf_tp_active_flag=0 
+  union all                                                    
+ select                                                      
+a.Sf_Code,a.sf_Name, a.sf_Type,
+   (select sf_name from mas_salesforce where sf_code=a.Reporting_To_SF) as Reporting_To_SF,                                                     
+ a.sf_hq, b.Designation_Short_Name ,b.Desig_Color,b.Designation_Code ,a.sf_emp_id,
+ convert(char(10),a.Sf_Joining_Date,105) Sf_Joining_Date,                                  
+  lvl = lvl + 1,                                                     
+  Sortid = Sortid + cast(a.sf_code as varchar(max))                                                    
+ from Mas_Salesforce a  , Mas_SF_Designation b                                            
+ , cte d                                                    
+ where a.TP_Reporting_SF = d.Sf_Code and a.sf_status!=2  and a.Designation_Code=b.Designation_Code and (a.Division_Code like  @div_code +','+'%' or a.Division_Code like '%'+','+@div_code+','+'%')  and  a.sf_tp_active_flag=0 
+)  
+select
+   Row_Number() OVER (ORDER BY (SELECT 1)) as 's.no' ,                                                    
+SF_Code,sf_emp_id,Sf_Joining_Date,Sf_Name,Designation_Short_Name,sf_hq,Desig_Color as des_color,Reporting_To_SF,
+   (select sf_name from Mas_Salesforce where   
+            Sf_Code=(select top(1)TP_Reporting_SF from Mas_Salesforce where   
+           Sf_Code=(select Sf_Code from Mas_Salesforce where Sf_Code=(select   
+ TP_Reporting_SF from Mas_Salesforce where Sf_Code=cte.Sf_Code)))) AS Reporting_To_SF_2  
+ FROM cte                         
+ order by Sortid        
+END -- End of Procedure 
+GO
+
+-------------------------------

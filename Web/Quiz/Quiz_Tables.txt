@@ -1,0 +1,251 @@
+
+
+/****** Object:  Table [dbo].[QuizTitleCreation]    Script Date: 4/22/2020 1:08:40 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+CREATE TABLE [dbo].[QuizTitleCreation](
+	[Survey_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Quiz_Title] [varchar](100) NOT NULL,
+	[CategoryID] [int] NOT NULL,
+	[Created_Date] [datetime] NOT NULL,
+	[Effective_Date] [datetime] NULL,
+	[Division_Code] [tinyint] NULL,
+	[Status] [varchar](1) NULL,
+	[Month] [varchar](50) NULL,
+	[Year] [varchar](50) NULL,
+	[FilePath] [varchar](max) NULL,
+	[Active] [varchar](1) NULL,
+	[LastUpdate_Date] [datetime] NULL,
+ CONSTRAINT [PK_Survey] PRIMARY KEY CLUSTERED 
+(
+	[Survey_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+--------------------------------------------------------------------
+
+
+
+/****** Object:  Table [dbo].[AddQuestions]    Script Date: 4/22/2020 1:09:22 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+CREATE TABLE [dbo].[AddQuestions](
+	[SurveyID] [int] NOT NULL,
+	[Question_Type_Id] [int] NOT NULL,
+	[Question_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Question_Text] [varchar](500) NOT NULL,
+	[Division_Code] [tinyint] NULL,
+ CONSTRAINT [PK_AddQuestions] PRIMARY KEY CLUSTERED 
+(
+	[Question_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+/****** Object:  Table [dbo].[AddInputOptions]    Script Date: 4/22/2020 1:09:50 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+CREATE TABLE [dbo].[AddInputOptions](
+	[Input_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Question_Id] [int] NOT NULL,
+	[Input_Text] [varchar](300) NOT NULL,
+	[Division_Code] [tinyint] NULL,
+	[Correct_Ans] [varchar](100) NULL,
+ CONSTRAINT [PK_AddInputOptions] PRIMARY KEY CLUSTERED 
+(
+	[Input_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+/****** Object:  Table [dbo].[Processing_UserList]    Script Date: 4/22/2020 1:13:55 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Processing_UserList](
+	[ProcessId] [int] NOT NULL,
+	[Sf_Code] [varchar](50) NULL,
+	[Sf_Name] [varchar](50) NULL,
+	[Sf_HQ] [varchar](50) NULL,
+	[Designation] [varchar](50) NULL,
+	[State] [varchar](50) NULL,
+	[TimeLimit] [varchar](50) NULL,
+	[ProcessDate] [varchar](50) NULL,
+	[Type] [varchar](50) NULL,
+	[NoOfAttempts] [varchar](50) NULL,
+	[Status] [varchar](10) NULL,
+	[Sf_UserID] [int] NULL,
+	[Div_Code] [varchar](10) NULL,
+	[SurveyId] [int] NULL,
+	[Month] [varchar](50) NULL,
+	[Year] [varchar](50) NULL,
+	[CreatedDate] [datetime] NULL,
+	[Process_Status] [varchar](100) NULL,
+	[Last_Upt_Date] [datetime] NULL,
+	[From_Date] [datetime] NULL,
+	[To_Date] [datetime] NULL,
+ CONSTRAINT [PK_Processing_UserList] PRIMARY KEY CLUSTERED 
+(
+	[ProcessId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+/****** Object:  Table [dbo].[Quiz_Result]    Script Date: 4/22/2020 1:14:45 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+CREATE TABLE [dbo].[Quiz_Result](
+	[Result_Id] [varchar](50) NOT NULL,
+	[Sf_Code] [varchar](10) NULL,
+	[Sf_Name] [varchar](50) NULL,
+	[Division_Code] [tinyint] NULL,
+	[Quiz_Id] [varchar](50) NULL,
+	[Input_Id] [varchar](50) NULL,
+	[Status] [varchar](10) NULL,
+	[Survey_Id] [varchar](10) NULL,
+	[Created_Date] [datetime] NULL,
+	[Second_Input_Id] [varchar](50) NULL,
+	[First_Start_time] [datetime] NULL,
+	[First_End_time] [datetime] NULL,
+	[Second_Start_time] [datetime] NULL,
+	[Second_End_time] [datetime] NULL,
+ CONSTRAINT [PK_Quiz_Result] PRIMARY KEY CLUSTERED 
+(
+	[Result_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+/****** Object:  Table [dbo].[QuestionType]    Script Date: 4/22/2020 1:15:21 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+CREATE TABLE [dbo].[QuestionType](
+	[Question_Type_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Question_Type_Name] [varchar](100) NOT NULL,
+	[Division_Code] [tinyint] NULL,
+ CONSTRAINT [PK_QuestionType] PRIMARY KEY CLUSTERED 
+(
+	[Question_Type_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+/****** Object:  Table [dbo].[QuizCategory_Creation]    Script Date: 4/22/2020 1:15:57 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+CREATE TABLE [dbo].[QuizCategory_Creation](
+	[Category_Id] [int] NOT NULL,
+	[Category_ShortName] [varchar](50) NULL,
+	[Category_Name] [varchar](50) NULL,
+	[Created_Date] [datetime] NULL,
+	[Division_Code] [varchar](50) NULL,
+	[Last_Update_Date] [datetime] NULL,
+	[Category_Active] [varchar](1) NULL,
+ CONSTRAINT [PK_QuizCategory_Creation] PRIMARY KEY CLUSTERED 
+(
+	[Category_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+----------------------------------------------------------------------------

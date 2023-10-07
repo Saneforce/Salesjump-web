@@ -1,0 +1,22 @@
+Imports System
+Imports System.Data
+Imports System.Data.SqlClient
+Imports DBAccess
+Partial Class Ereport_Screens_Base_Master_base_FlashNews
+    Inherits System.Web.UI.UserControl
+    Dim con As New SqlConnection
+    Dim cmd As New SqlCommand
+    Dim da As New SqlDataAdapter
+    Dim ds As New DataSet
+    Dim dr As SqlDataReader
+    Public str As String
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        dr = DataReaderFill("select FN_Cont1,FN_Cont2,FN_Cont3 from Mas_Flash_News where Division_Code='" & Session("DivCode") & "' and Sl_No in (select max(Sl_No) from Mas_Flash_News)")
+        'Repeater1.DataSource = ds
+        'Repeater1.DataBind()
+        While dr.Read
+            str = "    ****     " + str + dr(0) + "    ****     " + dr(1) + "    ****     " + dr(2) + "    ****     "
+        End While
+    End Sub
+End Class

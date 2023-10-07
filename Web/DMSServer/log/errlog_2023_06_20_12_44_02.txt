@@ -1,0 +1,16 @@
+Error:exec GetProdBrand_DMSApp_mod '14909','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetProdBrand_DMSApp_mod'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'GetProdBrand_DMSApp_mod'."}]
+data:{"SF":"14909","Stk":"14909","outletId":"OutletCode","div":"4,","loginType":"Distributor"}Error:exec getPrimaryOrderDashBoard_modNew '14909','2023-06-20','All','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getPrimaryOrderDashBoard_modNew'."}]
+data:{"login_sfCode":"14909","Stk":"14909","div":"4,","Dt":"2023-06-20","Grpcode":"All","loginType":"Distributor"}Error:exec getProductTypeList_mod '14909','Distributor'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getProductTypeList_mod'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getProductTypeList_mod'."}]
+data:{"SF":"14909","Stk":"14909","outletId":"OutletCode","div":"4,","loginType":"Distributor"}Error:exec getSecOrderDashBoard_mod '14909','2023-06-20','Distributor',''
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSecOrderDashBoard_mod'."}]
+data:{"login_sfCode":"14909","Stk":"14909","div":"4,","Dt":"2023-06-20","Grpcode":"All","loginType":"Distributor"}Error:select State_Code, Division_Code,Distributor_Price,Retailor_Price,MRP_Price,Product_Detail_Code from vwProductStateRates where Division_code='4' and State_Code=
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Incorrect syntax near '='.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Incorrect syntax near '='."}]
+data:

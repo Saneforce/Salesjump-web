@@ -1,0 +1,4 @@
+Error:select State_Code, Division_Code,Distributor_Price,Retailor_Price,MRP_Price,Product_Detail_Code from vwProductStateRates where Division_code='29' and State_Code=
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":102,"code":102,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Incorrect syntax near '='.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Incorrect syntax near '='."}]
+data:

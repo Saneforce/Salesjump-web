@@ -1,0 +1,51 @@
+<ion-view title="Sign-In">
+
+    <ion-content>
+        <div style="text-align: center;margin-top:4% ">
+            <img src="img/cLogo.png">
+        </div>
+        <br />
+        <div class="padding-vertical padding-horizontal">
+            <div ng-if="login">
+
+                <div class="list padding-vertical padding-horizontal" style="background-color:rgba(0, 89, 237, 0.53);">
+                    <div class="cus-error" ng-if="error">{{error}}</div>
+
+                    <!--           style="background-color: #AA1502"
+                        <a-select ng-model="currentSelection.name" field="name" data-options="colors" data-label="{{'Select an option'}}"  data-change-callback="callback(value)">
+
+                    </a-select>-->
+                    <form ng-enter="signIn(user)" class="signin-form">
+                        <div class="list" ng-show="user.valid">
+                            <a class="itemb " href="#" style="text-decoration:none;">
+                                <div class="usrNm" style="text-align: center;color:#ffffff;">
+                                    {{SFDispName}}
+                                </div>
+                            </a>
+                        </div>
+                        <input ng-show="!user.valid" type="text" ng-model="user.name" placeholder="Username">
+                        <br>
+                        <input type="password" ng-model="user.password" placeholder="Password">
+
+                        <button class="button button-block button-dark" ng-click="signIn(user)">
+                            Sign-In
+                        </button>
+                    </form>
+                    <span style="display:block;float:left"><img src="img/oLogo.png"></span>
+                    <span style="display:block;text-align:right;padding:5px;">{{appVar}}</span>
+                </div>
+            </div>
+            <div ng-if="process">
+                <div class="padding-vertical padding-horizontal" style="background-color: #AA1502">
+                    <div style="text-align: center">
+                        <i class="ion-looping" style="color:white;font-size: -webkit-xxx-large"></i><br>
+                        <b style="color:white">Please Wait</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span id="devID" style="padding:5px 10px;display:none;"></span>
+        <span id="inf" style="padding:5px 10px;display:none;"></span>
+        <span id="infTwr" style="padding:5px 10px;display:none;"></span>       
+    </ion-content>
+</ion-view>

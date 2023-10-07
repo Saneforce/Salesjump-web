@@ -1,0 +1,120 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using Bus_EReport;
+
+public partial class MasterFiles_MGR_TP_View : System.Web.UI.Page
+{
+    #region "Declaration"
+    DataSet dsTP = null;
+    DataSet dssf = null;
+    string sfCode = string.Empty;
+    #endregion
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        sfCode = Session["sf_code"].ToString();
+
+        if (!Page.IsPostBack)
+        {
+            grdTP.Visible = false;
+            //FillTourPlan();
+            menu1.Title = this.Page.Title;
+            menu1.FindControl("btnBack").Visible = false;
+        }
+
+
+    }
+    private void FillTourPlan()
+    {
+        if ((ddlMonth.SelectedIndex > 0) && (ddlYear.SelectedIndex > 0))
+        {
+            TourPlan tp = new TourPlan();
+            dsTP = tp.get_TP_EntryforMGR(sfCode, Convert.ToInt32(ddlMonth.SelectedValue), Convert.ToInt32(ddlYear.SelectedValue));
+            if (dsTP.Tables[0].Rows.Count > 0)
+            {
+                grdTP.Visible = true;
+                grdTP.DataSource = dsTP;
+                grdTP.DataBind();
+            }
+            dsTP = tp.get_TP_Status(sfCode, Convert.ToInt32(ddlMonth.SelectedValue), Convert.ToInt32(ddlYear.SelectedValue));
+            if (dsTP.Tables[0].Rows.Count > 0)
+            {
+                //tblStatus.Visible = true;
+                //lblCompletedDate.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+                //lblApprovedDate.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(1).ToString());
+                //lblStatusDesc.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(2).ToString());
+                //DateTime dtCompleted = Convert.ToDateTime(lblCompletedDate.Text.ToString());
+                //lblCompletedDate.Text = dtCompleted.ToString("MM/dd/yyyy");
+                //if (lblApprovedDate.Text.Trim().Length > 0)
+                //{
+                //    DateTime dtApproved = Convert.ToDateTime(lblApprovedDate.Text.ToString());
+                //    lblApprovedDate.Text = dtApproved.ToString("MM/dd/yyyy");
+                //}
+            }
+        }
+    }
+
+
+    protected void grdTP_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            Label lblTourPlan = (Label)e.Row.FindControl("lblTourPlan");
+            Label lblterr = (Label)e.Row.FindControl("lblterr");
+            Label lblWorkType = (Label)e.Row.FindControl("lblWorkType");
+            Label lblWW = (Label)e.Row.FindControl("lblWW");
+            Label lblObjective = (Label)e.Row.FindControl("lblObjective");
+
+            DateTime dtTourPlan = Convert.ToDateTime(lblTourPlan.Text.ToString());
+            if (lblterr != null)
+            {
+                lblTourPlan.Text = dtTourPlan.ToString("MM/dd/yyyy");
+                TourPlan tp = new TourPlan();
+                dsTP = tp.FetchTerritory(sfCode, lblterr.Text);
+                if (dsTP.Tables[0].Rows.Count > 0)
+                {
+                    lblterr.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+                }
+                else
+                {
+                    dsTP = tp.FetchWorkType(lblterr.Text);
+                    if (dsTP.Tables[0].Rows.Count > 0)
+                    {
+                        lblterr.Text = Convert.ToString(dsTP.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+                    }
+                }
+
+                if (lblterr.Text == "0")
+                {
+                    lblterr.Text = "";
+                    lblWorkType.Text = lblObjective.Text;
+                    lblObjective.Text = "";
+                }
+                else
+                {
+                    lblWorkType.Text = "Field Work";
+                }
+
+            }
+            if (lblWW != null)
+            {
+               SalesForce sf = new SalesForce();
+               dssf = sf.getSfName(lblWW.Text);
+               if (dssf.Tables[0].Rows.Count > 0)
+               {
+                   lblWW.Text = Convert.ToString(dssf.Tables[0].Rows[0].ItemArray.GetValue(0).ToString());
+               }
+
+            }
+        }
+    }
+    protected void btnGo_Click(object sender, EventArgs e)
+    {
+        FillTourPlan();
+    }
+}

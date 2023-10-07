@@ -1,0 +1,21 @@
+Error:select Trans_Sl_No TransactionNo,Code OutletCode,ListedDr_Name OutletName,Order_Value TransactionAmt,
+						st.Stockist_Name FranchiseName,ISNULL(ms.Sf_Name,st.Stockist_Name)Sf_Name,						
+						CONVERT(varchar,th.Order_Date,103)+' '+CONVERT(varchar,th.Order_Date,108)Date_Time,
+						st.Stockist_Address [Address],st.Stockist_Mobile Mobile
+						from Trans_Order_Head th WITH (NOLOCK)
+						inner join Customer_Hierarchy_Details C WITH (NOLOCK) on th.stockist_code=C.Dist_Code and C.SF_Code='443'
+						inner join Mas_ListedDr d WITH (NOLOCK) on CAST(d.ListedDrCode as varchar)=th.Cust_Code
+						inner join Mas_Stockist st WITH (NOLOCK) on st.Stockist_Code=th.Stockist_Code
+						left join Mas_Salesforce ms WITH (NOLOCK) on ms.Sf_Code=th.Sf_Code
+						where cast(Order_Date as date)='2023-04-10 00:00:00'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Customer_Hierarchy_Details'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Customer_Hierarchy_Details'."}]
+data:{"SF":"443","Stk":"443","mode":"order","loginType":"SuperStockist"}Error:select th.Trans_Sl_No TransactionNo,pd.Product_Detail_Name Product_Name,td.Quantity
+						from Trans_Order_Head th WITH (NOLOCK)
+						inner join Customer_Hierarchy_Details C WITH (NOLOCK) on th.stockist_code=C.Dist_Code and C.SF_Code='443'
+						inner join Trans_Order_Details td WITH (NOLOCK) on td.Trans_Sl_No=th.Trans_Sl_No
+						inner join Mas_Product_Detail pd WITH (NOLOCK) on pd.Product_Detail_Code=td.Product_Code
+						where cast(Order_Date as date)='2023-04-10 00:00:00'
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Customer_Hierarchy_Details'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Customer_Hierarchy_Details'."}]
+data:{"SF":"443","Stk":"443","mode":"order","loginType":"SuperStockist"}

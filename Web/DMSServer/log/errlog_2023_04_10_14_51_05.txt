@@ -1,0 +1,10 @@
+Error:select Trans_Detail_Name OutletName,st.Stockist_Name FranchiseName,Activity_Remarks Remarks,Sf_Name,
+						CONVERT(varchar,lt.ModTime,103)+' '+CONVERT(varchar,lt.ModTime,108)Date_Time,st.Stockist_Address [Address],st.Stockist_Mobile Mobile
+						from DCRMain_Trans mt WITH (NOLOCK)
+						inner join DCRDetail_Lst_Trans lt WITH (NOLOCK) on mt.Trans_SlNo=lt.Trans_SlNo
+						inner join Customer_Hierarchy_Details C WITH (NOLOCK) on lt.stockist_code=Dist_Code and C.SF_Code='443'
+						inner join Mas_Stockist st WITH (NOLOCK) on st.Stockist_Code=lt.stockist_code
+						where cast(Activity_Date as date)='2023-04-10 00:00:00' and POB_Value=0
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Customer_Hierarchy_Details'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Customer_Hierarchy_Details'."}]
+data:{"SF":"443","Stk":"443","mode":"noorder","loginType":"SuperStockist"}

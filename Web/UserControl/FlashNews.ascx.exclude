@@ -1,0 +1,4 @@
+<%@ Control Language="VB" AutoEventWireup="false" CodeFile="FlashNews.ascx.vb" Inherits="Ereport_Screens_Base_Master_base_FlashNews" %>
+<marquee id="ml" style="text-align: center;background-color:Transparent;"  direction="alternate" delay="1" width="100%">
+   <font color="yellow"> <%=str %></font> 
+ </marquee>

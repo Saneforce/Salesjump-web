@@ -1,0 +1,40 @@
+﻿body {
+}
+ .Backcolor
+{
+ background:#666699;
+ font-size :9pt;
+ font-family:Calibri;   
+ color:White; 
+ border-color:Black;      
+}
+        .ForeColor
+        {
+          color:White;
+          border-color:Black;
+        }
+        .tblCellFont
+        {
+            font-size:9pt;
+            font-family:Calibri;
+        }
+        .MRBackColor
+        {
+            background:#7AA3CC;
+  font-size :9pt;
+ font-family:Calibri;   
+ color:White; 
+ border-color:Black;  
+        }
+        .rptCellBorder
+        {
+            border-color :Black;
+        }
+        .MGRBackColor
+        {
+             background:#19A3A3;
+  font-size :9pt;
+ font-family:Calibri;   
+ color:White; 
+ border-color:Black; 
+        }

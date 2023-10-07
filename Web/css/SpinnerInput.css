@@ -1,0 +1,76 @@
+﻿body {
+}
+.ispinner{display:none;}
+.Spinner-Input
+{
+    float: left;
+    position: relative;
+    display: inline-block;
+    background: #00BCD4;
+    padding: 3px 10px;
+    margin: 0px -6px 0px 4px;
+    height: 30px;
+    width: 30%;
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+    color: #fff;
+    font-weight: bold;
+}
+.Spinner-Input.left{
+    float: left;
+}
+.Spinner-Value
+{
+    text-align:center;
+}
+.Spinner-Modal
+{
+    display:none;
+    position: absolute;
+    top: 36px;
+    left: 0px;
+    min-width: 100px;
+    color: #333;
+    background: #ffffff;
+    border: solid 1px #dcdcdc;
+    box-shadow: 2px 2px 4px -3px #000000a8;
+    font-family: serif;
+    z-index: 10;
+}
+
+.Spinner-Modal.open
+{display:block;}
+.Spinner-Modal:after
+{    
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin-top: -5px;
+    margin-left: 6px;
+    content: " ";
+    padding: 4px;
+    border-top: solid 1px #DCDCDC;
+    border-left: solid 1px #dcdcdc;
+    background: white;
+    transform: rotate(45deg);
+}
+.Spinner-Modal>ul
+{
+    list-style-type: none;
+    text-align: left;
+    margin: 0px;
+    padding: 5px;
+}
+.Spinner-Modal>ul>li
+{
+    padding:2px 8px;
+    font-weight:bold;
+}
+
+.Spinner-Modal>ul>li:hover
+{
+    background-color:#00BCD4;
+    border:dotted 1px #dcdcdc;
+    color:#fff;
+    font-weight:bold;
+}

@@ -1,0 +1,7 @@
+Error:exec getcategorywiseretailerdata '31800','29'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getcategorywiseretailerdata'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getcategorywiseretailerdata'."}]
+data:{"distributorCode":"31800","divisionCode":"29"}Error:exec getTodaycategorywiseretailerdata '31800','29'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getTodaycategorywiseretailerdata'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getTodaycategorywiseretailerdata'."}]
+data:{"distributorCode":"31800","divisionCode":"29"}

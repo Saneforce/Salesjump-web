@@ -1,0 +1,56 @@
+﻿<ion-view>
+    <ion-content>               
+          <div class="list list-inset">
+            <div class="select-component">
+                <div class="label">
+                    <div class="label-text">Type Of Leave</div>
+                </div>
+                <div class="select-box">
+                   <div class="input-css" ng-click="openModal(LeaveTypes, 45)">
+                   {{(LeaveTypes.type.selected.id| getValueforIDD : {'collection' : LeaveTypes}).name || "Select the Leave Type"  }}
+                  </div>   
+                </div>
+            </div>
+
+               
+              <label class="item item-input">
+                <div class="input-label">Leave From Date :</div>
+                 <!-- ng-model="data.From_Date"   g-model="data.To_Date"-->
+                <input  type="text" start-date-calendar="" ng-model="campaign.start_at" placeholder="Start Date" readonly  style="border-bottom:1px solid black"/>
+            </label>
+              <label class="item item-input noborder">
+                <div class="input-label">Leave To Date :</div>
+                <input  type="text" end-date-calendar="" ng-model="campaign.end_at" placeholder="End Date" readonly style="border-bottom:1px solid black"/>
+            </label>
+              <label class="item item-input noborder">
+                <div class="input-label">No of Days :</div>
+                <input type="text" style="color:red" ng-model=" data.No_of_Days" ng-disabled="true"/>
+            </label>
+             
+               <div class="select-component" style="margin-top:15px">
+                <div class="label">
+                    <div class="label-text">Reason For Leave</div>
+                </div>
+                <div class="select-box">
+                    <textarea ng-model="data.Reason" rows="5" placeholder="Reason For Leave" class="textarea-css" ng-click="vibrate();">                     
+
+                </textarea>
+                </div>
+            </div>
+              <div class="select-component" style="margin-top:60px;display:none">
+                <div class="label">
+                    <div class="label-text">Address On Leave</div>
+                </div>
+                <div class="select-box">
+                    <textarea ng-model="data.address" rows="5" placeholder="Address On Leave" class="textarea-css" ng-click="vibrate();">                     
+
+                </textarea>
+                </div>
+            </div>
+              </div>
+        
+</ion-content>
+    <ion-footer-bar class="bar-dark">
+        <button class="button buttonClear  button-balanced pull-right" ng-click="vibrate();save()">Submit</button>
+    </ion-footer-bar>
+</ion-view>

@@ -1,0 +1,61 @@
+﻿* {
+    padding: 0; 
+    margin: 0;         
+}
+body {
+	font: 11px Calibri;
+	background-color:white;	
+}
+h1 {
+    font: bold 32px Times;
+	color: #666;
+	text-align: center;
+	padding: 20px 0;    
+}
+#container {
+    width: 700px;
+    margin: 10px auto;
+}
+
+
+a {
+    text-decoration: none;    
+	color: #123532;
+    font-weight: bold;
+}
+a:hover{
+    text-decoration: overline;
+    text-decoration-style: dashed;
+    text-decoration-color: #009688;
+    color: #0a2c8c;
+    font-weight: bold;
+}
+.tbl td, #tbl td {
+    padding:5px;
+    border : 1px solid #4c4a4a;
+}
+.mGrid { width: 100%; background-color:white; margin: 5px 0 10px 0; border: solid 1px black; border-collapse:collapse;}
+    .mGrid td { padding: 2px; border: solid 1px black; color:black; border-color:black; border-left: solid 1px black; }
+    .mGrid th { padding: 4px 2px; color:black; background:white; border-color:black; border-left: solid 1px black; font-weight:bold; font-size: 11px; font-family:Calibri }
+
+.mGrid .pgr {background: white; }
+    .mGrid .pgr table { margin: 5px 0; }
+    .mGrid .pgr td { border-width: 0; padding: 0 6px; border-left: solid 1px black; font-weight: bold; color: black; line-height: 12px; }   
+    .mGrid .pgr a { color: black; text-decoration: none; }
+    .mGrid .pgr a:hover { color: #000; text-decoration: none; }
+  
+.normal
+{
+    background-color:white;
+}
+.highlight
+{
+    background-color:white;
+}
+
+.div_fixed        
+{
+    position:fixed;
+    top:400px;
+    right:5px;
+}

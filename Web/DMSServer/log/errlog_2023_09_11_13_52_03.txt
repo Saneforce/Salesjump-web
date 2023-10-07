@@ -1,0 +1,4 @@
+Error:exec getDistStockLedger 'SS443','2021-04-01','2023-09-11 00:00:00'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":201,"code":201,"2":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Procedure or function 'getDistStockLedger' expects parameter '@Div', which was not supplied.","message":"[Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Procedure or function 'getDistStockLedger' expects parameter '@Div', which was not supplied."}]
+data:{"Stk":"SS443"}

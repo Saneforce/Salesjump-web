@@ -1,0 +1,4 @@
+Error:select ID,FStatus,isNull(ApprovalNeed,0)ApprovalNeed from FreezerStatus where DivisionCode='4' and ActiveFlag=0
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'FreezerStatus'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'FreezerStatus'."}]
+data:{"divisionCode":"4,"}

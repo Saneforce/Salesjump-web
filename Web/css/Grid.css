@@ -1,0 +1,86 @@
+﻿* {
+    padding: 0; 
+    margin: 0;         
+}
+body {
+	font: 11px Tahoma;
+	
+}
+h1 {
+    font: bold 32px Times;
+	color: #666;
+	text-align: center;
+	padding: 20px 0;    
+}
+#container {
+    width: 700px;
+    margin: 10px auto;
+}
+
+.mGrid { width: 100%; background-color:#F0F8FF; margin: 5px 0 10px 0; border: solid 1px #525252; border-collapse:collapse;}
+    .mGrid td { padding: 2px; border: solid 1px Black; color:#000080; border-color:Black; border-left: solid 1px Black;border-right: solid 1px Black; border-top: solid 1px Black; border-bottom:solid 1px Black; font-size: small; font-family:Calibri }
+    .mGrid th { padding: 4px 2px; color:#0000FF; background:#A6A6D2; border-color:Black; border-left: solid 1px Black;border-right: solid 1px Black; border-top: solid 1px Black; border-bottom:solid 1px Black; font-weight:normal; font-size: small; font-family:Calibri; }
+
+.mGrid .pgr {background: #A6A6D2; }
+    .mGrid .pgr table { margin: 5px 0; }
+    .mGrid .pgr td { border-width: 0; padding: 0 6px; border-left: solid 1px #666; font-weight: bold; color: #fff; line-height: 12px; }   
+    .mGrid .pgr a { color: Red; text-decoration: none; }
+    .mGrid .pgr a:hover { color: #000; text-decoration: none; }
+
+
+.mGridImg { width: 100%; /*background:url(menubg.gif) center center repeat-x;*/ background:#F2F1ED; }
+    .mGridImg td { padding: 2px; border-color:Black; border-left: solid 1px Black;border-right: solid 1px Black; border-top: solid 1px Black; border-bottom:solid 1px Black; background:F2F1ED; }
+    .mGridImg th { padding: 4px 2px; /*background:url(menubg.gif) center center repeat-x;*/  background:#D1CFC9;  border: solid 1px Black;border-color:Black; border-left: solid 1px Black;border-right: solid 1px Black; border-top: solid 1px Black; border-bottom:solid 1px Black; font-weight:normal; font-size: 11px; font-family:Verdana }
+
+
+.mGridImg .pgr {background: #D1CFC9; border: solid 1px ; }
+    .mGridImg .pgr table { margin: 5px 0;  }
+    .mGridImg .pgr td { border-width: 0; padding: 0 6px; border-left: solid 1px #666;font-weight: bold; color: Red; line-height: 12px;   }   
+  .mGridImg .pgr a { color: #666; text-decoration: none;  }
+    .mGridImg .pgr a:hover { color: Red; text-decoration: none;  }
+
+         .mGridImg .pgr span
+        {
+                      
+           
+            background-color:Yellow;
+            color:Red;
+            font-weight:bold;
+            border:1px solid Yellow;
+            text-align:center;
+            text-decoration:none;
+        }
+
+
+.mGridDCR { width: 100%; /*background:url(menubg.gif) center center repeat-x;*/ }
+    .mGridDCR td { padding: 2px; border: solid 1px ; border-left: solid 1px; font-weight:normal; font-size: 9px; font-family:Verdana }
+    .mGridDCR th { padding: 4px 2px; /*background:url(menubg.gif) center center repeat-x;*/  background:#B6B6B4;  border: solid 1px ; border-left: solid 1px ; font-weight:normal; font-size: 10px; font-family:Verdana }
+
+
+.div_fixed        
+{
+    position:fixed;
+    top:400px;
+    right:5px;
+}
+
+.scrollingControlContainer
+{
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.scrollingCheckBoxList
+{
+    border: 1px #808080 solid;
+    margin: 10px 10px 10px 10px;
+    height: 70px;
+}
+.DropDown
+{
+    background-color:Yellow;
+}
+.clsLink
+{
+    width :200px;
+}

@@ -1,0 +1,7 @@
+Error:exec getSlottime '1','1'
+|param:
+|error:[{"0":"42000","SQLSTATE":"42000","1":2812,"code":2812,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Could not find stored procedure 'getSlottime'."}]
+data:{"distributorCode":"1","GrpCode":"1"}Error:select isnull(sum(Order_Amount),0) Order_Amount from Trans_Distributor_OrderWallet WITH (NOLOCK) where Dist_ERPCode='EB2064' and flag=0
+|param:
+|error:[{"0":"42S02","SQLSTATE":"42S02","1":208,"code":208,"2":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Trans_Distributor_OrderWallet'.","message":"[Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Invalid object name 'Trans_Distributor_OrderWallet'."}]
+data:{"StkERP":"EB2064"}

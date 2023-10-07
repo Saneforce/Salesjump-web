@@ -1,0 +1,14 @@
+[
+	{
+		"key": "TEST123",
+		"config": {
+			"weburl": "http://fmcg.sanfmcg.com/",
+			"appurl": "server/TrackingAPI/db_gps.php?axn=",
+			"iosurl": "server/TrackingAPI/db_gps.php?axn=",
+			"division": "100",
+			"logoimg": "iOSserver/eDetCompImg/DEMO2903IC.png",
+			"reportPath": "/MasterFiles/Dashboard_Menu.aspx?",
+			"policyLink": "http://sansfe.info/privacy.html"
+		}
+	}
+]

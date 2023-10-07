@@ -1,0 +1,84 @@
+﻿<ion-view>
+     <ion-content>
+         <div>
+              <div style="margin-top:20px;"></div>
+              <ion-item>
+              <div class="row">
+                  <div class="col col-10" style="color:#4800ff;font-weight:bold">
+                      To
+                  </div>
+                  <div class="col col-90" ng-click="openMailStaffs(mailsStaff, 201)">
+                    {{fmcgData.staffNms || "Select"  }}
+
+                  </div>
+              </div>
+               
+        </ion-item>
+              <ion-item>
+              <div class="row">
+                  <div class="col col-10" style="color:#4800ff;font-weight:bold">
+                      cc
+                  </div>
+                  <div class="col col-90" ng-click="openMailStaffs(mailsStaff, 202)">
+                    {{fmcgData.ccstaffNms || "Select"  }}
+
+                  </div>
+              </div> </ion-item>
+                <ion-item>
+              <div class="row">
+                  <div class="col col-10" style="color:#4800ff;font-weight:bold">
+                      bcc
+                  </div>
+                  <div class="col col-90" ng-click="openMailStaffs(mailsStaff, 203)">
+                    {{fmcgData.bccstaffNms || "Select"  }}
+
+                  </div>
+              </div>
+               
+        </ion-item>
+                   <ion-item>
+              <div class="row">
+                  <div class="col col-10" style="color:#4800ff;font-weight:bold">
+                      Sub
+                  </div>
+                  <div class="col col-90">
+                   <div contenteditable
+          name="subject" ng-bind-html="fmcgData.subject"
+          strip-br="true"
+          ></div>
+                  </div>
+              </div>
+               
+        </ion-item>
+             
+            <div class="row" style="border-color:#ddd;background-color:#fff;">
+                  <div class="col">
+                    <div contenteditable
+          name="content" rows="50" cols="50"  ng-bind-html="fmcgData.message"
+         
+          ></div>
+       </div>
+               </div>
+    
+             <ion-item>
+            <div class="row">
+                  <div><span style="color:#4800ff;font-weight:bold">Selected File: </span>  <span style="color:red;font-weight:bold">{{NameOfFile||"-"}}</span></div>
+          </div>
+             </ion-item>
+         </div>
+        
+
+    </ion-content>
+    <ion-footer-bar class="bar-dark" style="background-color:lightyellow">
+       
+   <div style="width:100%">
+        <button class="button button-assertive buttonClear" ng-click="vibrate();goBack()">
+            &nbsp;&nbsp;&nbsp;<i class="icon ion-arrow-left-c"></i>&nbsp;&nbsp;&nbsp;
+        </button>
+                     <img src="img/send.png" title="Send" style="height:30px;width:30px;float:right" ng-click="sendMail()"/>
+                            <img src="img/Attach.png" title="Attach" style="height:30px;width:30px;float:right;margin-right:30px;" ng-click="Attachment()"/>
+
+
+      </div>
+        </ion-footer-bar>
+</ion-view>

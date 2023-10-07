@@ -1,0 +1,39 @@
+exec Visit_Daywise_userdtl_dates 'MR5211','106','2022-09-01 00:00:00','2022-09-01 00:00:00'
+select Trans_Sl_No,(Order_Value+isnull(discount_price,0)) Order_Value ,Order_Value netamount  from Trans_Order_Head where  OrderID='EKMR6700-1664255731000'  union select Trans_Sl_No,Order_Value,0 from Trans_PriOrder_Head where  OrderID='EKMR6700-1664255731000' union select Trans_Sl_No,Order_Value,0 from Trans_SPriOrder_Head where  OrderID='EKMR6700-1664255731000' union select Trans_Sl_No,Order_Value,0 from Trans_Pragnancy__Head where  OrderID='EKMR6700-1664255731000'
+
+
+update Trans_Order_Head set Order_Value=((select sum(value) from Trans_Order_Details where Trans_Sl_No=Trans_Order_Head.Trans_Sl_No and Div_ID=Trans_Order_Head.Div_ID)-'0') where  Trans_Sl_No='vasu61-4412' and Div_ID='100'
+
+
+SELECT id as id,content as name FROM vwProductTemplate as tab WHERE tab.Division_Code=48 and isnull(ActFlag,0)=0 ORDER BY name asc
+
+select billno,custcode,sf,billamt,coll_amt,bal_amt,inv_dt from mas_pending_bills  where sf='MGR1815' 
+select TransFTslno slno from Trans_Field_Target_head_Primary with(nolock) where sf_code='MR4460' and year='2022'
+
+SELECT worktype,FWFlg,sf_member_code as subordinateid,cluster as clusterid,remarks,ClstrName,stockist as stockistid,worked_with_code,worked_with_name,dcrtype,location,name,Sprstk,Place_Inv,WType_SName FROM vwMyDayPlan as tab WHERE tab.SF_Code='MGR1687'
+
+
+update Trans_Order_Head set Order_Value=((select sum(value) from Trans_Order_Details where Trans_Sl_No=Trans_Order_Head.Trans_Sl_No and Div_ID=Trans_Order_Head.Div_ID)-'0') where  Trans_Sl_No='AACH1209-11541' and Div_ID='98'
+
+
+
+
+
+select top 1 Pln_Date,sf_code,cluster,sf_member_code,(select count(ListedDrCode) from Mas_ListedDr MLDR where  charindex(','+ TP.cluster+',',','+ cast(MLDR.Territory_Code as varchar)+',')>0  and ListedDr_Active_Flag=0 and  division_code='20' and charindex(','+  TP.sf_member_code+',',','+ sf_code+',')>0 group by Territory_Code) cnt  from TbMyDayPlan TP  where division_code='20' and sf_code='MR0581' and cast(convert(varchar,Pln_Date,101)as datetime)='2022-10-11'    order by Pln_Date des
+
+select *,case when (isnull(contactperson,'') +','+ isnull(contactperson2,'')+','+ isnull(contactperson3,'')=',,') then (' ') else isnull(contactperson,'') +','+ isnull(contactperson2,'')+','+ isnull(contactperson3,'') end  as ContactPersionn  from Mas_ListedDr where ListedDrCode='4749' 
+select *,case when (isnull(contactperson,'') +','+ isnull(contactperson2,'')+','+ isnull(contactperson3,'')=',,') then (' ') else isnull(contactperson,'') +','+ isnull(contactperson2,'')+','+ isnull(contactperson3,'') end  as ContactPersionn  from Mas_ListedDr with(nolock)  where ListedDrCode='1546972' 
+CREATE procedure [dbo].[Attendance_entry] @SF varchar(50),@owDV varchar(50),@dtTime varchar(50),@lat varchar(50),@long varchar(50),@login_date datetime, @day_start_km varchar(50)=''
+as
+begin 
+set nocount on
+	--if(select count (id) from TP_Attendance_App where sf_code =@SF AND cast(convert(varchar,Start_Time,101)as datetime)=cast(convert(varchar,getdate(),101)as datetime) )>0 begin
+	--	if(select count (ID) from Startworks_Permission where sf_code =@SF AND cast(convert(varchar,date,101)as datetime)=cast(convert(varchar,getdate(),101)as datetime) and flag='0')>0 begin
+	--	update Startworks_Permission set flag='1' where sf_code=@SF and date=cast(convert(varchar,getdate(),101)as datetime)
+	--		select '1' msg
+	--	end else begin
+	--		select 'Permission Denied' msg
+	--	end
+	--end else begin 
+	--	insert into TP_Attendance_App select @SF,@owDV,@dtTime,NULL,@lat,@long,'','';
+	--	update Startworks_Permission set flag='1' where sf_code=@SF and date=cast(convert(varchar,getdate(),101)as
