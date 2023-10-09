@@ -41,8 +41,8 @@
         var datas = [];
         var map;
         var icon = {
-            url: "../css/locationsvg/marker.png", // url
-            scaledSize: new google.maps.Size(24, 30), // size
+            url: "../css/locationsvg/icon-google-maps-9.jpg", // url
+            scaledSize: new google.maps.Size(26, 37), // size
         };
         function Getlocation() {
             var SFCode = $("#<%=hSfCode.ClientID%>").val();
@@ -87,7 +87,7 @@
                 //strhtml = "<table><tr><td style='font-size:13px;padding:5px;margin-left: -555px;'><img id='propic' style='width:32px;height:32px;border-radius:50%;'src='http://fmcg.sanfmcg.com//photos/" + markers[$i].Visit_hours + "'><b>" + markers[$i].Retailer_Name + "</b><br>" + cardadd[$i].Retailer_phone + " </td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/marker1.svg'></img></td><td class='tdt'><label class='names'>" + cardadd[$i].Retailer_Address + " </label></td></tr><tr><td style='font-size:13px;padding:5px'><i style='font-size:21px;' class='fa fa-mobile-phone'></i>  :  " + markers[$i].Retailer_phone + "</td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/route2.svg'></img></td>:" + markers[$i].Route + "</td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/store-svgrepo-com.svg'></img></td><td class='tdt'><label class='names'>:" + markers[$i].Doc_Special_Name + "</label></td></tr><tr></tr></table>";
 
                 strhtml = "<table><tr><td class='tdt'><img  id='propic' style='width:32px;height: 33px;border-radius:50%;' src='http://fmcg.sanfmcg.com//photos/" + markers[$i].Visit_hours + "'></td><td class='tdt'style='width:300px;'><label class='heade'>" + markers[$i].Retailer_Name + "</label><br>" +
-                    "<label class='names' style='margin-left:10px' >" + markers[$i].Retailer_phone + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/route2.svg'></img></td><td class='tdt'><label class='names'>" + markers[$i].Route + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/marker1.svg'></img></td><td class='tdt'><label class='names'>" + markers[$i].Retailer_Address + " </label></td></tr>" +
+                    "<label class='names' style='margin-left:10px' >" + markers[$i].Retailer_phone + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/route2.svg'></img></td><td class='tdt'><label class='names'>" + markers[$i].Route + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/dollar_bill_money_stack.svg'></img></td><td class='tdt'><label class='names'>" + markers[$i].Order_Value + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/marker1.svg'></img></td><td class='tdt'><label class='names'>" + markers[$i].Retailer_Address + " </label></td></tr>" +
                     "<tr><td class='tdt'><img class='svgs' style='width:25px' src='../css/locationsvg/store-svgrepo-com.svg'></img></td><td class='tdt'><label class='names'>" + markers[$i].Doc_Special_Name + "</label></td></tr><table>";
 
                 itm = {
@@ -176,19 +176,38 @@
                     var markers = groupedMarkers[key];
 
                     markers.forEach(function (markerData) {
-                        var position = new google.maps.LatLng(markerData.lat, markerData.lng);
-                        var marker = new google.maps.Marker({
-                            position: position,
-                            //icon:icon,
-                            map: map,
-                            label: { 
-                                text: markers.length.toString(),
-                                color: 'white',
-                                fontWeight: 'bold',
-                                
-                            },
-                            title:markerData.Retailer_Code,
-                        });
+                        if (markerData.Order_Value != 0) {
+                            var position = new google.maps.LatLng(markerData.lat, markerData.lng);
+                            var marker = new google.maps.Marker({
+                                position: position,
+                                icon: icon,
+
+                                map: map,
+                                label: {
+                                    text: markers.length.toString(),
+                                    color: 'white',
+                                    fontWeight: 'bold',
+
+
+                                },
+                                title: markerData.Retailer_Code,
+                            });
+                        } else {
+                            var position = new google.maps.LatLng(markerData.lat, markerData.lng);
+                            var marker = new google.maps.Marker({
+                                position: position,
+                                //icon:icon,
+                                map: map,
+                                label: {
+                                    text: markers.length.toString(),
+                                    color: 'white',
+                                    fontWeight: 'bold',
+
+                                },
+                                title: markerData.Retailer_Code,
+                            });
+                        }
+
 
                         var activityDates = []; var visit = '';
                         activityDates.push(markerData.Activity_Date);
@@ -203,13 +222,13 @@
                         var stri = markerData.Retailer_Name;
                         stri = stri.replace(/'/g, '');
                         strhtml = "<table><tr><td class='tdt'><img  id='propic' style='width:32px;height: 33px;border-radius:50%;' src='http://fmcg.sanfmcg.com//photos/" + markerData.Visit_hours + "'></td><td class='tdt'style='width:300px;'><label class='heade'>" + markerData.Retailer_Name + "</label><br>" +
-                            "<label class='names' style='margin-left:10px' >" + markerData.Retailer_phone + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/route2.svg'></img></td><td class='tdt'><label class='names'>" + markerData.Route + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/marker1.svg'></img></td><td class='tdt'><label class='names'>" + markerData.Retailer_Address + " </label></td></tr>" +
+                            "<label class='names' style='margin-left:10px' >" + markerData.Retailer_phone + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/dollar_bill_money_stack.svg'></img></td><td class='tdt'><label class='names'>" + markerData.Order_Value + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/route2.svg'></img></td><td class='tdt'><label class='names'>" + markerData.Route + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/marker1.svg'></img></td><td class='tdt'><label class='names'>" + markerData.Retailer_Address + " </label></td></tr>" +
                             "<tr><td class='tdt'><img class='svgs' style='width:25px' src='../css/locationsvg/store-svgrepo-com.svg'></img></td><td class='tdt'><label class='names'>" + markerData.Doc_Special_Name + "</label></td></tr><tr><td class='tdt'><img class='svgs' style='width:25px' src='../css/locationsvg/calendar-50.svg'></img></td><td><label class='names'>" + visit + "</label></td></tr><table>";
 
-                        var infoContent = '<strong>' + strhtml + '</strong> ';                       
+                        var infoContent = '<strong>' + strhtml + '</strong> ';
                         addInfoWindow(marker, infoContent)
                         prvMarkers.push(marker);
-                       
+
                     });
                 }
             }
@@ -226,9 +245,9 @@
                 var clientHeight = div.clientHeight;
                 var scrollBottom = scrollHeight - (scrollTop + clientHeight);
                 var threshold = 20;
-                if (scrollBottom <= threshold) {                   
+                if (scrollBottom <= threshold) {
                     var limit = 20;
-                    Start = Start + limit;                    
+                    Start = Start + limit;
                     loadaddrs(Start, limit);
                 }
             }
@@ -259,7 +278,7 @@
                 }
                 var sl_no = cardadd[$i].RowNum - 1;
                 str += "<div class='card'style='margin:15px;padding:10;background-color:white;' ><table><tr><td class='tdt'>" + ppic + "</td><td class='tdt' style='width: 378px'><a href='#'  class='heade'  id='retailercode' onclick='openRetWin(" + $i + ")'>" + cardadd[$i].Retailer_Name + "</a>" + tags + "<br>" +
-                    "<label class='names' style='margin-left:10px' >" + cardadd[$i].Retailer_phone + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/route2.svg'></img></td><td class='tdt'><label class='names'>" + cardadd[$i].Route + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/location-crosshairs.svg'></img></td><td class='tdt'>" + latlog + "</td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/marker1.svg'></img></td><td class='tdt'><label class='names'>" + cardadd[$i].Retailer_Address + " </label></td></tr>" +
+                    "<label class='names' style='margin-left:10px' >" + cardadd[$i].Retailer_phone + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/dollar_bill_money_stack.svg'></img></td><td class='tdt'><label class='names'>" + markers[$i].Order_Value + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/route2.svg'></img></td><td class='tdt'><label class='names'>" + cardadd[$i].Route + " </label></td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/location-crosshairs.svg'></img></td><td class='tdt'>" + latlog + "</td></tr><tr><td class='tdt'><img class='svgs' src='../css/locationsvg/marker1.svg'></img></td><td class='tdt'><label class='names'>" + cardadd[$i].Retailer_Address + " </label></td></tr>" +
                     "<tr><td class='tdt'><img class='svgsh' style='width:32px;height: 33px;'  src='../css/locationsvg/store-svgrepo-com.svg'></img></td><td class='tdt'><label class='names'>" + markers[$i].Doc_Special_Name + "</label></td></tr><tr><td class='tdt'><img class='svgs' style='width:25px' src='../css/locationsvg/calendar-50.svg'></img></td><td><label class='names'>" + markers[$i].Activity_Date + "</label></td></tr><table></div > ";
 
                 $('#Retmnu').append(str);
@@ -380,10 +399,10 @@
         </div>
 
         <div id="sample" style="height: 800px;"></div>
-       <div id="idloading" style="display: none; position: absolute; top: 0px; left: 0px; width: 100% !important; height: 100% !important; margin: auto; text-align: center; line-height: 100vh; background-color: #f5f5f569;">
-                            <b style="padding: 10px 10px; background: white; box-shadow: 0px 0px 1px black;"><%--<span style="width: 150px; height: 50px; display: none;">
+        <div id="idloading" style="display: none; position: absolute; top: 0px; left: 0px; width: 100% !important; height: 100% !important; margin: auto; text-align: center; line-height: 100vh; background-color: #f5f5f569;">
+            <b style="padding: 10px 10px; background: white; box-shadow: 0px 0px 1px black;"><%--<span style="width: 150px; height: 50px; display: none;">
                                 <img src="https://flevix.com/wp-content/uploads/2019/07/Curve-Loading.gif" style="width: 150px; height: 150px;" /></span>--%>Loading...</b>
-                        </div>
+        </div>
 
     </form>
 
