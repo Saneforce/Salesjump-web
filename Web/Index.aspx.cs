@@ -59,7 +59,7 @@ public partial class Index : System.Web.UI.Page
     }
     public string getDBInfo()
     {
-        string sConStr = ConfigurationManager.ConnectionStrings["Server1"].ConnectionString;
+        string sConStr = ConfigurationManager.ConnectionStrings["Ereportcon"].ConnectionString;
         sUSR = Request.Url.Host.ToLower().Replace("www.", "").Replace(".sanfmcg.com", "").Replace(".salesjump.in", "").ToLower();
         string DBName = "FMCG_Live";
 
