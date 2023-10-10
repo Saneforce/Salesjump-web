@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using Bus_EReport;
+using System.Windows.Forms;
 
 public partial class User_Count : System.Web.UI.Page
 {
@@ -108,13 +109,14 @@ public partial class User_Count : System.Web.UI.Page
         {
             ViewState["HQ_Det"] = null;
 
+            //DataTable tbl = new DataTable();
 
             TableRow tr_header = new TableRow();
-            tr_header.BorderStyle = BorderStyle.Solid;
+            tr_header.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
             tr_header.BorderWidth = 1;
 
             TableCell tc_SNo = new TableCell();
-            tc_SNo.BorderStyle = BorderStyle.Solid;
+            tc_SNo.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
             tc_SNo.BorderColor = System.Drawing.Color.Black;
             tc_SNo.BorderWidth = 1;
 
@@ -131,7 +133,7 @@ public partial class User_Count : System.Web.UI.Page
             tr_header.BackColor = System.Drawing.Color.FromName("#337ab7");
 
             TableCell tc_FFT = new TableCell();
-            tc_FFT.BorderStyle = BorderStyle.Solid;
+            tc_FFT.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
             tc_FFT.BorderWidth = 1;
 
             tc_FFT.BorderColor = System.Drawing.Color.Black;
@@ -151,7 +153,7 @@ public partial class User_Count : System.Web.UI.Page
             tr_header.Cells.Add(tc_FFT);
 
             TableCell tc_FF = new TableCell();
-            tc_FF.BorderStyle = BorderStyle.Solid;
+            tc_FF.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
             tc_FF.BorderWidth = 1;
 
             tc_FF.BorderColor = System.Drawing.Color.Black;
@@ -174,7 +176,7 @@ public partial class User_Count : System.Web.UI.Page
 
 
             TableCell tc_Total = new TableCell();
-            tc_Total.BorderStyle = BorderStyle.Solid;
+            tc_Total.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
             tc_Total.BorderWidth = 1;
             tc_Total.BorderColor = System.Drawing.Color.Black;
 
@@ -189,7 +191,7 @@ public partial class User_Count : System.Web.UI.Page
 
 
             TableCell tc_Totalcnt = new TableCell();
-            tc_Totalcnt.BorderStyle = BorderStyle.Solid;
+            tc_Totalcnt.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
             tc_Totalcnt.BorderWidth = 1;
             tc_Totalcnt.BorderColor = System.Drawing.Color.Black;
 
@@ -202,7 +204,7 @@ public partial class User_Count : System.Web.UI.Page
             tc_Totalcnt.Style.Add("font-size", "10pt");
             tr_header.Cells.Add(tc_Totalcnt);
             TableCell tc_distributor = new TableCell();
-            tc_distributor.BorderStyle = BorderStyle.Solid;
+            tc_distributor.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
             tc_distributor.BorderWidth = 1;
             tc_distributor.BorderColor = System.Drawing.Color.Black;
 
@@ -230,7 +232,7 @@ public partial class User_Count : System.Web.UI.Page
                 TableCell tc_det_SNo = new TableCell();
                 Literal lit_det_SNo = new Literal();
                 lit_det_SNo.Text = "<center>" + iCount.ToString() + "</center>";
-                tc_det_SNo.BorderStyle = BorderStyle.Solid;
+                tc_det_SNo.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
                 tc_det_SNo.BorderWidth = 1;
                 tc_det_SNo.Controls.Add(lit_det_SNo);
                 tc_det_SNo.Width = 40;
@@ -245,7 +247,7 @@ public partial class User_Count : System.Web.UI.Page
                 TableCell tc_det_FF = new TableCell();
                 Literal lit_det_FF = new Literal();
                 lit_det_FF.Text = "&nbsp" + drFF["statename"].ToString();
-                tc_det_FF.BorderStyle = BorderStyle.Solid;
+                tc_det_FF.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
                 tr_det.BackColor = System.Drawing.Color.FromName("#fcf8e3");
                 tr_det.BorderColor = System.Drawing.Color.FromName("#d6e9c6");
                 tr_det.HorizontalAlign = HorizontalAlign.Center; ;
@@ -284,11 +286,11 @@ public partial class User_Count : System.Web.UI.Page
                        
                         lit_det_tot1.NavigateUrl = "#";
                        
-                        tc_det_tot.BorderStyle = BorderStyle.Solid;
+                        tc_det_tot.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
                         tc_det_tot.Style.Add("font-family", "Calibri");
                         tc_det_tot.BorderWidth = 1;
                         tc_det_tot.Width = 180;
- tc_det_tot.Style.Add("text-align", "right");
+                        tc_det_tot.Style.Add("text-align", "right");
                         tc_det_tot.Controls.Add(lit_det_tot1);
                         tr_det.Cells.Add(tc_det_tot);
                         iPendingCount = "0";
@@ -308,7 +310,7 @@ public partial class User_Count : System.Web.UI.Page
                         lit_det_cnt.Text = dataRow["zonecount"].ToString();
                        
                         tc_det_cnt.Width = 180;
-                        tc_det_cnt.BorderStyle = BorderStyle.Solid;
+                        tc_det_cnt.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
                         tc_det_cnt.BorderWidth = 1;
                         tc_det_cnt.Controls.Add(lit_det_cnt);
                         tc_det_cnt.Style.Add("text-align", "right");
@@ -326,7 +328,7 @@ public partial class User_Count : System.Web.UI.Page
                         lit_distribut.NavigateUrl = "#";
                         lit_distribut.Text = dataRow["territory"].ToString();
                          tc_distribut.Width = 180;
-                        tc_distribut.BorderStyle = BorderStyle.Solid;
+                        tc_distribut.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
                         tc_distribut.BorderWidth = 1;
                         tc_distribut.Controls.Add(lit_distribut);
                         tc_distribut.Style.Add("text-align", "right");
@@ -341,7 +343,7 @@ public partial class User_Count : System.Web.UI.Page
                         lit_det_FFp.Attributes["onclick"] = "javascript:window.open('" + sURL + "' ,'','resizable=yes,toolbar=no,menubar=no,scrollbars=1,status=no,width=500,height=600,left=0,top=0,zoom=50%');";
                         lit_det_FFp.NavigateUrl = "#";
                         lit_det_FFp.Text =  dataRow["distributor"].ToString();
-                        tc_det_FFp.BorderStyle = BorderStyle.Solid;
+                        tc_det_FFp.BorderStyle = System.Web.UI.WebControls.BorderStyle.Solid;
                         tc_det_FFp.Width = 180;
                         tc_det_FFp.BorderWidth = 1;
                         tc_det_FFp.Controls.Add(lit_det_FFp);
