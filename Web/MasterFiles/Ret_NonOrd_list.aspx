@@ -390,6 +390,7 @@
                         for (var i = 0; i < AllHQ.length; i++) {
                             st.append($('<option terrcode="' + AllHQ[i].Territory_Code + '" value="' + AllHQ[i].Hq_Code + '">' + AllHQ[i].Sf_HQ + '</option>'));
                         }
+                        $("#ddlHQ").selectpicker('refresh');
                         $("#ddlHQ").selectpicker({
                             liveSearch: true
                         });
