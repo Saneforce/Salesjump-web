@@ -91,7 +91,7 @@ th {
                                     <h4 class="modal-title">Add Model</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" id="hgrpcode" />
+                                    <input type="hidden" id="hmodcode" />
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <label>Model Name<span style="color:red;font:bold;">  *</span></label>
@@ -223,6 +223,7 @@ th {
         loadPgNos();
     }
     $('#btnsave').on('click', function () {
+        var hidid = $("#hmodcode").val();
         var modnam = $("#txtmod").val();
         var modcat = $("#ddlcat option:selected").val();
         var modno = $("#txtmodno").val(); 
@@ -246,7 +247,7 @@ th {
             contentType: "application/json; charset=utf-8",
             async: false,
             url: "AssetModelMaster.aspx/Save_Model",
-            data: "{'modname':'" + modnam + "','modno':'" + modno + "','modcat':'" + modcat + "'}",
+            data: "{'modname':'" + modnam + "','modno':'" + modno + "','modcat':'" + modcat + "','hidid':'" + hidid +"'}",
             dataType: "json",
             success: function (data) {
                 alert(data.d);
@@ -258,12 +259,14 @@ th {
         });
     });
     $('#newmodel').on('click', function () {
+        $("#hmodcode").val('');
         $("#txtmod").val('');
         $('#ddlcat').val('0');
         $("#txtmodno").val('');
     });
     $(document).on('click', '.roedit', function () {
         x = this.id;
+        $("#hmodcode").val(x);
         $("#addmod").modal("show");
         fillModel(x);
     });

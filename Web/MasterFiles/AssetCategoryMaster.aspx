@@ -117,7 +117,7 @@ top: 10px;
                                     <h4 class="modal-title">Add Category</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" id="hgrpcode" />
+                                    <input type="hidden" id="hcatcode" />
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <label>Category Name<span style="color:red;font:bold;">  *</span></label>
@@ -225,11 +225,13 @@ top: 10px;
             //});
         }
         $('#newcat').on('click', function () {
+            $("#hcatcode").val('');
             $("#txtcat").val('');
             $('#ddlcattype').val('0');
         });
 
         $('#btnsave').on('click', function () {
+            var hidid = $("#hcatcode").val();
             var catnm = $("#txtcat").val();
             var catyp = $("#ddlcattype option:selected").val();
             if (catnm == '') {
@@ -247,7 +249,7 @@ top: 10px;
                 contentType: "application/json; charset=utf-8",
                 async: false,
                 url: "AssetCategoryMaster.aspx/Save_category",
-                data: "{'catname':'" + catnm + "','cattype':'" + catyp + "'}",
+                data: "{'catname':'" + catnm + "','cattype':'" + catyp + "','hidid':'" + hidid +"'}",
                 dataType: "json",
                 success: function (data) {
                     alert(data.d);
@@ -330,6 +332,7 @@ top: 10px;
         }
         $(document).on('click', '.roedit', function () {
             x = this.id;
+            $("#hcatcode").val(x);
             $("#addcat").modal("show");
             fillCategory(x);
         });

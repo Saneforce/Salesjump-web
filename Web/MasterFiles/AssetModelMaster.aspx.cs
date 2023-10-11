@@ -35,11 +35,11 @@ public partial class MasterFiles_AssetModelMaster : System.Web.UI.Page
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
     [WebMethod(EnableSession = true)]
-    public static string Save_Model(string modname, string modno,string modcat)
+    public static string Save_Model(string modname, string modno,string modcat,string hidid)
     {
         string ds = string.Empty;
         loc ast = new loc();
-        ds = ast.insertModel(modname, modno, modcat);
+        ds = ast.insertModel(modname, modno, modcat, hidid);
         return ds;
     }
     [WebMethod(EnableSession = true)]
@@ -88,12 +88,12 @@ public partial class MasterFiles_AssetModelMaster : System.Web.UI.Page
             }
             return iReturn;
         }
-        public string insertModel(string nam, string modno, string modcat)
+        public string insertModel(string nam, string modno, string modcat,string hidid)
         {
             DB_EReporting db = new DB_EReporting();
             DataSet ds = null;
             string msg = string.Empty;
-            string strQry = "exec insert_asset_Model '" + nam + "','" + modno + "','" + modcat + "','" + div_code + "'";
+            string strQry = "exec insert_asset_Model '" + nam + "','" + modno + "','" + modcat + "','" + div_code + "','"+ hidid + "'";
             try
             {
                 ds = db.Exec_DataSet(strQry);

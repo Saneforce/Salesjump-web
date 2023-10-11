@@ -1,18 +1,18 @@
-﻿<%@ Page Title="AssetLocation" Language="C#" MasterPageFile="~/Master.master" AutoEventWireup="true" CodeFile="AssetLocationMaster.aspx.cs" Inherits="MasterFiles_AssetLocationMaster" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master.master" AutoEventWireup="true" CodeFile="AssetVendorMaster.aspx.cs" Inherits="MasterFiles_AssetVendorMaster" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <link href="../css/jquery.multiselect.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <link href="../css/SalesForce_New/bootstrap-select.min.css" rel='stylesheet' type='text/css' />
-    <style>
-        th {
-            white-space: nowrap;
-            cursor: pointer;
-        }
-    </style>
-     <form runat="server">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<link href="../css/SalesForce_New/bootstrap-select.min.css" rel='stylesheet' type='text/css' />
+<style>
+    th {
+        white-space: nowrap;
+        cursor: pointer;
+    }
+</style>
+         <form runat="server">
            <div>
-             <div class="col-lg-12 sub-header">Location Master
+             <div class="col-lg-12 sub-header">Vendor Master
             <div class="row">
             <div style="float: right;padding-top: 3px;">
                     <ul class="segment">
@@ -20,11 +20,8 @@
                         <li data-va='0' class="active">Active</li>
                     </ul>
                </div> 
-               <%-- <div style="float: right;padding-top: 3px;">
-                    
-            <a href="AssetCategory.aspx" class="btn btn-primary" id="bulkcat">Bulk Upload</a></div>--%>
                 <div style="float: right;padding-top: 3px; width: 136px;">
-                    <button class="btn btn-primary" id="newloc" data-toggle="modal" data-target="#addlocation">Add Location</button>
+                    <button class="btn btn-primary" id="newvend" data-toggle="modal" data-target="#addvendor">Add Vendor</button>
             
             </div>
         </div>
@@ -48,18 +45,15 @@
                     </select>
                         entries</label>
                     </div>
-                <table class="table table-hover" id="altable" style="font-size: 12px">
+                <table class="table table-hover" id="vendtable" style="font-size: 12px">
                     <thead class="text-warning">
                         <tr>
                             <th style="text-align: left">Sl.No</th>
-                            <th style="text-align: left">Location Name</th>
+                            <th style="text-align: left">Vendor Name</th>
                             <th style="text-align: left">Contact Person Name</th>
-                            <th style="text-align: left">Contact Number</th>
-                            <th style="text-align: left;">No.of Assets</th>
-                            <th style="text-align: left">State</th>
-                            <th style="text-align: left">City</th>
-                            <%--<th style="text-align: left">Created By</th>
-                            <th style="text-align: left">Modifed By</th>--%>
+                            <th style="text-align: left">Email</th>
+                            <th style="text-align: left;">GSTIN.No</th>
+                            <th style="text-align: left">Phone.No</th>
                             <th style="text-align: left">Edit</th>
                             <th style="text-align: left">Status</th>
                         </tr>
@@ -81,25 +75,25 @@
                     </div>
                 </div>
             </div>
-              <div id="addlocation" class="modal fade" style="z-index: 10000000; background: transparent; overflow-y: scroll;" tabindex="0" aria-hidden="true">
+              <div id="addvendor" class="modal fade" style="z-index: 10000000; background: transparent; overflow-y: scroll;" tabindex="0" aria-hidden="true">
                         <div class="modal-dialog" role="document" style="width: 80% !important">
                             <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">
                                         &times;</button>
-                                    <h4 class="modal-title">Add Location</h4>
+                                    <h4 class="modal-title">Add Vendor</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" id="hloccode" />
+                                    <input type="hidden" id="hvencode" />
                                     <div class="col-md-12">
                                         <div class="col-lg-6">
                                             <div class="row">
                                                   <div class="col-md-3">
-                                                     <label>Location Name<span style="color:red;font:bold;">  *</span></label>
+                                                     <label>Vendor Name<span style="color:red;font:bold;">  *</span></label>
                                             </div>
                                            <div class="col-md-5">
-                                             <input type="text" id="txtlocnm" class="form-control" autocomplete="off" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)" />
+                                             <input type="text" id="txtvennm" class="form-control" autocomplete="off" />
                                            </div>
                                        </div>
                                       <div class="row" style="margin-top: 15px;">
@@ -110,12 +104,20 @@
                                           <input type="text" id="txtadd1" class="form-control" autocomplete="off" />
                                        </div>
                                     </div>
-                                    <div class="row" style="margin-top: 15px;">
+                                   <div class="row" style="margin-top: 15px;">
                                         <div class="col-md-3">
                                            <label>Address Line2</label>
                                        </div>
                                         <div class="col-md-5">
                                             <input type="text" id="txtadd2" class="form-control" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 15px;">
+                                        <div class="col-md-3">
+                                           <label>GSTIN Number</label>
+                                       </div>
+                                        <div class="col-md-5">
+                                            <input type="text" id="txtgstnum" class="form-control" autocomplete="off" />
                                         </div>
                                     </div>
                                      <div class="row" style="margin-top: 15px;">
@@ -134,9 +136,6 @@
                                         </div>
                                         <div class="col-sm-5">
                                             <input type="text" id="txtcity" class="form-control" autocomplete="off" />
-                                            <%--<select id="ddlcity" class="form-control">
-                                                <option value="0">Select City</option>
-                                            </select> --%>
                                         </div>
                                     </div>
 
@@ -145,66 +144,48 @@
                                                   <div class="card" style="padding: 8px; margin-top: 0px;">
                                                       <h5 style="color:blue;font:bold;text-align:center;">Contact Details</h5>
                                                       <div class="row" style="margin-top: 15px;">
-    <div class="col-md-3">
-       <label>Name</label>
-   </div>
-    <div class="col-md-5">
-        <input type="text" id="txtcontnm" class="form-control" autocomplete="off" />
-    </div>
-</div>
+                                                            <div class="col-md-3">
+                                                               <label>Name</label>
+                                                           </div>
+                                                            <div class="col-md-5">
+                                                                <input type="text" id="txtcontnm" class="form-control" autocomplete="off" />
+                                                            </div>
+                                                        </div>
                                                       <div class="row" style="margin-top: 15px;">
-    <div class="col-md-3">
-       <label>Mob.No</label>
-   </div>
-    <div class="col-md-5">
-        <input type="text" id="txtmob" class="form-control" autocomplete="off" />
-    </div>
+                                                            <div class="col-md-3">
+                                                               <label>Mob.No</label>
+                                                           </div>
+                                                            <div class="col-md-5">
+                                                                <input type="text" id="txtmob" class="form-control" autocomplete="off" />
+                                                            </div>
                                                           </div>
                                                           <div class="row" style="margin-top: 15px;">
-    <div class="col-md-3">
-       <label>E-Mail</label>
-   </div>
-    <div class="col-md-5">
-        <input type="text" id="txtemail" class="form-control" autocomplete="off" />
-    </div>
-</div>
-            <%--<table id="contact_tbl" class="table table-hover">
-                <thead>
-    <tr>
-        <th style="text-align:center;">Name</th>
-        <th style="text-align:center;">Mob.No</th>
-        <th style="text-align:center;">Email</th>
-    </tr>
-               </thead>
-                <tbody>
-                    <tr><td><input type="text" id="txtnm" class="form-control" autocomplete="off" /></td>
-                        <td><input type="text" id="txtnum" class="form-control" autocomplete="off" /></td>
-                        <td><input type="text" id="txtemail" class="form-control" autocomplete="off" /></td>
-                        <td><a name="btnadd" class="btn btn-primary"><span>+</span></a></td>
-                    </tr> 
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>--%>
-</div>
+                                                            <div class="col-md-3">
+                                                               <label>E-Mail</label>
+                                                           </div>
+                                                            <div class="col-md-5">
+                                                                <input type="text" id="txtemail" class="form-control" autocomplete="off" />
+                                                            </div>
+                                                            </div>
+                                          </div>
                                               <div class="row" style="margin-top: 15px;">
-    <div class="col-sm-3">
-       <label>State<span style="color:red;font:bold;">  *</span></label>
-    </div>
-    <div class="col-sm-5">
-          <select id="ddlstate" class="form-control" name="ddlstate">
-                <option value="0">Select State</option>
-          </select> 
-    </div>
-</div>
+                                                        <div class="col-sm-3">
+                                                           <label>State<span style="color:red;font:bold;">  *</span></label>
+                                                        </div>
+                                                        <div class="col-sm-5">
+                                                              <select id="ddlstate" class="form-control" name="ddlstate">
+                                                                    <option value="0">Select State</option>
+                                                              </select> 
+                                                        </div>
+                                                    </div>
                                               <div class="row" style="margin-top: 15px;">
-    <div class="col-md-3">
-       <label>ZipCode</label>
-   </div>
-    <div class="col-md-5">
-        <input type="text" id="txtzipcode" placeholder="Pin Code" class="form-control" autocomplete="off" onkeydown="validatePin(event, this)"/>  <%--"if(!(/(^\d{6}$)|(^\d{6}-\d{5}$)/.test(this.value))){this.value='';return false}"--%>
-    </div>
-</div>
+                                                    <div class="col-md-3">
+                                                       <label>ZipCode</label>
+                                                   </div>
+                                                    <div class="col-md-5">
+                                                        <input type="text" id="txtzipcode" placeholder="Pin Code" class="form-control" autocomplete="off" onkeydown="validatePin(event, this)"/>  <%--"if(!(/(^\d{6}$)|(^\d{6}-\d{5}$)/.test(this.value))){this.value='';return false}"--%>
+                                                    </div>
+                                                </div>
                                           </div> 
                                     </div>
                                 </div>
@@ -217,20 +198,20 @@
                     </div>
               </div>
           </form>
-        <script type="text/javascript" src="../js/plugins/timepicker/bootstrap-clockpicker.min.js"></script>
+            <script type="text/javascript" src="../js/plugins/timepicker/bootstrap-clockpicker.min.js"></script>
 <script type="text/javascript" src="../js/plugins/datatables/jquery.dataTables.js"></script>
 <script type="text/javascript" src="../js/plugins/datatables/dataTables.bootstrap.js"></script>
 <script lang="javascript" type="text/javascript">
-    var AllOrders = [], Orders = [], cnty = [], state=[];
+    var AllOrders = [], Orders = [], cnty = [], state = [];
     var filtrkey = '0';
-    var pgNo = 1; PgRecords = 10; TotalPg = 0, searchKeys = "Location_Name,Contact_Name,Contact_Number,StateName,Location_City,";
+    var pgNo = 1; PgRecords = 10; TotalPg = 0, searchKeys = "";
     $(document).ready(function () {
         loadData();
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
             async: false,
-            url: "AssetLocationMaster.aspx/Getcntry",
+            url: "AssetVendorMaster.aspx/Getcntry",
             data: "{}",
             dataType: "json",
             success: function (data) {
@@ -240,7 +221,6 @@
                 for (var i = 0; i < cnty.length; i++) {
                     ctyp.append($('<option value=' + cnty[i].Country_code + '>' + cnty[i].Country_name + '</option>'));
                 }
-                //$('#ddlcntry').chosen();
                 $('#ddlcntry').selectpicker({
                     liveSearch: true
                 });
@@ -252,7 +232,7 @@
             type: "POST",
             contentType: "application/json; charset=utf-8",
             async: false,
-            url: "AssetLocationMaster.aspx/Getstate",
+            url: "AssetVendorMaster.aspx/Getstate",
             data: "{}",
             dataType: "json",
             success: function (data) {
@@ -264,113 +244,6 @@
             error: function (result) {
             }
         });
-    });
-    $(document).on('click', '.roedit', function () {
-        x = this.id;
-        $("#hloccode").val(x);
-        $("#addlocation").modal("show");
-        fillLocation(x);
-    });
-    function fillLocation(lcode) {
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            async: false,
-            url: "AssetLocationMaster.aspx/getAssetLoc_Id",
-            data: "{'lcode':'" + lcode + "'}",
-            dataType: "json",
-            success: function (data) {
-                var astloc = JSON.parse(data.d) || [];
-                $("#txtlocnm").val(astloc[0].Location_Name);
-                $("#txtadd1").val(astloc[0].Address_Line1);
-                $("#txtadd2").val(astloc[0].Address_Line2);
-                $('#ddlcntry').selectpicker('val', astloc[0].Location_Country);
-                loadState(astloc[0].Location_Country);
-                $("#txtcity").val(astloc[0].Location_City);
-                $("#ddlstate").selectpicker('val', astloc[0].Location_State);
-                $("#txtzipcode").val(astloc[0].Location_pincode);
-                $("#txtcontnm").val(astloc[0].Contact_Name);
-                $("#txtmob").val(astloc[0].Contact_Number);
-                $("#txtemail").val(astloc[0].Contact_Email);
-            },
-            error: function (data) {
-                //alert(JSON.stringify(data));
-            }
-        });
-    }
-    $('#btnsave').on('click', function () {
-        var hiddenid = $("#hloccode").val();
-        var locnam = $("#txtlocnm").val();
-        if (locnam=='') {
-            alert("Please Enter Location Name");
-            $("#txtlocnm").focus();
-            return false;
-        }
-        var addln1 = $("#txtadd1").val();
-        if (addln1 == '') {
-            alert("Please Fill AddressLine1");
-            $("#txtadd1").focus();
-            return false;
-        }
-        var addln2 = $("#txtadd2").val();
-        var cntrycd = $("#ddlcntry option:selected").val();
-        if (cntrycd == '0') {
-            alert("Please Select Country");
-            $("#ddlcntry").focus();
-            return false;
-        }
-        var city = $("#txtcity").val();
-        if (city == '') {
-            alert("Please Enter City.");
-            $("#txtcity").focus();
-            return false;
-        }
-        var statcd = $("#ddlstate option:selected").val();
-        if (statcd == '0') {
-            alert("Please select State");
-            $("#ddlstate").focus();
-            return false;
-        }
-        var zipcode = $("#txtzipcode").val();
-        if (zipcode == '') {
-            alert("Please Enter Zipcode");
-            $("#txtzipcode").focus();
-            return false;
-        }
-        var contactnm = $("#txtcontnm").val();
-        var contactnum = $("#txtmob").val();
-        var contactemail = $("#txtemail").val();
-
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            async: false,
-            url: "AssetLocationMaster.aspx/Save_Location",
-            data: "{'locnam':'" + locnam + "','addln1':'" + addln1 + "','addln2':'" + addln2 + "','cntrycd':'" + cntrycd + "','city':'" + city + "','statcd':'" + statcd + "','zipcode':'" + zipcode + "','contactnm':'" + contactnm + "','contactnum':'" + contactnum + "','contactemail':'" + contactemail + "','hiddenid':'" + hiddenid+"'}",
-            dataType: "json",
-            success: function (data) {
-                alert(data.d);
-                $("#addlocation").modal("hide");
-                loadData();
-            },
-            error: function (result) {
-            }
-        });
-
-    });
-    $('#newloc').on('click', function () {
-        $("#hloccode").val();
-        $("#txtlocnm").val('');
-        $("#txtadd1").val('');
-        $("#txtadd2").val('');
-        $('#ddlcntry').selectpicker('val', '0');
-        loadState(0);
-        $("#txtcity").val('');
-        $("#ddlstate").selectpicker('val', '0');
-        $("#txtzipcode").val('');
-        $("#txtcontnm").val('');
-        $("#txtmob").val('');
-        $("#txtemail").val('');
     });
     $('#ddlcntry').on('change', function () {
         var cntrycd = $("#ddlcntry option:selected").val();
@@ -407,21 +280,21 @@
     );
     $(document).on('click', ".ddlStatus>li>a", function () {
         cStus = $(this).closest("td").find(".aState");
-        let locid = $(this).closest("tr").find(".roedit").attr("id");
+        let venid = $(this).closest("tr").find(".roedit").attr("id");
         stus = $(this).attr("v");
-        $indx = Orders.findIndex(x => x.Location_Id == locid);
+        $indx = Orders.findIndex(x => x.Vendor_Id == venid);
         cStusNm = $(this).text();
         if (confirm("Do you want change status " + $(cStus).text() + " to " + cStusNm + " ?")) {
-            id = Orders[$indx].Location_Id;
+            id = Orders[$indx].Vendor_Id;
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 async: false,
-                url: "AssetLocationMaster.aspx/SetNewStatus",
+                url: "AssetVendorMaster.aspx/SetNewStatus",
                 data: "{'ID':'" + id + "','stus':'" + stus + "'}",
                 dataType: "json",
                 success: function (data) {
-                    Orders[$indx].Location_Active_Flag = stus;
+                    Orders[$indx].Vendor_Active_Flag = stus;
                     Orders[$indx].Status = cStusNm;
                     $(cStus).html(cStusNm);
 
@@ -434,6 +307,121 @@
             });
         }
         loadPgNos();
+    });
+    $(document).on('click', '.roedit', function () {
+        x = this.id;
+        $("#hvencode").val(x);
+        $("#addvendor").modal("show");
+        fillVendor(x);
+    });
+    function fillVendor(vcode) {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            url: "AssetVendorMaster.aspx/getAssetVend_Id",
+            data: "{'vcode':'" + vcode + "'}",
+            dataType: "json",
+            success: function (data) {
+                var astven = JSON.parse(data.d) || [];
+                $("#txtlocnm").val(astven[0].Vendor_Name);
+                $("#txtadd1").val(astven[0].Address_Line1);
+                $("#txtadd2").val(astven[0].Address_Line2);
+                $('#ddlcntry').selectpicker('val', astven[0].Vendor_Country);
+                loadState(astven[0].Vendor_Country);
+                $("#txtgstnum").val(astven[0].GSTIN_No);
+                $("#txtcity").val(astven[0].Vendor_City);
+                $("#ddlstate").selectpicker('val', astven[0].Vendor_State);
+                $("#txtzipcode").val(astven[0].Vendor_pincode);
+                $("#txtcontnm").val(astven[0].Contact_Name);
+                $("#txtmob").val(astven[0].Contact_Number);
+                $("#txtemail").val(astven[0].Contact_Email);
+            },
+            error: function (data) {
+                //alert(JSON.stringify(data));
+            }
+        });
+    }
+    $('#addvendor').on('click', function () {
+        $("#hvencode").val('');
+        $("#txtvennm").val('');
+        $("#txtadd1").val('');
+        $("#txtadd2").val('');
+        $("#txtgstnum").val('');
+        $('#ddlcntry').selectpicker('val', '0');
+        loadState(0);
+        $("#txtcity").val('');
+        $("#ddlstate").selectpicker('val', '0');
+        $("#txtzipcode").val('');
+        $("#txtcontnm").val('');
+        $("#txtmob").val('');
+        $("#txtemail").val('');
+    });
+    $('#btnsave').on('click', function () {
+        var hiddenid = $("#hvencode").val();
+        var locnam = $("#txtvennm").val();
+        if (locnam == '') {
+            alert("Please Enter Vendor Name");
+            $("#txtvennm").focus();
+            return false;
+        }
+        var addln1 = $("#txtadd1").val();
+        if (addln1 == '') {
+            alert("Please Fill AddressLine1");
+            $("#txtadd1").focus();
+            return false;
+        }
+        var addln2 = $("#txtadd2").val();
+        var cntrycd = $("#ddlcntry option:selected").val();
+        if (cntrycd == '0') {
+            alert("Please Select Country");
+            $("#ddlcntry").focus();
+            return false;
+        }
+        var city = $("#txtcity").val();
+        if (city == '') {
+            alert("Please Enter City.");
+            $("#txtcity").focus();
+            return false;
+        }
+        var statcd = $("#ddlstate option:selected").val();
+        if (statcd == '0') {
+            alert("Please select State");
+            $("#ddlstate").focus();
+            return false;
+        }
+        var zipcode = $("#txtzipcode").val();
+        if (zipcode == '') {
+            alert("Please Enter Zipcode");
+            $("#txtzipcode").focus();
+            return false;
+        }
+        var gstno = $("#txtgstnum").val();
+        if (gstno == '') {
+            alert("Please Enter GSTIN Number");
+            $("#txtgstnum").focus();
+            return false;
+        }
+        var contactnm = $("#txtcontnm").val();
+        var contactnum = $("#txtmob").val();
+        var contactemail = $("#txtemail").val();
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            url: "AssetVendorMaster.aspx/Save_Vendor",
+            data: "{'locnam':'" + locnam + "','addln1':'" + addln1 + "','addln2':'" + addln2 + "','cntrycd':'" + cntrycd + "','city':'" + city + "','statcd':'" + statcd + "','zipcode':'" + zipcode + "','contactnm':'" + contactnm + "','contactnum':'" + contactnum + "','contactemail':'" + contactemail + "','hiddenid':'" + hiddenid + "','gstno':'" + gstno +"'}",
+            dataType: "json",
+            success: function (data) {
+                alert(data.d);
+                $("#addlocation").modal("hide");
+                loadData();
+            },
+            error: function (result) {
+            }
+        });
+
     });
     function loadPgNos() {
         prepg = parseInt($(".paginate_button.previous>a").attr("data-dt-idx"));
@@ -465,22 +453,22 @@
     function ReloadTable() {
 
         var tr = '';
-        $("#altable TBODY").html("");
+        $("#vendtable TBODY").html("");
         if (filtrkey != "All") {
             Orders = Orders.filter(function (a) {
-                return a.Location_Active_Flag == filtrkey;
+                return a.Vendor_Active_Flag == filtrkey;
             })
         }
         st = PgRecords * (pgNo - 1);
         for ($i = st; $i < st + Number(PgRecords); $i++) {
             if ($i < Orders.length) {
 
-                tr = $("<tr rname='" + Orders[$i].Location_Name + "'  rocode='" + Orders[$i].Location_Id + "'></tr>");
-                $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Location_Name + "</td><td>" + Orders[$i].Contact_Name + "</td><td>" + Orders[$i].Contact_Number + "</td><td  class='rocount'><a href='#'>" + Orders[$i].Assets + "</a></td><td>" + Orders[$i].StateName + "</td><td>" + Orders[$i].Location_City + "</td><td id='" + Orders[$i].Location_Id + "' class='roedit'><a href='#'>Edit</a></td><td><ul class='nav' style='margin: 0px'><li class='dropdown'><a href='#' style='padding: 0px' class='dropdown - toggle' data-toggle='dropdown'>"
+                tr = $("<tr rname='" + Orders[$i].Vendor_Name + "'  rocode='" + Orders[$i].Vendor_Id + "'></tr>");
+                $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Vendor_Name + "</td><td>" + Orders[$i].Contact_Name + "</td><td>" + Orders[$i].Contact_Email + "</td><td>" + Orders[$i].GSTIN_No + "</td><td>" + Orders[$i].Contact_Number + "</td><td id='" + Orders[$i].Vendor_Id + "' class='roedit'><a href='#'>Edit</a></td><td><ul class='nav' style='margin: 0px'><li class='dropdown'><a href='#' style='padding: 0px' class='dropdown - toggle' data-toggle='dropdown'>" /*< td  class= 'rocount' > <a href='#'>" + Orders[$i].Assets + "</a></td >*/
                     + '<span><span class="aState" data-val="' + Orders[$i].Status + '">' + Orders[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
                     '<ul class="dropdown-menu dropdown-custom dropdown-menu-right ddlStatus" style="right:0;left:auto;">' + ((Orders[$i].Status == "Active") ? '<li><a href="#" v="1">Deactivate</a></li>' : '<li><a href="#" v="0">Active</a></li>') + '</ul></li></ul></td>');
 
-                $("#altable TBODY").append(tr);
+                $("#vendtable TBODY").append(tr);
             }
         }
         $("#orders_info").html("Showing " + (st + 1) + " to " + (((st + PgRecords) < Orders.length) ? (st + PgRecords) : Orders.length) + " of " + Orders.length + " entries")
@@ -503,14 +491,13 @@
             Orders = AllOrders;
         ReloadTable();
     });
-    
     function loadData() {
 
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
             async: false,
-            url: "AssetLocationMaster.aspx/GetDetails",
+            url: "AssetVendorMaster.aspx/GetDetails",
             data: "{}",
             dataType: "json",
             success: function (data) {
@@ -524,7 +511,7 @@
     }
     function validatePin(event, input) {
         event.preventDefault();
-        var currVal = (input.value && input.value!=" ") ? input.value : "";
+        var currVal = (input.value && input.value != " ") ? input.value : "";
         // Checks if the key pressed is a number and the right length and not an space
         if (!isNaN(event.key) && currVal.length < 6) {
             input.value = currVal + event.key;
@@ -534,20 +521,6 @@
             input.value = input.value.slice(0, -1);
         }
     }
-    $(document).on('click', 'a[name=btnadd]', function () {
-    if ($(this).text().toString() == "+") {
-        $(this).text("-");
-        tr = $("<tr></tr>");
-        $(tr).html('<td><input type="text" id="txtnm" class="form-control" autocomplete="off" /></td><td><input type="text" id="txtnum" class="form-control" autocomplete="off" /></td><td><input type="text" id="txtemail" class="form-control" autocomplete="off" /></td><td><a name="btnadd" class="btn btn-primary"><span>+</span></a></td>');
-        $("#contact_tbl > TBODY").append(tr);
-    }
-    else {
-        //x = $(this).closest('tr').find('input[name=addeamt]'); $(x).val('0');
-        //calcAddi(x);
-        $(this).closest('tr').remove();
-    }
-    });
 </script>
-
 </asp:Content>
 

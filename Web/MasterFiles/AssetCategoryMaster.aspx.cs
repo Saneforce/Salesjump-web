@@ -36,11 +36,11 @@ public partial class MasterFiles_AssetCategoryMaster : System.Web.UI.Page
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
     [WebMethod(EnableSession = true)]
-    public static string Save_category(string catname, string cattype)
+    public static string Save_category(string catname, string cattype,string hidid)
     {
         string ds = string.Empty;
         loc ast = new loc();
-        ds = ast.insertcategory(catname, cattype);
+        ds = ast.insertcategory(catname, cattype, hidid);
         return ds;
     }
     [WebMethod(EnableSession = true)]
@@ -119,12 +119,12 @@ public partial class MasterFiles_AssetCategoryMaster : System.Web.UI.Page
             }
             return ds;
         }
-        public string insertcategory(string nam, string typ)
+        public string insertcategory(string nam, string typ, string hidid)
         {
             DB_EReporting db = new DB_EReporting();
             DataSet ds = null;
             string msg = string.Empty;
-            string strQry = "exec sp_insert_assetcat '" + nam + "','" + typ + "','"+ sf_code + "','"+ div_code + "'";
+            string strQry = "exec sp_insert_assetcat '" + nam + "','" + typ + "','"+ sf_code + "','"+ div_code + "','"+ hidid+"'";
             try
             {
                 ds = db.Exec_DataSet(strQry);
