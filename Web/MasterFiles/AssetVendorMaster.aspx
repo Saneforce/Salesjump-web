@@ -1,15 +1,22 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Master.master" AutoEventWireup="true" CodeFile="AssetVendorMaster.aspx.cs" Inherits="MasterFiles_AssetVendorMaster" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <link href="../css/jquery.multiselect.css" rel="stylesheet" />
+     <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+            <title></title>
+              <link href="../css/jquery.multiselect.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 <link href="../css/SalesForce_New/bootstrap-select.min.css" rel='stylesheet' type='text/css' />
+        </head>
+  
 <style>
     th {
         white-space: nowrap;
         cursor: pointer;
     }
 </style>
+        <body>
          <form runat="server">
            <div>
              <div class="col-lg-12 sub-header">Vendor Master
@@ -93,7 +100,7 @@
                                                      <label>Vendor Name<span style="color:red;font:bold;">  *</span></label>
                                             </div>
                                            <div class="col-md-5">
-                                             <input type="text" id="txtvennm" class="form-control" autocomplete="off" />
+                                             <input type="text" id="txtvennm" class="form-control" />
                                            </div>
                                        </div>
                                       <div class="row" style="margin-top: 15px;">
@@ -101,7 +108,7 @@
                                           <label>Address Line1<span style="color:red;font:bold;">  *</span></label>
                                         </div>
                                        <div class="col-md-5">
-                                          <input type="text" id="txtadd1" class="form-control" autocomplete="off" />
+                                          <input type="text" id="txtadd1" class="form-control" />
                                        </div>
                                     </div>
                                    <div class="row" style="margin-top: 15px;">
@@ -109,7 +116,7 @@
                                            <label>Address Line2</label>
                                        </div>
                                         <div class="col-md-5">
-                                            <input type="text" id="txtadd2" class="form-control" autocomplete="off" />
+                                            <input type="text" id="txtadd2" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="row" style="margin-top: 15px;">
@@ -117,7 +124,7 @@
                                            <label>GSTIN Number</label>
                                        </div>
                                         <div class="col-md-5">
-                                            <input type="text" id="txtgstnum" class="form-control" autocomplete="off" />
+                                            <input type="text" id="txtgstnum" class="form-control" />
                                         </div>
                                     </div>
                                      <div class="row" style="margin-top: 15px;">
@@ -135,7 +142,7 @@
                                             <label>City<span style="color:red;font:bold;">  *</span></label>
                                         </div>
                                         <div class="col-sm-5">
-                                            <input type="text" id="txtcity" class="form-control" autocomplete="off" />
+                                            <input type="text" id="txtcity" class="form-control" />
                                         </div>
                                     </div>
 
@@ -148,7 +155,7 @@
                                                                <label>Name</label>
                                                            </div>
                                                             <div class="col-md-5">
-                                                                <input type="text" id="txtcontnm" class="form-control" autocomplete="off" />
+                                                                <input type="text" id="txtcontnm" class="form-control" />
                                                             </div>
                                                         </div>
                                                       <div class="row" style="margin-top: 15px;">
@@ -156,7 +163,7 @@
                                                                <label>Mob.No</label>
                                                            </div>
                                                             <div class="col-md-5">
-                                                                <input type="text" id="txtmob" class="form-control" autocomplete="off" />
+                                                                <input type="text" id="txtmob" class="form-control"  />
                                                             </div>
                                                           </div>
                                                           <div class="row" style="margin-top: 15px;">
@@ -164,7 +171,7 @@
                                                                <label>E-Mail</label>
                                                            </div>
                                                             <div class="col-md-5">
-                                                                <input type="text" id="txtemail" class="form-control" autocomplete="off" />
+                                                                <input type="text" id="txtemail" class="form-control"  />
                                                             </div>
                                                             </div>
                                           </div>
@@ -183,7 +190,7 @@
                                                        <label>ZipCode</label>
                                                    </div>
                                                     <div class="col-md-5">
-                                                        <input type="text" id="txtzipcode" placeholder="Pin Code" class="form-control" autocomplete="off" onkeydown="validatePin(event, this)"/>  <%--"if(!(/(^\d{6}$)|(^\d{6}-\d{5}$)/.test(this.value))){this.value='';return false}"--%>
+                                                        <input type="text" id="txtzipcode" placeholder="Pin Code" class="form-control" />  <%--"if(!(/(^\d{6}$)|(^\d{6}-\d{5}$)/.test(this.value))){this.value='';return false}"--%>
                                                     </div>
                                                 </div>
                                           </div> 
@@ -324,7 +331,7 @@
             dataType: "json",
             success: function (data) {
                 var astven = JSON.parse(data.d) || [];
-                $("#txtlocnm").val(astven[0].Vendor_Name);
+                $("#txtvennm").val(astven[0].Vendor_Name);
                 $("#txtadd1").val(astven[0].Address_Line1);
                 $("#txtadd2").val(astven[0].Address_Line2);
                 $('#ddlcntry').selectpicker('val', astven[0].Vendor_Country);
@@ -342,7 +349,7 @@
             }
         });
     }
-    $('#addvendor').on('click', function () {
+    $('#newvend').on('click', function () {
         $("#hvencode").val('');
         $("#txtvennm").val('');
         $("#txtadd1").val('');
@@ -415,7 +422,7 @@
             dataType: "json",
             success: function (data) {
                 alert(data.d);
-                $("#addlocation").modal("hide");
+                $("#addvendor").modal("hide");
                 loadData();
             },
             error: function (result) {
@@ -522,5 +529,7 @@
         }
     }
 </script>
+            </body>
+    </html>
 </asp:Content>
 

@@ -145,29 +145,29 @@
                                                   <div class="card" style="padding: 8px; margin-top: 0px;">
                                                       <h5 style="color:blue;font:bold;text-align:center;">Contact Details</h5>
                                                       <div class="row" style="margin-top: 15px;">
-    <div class="col-md-3">
-       <label>Name</label>
-   </div>
-    <div class="col-md-5">
-        <input type="text" id="txtcontnm" class="form-control" autocomplete="off" />
-    </div>
-</div>
+                                                            <div class="col-md-3">
+                                                               <label>Name</label>
+                                                           </div>
+                                                            <div class="col-md-5">
+                                                                <input type="text" id="txtcontnm" class="form-control" autocomplete="off" />
+                                                            </div>
+                                                        </div>
                                                       <div class="row" style="margin-top: 15px;">
-    <div class="col-md-3">
-       <label>Mob.No</label>
-   </div>
-    <div class="col-md-5">
-        <input type="text" id="txtmob" class="form-control" autocomplete="off" />
-    </div>
+                                                            <div class="col-md-3">
+                                                               <label>Mob.No</label>
+                                                           </div>
+                                                            <div class="col-md-5">
+                                                                <input type="text" id="txtmob" class="form-control" autocomplete="off" />
+                                                            </div>
                                                           </div>
                                                           <div class="row" style="margin-top: 15px;">
-    <div class="col-md-3">
-       <label>E-Mail</label>
-   </div>
-    <div class="col-md-5">
-        <input type="text" id="txtemail" class="form-control" autocomplete="off" />
-    </div>
-</div>
+                                                                <div class="col-md-3">
+                                                                   <label>E-Mail</label>
+                                                               </div>
+                                                                <div class="col-md-5">
+                                                                    <input type="text" id="txtemail" class="form-control" autocomplete="off" />
+                                                                </div>
+                                                            </div>
             <%--<table id="contact_tbl" class="table table-hover">
                 <thead>
     <tr>
@@ -186,25 +186,25 @@
                 <tfoot>
                 </tfoot>
             </table>--%>
-</div>
+                                          </div>
+                                          <div class="row" style="margin-top: 15px;">
+                                            <div class="col-sm-3">
+                                               <label>State<span style="color:red;font:bold;">  *</span></label>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                  <select id="ddlstate" class="form-control" name="ddlstate">
+                                                        <option value="0">Select State</option>
+                                                  </select> 
+                                            </div>
+                                        </div>
                                               <div class="row" style="margin-top: 15px;">
-    <div class="col-sm-3">
-       <label>State<span style="color:red;font:bold;">  *</span></label>
-    </div>
-    <div class="col-sm-5">
-          <select id="ddlstate" class="form-control" name="ddlstate">
-                <option value="0">Select State</option>
-          </select> 
-    </div>
-</div>
-                                              <div class="row" style="margin-top: 15px;">
-    <div class="col-md-3">
-       <label>ZipCode</label>
-   </div>
-    <div class="col-md-5">
-        <input type="text" id="txtzipcode" placeholder="Pin Code" class="form-control" autocomplete="off" onkeydown="validatePin(event, this)"/>  <%--"if(!(/(^\d{6}$)|(^\d{6}-\d{5}$)/.test(this.value))){this.value='';return false}"--%>
-    </div>
-</div>
+                                                <div class="col-md-3">
+                                                   <label>ZipCode</label>
+                                               </div>
+                                                <div class="col-md-5">
+                                                    <input type="text" id="txtzipcode" placeholder="Pin Code" class="form-control" autocomplete="off" onkeydown="validatePin(event, this)"/>  <%--"if(!(/(^\d{6}$)|(^\d{6}-\d{5}$)/.test(this.value))){this.value='';return false}"--%>
+                                                </div>
+                                            </div>
                                           </div> 
                                     </div>
                                 </div>
@@ -359,7 +359,7 @@
 
     });
     $('#newloc').on('click', function () {
-        $("#hloccode").val();
+        $("#hloccode").val('');
         $("#txtlocnm").val('');
         $("#txtadd1").val('');
         $("#txtadd2").val('');

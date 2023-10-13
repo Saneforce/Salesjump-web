@@ -469,6 +469,93 @@
                                 </div>
                             </div>
                         </div>
+						<div class="modal fade" id="HQModal2" style="z-index: 10000000; background: transparent; overflow-y: scroll;" tabindex="0" aria-hidden="true">
+            <div class="modal-dialog" role="document" style="width: 80% !important">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="HQModalLabel2"></h5>
+                    </div>
+                    <div class="modal-body" style="padding-top: 10px">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="hqdets2" style="width: 100%; font-size: 12px;">
+                                    <thead class="text-warning">
+                                        <tr>
+                                            <th style="text-align: left">S.NO</th>
+                                            <th style="text-align: left">HQ Code</th>
+                                            <th style="text-align: left">HQ Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+                  <div class="modal fade" id="RModal2" style="z-index: 10000000; background: transparent; overflow-y: scroll;" tabindex="0" aria-hidden="true">
+            <div class="modal-dialog" role="document" style="width: 80% !important">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="RModalLabel2"></h5>
+                    </div>
+                    <div class="modal-body" style="padding-top: 10px">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="rdets2" style="width: 100%; font-size: 12px;">
+                                    <thead class="text-warning">
+                                        <tr>
+                                            <th style="text-align: left">S.NO</th>
+                                            <th style="text-align: left">Retailer Code</th>
+                                            <th style="text-align: left">Retailer Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+                 <div class="modal fade" id="BPModal" style="z-index: 10000000; background: transparent; overflow-y: scroll;" tabindex="0" aria-hidden="true">
+            <div class="modal-dialog" role="document" style="width: 80% !important">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="BPModalLabel"></h5>
+                    </div>
+                    <div class="modal-body" style="padding-top: 10px">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="bpdets" style="width: 100%; font-size: 12px;">
+                                    <thead class="text-warning">
+                                        <tr>
+                                            <th style="text-align: left">S.NO</th>
+                                            <th style="text-align: left">Product Code</th>
+                                            <th style="text-align: left">Product Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
                     <div id="Billed" class="modal fade" role="dialog" style="z-index: 10000000; background-color: #00000000">
                         <div class="modal-dialog">
                             <!-- Modal content-->
@@ -672,6 +759,7 @@
                                         <th>Product Type</th>
                                         <th>Product Name</th>
                                         <th>Product Price</th>
+										<th>Valid From/To Date</th>
                                         <th>Edit</th>
                                         <th>Status</th>
                                     </tr>
@@ -1025,6 +1113,7 @@
             ReloadTable1();
         }
         $('#btnsave').on('click', function () {
+		
             var slbid = $('#hbcode').val();
             var nam = $('#txtbname').val();
             if (nam == "") {
@@ -1033,22 +1122,10 @@
                 return false;
             }
 			 var validatename = [];
-$.ajax({
-    type: "POST",
-    contentType: "application/json; charset=utf-8",
-    async: false,
-    url: "New_Claim_Master.aspx/getSalesSlab",
-    data: "{'clmtyp':'S'}",
-    dataType: "json",
-    success: function (data) {
-        validatename = JSON.parse(data.d) || [];
-        validatename = validatename.filter(function (a) {
+			 validatename = AllOrders.filter(function (a) {
             return a.GiftName.toLowerCase() == nam.toLowerCase();
         });
-    },
-    error: function (result) {
-    }
-});
+
 if (validatename.length > 0&& slbid=='') {
     alert("Entered Slabname '" + nam + "' is Already Exist.");
     return false;
@@ -1133,7 +1210,7 @@ if (clmval == "" && clmtyp == '1') {
 }
 
             data = { "slbid": slbid, "slabnm": nam, "clmdesc": clmy, "mnval": minval, "mxval": maxval, "clmtyp": clmtyp, "clmval": clmval, "Gtype": gifttyp, "FDT": gfdt, "TDT": gtdt, "hqdtl": hq, "retail": ret, "Gprod": clmprod, "ClmEndDt": clmenddt }
-
+//$('#btnsave').hide();
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -1144,6 +1221,7 @@ if (clmval == "" && clmtyp == '1') {
                 success: function (data) {
                     alert(data.d);
                     $("#Slab").modal("hide");
+					//$('#btnsave').show();
                     loadData1();
                     //clear();
                 },
@@ -1255,11 +1333,11 @@ if (clmval == "" && clmtyp == '1') {
             st = PgRecords * (pgNo - 1); slno = 0;
             for ($i = st; $i < st + PgRecords; $i++) {
                 if ($i < Orders2.length) {
-                    tr = $("<tr></tr>");
+                    tr = $("<tr slbid='" + Orders2[$i].GiftSlabID + "' slbnm='" + Orders2[$i].GiftName + "'></tr>");
                     slno = $i + 1;
-                    $(tr).html('<td>' + slno + '</td><td>' + Orders2[$i].GiftName + '</td><td>' + Orders2[$i].GiftDesc + '</td><td>' + Orders2[$i].billed_products1 +
-                        '</td><td>' + Orders2[$i].bill_basis + '</td><td>' + Orders2[$i].Claim_Type + '</td><td>' + Orders2[$i].Claim_Val + '</td><td>' + Orders2[$i].GiftType +
-                        '</td><td>' + Orders2[$i].Sf_HQ1 + '</td><td>' + Orders2[$i].Mapped_Retails1 + '</td><td>' + Orders2[$i].Duration + '</td><td>' + Orders2[$i].Claim_deadline + '</td><td id=' + Orders2[$i].GiftSlabID +
+                    $(tr).html('<td>' + slno + '</td><td>' + Orders2[$i].GiftName + '</td><td>' + Orders2[$i].GiftDesc + '</td><td class="billprod"><a href="#">' + Orders2[$i].billed_products1 +
+                        '</a></td><td>' + Orders2[$i].bill_basis + '</td><td>' + Orders2[$i].Claim_Type + '</td><td>' + Orders2[$i].Claim_Val + '</td><td>' + Orders2[$i].GiftType +
+                        '</td><td class="hqcount2"><a href="#">' + Orders2[$i].Sf_HQ1 + '</a></td><td class="retcount2"><a href="#">' + Orders2[$i].Mapped_Retails1 + '</a></td><td>' + Orders2[$i].Duration + '</td><td>' + Orders2[$i].Claim_deadline + '</td><td id=' + Orders2[$i].GiftSlabID +
                         ' class="sfedit2"><a href="#">Edit</a></td>' +
                         '<td><ul class="nav" style="margin:0px"><li class="dropdown"><a href="#" style="padding:0px" class="dropdown-toggle" data-toggle="dropdown">'
                         + '<span><span class="aState2" data-val="' + Orders2[$i].Status + '">' + Orders2[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
@@ -1420,6 +1498,7 @@ if (clmval == "" && clmtyp == '1') {
             ReloadTable2();
         }
         $('#btnsave1').on('click', function () {
+		//$('#btnsave1').hide();
             var billid = $('#sbcode').val();
             var nam = $('#txtbname1').val();
             if (nam == "") {
@@ -1428,22 +1507,9 @@ if (clmval == "" && clmtyp == '1') {
                 return false;
             }
 			var validatename = [];
-$.ajax({
-    type: "POST",
-    contentType: "application/json; charset=utf-8",
-    async: false,
-    url: "New_Claim_Master.aspx/getBilledClm",
-    data: "{'clmtyp':'P'}",
-    dataType: "json",
-    success: function (data) {
-        validatename = JSON.parse(data.d) || [];
-        validatename = validatename.filter(function (a) {
+			validatename = AllOrders2.filter(function (a) {
             return a.GiftName.toLowerCase() == nam.toLowerCase();
         });
-    },
-    error: function (result) {
-    }
-});
 if (validatename.length > 0 && billid == '') {
     alert("Entered Name '" + nam + "' is Already Exist.");
     return false;
@@ -1551,6 +1617,7 @@ if (validatename.length > 0 && billid == '') {
                 success: function (data) {
                     alert(data.d);
                     $("#Billed").modal("hide");
+					//$('#btnsave1').show();
                     loadData2();
                     //clear2();
                 },
@@ -1667,7 +1734,7 @@ if (validatename.length > 0 && billid == '') {
                 if ($i < Orders3.length) {
                     tr = $("<tr></tr>");
                     slno = $i + 1; 
-                    $(tr).html('<td>' + slno + '</td><td>' + Orders3[$i].prod_type1 + '</td><td>' + Orders3[$i].PName + '</td><td>' + Orders3[$i].Product_Price + '</td><td id=' + Orders3[$i].ID +
+                    $(tr).html('<td>' + slno + '</td><td>' + Orders3[$i].prod_type1 + '</td><td>' + Orders3[$i].PName + '</td><td>' + Orders3[$i].Product_Price + '</td><td>' + Orders3[$i].Duration + '</td><td id=' + Orders3[$i].ID +
                         ' class="sfedit3"><a href="#">Edit</a></td>' +
                         '<td><ul class="nav" style="margin:0px"><li class="dropdown"><a href="#" style="padding:0px" class="dropdown-toggle" data-toggle="dropdown">'
                         + '<span><span class="aState3" data-val="' + Orders3[$i].Status + '">' + Orders3[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
@@ -1890,6 +1957,14 @@ if (validatename.length > 0 && gpscode == '') {
             //loadretailerCategory(divcode);
             loadclaimprod(divcode);
             fillGiftProductsID(divcode);
+			
+			  $(document).on('click', '.billprod', function () {
+                $('#BPModal').modal('toggle');
+                var slbid = $(this).closest('tr').attr('slbid');
+                var slbnm = $(this).closest('tr').attr('slbnm');
+                $('#BPModalLabel').text("Product Mapped for " + slbnm);
+                fillbilledproduct(slbid);
+            });
 
             $(document).on('click', '.hqcount', function () {
                 $('#HQModal').modal('toggle');
@@ -1905,6 +1980,22 @@ if (validatename.length > 0 && gpscode == '') {
                 var slbnm = $(this).closest('tr').attr('slbnm');
                 $('#RModalLabel').text("Retailer Mapped for " + slbnm);
                 fillRetailers(slbid);
+            });
+			
+			$(document).on('click', '.hqcount2', function () {
+                $('#HQModal2').modal('toggle');
+                var slbid = $(this).closest('tr').attr('slbid');
+                var slbnm = $(this).closest('tr').attr('slbnm');
+                $('#HQModalLabel2').text("HQ Mapped for " + slbnm);
+                fillHQ2(slbid);
+            });
+			
+            $(document).on('click', '.retcount2', function () {
+                $('#RModal2').modal('toggle');
+                var slbid = $(this).closest('tr').attr('slbid');
+                var slbnm = $(this).closest('tr').attr('slbnm');
+                $('#RModalLabel2').text("Retailer Mapped for " + slbnm);
+                fillRetailers2(slbid);
             });
 
             $('input[type=radio][name=cc]').change(function () {
@@ -2038,6 +2129,30 @@ if (validatename.length > 0 && gpscode == '') {
                 $('.ms-options ul').css('column-count', '2');
             });
         });
+		 function fillbilledproduct(slbid) {
+            $('#bpdets tbody').html('');
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                url: "New_Claim_Master.aspx/billed_product",
+                data: "{'sdcode':'" + slbid + "'}",
+                dataType: "json",
+                success: function (data) {
+                    var AllOrders2 = JSON.parse(data.d) || [];
+                    $('#bpdets TBODY').html("");
+                    var slno = 0;
+                    for ($i = 0; $i < AllOrders2.length; $i++) {
+                        if (AllOrders2.length > 0) {
+                            slno += 1;
+                            tr = $("<tr></tr>");
+                            $(tr).html("<td>" + slno + "</td><td>" + AllOrders2[$i].Product_Detail_Code + "</td><td>" + AllOrders2[$i].Product_Detail_Name + "</td>");
+                            $("#bpdets TBODY").append(tr);
+                        }
+                    }
+                }
+            });
+        }
         function fillRetailers(slbid) {
             $('#rdets tbody').html('');
             $.ajax({
@@ -2055,7 +2170,7 @@ if (validatename.length > 0 && gpscode == '') {
                         if (AllOrders2.length > 0) {
                             slno += 1;
                             tr = $("<tr></tr>");
-                            $(tr).html("<td>" + slno + "</td><td>" + AllOrders2[$i].ListedDrCode + "</td><td>" + AllOrders2[$i].ListedDr_Name + "</td>");
+                            $(tr).html("<td>" + slno + "</td><td>" + AllOrders2[$i].ListeddrCode + "</td><td>" + AllOrders2[$i].Listeddr_Name + "</td>");
                             $("#rdets TBODY").append(tr);
                         }
                     }
@@ -2081,6 +2196,54 @@ if (validatename.length > 0 && gpscode == '') {
                             tr = $("<tr></tr>");
                             $(tr).html("<td>" + slno + "</td><td>" + AllOrders2[$i].HQ_ID + "</td><td>" + AllOrders2[$i].HQ_Name + "</td>");
                             $("#hqdets TBODY").append(tr);
+                        }
+                    }
+                }
+            });
+        }
+		 function fillRetailers2(slbid) {
+            $('#rdets2 tbody').html('');
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                url: "New_Claim_Master.aspx/Retail_Count",
+                data: "{'sdcode':'" + slbid + "'}",
+                dataType: "json",
+                success: function (data) {
+                    var AllOrders2 = JSON.parse(data.d) || [];
+                    $('#rdets2 TBODY').html("");
+                    var slno = 0;
+                    for ($i = 0; $i < AllOrders2.length; $i++) {
+                        if (AllOrders2.length > 0) {
+                            slno += 1;
+                            tr = $("<tr></tr>");
+                            $(tr).html("<td>" + slno + "</td><td>" + AllOrders2[$i].ListeddrCode + "</td><td>" + AllOrders2[$i].Listeddr_Name + "</td>");
+                            $("#rdets2 TBODY").append(tr);
+                        }
+                    }
+                }
+            });
+        }
+        function fillHQ2(slbid) {
+            $('#hqdets2 tbody').html('');
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                url: "New_Claim_Master.aspx/Hq_Count",
+                data: "{'sdcode':'" + slbid + "'}",
+                dataType: "json",
+                success: function (data) {
+                    var AllOrders2 = JSON.parse(data.d) || [];
+                    $('#hqdets2 TBODY').html("");
+                    var slno = 0;
+                    for ($i = 0; $i < AllOrders2.length; $i++) {
+                        if (AllOrders2.length > 0) {
+                            slno += 1;
+                            tr = $("<tr></tr>");
+                            $(tr).html("<td>" + slno + "</td><td>" + AllOrders2[$i].HQ_ID + "</td><td>" + AllOrders2[$i].HQ_Name + "</td>");
+                            $("#hqdets2 TBODY").append(tr);
                         }
                     }
                 }

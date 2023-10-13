@@ -175,10 +175,10 @@ top: 10px;
                     ctyp.empty().append('<option value="0">Select CategoryType</option>');
                     for (var i = 0; i < cattype.length;i++) {
                         sfmgs.append($('<option value=' + cattype[i].cattype_Id + '>' + cattype[i].cattype_Name + '</option>')).trigger('chosen:updated');
-                        ctyp.append($('<option value=' + cattype[i].cattype_Id + '>' + cattype[i].cattype_Name + '</option>')).trigger('chosen:updated');
+                        ctyp.append($('<option value=' + cattype[i].cattype_Id + '>' + cattype[i].cattype_Name + '</option>'));
                     }
                     $('#txtfilter').chosen();
-                    $('#ddlcattype').chosen();
+                    //$('#ddlcattype').chosen();
                 },
                 error: function (result) {
                     //alert(JSON.stringify(result));

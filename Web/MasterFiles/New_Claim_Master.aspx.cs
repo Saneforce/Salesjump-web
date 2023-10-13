@@ -141,6 +141,13 @@ public partial class MasterFiles_New_Claim_Master : System.Web.UI.Page
         DataSet ds = cp.gethqdet(sdcode);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+	[WebMethod(EnableSession = true)]
+    public static string billed_product(string sdcode)
+    {
+        loc cp = new loc();
+        DataSet ds = cp.getbilprod(sdcode);
+        return JsonConvert.SerializeObject(ds.Tables[0]);
+    }
     [WebMethod(EnableSession = true)]
     public static string Retail_Count(string sdcode)
     {
@@ -405,7 +412,7 @@ public partial class MasterFiles_New_Claim_Master : System.Web.UI.Page
         {
             DB_EReporting db = new DB_EReporting();
             DataSet ds = null;
-            string strQry = "select ListedDrCode,ListedDr_Name from mas_gift_slab s inner join mas_listeddr h on charindex(','+cast(h.ListedDrCode as varchar)+',',','+s.Mapped_Retails+',')>0 where s.division_code='"+ div_code + "' and GiftSlabID='"+ divcode + "'";
+            string strQry = "select ListeddrCode,Listeddr_Name from Gift_Map_Customer where Slab_Id='" + divcode + "'";
             try
             {
                 ds = db.Exec_DataSet(strQry);
@@ -420,7 +427,22 @@ public partial class MasterFiles_New_Claim_Master : System.Web.UI.Page
         {
             DB_EReporting db = new DB_EReporting();
             DataSet ds = null;
-            string strQry = "select HQ_ID,HQ_Name from mas_gift_slab s inner join mas_hquarters h on charindex(','+cast(h.HQ_ID as varchar)+',',','+s.sf_hq+',')>0 where s.division_code='"+ div_code + "' and GiftSlabID='"+ divcode + "'";
+            string strQry = "select Hq_Id HQ_ID,Hq_Name HQ_Name from Gift_Map_Hq where Slab_Id='"+ divcode + "'";
+            try
+            {
+                ds = db.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return ds;
+        }
+		public DataSet getbilprod(string divcode)
+        {
+            DB_EReporting db = new DB_EReporting();
+            DataSet ds = null;
+            string strQry = "select Product_Detail_Code,Product_Detail_Name from mas_gift_slab s inner join Mas_Product_Detail pd on charindex(','+pd.Product_Detail_Code +',',','+s.billed_products+',')>0 where s.Division_Code='" + div_code + "' and GiftSlabID='" + divcode + "'";
             try
             {
                 ds = db.Exec_DataSet(strQry);
