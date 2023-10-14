@@ -715,6 +715,10 @@ public partial class MasterFiles_UploadExcelFile : System.Web.UI.Page
         }
         else
         {
+            if(ToolNm == "TP Upload")
+            {
+                svQry = svQry.Replace("@Remarks", "''");
+            }
             sQry = sQry.TrimEnd(',') + ") " + svQry.TrimEnd(',');
         }
 
