@@ -753,6 +753,8 @@
                             }
                         });
                     }
+
+                   
                 });
 
                 function ShowProgress() {
@@ -1582,9 +1584,11 @@
                     //$("#files").append("<h3>List of files to be uploaded:</h3>");
                     var name = ""; 
                     for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-                        name = file.name;
-
+                        var file = files[i].name;
+                        //var filepath = files[i].mozFullPath;
+                        name = files[i].name;
+                        
+                        //console.log(filepath);
                         $.ajax({
                             type: "POST",
                             contentType: "application/json; charset=utf-8",
@@ -1609,6 +1613,7 @@
                     additionalfud.push(adDetail);
                 }
                 console.log(additionalfud);
+
                 function SaveCustomFielsValues() {
                     
                     var vflag = true;

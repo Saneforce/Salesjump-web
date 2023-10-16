@@ -9,14 +9,11 @@ using System.Web.Services;
 using DBase_EReport;
 using System.Data.SqlClient;
 using System.IO;
-using Amazon;
 using Amazon.S3;
-using Amazon.S3.Model;
-using System.Web.Configuration;
-using Amazon.S3.IO;
 using Amazon.S3.Transfer;
-using System.Web.UI.WebControls;
-using System.IO.Packaging;
+using System.Threading.Tasks;
+using Amazon;
+using Amazon.Runtime;
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
 {
@@ -51,7 +48,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     public static int iReturn = -1;
     public static string doctorcode = string.Empty;
     public static string div_code = string.Empty;
-    public static string divcode = string.Empty;
+    //public static string divcode = string.Empty;
     DateTime ServerStartTime;
     DateTime ServerEndTime;
     public static int time;
@@ -92,7 +89,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         //if ((Convert.ToString(Session["div_code"]) != null || Convert.ToString(Session["div_code"]) != ""))
         //{
-        divcode = Session["div_code"].ToString();
+       
         div_code = Session["div_code"].ToString();
         try
         {
@@ -767,8 +764,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         public string FileName { get; set; }
     }
 
-
-
     public class RetailerMainfld
     {
         [JsonProperty("DR_Name")]
@@ -1134,18 +1129,64 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         lisdr ld = new lisdr();
         string msg = "";
 
-        string currentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename);
-        //string currentPath = Directory.GetCurrentDirectory();
-        if (!Directory.Exists(Path.Combine(currentPath)))
-            Directory.CreateDirectory(Path.Combine(currentPath));
+        //string currentDirectory = HttpContext.Current.Server.MapPath("~");
+        //string relativePath = "FMCGWebRetailer";
 
-        System.IO.FileStream fs = new System.IO.FileStream(currentPath, System.IO.FileMode.Append, System.IO.FileAccess.Write);
-        System.IO.StreamWriter sw = new System.IO.StreamWriter(fs);
-        sw.Flush();
-        sw.Close();
-        fs.Close();
+        string folderPath = HttpContext.Current.Server.MapPath("~/FMCGWebRetailer/");
 
-        msg = ld.sendMyFileToS3(currentPath, filename);
+        //Check whether Directory (Folder) exists.
+        if (!Directory.Exists(folderPath))
+        {
+            //If Directory (Folder) does not exists. Create it.
+            Directory.CreateDirectory(folderPath);
+        }
+
+        //Save the File to the Directory (Folder).
+        string file = Path.Combine(folderPath, filename);
+        File.WriteAllText(file, filename);
+
+        DataSet dsDivision = ld.getStatePerDivision(div_code);
+        string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+        //string existingBucketName = "happic";
+        string directoryPath = urlshotName + "_" + "Retailer";
+
+        string awsKey = "AKIA5OS74MUCASG7HSCG";
+        string awsSecretKey = "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";
+        RegionEndpoint bucketRegion = RegionEndpoint.APSouth1;
+        string bucketName = "happic";
+        string prefix = directoryPath + "/" + filename;       
+
+        string localFilePath = Path.Combine(folderPath, filename);
+        string filePath = localFilePath;  
+        
+
+        // Set up your AWS credentials
+        BasicAWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
+
+        // Create a new Amazon S3 client
+        AmazonS3Client s3Client = new AmazonS3Client(credentials, Amazon.RegionEndpoint.APSouth1);
+
+        try
+        {
+            // Upload the file to Amazon S3
+            TransferUtility fileTransferUtility = new TransferUtility(s3Client);
+            fileTransferUtility.Upload(filePath, bucketName, filename);
+            //Console.WriteLine("Upload completed!");
+            msg = "Upload  completed !!";
+        }
+        catch (AmazonS3Exception e)
+        {
+            //Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
+            msg = "Error encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
+        }
+        catch (Exception e)
+        {
+            //Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+            msg = "Unknown encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
+        }
+
+
+
         return msg;
     }
 
@@ -1603,6 +1644,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 using (var con = new SqlConnection(Globals.ConnString))
                 {
                     using (var cmd = con.CreateCommand())
+
                     {
                         cmd.CommandText = strQry;
                         cmd.CommandType = CommandType.Text;
@@ -2411,45 +2453,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 throw ex;
             }
             return dsAdmin;
-        }
-
-        public string sendMyFileToS3(string filePath, string fileName)
-        {
-            string msg = "";
-            try
-            {
-
-                DataSet dsDivision = getStatePerDivision(div_code);
-                string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
-                //string existingBucketName = "happic";
-                string directoryPath = urlshotName + "_" + "Retailer";
-
-                string accessKey = "AKIA5OS74MUCASG7HSCG";
-                string secretKey = "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";
-                string bucketName = "happic" + @"/" + directoryPath;
-
-
-                using (var client = new AmazonS3Client(accessKey, secretKey, Amazon.RegionEndpoint.APSouth1))
-                {
-                    var transferUtility = new TransferUtility(client);
-
-                    transferUtility.Upload(filePath, bucketName, fileName);
-                }
-
-                msg = "FileUpload Successfully";
-            }
-            catch (AmazonS3Exception e)
-            {
-                //Console.WriteLine("Error encountered ***. Message:'{0}' when writing an object", e.Message);
-                msg = " Error encountered ***. Message:'{0}' when writing an object, " + e.Message + "";
-            }
-            catch (Exception e)
-            {
-                //Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
-                msg = "  Unknown encountered on server. Message:'{0}' when writing an object , " + e.Message + " ";
-            }
-
-            return msg; //indicate that the file was sent
         }
 
         public DataSet getStatePerDivision(string div_code)

@@ -62,42 +62,46 @@ public partial class Index : System.Web.UI.Page
         string sConStr = ConfigurationManager.ConnectionStrings["Ereportcon"].ConnectionString;
         sUSR = Request.Url.Host.ToLower().Replace("www.", "").Replace(".sanfmcg.com", "").Replace(".salesjump.in", "").ToLower();
         string DBName = "FMCG_Live";
-
-        if (Request.Url.Host.ToLower().IndexOf("salesjump.in") > -1 && sUSR == "fmcg")
-        {
-            DBName = "FMCG_TRIAL";
-        }
-        else if (sUSR == "fmcg")
-        {
-            DBName = "FMCG_Live";
-        }
-        else if (sUSR == "arasan")
-        {
-            DBName = "FMCG_ArasanSanitry";
-        }
-        else if (sUSR == "tiesar")
-        {
-            DBName = "FMCG_TSR";
-        }
-        else if (sUSR == "pgdb")
-        {
-            DBName = "FMCG_BGDB";
-        }
-        else if (sUSR == "pgkala")
-        {
-            DBName = "FMCG_Kala";
-        }
-        else if (sUSR == "allen")
-        {
-            DBName = "FMCG_AllenLab";
-        }
-        else if (sUSR == "afripipe")
-        {
-            DBName = "FMCG_Afripipes";
-        }
+        if (sUSR == "localhost")
+        { DBName = "FMCG_Live"; }
         else
         {
-            DBName = "FMCG_" + sUSR.ToUpper();
+            if (Request.Url.Host.ToLower().IndexOf("salesjump.in") > -1 && sUSR == "fmcg")
+            {
+                DBName = "FMCG_TRIAL";
+            }
+            else if (sUSR == "fmcg")
+            {
+                DBName = "FMCG_Live";
+            }
+            else if (sUSR == "arasan")
+            {
+                DBName = "FMCG_ArasanSanitry";
+            }
+            else if (sUSR == "tiesar")
+            {
+                DBName = "FMCG_TSR";
+            }
+            else if (sUSR == "pgdb")
+            {
+                DBName = "FMCG_BGDB";
+            }
+            else if (sUSR == "pgkala")
+            {
+                DBName = "FMCG_Kala";
+            }
+            else if (sUSR == "allen")
+            {
+                DBName = "FMCG_AllenLab";
+            }
+            else if (sUSR == "afripipe")
+            {
+                DBName = "FMCG_Afripipes";
+            }
+            else
+            {
+                DBName = "FMCG_" + sUSR.ToUpper();
+            }
         }
         Session["DBName"] = DBName;
         sConStr = sConStr.Replace("[DATABASE]", DBName);

@@ -12,8 +12,6 @@
     
 </head>
 <body style="min-height: 490px;">
-
-	
      
     <div class="MainContainer">
         <div class="RightArea">
@@ -22,11 +20,12 @@
         </div>
         <div class="login-group">
             <div class="container"><form id="Form1" runat="server" class="form-horizontal" enctype="multipart/form-data">
-						<div style="display:block;width:100%;height:80px;text-align:center;padding-bottom:40px;"><img id="logoo" src="http://fmcg.sanfmcg.com/limg/demo_logo.png" style="max-height:100px;max-width:100%;vertical-align:middle"></div>
+						<div style="display:block;width:100%;height:80px;text-align:center;padding-bottom:40px;">
+							<img alt="" id="logoo" src="http://fmcg.sanfmcg.com/limg/demo_logo.png" style="max-height:100px;max-width:100%;vertical-align:middle" />
+						</div>
                         <%--<div class="wel-msg hidden" data-conn="<%=Globals.ConnString %>">
 							<asp:HiddenField ID="HiddenField23" Value="" runat="server" />
 							Welcome to Sales - Jump<asp:HiddenField ID="HiddenField1" Value="" runat="server" />
-
                         </div>--%>
 				       <div class="wel-msg">
 							<asp:HiddenField ID="HiddenField23" Value="" runat="server" />
@@ -69,49 +68,51 @@
 	 <script type="text/javascript">
         var hash='';
 
-        function DoesParentExists()
-        {
- 	        hash = location.hash.split('#')[1];
+		 function DoesParentExists() {
+			 hash = location.hash.split('#')[1];
 
-	        if(hash==undefined){
-		        console.log(location.href)
-	 	        sploc=location.href.replace(/http:\/\//gi,'').replace(/https:\/\//gi,'').split('.');
-		        hash =((sploc[0]=='www')?sploc[1]:sploc[0])+".";
-	        console.log(hash+ '= '+hash.replace(".",''))
-	        }
-	        document.getElementById('HiddenField1').value = hash;
-	        document.getElementById('logoo').src ='limg/'+hash.replace(".",'')+'_logo.png';
+			 if (hash == undefined) {
+				 console.log(location.href)
+				 sploc = location.href.replace(/http:\/\//gi, '').replace(/https:\/\//gi, '').split('.');
+				 hash = ((sploc[0] == 'www') ? sploc[1] : sploc[0]) + ".";
+				 console.log(hash + '= ' + hash.replace(".", ''));
+			 }
+			 document.getElementById('HiddenField1').value = hash;
+			 document.getElementById('logoo').src = 'limg/' + hash.replace(".", '') + '_logo.png';
 
-	        console.log('Logo: limg/'+hash+'_logo.png');
-            genListOfPoster(hash.replace('.',''),hash);
-        }
+			 console.log('Logo: limg/' + hash + '_logo.png');
+			 genListOfPoster(hash.replace('.', ''), hash);
+		 }
         
-        $(document).ready(function () {
-            localStorage.clear();	  
-	     $('.input').keypress(function (e) {
-                if (e.which === 32)
-                    return false;
-            });   
-        });
-        function genListOfPoster(shDiv,key)
-        { 
-	        $.ajax({
-		        type: "POST",
-		        contentType: "application/json;charset=utf-8",
-		        url: "Index.aspx/getSlides",
-		        data:JSON.stringify({shDiv}),
-		        dataType: "json",
-		        success: function (data) {
-			        $owl=$('.owl-carousel');
-			        if(data.d.length>0){
-                        document.location.href="indexs.aspx#"+key;
-			        }
-		        },
-		        error: function ajaxError(result) {
-			        console.log(result.status + ' : ' + result.statusText);
-		        }
-	        });
-        }
-    </script><script type='text/javascript'>              DoesParentExists();</script>
+		 $(document).ready(function () {
+			 localStorage.clear();
+			 $('.input').keypress(function (e) {
+				 if (e.which === 32)
+					 return false;
+			 });
+		 });
+
+		 function genListOfPoster(shDiv, key) {
+			 $.ajax({
+				 type: "POST",
+				 contentType: "application/json;charset=utf-8",
+				 url: "Index.aspx/getSlides",
+				 data: JSON.stringify({ shDiv }),
+				 dataType: "json",
+				 success: function (data) {
+					 $owl = $('.owl-carousel');
+					 if (data.d.length > 0) {
+						 document.location.href = "indexs.aspx#" + key;
+					 }
+				 },
+				 error: function ajaxError(result) {
+					 console.log(result.status + ' : ' + result.statusText);
+				 }
+			 });
+		 }
+    </script>
+	<script type='text/javascript'>
+		DoesParentExists();
+	</script>
 </body>
 </html>
