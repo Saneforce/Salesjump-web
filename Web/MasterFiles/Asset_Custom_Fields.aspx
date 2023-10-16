@@ -379,7 +379,6 @@ input[list]:focus {
             <form runat="server">
 
                  <div>
-     <%-- <div class="col-lg-12 sub-header">Asset Custom Fields --%>
           <br />
      <div class="row">
          <label style="float: left !important;padding-top: 3px;font-weight:bold;font-size:15px;"><span style='color:Red'>*</span>&nbsp;Module Name :</label>
@@ -396,7 +395,7 @@ input[list]:focus {
         </select>
     </div>
 </div>
-     <div style="float: right;padding-top: 3px;">
+     <div style="float: right;padding-top: 3px;"
              <ul class="segment">
                  <li data-va='All'>ALL</li>
                  <li data-va='0' class="active">Active</li>
@@ -407,7 +406,6 @@ input[list]:focus {
      
      </div>
  </div>
-     <%--</div>--%>
  </div>
      <div class="card" id="AddModuleFields">
      <div class="row">
@@ -495,7 +493,6 @@ input[list]:focus {
                     <option value="S">Selection</option>                                             
                     <option value="R">Radio Button List</option>                                               
                     <option value="C">Check Box List </option>
-                    <option value="F">File</option>
                 </select>
             </div>
         </div>                                            
@@ -626,38 +623,6 @@ input[list]:focus {
             </div>
         </div>
     </div>
-
-    <%--<div class="row" id="datarow" style="margin-bottom: 1rem!important;padding-top:11px !important;">
-        <div class="col-xs-12 col-sm-12">
-            <div class="col-xs-12 col-sm-4">
-                <label style="padding-top: 5px;"><span style='Color:Red'>*</span>&nbsp;Data</label>
-            </div>
-            <div class="col-xs-12 col-sm-8">
-                <div class="col-xs-12 col-sm-12">
-                    <div class="col-xs-12 col-sm-6" style="display: inline-flex;">
-                        <input id="master" name="dataf" type='radio' value="M" />
-                        <label style="padding-left: 7px; white-space: nowrap;" for="master">Master</label>
-                    </div>
-                    <div class="col-xs-12 col-sm-6" style="display: inline-flex;">
-                        <input id="others" name="dataf" type='radio' value="O" />
-                        <label style="padding-left: 7px; white-space: nowrap;" for="others">Others</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row Mtablerow" id="Mtablerow" style="margin-bottom: 1rem!important;padding-top:11px !important;padding-top:11px !important;">
-        <div class="col-xs-12 col-sm-12">
-            <div class="col-xs-12 col-sm-4">
-                <label style="padding-top: 5px;"><span style='Color:Red'>*</span>&nbsp;Master Tables</label>
-            </div>
-            
-            <div class="col-xs-12 col-sm-8">
-                <select id="mtables"><option value="0" >-- Select --</option></select>
-            </div>
-        </div>
-    </div>--%>
     
     <div class="row hiderow Fieldrow" id="Fieldrow" style="margin-bottom: 1rem!important;padding-top:11px !important; ">
         <div class="col-xs-12 col-sm-12">
@@ -758,35 +723,11 @@ input[list]:focus {
         </div>
     </div>
 
-    <%-- <div class="row" style="margin-bottom: 1rem!important;padding-top:11px !important;">
-        <div class="col-xs-12 col-sm-12">
-            <div class="col-xs-12 col-sm-3 Accessrow">
-                <label style="padding-top: 5px;">Access(App)</label>
-            </div>
-
-            <div class="col-xs-12 col-sm-3 Accessrow">
-                <input class='tgl tgl-skewed' name="accwa" id="accwa" type="checkbox" />
-                <label class='tgl-btn' data-tg-off='NO' data-tg-on='YES' for="accwa"></label>
-            </div>
-
-            <div class="col-xs-12 col-sm-3 Sortingrow hidden">
-                 <label for="maxleng" style="padding-top: 5px;">Sorting Number</label>
-            </div>
-            
-            <div class="col-xs-12 col-sm-3 Sortingrow hidden">
-                <input type="number" name="sortingnum"  id="sortingnum" class="col-xs-12" />
-            </div>
-        </div>                                                                                  
-    </div>      --%>
     
 </div>
                             <div class="modal-footer">                                    
                                  <button type="button" style="background-color: #1a73e8;" class="btn btn-primary svfields" id="svfieldgsm">Save</button>
                            </div>
-                           <%-- <div class="modal-footer" style="margin-top:-40px !important;">
-                                <button type="button" id="btnsave" class="btn btn-success">Save</button>
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            </div>--%>
                         </div>
                     </div>
                 </div>
@@ -794,26 +735,972 @@ input[list]:focus {
 
                 </form>
              <script type="text/javascript">
+                 var masflds = []; let hefild = '', filtrkey = '0';
+                 var Orders = [];MasFrms=[], pgNo = 1; PgRecords = 10; TotalPg = 0; searchKeys = "ModuleName,Field_Name,Field_Col,FieldType,Mandate,Status";
+                 masflds = [{ ControlID: 1, ControlName: 'TAS' }, { ControlID: 2, ControlName: 'TAM' }, { ControlID: 3, ControlName: 'N' }, { ControlID: 4, ControlName: 'SSM' }, { ControlID: 5, ControlName: 'SSO' },
+                 { ControlID: 6, ControlName: 'SMM' }, { ControlID: 7, ControlName: 'SMO' }, { ControlID: 8, ControlName: 'D' }, { ControlID: 9, ControlName: 'DR' }, { ControlID: 10, ControlName: 'RM' },
+                 { ControlID: 11, ControlName: 'T' }, { ControlID: 12, ControlName: 'TR' }, { ControlID: 13, ControlName: 'CM' }, { ControlID: 14, ControlName: 'NC' }, { ControlID: 15, ControlName: 'FS' },
+                 { ControlID: 16, ControlName: 'FC' }, { ControlID: 17, ControlName: 'FSC' }, { ControlID: 18, ControlName: 'NP' }, { ControlID: 19, ControlName: 'LCM' }, { ControlID: 20, ControlName: 'RO' },
+                     { ControlID: 21, ControlName: 'CO' }, { ControlID: 22, ControlName: 'L' }, { ControlID: 23, ControlName: 'LA' },]
+
+
+                 function loadPgNos() {
+                     prepg = parseInt($(".paginate_button.previous>a").attr("data-dt-idx"));
+                     Nxtpg = parseInt($(".paginate_button.next>a").attr("data-dt-idx"));
+                     $(".pagination").html("");
+                     TotalPg = parseInt(parseInt(Orders.length / PgRecords) + ((Orders.length % PgRecords) ? 1 : 0)); selpg = 1;
+                     if (isNaN(prepg)) prepg = 0;
+                     if (isNaN(Nxtpg)) Nxtpg = 2;
+                     //  if ((prepg + 1) == pgNo && pgNo > 1) selpg = (parseInt(pgNo) - 1);
+                     selpg = (pgNo > 7) ? (parseInt(pgNo) + 1) - 7 : 1;
+                     if ((Nxtpg) == pgNo) {
+                         selpg = (parseInt(TotalPg)) - 7;
+                         selpg = (selpg > 1) ? selpg : 1;
+                     }
+                     spg = '<li class="paginate_button previous disabled" id="example2_previous"><a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0">First</a></li>';
+                     for (il = selpg - 1; il < selpg + 7; il++) {
+                         if (il < TotalPg)
+                             spg += '<li class="paginate_button' + ((pgNo == (il + 1)) ? " active" : "") + '"><a href="#" aria-controls="example2" data-dt-idx="' + (il + 1) + '" tabindex="0">' + (il + 1) + '</a></li>';
+                     }
+                     spg += '<li class="paginate_button next" id="example2_next"><a href="#" aria-controls="example2" data-dt-idx="' + TotalPg + '" tabindex="0">Last</a></li>';
+                     $(".pagination").html(spg);
+
+                     $(".paginate_button > a").on("click", function () {
+                         pgNo = parseInt($(this).attr("data-dt-idx")); ReloadTable();
+                     });
+                 }
+
+                 $(".data-table-basic_length").on("change", function () {
+                     pgNo = 1;
+                     PgRecords = $(this).val();
+                     ReloadTable();
+                 });
+
+                 $("#tSearchOrd").on("keyup", function () {
+                     if ($(this).val() != "") {
+                         shText = $(this).val().toLowerCase();
+                         Orders = MasFrms.filter(function (a) {
+                             chk = false;
+                             $.each(a, function (key, val) {
+                                 if (val != null && val.toString().toLowerCase().indexOf(shText) > -1 && (',' + searchKeys).indexOf(',' + key + ',') > -1) {
+                                     chk = true;
+                                 }
+                             });
+                             return chk;
+                         });
+                     }
+                     else
+                         Orders = MasFrms;
+                     ReloadTable();
+
+                 });
+
+                 function ReloadTable() {
+                     $("#OrderList TBODY").html("");
+                     if (filtrkey != "All") {
+                         Orders = Orders.filter(function (a) {
+                             return a.flag == filtrkey;
+                         })
+                     }
+                     st = PgRecords * (pgNo - 1); slno = 0;
+
+                     for ($i = st; $i < st + PgRecords; $i++) {
+                         if ($i < Orders.length) {
+                             tr = $("<tr class='" + Orders[$i].Field_Id + "' id='" + Orders[$i].Field_Id + "'></tr>");
+                             //var hq = filtered[$i].Sf_Name.split('-');
+                             slno = $i + 1;
+
+                             $(tr).html('<td>' + slno + '</td><td>' + Orders[$i].ModuleName +
+                                 '</td><td> ' + Orders[$i].Field_Name + '</td ><td>' + Orders[$i].FieldType +
+                                 '</td><td>' + Orders[$i].Fld_Length + '</td><td>' + Orders[$i].Mandate +
+                                 '</td><td><ul class="nav" style="margin:0px"><li class="dropdown"><a href="#" style="padding:0px" class="dropdown-toggle" data-toggle="dropdown">'
+                                 + '<span><span class="aState" data-val="' + Orders[$i].Status + '">' + Orders[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
+                                 '<ul class="dropdown-menu dropdown-custom dropdown-menu-right ddlStatus" style="right:0;left:auto;">' + ((Orders[$i].Status == "Active") ? '<li><a href="#" v="1">Deactivate</a></li>' : '<li><a href="#" v="0">Active</a></li>') + '</ul></li></ul></td>'
+                                 + '<td class= "frmedit" id="' + Orders[$i].Field_Id + '"> <a href="#" data-toggle="modal" data-target="#addcustomfild"><span class="glyphicon glyphicon-edit"></span></a></td > ');
+                             $("#OrderList TBODY").append(tr);
+                         }
+                     }
+
+                     $("#orders_info").html("Showing " + (st + 1) + " to " + (((st + PgRecords) < Orders.length) ? (st + PgRecords) : Orders.length) + " of " + Orders.length + " entries")
+
+                     loadPgNos();
+                 }
+                 $(".segment>li").on("click", function () {
+                     $(".segment>li").removeClass('active');
+                     $(this).addClass('active');
+                     filtrkey = $(this).attr('data-va');
+                     Orders = MasFrms;
+                     $("#tSearchOrd").val('');
+                     ReloadTable();
+                 });
+                 $(document).on('click', '.frmedit', function () {
+                     var FldID = $(this).closest('tr').attr('id');
+
+                     CustomloadFields(FldID);
+
+                 });
+                 $(document).on('click', ".ddlStatus>li>a", function () {
+                     //$(".ddlStatus>li>a").on("click", function () {
+                     cStus = $(this).closest("td").find(".aState");
+                     let fieldid = $(this).closest("tr").find(".frmedit").attr("id");
+                     stus = $(this).attr("v");
+                     $indx = Orders.findIndex(x => x.Field_Id == fieldid);
+                     cStusNm = $(this).text();
+                     if (confirm("Do you want change status " + $(cStus).text() + " to " + cStusNm + " ?")) {
+                         id = Orders[$indx].Field_Id;
+                         $.ajax({
+                             type: "POST",
+                             contentType: "application/json; charset=utf-8",
+                             async: false,
+                             url: "Asset_Custom_Fields.aspx/SetNewStatus",
+                             data: "{'ID':'" + id + "','stus':'" + stus + "'}",
+                             dataType: "json",
+                             success: function (data) {
+                                 Orders[$indx].flag = stus;
+                                 Orders[$indx].Status = cStusNm;
+                                 $(cStus).html(cStusNm);
+
+                                 ReloadTable();
+                                 alert('Status Changed Successfully...');
+
+                             },
+                             error: function (result) {
+                             }
+                         });
+                     }
+                     loadPgNos();
+                 });
+
+                 $(".data-table-basic_length").on("change", function () {
+                     pgNo = 1;
+                     PgRecords = $(this).val();
+                     ReloadTable();
+
+                 });
+                 function CustomloadFields(FldID) {
+                     var FldArr = []; var FldSrcName = ''; var multiopt = ''; var Mand = '';
+                     $.ajax({
+                         type: "POST",
+                         contentType: "application/json; charset=utf-8",
+                         async: false,
+                         url: "Asset_Custom_Fields.aspx/GetCustomFormsFieldsDataById",
+                         data: "{'divcode':'<%=Session["div_code"]%>','FieldId':'" + FldID + "'}",
+        dataType: "json",
+
+        success: function (data) {
+            FldArr = JSON.parse(data.d) || [];
+            //console.log(FldArr);
+            //FldArr = JSON.parse(data.d);
+
+            $('#fieldId').val(FldArr[0].Field_Id);
+            $('.fieldId').val(FldArr[0].Field_Id);
+
+            $('#finame').val(FldArr[0].Field_Name);
+            $('#finame').prop('disabled', 'disabled');
+
+            $('#maxleng').val(FldArr[0].Fld_Length);
+
+            multiopt = (FldArr[0].Fld_Src_Field).split(',');
+
+            Mand = FldArr[0].Mandate1;
+            if (Mand == 'No') {
+                $('#mand').prop('checked', false);
+            }
+            else {
+                $('#mand').prop('checked', true);
+            }
+
+            FldSrcName = FldArr[0].Fld_Src_Name;
+
+            if (FldArr[0].AccessPoint == "1") {
+                $('#accwa').prop('checked', true);
+            }
+
+            $('#sortingnum').val(FldArr[0].SrtNo);
+
+            if (FldArr[0].AccessPoint == '0') {
+                $('#accwa').prop('checked', false);
+            }
+            else {
+                $('#accwa').prop('checked', true);
+            }
+
+            switch (FldArr[0].Fld_Type) {
+                case 'L':
+                    $('#ddltypes').val('L'); //$('#ddltypes').selectpicker('val', 'L');
+                    FiledTypeOnChange();
+                    break;
+                case 'TAS':
+                    $('#ddltypes').val('TA');
+                    //$('#ddltypes').selectpicker('val', 'TA');
+                    $('#stext').prop('checked', true);
+
+                    FiledTypeOnChange();
+
+                    break;
+                case 'TAM':
+                    $('#ddltypes').val('TA');
+                    //$('#ddltypes').selectpicker('val', 'TA');
+
+                    $('#mtext').prop('checked', true);
+
+                    FiledTypeOnChange();
+                    break;
+                case 'N':
+                    $('#ddltypes').val('N');
+                    //$('#ddltypes').selectpicker('val', 'N');
+                    if (Mand == 'No') {
+                        $('#mand').prop('checked', false);
+                    }
+                    else {
+                        $('#mand').prop('checked', true);
+                    }
+                    FiledTypeOnChange();
+                    break;
+                case 'NC':
+                    $('#ddltypes').val('N');
+                    //$('#ddltypes').selectpicker('val', 'N');
+                    $('#cuurency').prop('checked', true);
+
+                    $('#currlist').val(FldArr[0].Fld_Symbol);
+                    FiledTypeOnChange();
+                    break;
+                case 'NP':
+                    $('#ddltypes').val('N');
+
+                    //$('#ddltypes').selectpicker('val', 'N');
+                    $('#phonen').prop('checked', true);
+                    FiledTypeOnChange();
+                    break;
+                case 'SSM':
+                    $('#ddltypes').val('S');
+                    //$('#ddltypes').selectpicker('val', 'S');
+
+                    $('#sslec').prop('checked', true);
+                    $('#master').prop('checked', true);
+
+                    masterch();
+
+                    var element = $('#mtables');
+                    var velement = $('#ddlvaluef');
+                    var telement = $('#ddltextf');
+
+                    if ((FldSrcName != '' || FldSrcName != null)) {
+
+                        loadTableColumns(FldSrcName);
+                        $(element).val(FldSrcName);
+                        $(velement).val(multiopt[0]);
+                        $(telement).val(multiopt[1]);
+
+                        //$(element).selectpicker('val', FldArr[0].Fld_Src_Name);
+                        //$(velement).selectpicker('val', multiopt[0]);
+                        //$(telement).selectpicker('val', multiopt[1]);
+
+                    }
+
+                    FiledTypeOnChange();
+                    break;
+                case 'SSO':
+                    $('#ddltypes').val('S');
+                    //$('#ddltypes').selectpicker('val', 'S');
+
+                    $('#sslec').prop('checked', true);
+                    $('#others').prop('checked', true);
+                    othersch();
+                    $('#custt').val(FldArr[0].Fld_Src_Name);
+                    fillvalfields(FldArr[0].Fld_Src_Name);
+                    var newopt = '';
+                    for ($j = 0; $j < multiopt.length; $j++) {
+                        newopt += multiopt[$j] + '\n';
+                    }
+                    $('#custemps').val(newopt);
+                    FiledTypeOnChange();
+
+                    break;
+                case 'SMM':
+                    $('#ddltypes').val('S');
+                    //$('#ddltypes').selectpicker('val', 'S');
+
+                    $('#mselc').prop('checked', true);
+                    $('#master').prop('checked', true);
+
+                    masterch();
+                    var element = $('#mtables');
+                    var velement = $('#ddlvaluef');
+                    var telement = $('#ddltextf');
+
+                    if ((FldSrcName != '' || FldSrcName != null)) {
+
+                        loadTableColumns(FldSrcName);
+                        $(element).val(FldArr[0].Fld_Src_Name);
+                        $(velement).val(multiopt[0]);
+                        $(telement).val(multiopt[1]);
+
+                        //$(element).selectpicker('val', FldArr[0].Fld_Src_Name);
+                        //$(velement).selectpicker('val', multiopt[0]);
+                        //$(telement).selectpicker('val', multiopt[1]);
+
+                    }
+                    FiledTypeOnChange();
+                    break;
+                case 'SMO':
+                    $('#ddltypes').val('S'); //$('#ddltypes').selectpicker('val', 'S');
+
+                    $('#mselc').prop('checked', true);
+                    $('#others').prop('checked', true);
+                    othersch();
+                    $('#custt').val(FldArr[0].Fld_Src_Name);
+                    fillvalfields(FldArr[0].Fld_Src_Name);
+                    var newopt = '';
+                    for ($j = 0; $j < multiopt.length; $j++) {
+                        newopt += multiopt[$j] + '\n';
+                    }
+                    $('#custemps').val(newopt);
+                    FiledTypeOnChange();
+                    break;
+                case 'D':
+                    $('#ddltypes').val('D'); //$('#ddltypes').selectpicker('val', 'D');
+
+                    FiledTypeOnChange();
+                    break;
+                case 'DR':
+                    $('#ddltypes').val('D'); //$('#ddltypes').selectpicker('val', 'D');
+
+                    //$('#daterow').show();
+                    $('#drange').prop('checked', true);
+                    FiledTypeOnChange();
+                    break;
+                case 'T':
+                    $('#ddltypes').val('T'); //$('#ddltypes').selectpicker('val', 'T');
+
+                    //$('#timerow').show();
+                    FiledTypeOnChange();
+                    break;
+                case 'TR':
+                    $('#ddltypes').val('T'); //$('#ddltypes').selectpicker('val', 'T');
+
+                    //$('#timerow').show();
+                    $('#trange').prop('checked', true);
+                    FiledTypeOnChange();
+                    break;
+
+                case 'RM':
+                    $('#ddltypes').val('R');
+
+                    //$('#ddltypes').selectpicker('val', 'R');
+                    $('#datarow').show();
+                    $('#master').prop('checked', true);
+
+                    var element = $('#mtables');
+                    var velement = $('#ddlvaluef');
+                    var telement = $('#ddltextf');
+
+                    if ((FldSrcName != '' || FldSrcName != null)) {
+
+                        loadTableColumns(FldSrcName);
+                        $(element).val(FldArr[0].Fld_Src_Name);
+                        $(velement).val(multiopt[0]);
+                        $(telement).val(multiopt[1]);
+
+                        //$(element).selectpicker('val', FldArr[0].Fld_Src_Name);
+                        //$(velement).selectpicker('val', multiopt[0]);
+                        //$(telement).selectpicker('val', multiopt[1]);
+
+                    }
+                    masterch();
+                    FiledTypeOnChange();
+                    break;
+                case 'RO':
+                    $('#ddltypes').val('R');
+
+                    //$('#ddltypes').selectpicker('val', 'R');
+                    $('#datarow').show();
+                    $('#others').prop('checked', true);
+                    othersch();
+                    $('#custt').val(FldArr[0].Fld_Src_Name);
+                    var newopt = '';
+                    for ($j = 0; $j < multiopt.length; $j++) {
+                        newopt += multiopt[$j] + '\n';
+                    }
+                    $('#custemps').val(newopt);
+                    FiledTypeOnChange();
+                    break;
+                case 'CM':
+                    $('#ddltypes').val('C');
+
+                    //$('#ddltypes').selectpicker('val', 'C');
+                    $('#datarow').show();
+                    $('#master').prop('checked', true);
+
+                    masterch();
+                    var element = $('#mtables');
+                    var velement = $('#ddlvaluef');
+                    var telement = $('#ddltextf');
+
+                    if ((FldSrcName != '' || FldSrcName != null)) {
+
+                        loadTableColumns(FldSrcName);
+                        $(element).val(FldSrcName);
+                        $(velement).val(multiopt[0]);
+                        $(telement).val(multiopt[1]);
+
+                        //$(element).selectpicker('val', FldArr[0].Fld_Src_Name);
+                        //$(velement).selectpicker('val', multiopt[0]);
+                        //$(telement).selectpicker('val', multiopt[1]);
+
+                    }
+                    FiledTypeOnChange();
+                    break;
+                case 'CO':
+                    $('#ddltypes').val('C');
+
+                    //$('#ddltypes').selectpicker('val', 'C');
+                    $('#datarow').show();
+                    $('#others').prop('checked', true);
+                    othersch();
+                    $('#custt').val(FldArr[0].Fld_Src_Name);
+                    var newopt = '';
+                    for ($j = 0; $j < multiopt.length; $j++) {
+                        newopt += multiopt[$j] + '\n';
+                    }
+                    $('#custemps').val(newopt);
+                    FiledTypeOnChange();
+                    break;
+                case 'FS':
+
+                    $('#ddltypes').val('F');
+                    //$('#ddltypes').selectpicker('val', 'F');
+                    $('#selupl').prop('checked', true);
+                    FiledTypeOnChange();
+                    break;
+                case 'FC':
+
+                    $('#ddltypes').val('F');
+
+                    //$('#ddltypes').selectpicker('val', 'F');
+                    $('#cameraupl').prop('checked', true);
+                    FiledTypeOnChange();
+                    break;
+                case 'FSC':
+                    $('#ddltypes').val('F');
+
+                    //$('#ddltypes').selectpicker('val', 'F');
+                    $('#selupl').prop('checked', true);
+                    FiledTypeOnChange();
+                    break;
+                default:
+                    break;
+
+            }
+            //change
+            if (($('#ddltypes').val() == 'S' || $('#ddltypes').val() == 'R' || $('#ddltypes').val() == 'C' && ($('input[type="radio"][name="dataf"]:checked').val() == 'M'))) {
+                //$('#Filter').show();
+            }
+            if ($('#ddltypes').val() == 'LC') {
+                //$('#Filter').show();
+            }
+            if (($('#ddltypes').val() == 'S' || $('#ddltypes').val() == 'R' || $('#ddltypes').val() == 'C' || $('#ddltypes').val() == 'LC')) {
+                for ($i = 0; $i < FrmsandFlds.length; $i++) {
+                    if (FldArr[0].Fld_ID == parseInt(FrmsandFlds[$i].Fld_ID)) {
+                        $('.ddlFilter option[value=' + FrmsandFlds[$i].Fld_ID + ']').hide();
+                    }
+                    else {
+                        $('.ddlFilter option[value=' + FrmsandFlds[$i].Fld_ID + ']').show();
+                    }
+                }
+            }
+            //change
+        },
+        error: function (data) {
+            alert(JSON.stringify(data.d))
+        }
+    })
+                 }
+
+                 function loadCustomFields() {
+                     var ModuleId = $("#ddlmodule option:selected").val();
+
+                     $.ajax({
+                         type: "POST",
+                         contentType: "application/json; charset=utf-8",
+                         async: false,
+                         url: "Asset_Custom_Fields.aspx/GetCustomFormsFieldsList",
+                         data: "{'divcode':'<%=Session["div_code"]%>','ModuleId':'" + ModuleId + "'}",
+                        dataType: "json",
+                        success: function (data) {
+                            MasFrms = JSON.parse(data.d) || [];
+                            Orders = MasFrms;
+                        },
+                        error: function (data) {
+                            alert(JSON.stringify(data.d));
+                        }
+                    });
+                     ReloadTable();
+                 }
+
                  $(document).ready(function () {
                      FiledTypeOnChange();
                  });
                  $('#newfield').on('click', function () {
-                     //if ($("#ddlmodule option:selected").val() == '0') {
-                     //    alert("Please select Moduel.");
-                     //    $("#ddlmodule").focus();
-                     //    return false;
-                     //}
+                     if ($("#ddlmodule option:selected").val() == '0') {
+                         alert("Please select Moduel.");
+                         $("#ddlmodule").focus();
+                         return false;
+                     }
                  });
                  $('#ddlmodule').on('change', function () {
                      loadCustomFields();
                  });
-                 function loadCustomFields() {
-                     var ModuleId = $("#ddlmodule option:selected").val();
-                 }
+                 //function loadCustomFields() {
+                 //    var ModuleId = $("#ddlmodule option:selected").val();
+                 //}
                  $('#ddltypes').on('change', function () {
 
                      FiledTypeOnChange();
                  });
+
+                 $('input[name="numtype"]').on('change', function () {
+                     $('#currlist').val('0');
+                     if ($('#cuurency').is(":checked")) {
+                         $('#currlist').show();
+                     }
+                     if (!$('#cuurency').is(":checked")) {
+                         $('#currlist').hide();
+                     }
+                     if ($('#phonen').is(":checked")) {
+                         $('.Maxlenrow').show();
+                     }
+                     if (!$('#phonen').is(":checked")) {
+                         $('.Maxlenrow').hide();
+                     }
+                 });
+
+                 $('#svfieldgsm').on('click', function () {
+                     var FieldType = $('#ddltypes').val();
+                     var sfldtyp = FieldType;
+                     var MaxLen = 0;
+                     var Fld_Src_Name = "";
+                     var Fld_Src_Field = "";
+                     var currtyp = '';
+                     var currtyp = '';
+                     var smtable = '';
+                     var svalfld = '';
+                     var stxtfld = '';
+                     var custtxt = '';
+                     var custempsval = '';
+                     var listcardfields = '';
+                     var lctarget = '0';
+                     var cusxml = '<ROOT>';
+                     var altqry = '';
+                     var Filter_Text = '';//change
+                     var Filter_Value = '';
+                     //var FGroupId = '';
+
+
+                     var ModuleName = $("#ddlmodule").val();
+                     if (ModuleName == "0") {
+                         alert('Please Select Module Name !!');
+                         $("#ddlmodule").focus();
+                         return false;
+                     }
+
+
+                     //FGroupId = $("#ddlfgroup").val();
+                     //if (FGroupId == "0") {
+                     //    alert('Please Select Group Name !!');
+                     //    $("#FGroupId").focus();
+                     //    return false;
+                     //}
+
+
+                     var FieldName = $("#finame").val();
+                     if (FieldName == "") {
+                         alert('Please Enter Field Name !!');
+                         $("#finame").focus();
+                         return false;
+                     }
+
+                     if (FieldType == "" || FieldType == "0") {
+                         alert('Please Select Field Type !!');
+                         $("#ddltypes").focus();
+                         return false;
+                     }
+
+                     switch (FieldType) {
+                         case 'L':
+                             sfldtyp += "";
+                             MaxLen = "";
+                             ModuleName = $('#ddlmodule').val();
+                             break;
+                         case 'TA':
+                             if ($('input[type="radio"][name="texttype"]:checked').length < 1) {
+                                 alert('Select the Text Type');
+                                 sels = false;
+                                 return false;
+                             }
+                             sfldtyp += $('input[type="radio"][name="texttype"]:checked').val();
+                             MaxLen = $('#maxleng').val();
+
+                             if ((MaxLen == "" || MaxLen == null)) {
+                                 alert('Please Enter Max Length');
+                                 $('#maxleng').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             break;
+                         case 'N':
+                             if (($('input[type="radio"][name="numtype"]:checked').val() == 'C') && ($('#currlist').val() == '')) {
+                                 alert('Select the Currency');
+                                 sels = false;
+                                 $('#currlist').focus();
+                                 return false;
+                             }
+                             sfldtyp += $('input[type="radio"][name="numtype"]:checked').val() || '';
+                             currtyp = $('#currlist').val();
+                             MaxLen = $('#maxleng').val();
+
+                             if ((MaxLen == "" || MaxLen == null)) {
+                                 alert('Please Enter Max Length');
+                                 $('#maxleng').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             break;
+                         case 'D':
+                             sfldtyp += ($('#drange').is(":checked") == true) ? ($('#drange').val()) : '';
+                             break;
+                         case 'T':
+                             sfldtyp += ($('#trange').is(":checked") == true) ? ($('#trange').val()) : '';
+                             break;
+                         case 'S':
+                             if ($('input[type="radio"][name="seltype"]:checked').length < 1) {
+                                 alert('Select the Selection Type');
+                                 sels = false;
+                                 return false;
+                             }
+                             sfldtyp += $('input[type="radio"][name="seltype"]:checked').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').length < 1) {
+                                 alert('Select the Data Source');
+                                 sels = false;
+                                 return false;
+                             }
+
+                             sfldtyp += $('input[type="radio"][name="dataf"]:checked').val();
+                             smtable = $('#mtables').val();
+                             Fld_Src_Name = smtable;
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'M' && (smtable == '' || smtable == '0')) {
+                                 alert('Select the Master Table');
+                                 $('#mtables').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             svalfld = $('#ddlvaluef').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'M' && (svalfld == "" || svalfld == "0")) {
+                                 alert('Select the Value Filed');
+                                 $('#ddlvaluef').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             stxtfld = $('#ddltextf').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'M' && (stxtfld == '' || stxtfld == '0')) {
+                                 alert('Select the Text Field');
+                                 $('#ddltextf').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             Fld_Src_Field = svalfld + ',' + stxtfld;
+                             custtxt = $('#custt').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'O' && custtxt == '') {
+                                 alert('Enter the Template Name');
+                                 $('#custt').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'O') {
+                                 Fld_Src_Field = '';
+                                 Fld_Src_Name = custtxt;
+                             }
+                             custempsval = $('#custemps').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'O' && custempsval == '') {
+                                 alert('Enter the Template Values');
+                                 $('#custemps').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             var splitvals = ($('#custemps').val()).split('\n');
+                             if ($('#custemps').val() != '') {
+                                 for ($i = 0; $i < splitvals.length; $i++) {
+                                     Fld_Src_Field += (splitvals[$i] + ',');
+                                     cusxml += '<ASSD Cus_values="' + splitvals[$i] + '" />';
+                                 }
+                             }
+
+                             break;
+
+                         case 'R':
+                             if ($('input[type="radio"][name="dataf"]:checked').length < 1) {
+                                 alert('Select the Data Source');
+                                 sels = false;
+                                 return false;
+                             }
+                             sfldtyp += $('input[type="radio"][name="dataf"]:checked').val();
+                             smtable = $('#mtables :selected').val();
+                             alert(smtable);
+
+                             Fld_Src_Name = smtable;
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'M' && (smtable == 0)) {
+                                 alert('Select the Master Table');
+                                 $('#mtables').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             svalfld = $('#ddlvaluef').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'M' && (svalfld == '' || svalfld == '0')) {
+                                 alert('Select the Value Field');
+                                 $('#ddlvaluef').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             stxtfld = $('#ddltextf').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'M' && (stxtfld == '' || stxtfld == '0')) {
+                                 alert('Select the Text Field');
+                                 $('#ddltextf').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             Fld_Src_Field = svalfld + ',' + stxtfld;
+                             custtxt = $('#custt').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'O' && custtxt == '') {
+                                 alert('Enter the Template Name');
+                                 $('#custt').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'O') {
+                                 Fld_Src_Field = '';
+                                 Fld_Src_Name = custtxt;
+                             }
+                             custempsval = $('#custemps').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'O' && custempsval == '') {
+                                 alert('Enter the Template Values');
+                                 $('#custemps').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             var splitvals = ($('#custemps').val()).split('\n');
+                             for ($i = 0; $i < splitvals.length; $i++) {
+                                 Fld_Src_Field += (splitvals[$i] + ',');
+                                 cusxml += '<ASSD Cus_values="' + splitvals[$i] + '" />';
+                             }
+                             break;
+
+                         case 'C':
+                             if ($('input[type="radio"][name="dataf"]:checked').length < 1) {
+                                 alert('Select the Data Source');
+                                 sels = false;
+                                 return false;
+                             }
+                             sfldtyp += $('input[type="radio"][name="dataf"]:checked').val();
+                             smtable = $('#mtables :selected').val();
+
+                             Fld_Src_Name = smtable;
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'M' && (smtable == 0)) {
+                                 alert('Select the Master Table');
+                                 $('#mtables').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             svalfld = $('#ddlvaluef').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'M' && (svalfld == '' || svalfld == '0')) {
+                                 alert('Select the Value Field');
+                                 $('#ddlvaluef').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             stxtfld = $('#ddltextf').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'M' && (stxtfld == '' || stxtfld == '0')) {
+                                 alert('Select the Text Field');
+                                 $('#ddltextf').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             Fld_Src_Field = svalfld + ',' + stxtfld;
+                             custtxt = $('#custt').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'O' && custtxt == '') {
+                                 alert('Enter the Template Name');
+                                 $('#custt').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'O') {
+                                 Fld_Src_Field = '';
+                                 Fld_Src_Name = custtxt;
+                             }
+                             custempsval = $('#custemps').val();
+                             if ($('input[type="radio"][name="dataf"]:checked').val() == 'O' && custempsval == '') {
+                                 alert('Enter the Template Values');
+                                 $('#custemps').focus();
+                                 sels = false;
+                                 return false;
+                             }
+                             var splitvals = ($('#custemps').val()).split('\n');
+                             for ($i = 0; $i < splitvals.length; $i++) {
+                                 Fld_Src_Field += (splitvals[$i] + ',');
+                                 cusxml += '<ASSD Cus_values="' + splitvals[$i] + '" />';
+                             }
+                             break;
+                         //case 'F':
+                         //    if ($('input[type="checkbox"][name="flupl"]:checked').length < 1) {
+                         //        alert('Select Atleast One File Upload Option');
+                         //        sels = false;
+                         //        return false;
+                         //    }
+                         //    $('input[type="checkbox"][name="flupl"]:checked').each(function () {
+                         //        sfldtyp += $(this).val();
+                         //    });
+                         //    break;
+                         default:
+                             break;
+                     }
+
+                     
+
+                     if ($('#mand').prop('checked') == true) {
+                         Fld_Mandatory = '1';
+                     }
+                     else {
+                         Fld_Mandatory = '0';
+                     }
+
+
+                     var AccessPoint = ($('#accwa').prop('checked')) ? 1 : 0;
+
+                     SrtNo = $('#sortingnum').val();
+                     var Control_id = masflds.filter(function (a) {
+                         return a.ControlName == sfldtyp;
+                     });
+                     var Fldtype = '';
+                     if ((Control_id[0].ControlID == 3 || Control_id[0].ControlID == 18)) {
+                         Fldtype = 'varchar(150)';
+                     }
+
+                     else if ((Control_id[0].ControlID == 8 || Control_id[0].ControlID == 9 || Control_id[0].ControlID == 11 || Control_id[0].ControlID == 12)) {
+                         Fldtype = 'varchar(150)';
+                     }
+                     else if ((Control_id[0].ControlID == 14)) {
+                         Fldtype = 'varchar(300)';
+                     }
+                     else if ((Control_id[0].ControlID == 6 || Control_id[0].ControlID == 7)) {
+                         Fldtype = 'varchar(3000)';
+                     }
+                     else if ((Control_id[0].ControlID == 2 || Control_id[0].ControlID == 5 || Control_id[0].ControlID == 13 || Control_id[0].ControlID == 15 || Control_id[0].ControlID == 16 || Control_id[0].ControlID == 17 || Control_id[0].ControlID == 21)) {
+                         Fldtype = 'varchar(300)';
+                     }
+                     else if ((Control_id[0].ControlID == 4 || Control_id[0].ControlID == 20)) {
+                         Fldtype = 'varchar(150)';
+                     }
+                     else if ((Control_id[0].ControlID == 1 || Control_id[0].ControlID == 10 || Control_id[0].ControlID == 22)) {
+                         Fldtype = 'varchar(' + MaxLen + ')'
+                     }
+                     cusxml += '</ROOT>';
+
+
+
+                     var hefild = $('.fieldId').val();
+                     var Formdata = {
+                         'FldID': hefild,
+                         'ModuleId': ModuleName,
+                         'FldName': FieldName,
+                         'FldTyp': sfldtyp,
+                         'Fld_Src_Name': Fld_Src_Name,
+                         'Fld_Src_Field': Fld_Src_Field,
+                         'Fld_Symbol': currtyp,
+                         'Fld_Length': MaxLen,
+                         'Fld_Mandatory': Fld_Mandatory,
+                         'Active_flag': 0,
+                         'divcode': "<%=Session["div_code"]%>",
+                         'Order_by': 1,
+                         'AccessPoint': AccessPoint,
+                         'SrtNo': SrtNo,
+                         'Control_id': Control_id[0].ControlID,
+                         'Fldtype': Fldtype,
+                         //'FGroupId': FGroupId
+                     };
+
+
+                     if (Formdata.ModuleId != "") {
+                         $.ajax({
+                             type: "POST",
+                             contentType: "application/json; charset=utf-8",
+                             async: false,
+                             url: "Asset_Custom_Fields.aspx/AddCustomField",
+                             data: "{'Formdata':'" + JSON.stringify(Formdata) + "','sf_Code':'<%=Session["Sf_Code"]%>','cusxml':'" + cusxml + "'}",
+                            dataType: "json",
+                            success: function (msg) {
+                                var frmresult = msg.d;
+                                alert(frmresult);
+                                FiledTypeOnChange();
+                                clearFields();
+                            },
+                            error: function (msg) {
+                                alert(JSON.stringify(msg));
+                                frmcr = false;
+                            }
+
+                         });
+                     }
+                 });
+                 $('#others').on('change', function () {
+                     if ($(this).is(":checked")) {
+                         othersch();
+                     }
+                 });
+                 function othersch() {
+                     $('#custt').val('');
+                     $('#custemps').val('');
+                     
+                 }  
+                 function clearFields() {
+
+                     $('input[type="text"]').each(function () {
+                         $('.modal-body').find('input[type="text"]').val('');
+                     });
+
+                     $('input[type="number"]').each(function () {
+                         $('.modal-body').find('input[type="number"]').val('');
+                     });
+
+                     $('input[type="checkbox"]').each(function () {
+                         $('.modal-body').find('input[type="checkbox"]').prop('checked', false);
+                     });
+
+                     $('input[type="radio"]').each(function () {
+                         $('.modal-body').find('input[type="radio"]').prop('checked', false);
+                     });
+
+                     $('input[type="textarea"]').each(function () {
+                         $('.modal-body').find('input[type="textarea"]').val('');
+                     });
+
+                     $('#finame').prop('disabled', '');
+                     $('#finame').val('');
+                     $('#ddltypes').val('0');
+                     $('#ddlfgroup').val('0');
+                     $('.ddlFilter').val('');//change
+
+                     $('.ddleFilter').val('');
+                     $('.hiderow').hide();
+                     $('#Filter').hide();//change
+                     $('.hiderow').hide();
+                     $('#custt').val('');               
+                     $('#currlist').val('');
+                     $('#mtables').val('');
+                     $('#ddlvaluef').empty();
+                     $('#ddltextf').empty();
+
+
+                 }
+
                  function FiledTypeOnChange() {
                      var selectyp = $('#ddltypes').val();
                      $('.hiderow').hide();
@@ -839,8 +1726,9 @@ input[list]:focus {
                              $('.daterow').hide();$('#datarow').hide();$('#Mtablerow').hide();
                              $('.Fieldrow').hide();$('#Filter').hide();$('.timerow').hide();
                              $('#selectrow').hide();$('#textrow').hide();$('.Maxlenrow').hide();
-                             $('.Mandrow').show();$('#numberrow').show();$('#phonenrow').show();
-                             $('#currlist').show();$('#Customvrow').hide();
+                             $('.Mandrow').show(); $('#numberrow').show(); $('#phonenrow').show();
+                             $('#phonen').prop('checked','true');$('.Maxlenrow').show();
+                             $('#currlist').hide();$('#Customvrow').hide();
                              $('#Templaterow').hide(); $('#filerow').hide();
                              break;
                          case 'D':
@@ -862,9 +1750,15 @@ input[list]:focus {
                          case 'S':
                              $('#Filter').hide();$('.Maxlenrow').hide();$('.daterow').hide();
                              $('.timerow').hide();$('#filerow').hide();$('#datarow').show();
-                             $('#Mtablerow').show();$('.Fieldrow').hide();$('#selectrow').show();
+                             $('#Mtablerow').hide();$('.Fieldrow').hide();$('#selectrow').show();
                              $('#numberrow').hide();$('#phonenrow').hide();$('#currlist').hide();
-                             $('#textrow').hide();$('.Mandrow').show();
+                             $('#textrow').hide(); $('.Mandrow').show();
+                             $('#Templaterow').show();
+                             $('#Customvrow').show();
+                             $('#Fieldrow').hide();
+                             $('#ValueFRow').hide();
+                             $('#TextFRow').hide();
+                             $('#Filter').hide();
 
                              break;
 
@@ -873,7 +1767,13 @@ input[list]:focus {
                              $('.timerow').hide();$('#filerow').hide();$('#datarow').show();
                              $('#Mtablerow').show();$('.Fieldrow').hide(); $('#selectrow').hide();
                              $('#numberrow').hide();$('#phonenrow').hide();$('#currlist').hide();
-                             $('#textrow').hide();$('.Mandrow').show();
+                             $('#textrow').hide(); $('.Mandrow').show();
+                             $('#Templaterow').show();
+                             $('#Customvrow').show();
+                             $('#Fieldrow').hide();
+                             $('#ValueFRow').hide();
+                             $('#TextFRow').hide();
+                             $('#Filter').hide();
                              break;
 
                          case 'C':
@@ -886,18 +1786,24 @@ input[list]:focus {
                              $('#datarow').show();$('#Mtablerow').show();
                              $('.Fieldrow').hide();$('#selectrow').hide();
                              $('.Mandrow').show();
+                             $('#Templaterow').show();
+                             $('#Customvrow').show();
+                             $('#Fieldrow').hide();
+                             $('#ValueFRow').hide();
+                             $('#TextFRow').hide();
+                             $('#Filter').hide();
 
                              break;
-                         case 'F':
-                             $('#Filter').hide(); $('.Maxlenrow').hide();
-                             $('.daterow').hide(); $('.timerow').hide();
-                             $('#numberrow').hide(); $('#phonenrow').hide();
-                             $('#currlist').hide(); $('#filerow').hide();
-                             $('#datarow').hide(); $('#Mtablerow').hide();
-                             $('.Fieldrow').hide(); $('#selectrow').hide();
-                             $('#textrow').hide(); $('.Mandrow').hide();
-                             $('#filerow').show();
-                             break;
+                         //case 'F':
+                         //    $('#Filter').hide(); $('.Maxlenrow').hide();
+                         //    $('.daterow').hide(); $('.timerow').hide();
+                         //    $('#numberrow').hide(); $('#phonenrow').hide();
+                         //    $('#currlist').hide(); $('#filerow').hide();
+                         //    $('#datarow').hide(); $('#Mtablerow').hide();
+                         //    $('.Fieldrow').hide(); $('#selectrow').hide();
+                         //    $('#textrow').hide(); $('.Mandrow').hide();
+                         //    $('#filerow').show();
+                         //    break;
                          case '0':
                              $('.daterow').hide();$('#datarow').hide();$('#Mtablerow').hide();
                              $('.Fieldrow').hide(); $('#Filter').hide();$('.timerow').hide();
