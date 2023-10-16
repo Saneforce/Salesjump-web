@@ -1210,22 +1210,7 @@
                     success: function (data) {
                         sfcode = data.d;
                         console.log(sfcode);
-                        Itype = '0';
-                        $('#ffstatus').closest('td').css('display', 'none');
-                        $('#fftype').closest('td').css('display', 'none');
-                        $('#sfftype').closest('td').css('display', 'none');
-                        $('#ffJdate').closest('td').css('display', 'none');
-                        $('#rdate').closest('td').css('display', 'none');
-                        $('#ffrpt').closest('td').css('display', 'none');
-
-                        $('#sftyptr').show();
-                        $('#fstat').show();
-                        $('#ddlftyp').show();
-                        $('#ddlsftyp').show();
-                        $('#fjdate').show();
-                        //$('#fjdate').attr('min', today);
-                        $('#redate').show();
-                        $('#repto').closest('td').show();
+                        
                     },
                     error: function (rs) {
                         alert(rs);
@@ -1286,6 +1271,22 @@
                     $("#tab_2").hide();
                     fstat1 = 0;
                     getSFCODE($('#ddlsftyp').val());
+                    Itype = '0';
+                    $('#ffstatus').closest('td').css('display', 'none');
+                    $('#fftype').closest('td').css('display', 'none');
+                    $('#sfftype').closest('td').css('display', 'none');
+                    $('#ffJdate').closest('td').css('display', 'none');
+                    $('#rdate').closest('td').css('display', 'none');
+                    $('#ffrpt').closest('td').css('display', 'none');
+
+                    $('#sftyptr').show();
+                    $('#fstat').show();
+                    $('#ddlftyp').show();
+                    $('#ddlsftyp').show();
+                    $('#fjdate').show();
+                    //$('#fjdate').attr('min', today);
+                    $('#redate').show();
+                    $('#repto').closest('td').show();
                 }
                 else {
                     getworkedwith(sfcode);
@@ -1702,7 +1703,23 @@
                     $('#sfftype').closest('td').css('display', 'table-cell');
                     $x = $('#ddlsftyp').val();
                     filtDesg($x);
-                    getSFCODE($('#ddlsftyp').val());
+                    //getSFCODE($('#ddlsftyp').val());
+                    Itype = '0';
+                    $('#ffstatus').closest('td').css('display', 'none');
+                    $('#fftype').closest('td').css('display', 'none');
+                    $('#sfftype').closest('td').css('display', 'none');
+                    $('#ffJdate').closest('td').css('display', 'none');
+                    $('#rdate').closest('td').css('display', 'none');
+                    $('#ffrpt').closest('td').css('display', 'none');
+
+                    $('#sftyptr').show();
+                    $('#fstat').show();
+                    $('#ddlftyp').show();
+                    $('#ddlsftyp').show();
+                    $('#fjdate').show();
+                    //$('#fjdate').attr('min', today);
+                    $('#redate').show();
+                    $('#repto').closest('td').show();
                 });
 
                 $('#ffJdate').on('click', function () {
