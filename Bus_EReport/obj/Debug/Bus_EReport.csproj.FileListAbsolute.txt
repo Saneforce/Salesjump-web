@@ -829,7 +829,6 @@ D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\DBase_EReport.dl
 D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\Bus_Objects.pdb
 D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\DBase_EReport.pdb
 D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\DBase_EReport.dll.config
-D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\itextsharp.xml
 D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\obj\Debug\Bus_EReport.csproj.AssemblyReference.cache
 D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\obj\Debug\Bus_EReport.csproj.CoreCompileInputs.cache
 D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\obj\Debug\Bus_EReport.csproj.CopyComplete
