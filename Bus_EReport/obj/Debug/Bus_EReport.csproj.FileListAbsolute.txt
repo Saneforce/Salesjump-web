@@ -821,3 +821,17 @@ F:\Karthi\FMCG\Bus_EReport\obj\Debug\Bus_EReport.csproj.CoreCompileInputs.cache
 F:\Karthi\FMCG\Bus_EReport\obj\Debug\Bus_EReport.csproj.CopyComplete
 F:\Karthi\FMCG\Bus_EReport\obj\Debug\Bus_EReport.dll
 F:\Karthi\FMCG\Bus_EReport\obj\Debug\Bus_EReport.pdb
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\Bus_EReport.dll.config
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\Bus_EReport.dll
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\Bus_EReport.pdb
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\Bus_Objects.dll
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\DBase_EReport.dll
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\Bus_Objects.pdb
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\DBase_EReport.pdb
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\DBase_EReport.dll.config
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\bin\Debug\itextsharp.xml
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\obj\Debug\Bus_EReport.csproj.AssemblyReference.cache
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\obj\Debug\Bus_EReport.csproj.CoreCompileInputs.cache
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\obj\Debug\Bus_EReport.csproj.CopyComplete
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\obj\Debug\Bus_EReport.dll
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_EReport\obj\Debug\Bus_EReport.pdb
