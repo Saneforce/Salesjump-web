@@ -8,6 +8,15 @@ using Newtonsoft.Json;
 using System.Web.Services;
 using DBase_EReport;
 using System.Data.SqlClient;
+using System.IO;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
+using System.Web.Configuration;
+using Amazon.S3.IO;
+using Amazon.S3.Transfer;
+using System.Web.UI.WebControls;
+using System.IO.Packaging;
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
 {
@@ -42,6 +51,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     public static int iReturn = -1;
     public static string doctorcode = string.Empty;
     public static string div_code = string.Empty;
+    public static string divcode = string.Empty;
     DateTime ServerStartTime;
     DateTime ServerEndTime;
     public static int time;
@@ -82,11 +92,11 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         //if ((Convert.ToString(Session["div_code"]) != null || Convert.ToString(Session["div_code"]) != ""))
         //{
-        divcode.Value = Session["div_code"].ToString();
+        divcode = Session["div_code"].ToString();
         div_code = Session["div_code"].ToString();
         try
         {
-            //sf_code = Session["T_code"].ToString();
+            sf_code = Session["Sf_Code"].ToString();
             Terr_Code = Request.QueryString["terrcode"];
         }
         catch (Exception)
@@ -94,10 +104,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         }
         doctorcode = Request.QueryString["ListedDrCode"];
-        SF_Code = Request.QueryString["SF"];
-        STATE = Request.QueryString["state"];
-        HQ = Request.QueryString["HQ"];
-        HQNm = Request.QueryString["HQNm"];
+
         Num();
         if (Session["sf_type"].ToString() == "1")
         {
@@ -106,9 +113,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             //(UserControl_MR_Menu)LoadControl("~/UserControl/MR_Menu.ascx");
             // Divid.Controls.Add(Usc_MR);
             // Usc_MR.Title = this.Page.Title;
-            lblTerrritory.Text = "( " + "<span style='font-weight: bold;color:Maroon;'>For " + Session["sf_Name"] + " </span>" + " - " +
-
-                                "<span style='font-weight: bold;color:Maroon;'>  " + Session["Terr_Name"] + "</span>" + " )";
+            lblTerrritory.Text = "( " + "<span style='font-weight: bold;color:Maroon;'>For " + Session["sf_Name"] + " </span>" + " - " + "<span style='font-weight: bold;color:Maroon;'>  " + Session["Terr_Name"] + "</span>" + " )";
             btnBack.Visible = false;
 
         }
@@ -116,7 +121,8 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         {
             try
             {
-                //sf_code = Session["T_code"].ToString();
+                //sf_code = Session["
+                //"].ToString();
             }
             catch (Exception)
             {
@@ -203,8 +209,11 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
     private void FillUOM()
     {
-        Division dv = new Division();
-        dsTerritory = dv.getStatePerDivision(div_code);
+        lisdr ldr = new lisdr();
+        dsTerritory = ldr.getStatePerDivision(div_code);
+
+        //Division dv = new Division();
+        //dsTerritory = dv.getStatePerDivision(div_code);
         if (dsTerritory.Tables[0].Rows.Count > 0)
         {
             State st = new State();
@@ -227,9 +236,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             ddl_uom.Visible = true;
         }
         else
-        {
-
-        }
+        { }
     }
 
     private void LoadDoctor(int request_type, string request_doctor)
@@ -357,13 +364,18 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     {
         ListedDR lst = new ListedDR();
         string divcode = Convert.ToString(lst.Div_Code(Session["sf_code"].ToString()));
-        Division dv = new Division();
-        dsDivision = dv.getStatePerDivision(divcode);
+
+        lisdr ldr = new lisdr();
+        dsDivision = ldr.getStatePerDivision(divcode);
+
+        //Division dv = new Division();
+        //dsDivision = dv.getStatePerDivision(divcode);    
+
         if (dsDivision.Tables[0].Rows.Count > 0)
         {
             int i = 0;
             state_cd = string.Empty;
-            sState = dsDivision.Tables[0].Rows[0].ItemArray.GetValue(0).ToString();
+            sState = dsDivision.Tables[0].Rows[0]["state_code"].ToString();
             statecd = sState.Split(',');
             foreach (string st_cd in statecd)
             {
@@ -739,13 +751,22 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
     public class AddtionalfieldDetails
     {
-        
         [JsonProperty("Fields")]
         public string Fields { get; set; }
 
         [JsonProperty("Values")]
         public string Values { get; set; }
     }
+
+    public class AfileUploadDetails
+    {
+        [JsonProperty("FileName")]
+        public string FileId { get; set; }
+
+        [JsonProperty("FileName")]
+        public string FileName { get; set; }
+    }
+
 
 
     public class RetailerMainfld
@@ -865,6 +886,9 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         [JsonProperty("Additionsfld")]
         public List<AddtionalfieldDetails> Additionsfld { get; set; }
+
+        [JsonProperty("Additionalfileud")]
+        public List<AfileUploadDetails> Additionalfileud { get; set; }
     }
 
     [WebMethod(EnableSession = true)]
@@ -875,6 +899,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         RetailerMainfld sd = JsonConvert.DeserializeObject<RetailerMainfld>(fdata);
 
         List<AddtionalfieldDetails> addfields = sd.Additionsfld;
+        List<AfileUploadDetails> addfileuds = sd.Additionalfileud;
 
         string DR_Name = Convert.ToString(sd.DR_Name);
         string Mobile_No = Convert.ToString(sd.Mobile_No);
@@ -947,6 +972,8 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
                     string RetailerID = Convert.ToString(ds.Tables[0].Rows[0]["ListedDrCode"]);
 
+                    lisdr ld = new lisdr();
+
                     if (addfields.Count > 0)
                     {
                         int i = 0; string fld = ""; string val = "";
@@ -956,13 +983,31 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                             if ((addfields[k].Fields != "'undefined'" || addfields[k].Fields != "undefined") && (addfields[k].Values != "'undefined'" || addfields[k].Values != "undefined"))
                             {
                                 fld = addfields[k].Fields;
+
                                 val = addfields[k].Values;
+
                                 string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + RetailerID + "'";
                                 i = db_ER.ExecQry(uquery);
                             }
                         }
                     }
 
+                    if (addfileuds.Count > 0)
+                    {
+                        int i = 0; string fld = ""; string val = "";
+
+                        for (int k = 0; k < addfileuds.Count; k++)
+                        {
+                            if ((addfileuds[k].FileId != "'undefined'" || addfileuds[k].FileId != "undefined") && (addfileuds[k].FileName != "'undefined'" || addfileuds[k].FileName != "undefined"))
+                            {
+                                fld = addfileuds[k].FileId;
+                                val = addfileuds[k].FileName;
+
+                                string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + RetailerID + "'";
+                                i = db_ER.ExecQry(uquery);
+                            }
+                        }
+                    }
 
                     msg = "Created Successfully";
                     //btnClear_Click(sender, e);
@@ -1018,6 +1063,25 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         }
                     }
 
+                    if (addfileuds.Count > 0)
+                    {
+                        int i = 0; string fld = ""; string val = "";
+
+                        for (int k = 0; k < addfileuds.Count; k++)
+                        {
+                            if ((addfileuds[k].FileId != "'undefined'" || addfileuds[k].FileId != "undefined") && (addfileuds[k].FileName != "'undefined'" || addfileuds[k].FileName != "undefined"))
+                            {
+                                fld = addfileuds[k].FileId;
+                                val = addfileuds[k].FileName;
+
+                                string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
+                                i = db_ER.ExecQry(uquery);
+                            }
+                        }
+                    }
+
+
+
                     msg = "Updated Successfully";
                 }
                 else if (iReturn == -2)
@@ -1060,6 +1124,28 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 //txtAddress.Focus();
             }
         }
+        return msg;
+    }
+
+
+    [WebMethod(EnableSession = true)]
+    public static string SaveFileS3Bucket(string filename)
+    {
+        lisdr ld = new lisdr();
+        string msg = "";
+
+        string currentPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename);
+        //string currentPath = Directory.GetCurrentDirectory();
+        if (!Directory.Exists(Path.Combine(currentPath)))
+            Directory.CreateDirectory(Path.Combine(currentPath));
+
+        System.IO.FileStream fs = new System.IO.FileStream(currentPath, System.IO.FileMode.Append, System.IO.FileAccess.Write);
+        System.IO.StreamWriter sw = new System.IO.StreamWriter(fs);
+        sw.Flush();
+        sw.Close();
+        fs.Close();
+
+        msg = ld.sendMyFileToS3(currentPath, filename);
         return msg;
     }
 
@@ -1693,7 +1779,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                             //    "'" + MCCMilkColDaily + "',getdate(),'" + Listed_DR_Code + "','" + DR_Spec + "'," +
                             //    "'" + Milk_pot + "','" + curentCom + "','" + FrequencyOfVisit + "')";
 
-
                             //jReturn = db.ExecQry(strQry);
 
                             //strQry = " insert into Mas_ListedDr (ListedDrCode,SF_Code,ListedDr_Name,ListedDr_Mobile,Code,contactperson,Doc_Special_Code,Doc_Spec_ShortName, " +
@@ -1705,7 +1790,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                             //           "'" + DR_Address2 + "', '" + Division_Code + "',0,getdate(),getdate(),'" + Milk_pot + "','" + Uom + "','" + Uom_Name + "','" + sf_code + "','" + distname + "','" + re_type + "','" + outstanding + "'," +
                             //           "'" + credit_limit + "','" + Cus_Alt + "','" + drcategory + "','" + drcategoryName + "','" + latitude + "','" + longitude + "'," +
                             //           " '" + Breed + "','" + UKey + "','" + credit_days + "','Web','" + txtmail + "')";                          
-
 
                             //iReturn = db.ExecQry(strQry);
 
@@ -1967,8 +2051,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             }
             return bRecordExist;
         }
-
-
 
         public DataSet get_RetailerCustomField(string listeddrcode, string columnName, string divcode)
         {
@@ -2327,6 +2409,77 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             catch (Exception ex)
             {
                 throw ex;
+            }
+            return dsAdmin;
+        }
+
+        public string sendMyFileToS3(string filePath, string fileName)
+        {
+            string msg = "";
+            try
+            {
+
+                DataSet dsDivision = getStatePerDivision(div_code);
+                string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+                //string existingBucketName = "happic";
+                string directoryPath = urlshotName + "_" + "Retailer";
+
+                string accessKey = "AKIA5OS74MUCASG7HSCG";
+                string secretKey = "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";
+                string bucketName = "happic" + @"/" + directoryPath;
+
+
+                using (var client = new AmazonS3Client(accessKey, secretKey, Amazon.RegionEndpoint.APSouth1))
+                {
+                    var transferUtility = new TransferUtility(client);
+
+                    transferUtility.Upload(filePath, bucketName, fileName);
+                }
+
+                msg = "FileUpload Successfully";
+            }
+            catch (AmazonS3Exception e)
+            {
+                //Console.WriteLine("Error encountered ***. Message:'{0}' when writing an object", e.Message);
+                msg = " Error encountered ***. Message:'{0}' when writing an object, " + e.Message + "";
+            }
+            catch (Exception e)
+            {
+                //Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+                msg = "  Unknown encountered on server. Message:'{0}' when writing an object , " + e.Message + " ";
+            }
+
+            return msg; //indicate that the file was sent
+        }
+
+        public DataSet getStatePerDivision(string div_code)
+        {
+            DataSet dsAdmin = new DataSet();
+
+            string strQry = "SELECT State_Code,Division_Name,Division_SName,Url_Short_Name  FROM Mas_Division ";
+            strQry += " Where Division_Code = @Division_Code  GROUP BY State_Code,Division_Name,Division_SName,Url_Short_Name ";
+
+            try
+            {
+                using (var con = new SqlConnection(Global.ConnString))
+                {
+                    using (var cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = strQry;
+                        cmd.Parameters.AddWithValue("@Division_Code", Convert.ToInt32(div_code));
+                        cmd.CommandType = CommandType.Text;
+                        SqlDataAdapter dap = new SqlDataAdapter();
+                        dap.SelectCommand = cmd;
+                        con.Open();
+                        dap.Fill(dsAdmin);
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
             }
             return dsAdmin;
         }

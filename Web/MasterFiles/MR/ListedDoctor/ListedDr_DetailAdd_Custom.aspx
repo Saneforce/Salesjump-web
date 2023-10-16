@@ -71,7 +71,7 @@
                     background-color: black;
                     z-index: 99;
                     opacity: 0.8;
-                /*    filter: alpha(opacity=80);
+                   /* filter: alpha(opacity=80);
                     -moz-opacity: 0.8;*/
                     min-height: 100%;
                     width: 100%;
@@ -103,7 +103,7 @@
             </style>    
         </head>
         <body>
-            <form id="form1" runat="server">
+            <form id="form1" runat="server" enctype="multipart/form-data">
                 <asp:ScriptManager ID="scriptmanager1" runat="server"></asp:ScriptManager>
                 <div class="card">
                     <div class="card-header">
@@ -212,7 +212,7 @@
                                                    </td>
                                                    <td>
                                                        <asp:TextBox ID="txtName" runat="server" Width="170px" SkinID="MandTxtBox" onfocus="this.style.backgroundColor='#E0EE9D'"
-                                                           onkeypress="AlphaNumeric_NoSpecialChars(event)" onblur="this.style.backgroundColor='White'" CssClass=" frmddl">
+                                                            onblur="this.style.backgroundColor='White'" CssClass=" frmddl">
                                                        </asp:TextBox>
                                                    </td>
                                                    <td>
@@ -439,7 +439,7 @@
                                         </tr>
                                     </table>
                                     <br />
-                                    <table width="100%" bgcolor="#D6E9C6">
+                                    <table width="100%" style="background-color:#D6E9C6">
                                         <tr>
                                             <td class="stylespc">
                                                 <span style="color: Red">*</span><asp:Label ID="Label2" runat="server" 
@@ -490,7 +490,7 @@
                     <div class="card-footer text-center" style="margin-top:-10px;">
                         
                     </div>
-                    <div class="loading" align="center">
+                    <div class="loading" style="align-content:center">
                         Loading. Please wait. Loading. Please wait.<br />
                         <br />
                         <img src="../../../Images/loader.gif" alt="" />
@@ -530,200 +530,200 @@
 
                     $('#example-multiple-selected').hide()
                     $('#<%=lblDMP.ClientID%>').hide();
-                        $('#<%=txtDMP.ClientID%>').hide()
-                        $('#<%=lblCC.ClientID%>').hide();
-                        $('#<%=ddlCC.ClientID%>').hide();
-                        $('#<%=lblmonA.ClientID%>').hide();
-                        $('#<%=txtmonA.ClientID%>').hide();
-                        $('#<%=lblMCL.ClientID%>').hide();
-                        $('#<%=txtMCL.ClientID%>').hide();
-                        $('#<%=lblMFPM.ClientID%>').hide();
-                        $('#<%=txtMFPM.ClientID%>').hide();
-                        $('#<%=lblfzy.ClientID%>').hide();
-                        $('#<%=ddlfzy.ClientID%>').hide();
-                        $('#<%=Label4.ClientID%>').hide();
-                        $('#<%=creditdays.ClientID%>').hide();
+                    $('#<%=txtDMP.ClientID%>').hide()
+                    $('#<%=lblCC.ClientID%>').hide();
+                    $('#<%=ddlCC.ClientID%>').hide();
+                    $('#<%=lblmonA.ClientID%>').hide();
+                    $('#<%=txtmonA.ClientID%>').hide();
+                    $('#<%=lblMCL.ClientID%>').hide();
+                    $('#<%=txtMCL.ClientID%>').hide();
+                    $('#<%=lblMFPM.ClientID%>').hide();
+                    $('#<%=txtMFPM.ClientID%>').hide();
+                    $('#<%=lblfzy.ClientID%>').hide();
+                    $('#<%=ddlfzy.ClientID%>').hide();
+                    $('#<%=Label4.ClientID%>').hide();
+                    $('#<%=creditdays.ClientID%>').hide();
 
-                        $('input:text:first').focus();
+                    $('input:text:first').focus();
 
-                        $('input:text').bind("keydown", function (e) {
-                            var n = $("input:text").length;
-                            if (e.which == 13) { //Enter key
-                                e.preventDefault(); //to skip default behavior of the enter key
-                                var curIndex = $('input:text').index(this);
+                    $('input:text').bind("keydown", function (e) {
+                        var n = $("input:text").length;
+                        if (e.which == 13) { //Enter key
+                            e.preventDefault(); //to skip default behavior of the enter key
+                            var curIndex = $('input:text').index(this);
 
-                                if ($('input:text')[curIndex].attributes['onfocus'].value != "this.style.backgroundColor='LavenderBlush'" && ($('input:text')[curIndex].value == '')) {
-                                    $('input:text')[curIndex].focus();
+                            if ($('input:text')[curIndex].attributes['onfocus'].value != "this.style.backgroundColor='LavenderBlush'" && ($('input:text')[curIndex].value == '')) {
+                                $('input:text')[curIndex].focus();
+                            }
+                            else {
+                                var nextIndex = $('input:text').index(this) + 1;
+
+                                if (nextIndex < n) {
+                                    e.preventDefault();
+                                    $('input:text')[nextIndex].focus();
                                 }
                                 else {
-                                    var nextIndex = $('input:text').index(this) + 1;
-
-                                    if (nextIndex < n) {
-                                        e.preventDefault();
-                                        $('input:text')[nextIndex].focus();
-                                    }
-                                    else {
-                                        $('input:text')[nextIndex - 1].blur();
-                                        $('#btnSave').focus();
-                                    }
+                                    $('input:text')[nextIndex - 1].blur();
+                                    $('#btnSave').focus();
                                 }
                             }
-                        });
-
-                        $("input:text").on("keypress", function (e) {
-                            if (e.which === 32 && !this.value.length)
-                                e.preventDefault();
-                        });
-
-                        $('#<%=btnSave.ClientID%>').click(function () {
-
-                            if ($('#<%=Txt_id.ClientID%>').val() == "") { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); return false; }
-                            if ($('#<%=txtName.ClientID%>').val() == "") { alert("Enter Retailer Name."); $('#<%=txtName.ClientID%>').focus(); return false; }
-
-                            var spec = $('#<%=ddlSpec.ClientID%> :selected').text();
-                            if (spec == "---Select---") { alert("Select Channel."); $('#<%=ddlSpec.ClientID%>').focus(); return false; }
-
-                            var clas = $('#<%=ddlClass.ClientID%> :selected').text();
-                            if (clas == "---Select---") { alert("Select Class."); $('#<%=ddlClass.ClientID%>').focus(); return false; }
-
-                            var Rou = $('#<%=ddlTerritory.ClientID%> :selected').text();
-                            if (Rou == "---Select---") { alert("Select Route."); $('#<%=ddlTerritory.ClientID%>').focus(); return false; }
-
-                            if ($('#<%=txtAddress.ClientID%>').val() == "") { alert("Enter Address."); $('#<%=txtAddress.ClientID%>').focus(); return false; }
-
-                            var sbreed = '';
-                            $('#example-multiple-selected  > option:selected').each(function () {
-                                sbreed += $(this).text() + ',';
-                            });
-                            $('#<%=hdnbreedname.ClientID%>').val(sbreed)
-
-                        });
-
-                        $('.numberVal').keypress(function (event) {
-
-                            return isNumber(event, this)
-                        });
-
-                        function isNumber(evt, element) {
-
-                            var charCode = (evt.which) ? evt.which : evt.keyCode
-
-                            if ((charCode != 46 || $(element).val().indexOf('.') != -1) && (charCode < 48 || charCode > 57)) { return false; }
-                            else { return true; }
                         }
+                    });
 
-                        if ($('#<%=divcode.ClientID%>').val() == 70) {
-                            $.ajax({
-                                type: "Post",
-                                contentType: "application/json; charset=utf-8",
-                                url: "ListedDr_DetailAdd_Custom.aspx/Fillddlbreed",
-                                data: {},
-                                dataType: "json",
-                                async: false,
-                                success: function (data) {
-                                    var Datas = data.d;
-                                    if (Datas.length > 0) {
-                                        $.each(data.d, function () {
-                                            $('#example-multiple-selected').append($("<option></option>").val(this['id']).html(this['name']));
-                                        });
-                                        $('#example-multiple-selected').multiselect({
-                                            columns: 3,
-                                            placeholder: 'Select Breed',
-                                            search: true,
-                                            searchOptions: {
-                                                'default': 'Search Breed'
-                                            },
-                                            selectAll: true
-                                        }).multiselect('reload');
-                                        //$('.ms-options ul').css('column-count', '3');
-                                    }
-                                },
-                                error: function (result) {
-                                    alert(JSON.stringify(result));
+                    $("input:text").on("keypress", function (e) {
+                        if (e.which === 32 && !this.value.length)
+                            e.preventDefault();
+                    });
+
+                    $('#<%=btnSave.ClientID%>').click(function () {
+
+                        if ($('#<%=Txt_id.ClientID%>').val() == "") { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); return false; }
+                        if ($('#<%=txtName.ClientID%>').val() == "") { alert("Enter Retailer Name."); $('#<%=txtName.ClientID%>').focus(); return false; }
+
+                        var spec = $('#<%=ddlSpec.ClientID%> :selected').text();
+                        if (spec == "---Select---") { alert("Select Channel."); $('#<%=ddlSpec.ClientID%>').focus(); return false; }
+
+                        var clas = $('#<%=ddlClass.ClientID%> :selected').text();
+                        if (clas == "---Select---") { alert("Select Class."); $('#<%=ddlClass.ClientID%>').focus(); return false; }
+
+                        var Rou = $('#<%=ddlTerritory.ClientID%> :selected').text();
+                        if (Rou == "---Select---") { alert("Select Route."); $('#<%=ddlTerritory.ClientID%>').focus(); return false; }
+
+                        if ($('#<%=txtAddress.ClientID%>').val() == "") { alert("Enter Address."); $('#<%=txtAddress.ClientID%>').focus(); return false; }
+
+                        var sbreed = '';
+                        $('#example-multiple-selected  > option:selected').each(function () {
+                            sbreed += $(this).text() + ',';
+                        });
+                        $('#<%=hdnbreedname.ClientID%>').val(sbreed)
+
+                    });
+
+                    $('.numberVal').keypress(function (event) {
+
+                        return isNumber(event, this)
+                    });
+
+                    function isNumber(evt, element) {
+
+                        var charCode = (evt.which) ? evt.which : evt.keyCode
+
+                        if ((charCode != 46 || $(element).val().indexOf('.') != -1) && (charCode < 48 || charCode > 57)) { return false; }
+                        else { return true; }
+                    }
+
+                    if ($('#<%=divcode.ClientID%>').val() == 70) {
+                        $.ajax({
+                            type: "Post",
+                            contentType: "application/json; charset=utf-8",
+                            url: "ListedDr_DetailAdd_Custom.aspx/Fillddlbreed",
+                            data: {},
+                            dataType: "json",
+                            async: false,
+                            success: function (data) {
+                                var Datas = data.d;
+                                if (Datas.length > 0) {
+                                    $.each(data.d, function () {
+                                        $('#example-multiple-selected').append($("<option></option>").val(this['id']).html(this['name']));
+                                    });
+                                    $('#example-multiple-selected').multiselect({
+                                        columns: 3,
+                                        placeholder: 'Select Breed',
+                                        search: true,
+                                        searchOptions: {
+                                            'default': 'Search Breed'
+                                        },
+                                        selectAll: true
+                                    }).multiselect('reload');
+                                    //$('.ms-options ul').css('column-count', '3');
+                                }
+                            },
+                            error: function (result) {
+                                alert(JSON.stringify(result));
+                            }
+                        });
+                        var ddlbreed = $('#<%=hdnbreedname.ClientID%>').val();
+                        if (ddlbreed != "") {
+                            var breedname = ddlbreed.split(",")
+                            $('#example-multiple-selected  > option').each(function () {
+                                for (var i = 0; i < breedname.length; i++) {
+                                    if (breedname[i] == $(this).text()) { $(this).prop('selected', true); $('#example-multiple-selected').multiselect('reload') }
                                 }
                             });
-                            var ddlbreed = $('#<%=hdnbreedname.ClientID%>').val();
-                            if (ddlbreed != "") {
-                                var breedname = ddlbreed.split(",")
-                                $('#example-multiple-selected  > option').each(function () {
-                                    for (var i = 0; i < breedname.length; i++) {
-                                        if (breedname[i] == $(this).text()) { $(this).prop('selected', true); $('#example-multiple-selected').multiselect('reload') }
-                                    }
-                                });
-                            }
-                            $('#<%=lblQual.ClientID%>').text('*Customer Code')
-                            $('#<%=lblName.ClientID%>').text('*Name Of Customer')
-                            $('#<%=lblSpec.ClientID%>').text('*Category')
-                            $('#<%=Lab_Type.ClientID%>').text('Customer Type')
-                            $('#<%=TinNO.ClientID%>').hide()
-                            $('#<%=lblCC.ClientID%>').show();
-                            $('#<%=ddlCC.ClientID%>').show()
-                            $('#<%=lblfzy.ClientID%>').show()
-                            $('#<%=ddlfzy.ClientID%>').show()
-                            $('#<%=lblCatg.ClientID%>').text('*Breed')
+                        }
+                        $('#<%=lblQual.ClientID%>').text('*Customer Code')
+                        $('#<%=lblName.ClientID%>').text('*Name Of Customer')
+                        $('#<%=lblSpec.ClientID%>').text('*Category')
+                        $('#<%=Lab_Type.ClientID%>').text('Customer Type')
+                        $('#<%=TinNO.ClientID%>').hide()
+                        $('#<%=lblCC.ClientID%>').show();
+                        $('#<%=ddlCC.ClientID%>').show()
+                        $('#<%=lblfzy.ClientID%>').show()
+                        $('#<%=ddlfzy.ClientID%>').show()
+                        $('#<%=lblCatg.ClientID%>').text('*Breed')
                         // $('#<%=lblCatg.ClientID%>').hide()
-                            // $('#example-multiple-selected').hide()
-                            $('#<%=Label4.ClientID%>').text('No of Animals')
-                            if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'AIT') {
-                                $('#<%=lblmonA.ClientID%>').show()
-                            $('#<%=txtmonA.ClientID%>').show()
+                        // $('#example-multiple-selected').hide()
+                        $('#<%=Label4.ClientID%>').text('No of Animals')
+                        if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'AIT') {
+                            $('#<%=lblmonA.ClientID%>').show()
+                                $('#<%=txtmonA.ClientID%>').show()
                             //  $('#<%=lblCatg.ClientID%>').text('*Breed')
                             //   $('#<%=lblCatg.ClientID%>').show()  
-                                //   $('#example-multiple-selected').show()
+                            //   $('#example-multiple-selected').show()
 
-                            }
-                            if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {
-                                $('#<%=Label4.ClientID%>').show()
-                            $('#<%=creditdays.ClientID%>').show()
-                            $('#<%=lblDMP.ClientID%>').show()
-                            $('#<%=txtDMP.ClientID%>').show()
+                        }
+                        if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {
+                            $('#<%=Label4.ClientID%>').show()
+                                $('#<%=creditdays.ClientID%>').show()
+                                $('#<%=lblDMP.ClientID%>').show()
+                                $('#<%=txtDMP.ClientID%>').show()
                             // $('#<%=lblCatg.ClientID%>').text('*Breed')
                             // $('#<%=lblCatg.ClientID%>').show()
-                                //$('#example-multiple-selected').show()
-                            }
-                            if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'MCC') {
-                                $('#<%=lblMCL.ClientID%>').show()
-                            $('#<%=txtMCL.ClientID%>').show()
-                            $('#<%=lblMFPM.ClientID%>').show()
-                            $('#<%=txtMFPM.ClientID%>').show()
-                            // $('#example-multiple-selected').hide()
-                            $('#<%=creditdays.ClientID%>').hide()
-                            }
-                            $('#<%=ddlSpec.ClientID%>').on('change', function () {
-                                if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {
-                                $('#<%=Label4.ClientID%>').show();
-                                $('#<%=creditdays.ClientID%>').show();
-                                $('#<%=lblDMP.ClientID%>').show();
-                                $('#<%=txtDMP.ClientID%>').show();
-                                $('#<%=lblMCL.ClientID%>').hide();
-                                $('#<%=txtMCL.ClientID%>').hide();
-                                $('#<%=lblMFPM.ClientID%>').hide();
-                                $('#<%=txtMFPM.ClientID%>').hide();
-                                $('#<%=lblmonA.ClientID%>').hide();
-                                $('#<%=txtmonA.ClientID%>').hide();
-                                $('#<%=lblCatg.ClientID%>').text('*Breed');
-                                $('#<%=lblCatg.ClientID%>').show();
+                            //$('#example-multiple-selected').show()
+                        }
+                        if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'MCC') {
+                            $('#<%=lblMCL.ClientID%>').show()
+                                $('#<%=txtMCL.ClientID%>').show()
+                                $('#<%=lblMFPM.ClientID%>').show()
+                                $('#<%=txtMFPM.ClientID%>').show()
+                                // $('#example-multiple-selected').hide()
+                                $('#<%=creditdays.ClientID%>').hide()
+                        }
+                        $('#<%=ddlSpec.ClientID%>').on('change', function () {
+                            if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {
+                                    $('#<%=Label4.ClientID%>').show();
+                                    $('#<%=creditdays.ClientID%>').show();
+                                    $('#<%=lblDMP.ClientID%>').show();
+                                    $('#<%=txtDMP.ClientID%>').show();
+                                    $('#<%=lblMCL.ClientID%>').hide();
+                                    $('#<%=txtMCL.ClientID%>').hide();
+                                    $('#<%=lblMFPM.ClientID%>').hide();
+                                    $('#<%=txtMFPM.ClientID%>').hide();
+                                    $('#<%=lblmonA.ClientID%>').hide();
+                                    $('#<%=txtmonA.ClientID%>').hide();
+                                    $('#<%=lblCatg.ClientID%>').text('*Breed');
+                                    $('#<%=lblCatg.ClientID%>').show();
                                 //$('#example-multiple-selected').show()
                                 <%--$('#<%=ddlCatg.ClientID%>').multiselect(
                                  {
                                     includeSelectAllOption: true
                                 });--%>
-                            }
-                            else {
-                                $('#<%=Label4.ClientID%>').hide();
-                                $('#<%=creditdays.ClientID%>').hide();
-                                $('#<%=lblDMP.ClientID%>').hide();
-                                $('#<%=txtDMP.ClientID%>').hide();
-                            }
-                            if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'AIT') {
-                                $('#<%=lblmonA.ClientID%>').show();
-                                $('#<%=txtmonA.ClientID%>').show();
-                                $('#<%=lblMCL.ClientID%>').hide();
-                                $('#<%=txtMCL.ClientID%>').hide();
-                                $('#<%=lblMFPM.ClientID%>').hide();
-                                $('#<%=txtMFPM.ClientID%>').hide();
-                                $('#<%=lblDMP.ClientID%>').hide();
-                                $('#<%=txtDMP.ClientID%>').hide();
+                                }
+                                else {
+                                    $('#<%=Label4.ClientID%>').hide();
+                                    $('#<%=creditdays.ClientID%>').hide();
+                                    $('#<%=lblDMP.ClientID%>').hide();
+                                    $('#<%=txtDMP.ClientID%>').hide();
+                                }
+                                if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'AIT') {
+                                    $('#<%=lblmonA.ClientID%>').show();
+                                    $('#<%=txtmonA.ClientID%>').show();
+                                    $('#<%=lblMCL.ClientID%>').hide();
+                                    $('#<%=txtMCL.ClientID%>').hide();
+                                    $('#<%=lblMFPM.ClientID%>').hide();
+                                    $('#<%=txtMFPM.ClientID%>').hide();
+                                    $('#<%=lblDMP.ClientID%>').hide();
+                                    $('#<%=txtDMP.ClientID%>').hide();
                                 $('#<%=Label4.ClientID%>').hide()
                                 $('#<%=creditdays.ClientID%>').hide();
                                 //$('#example-multiple-selected').hide()
@@ -731,9 +731,9 @@
                             else {
                                 $('#<%=lblmonA.ClientID%>').hide();
                                 $('#<%=txtmonA.ClientID%>').hide();
-                            }
-                            if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'MCC') {
-                                $('#<%=lblMCL.ClientID%>').show();
+                                }
+                                if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'MCC') {
+                                    $('#<%=lblMCL.ClientID%>').show();
                                 $('#<%=txtMCL.ClientID%>').show();
                                 $('#<%=lblMFPM.ClientID%>').show();
                                 $('#<%=txtMFPM.ClientID%>').show();
@@ -881,14 +881,14 @@
                                                     str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>";
                                                 }
                                                 break;
-                                            case 'SSM':                                              
+                                            case 'SSM':
                                                 ssmtablename = filtered[k].Fld_Src_Name;
                                                 scontrolId = filtered[k].Field_Col;
 
-                                                BindDropdown(ssmtablename);     
+                                                BindDropdown(ssmtablename);
 
                                                 if ((filtered[k].Mandate == "Yes")) {
-                                                    
+
                                                     str += "<td class='stylespc' align='left'>";
 
                                                     str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
@@ -898,8 +898,8 @@
                                                         str += "<option value='" + SSMList[j].IDCol + "'>" + SSMList[j].TextVal + "</option>";
                                                         //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
                                                     }
-                                                    str += "</select>";                 
-                                                   
+                                                    str += "</select>";
+
                                                     str += "</td>";
                                                 }
                                                 else {
@@ -912,11 +912,11 @@
                                                         str += "<option value='" + SSMList[j].IDCol + "'>" + SSMList[j].TextVal + "</option>";
                                                         //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
                                                     }
-                                                    str += "</select>";    
+                                                    str += "</select>";
 
-                                                    str += "</td>";                                               
-                                                }                                              
-                                                
+                                                    str += "</td>";
+                                                }
+
                                                 break;
                                             case 'SSO':
                                                 const SSOArray = filtered[k].Fld_Src_Field.split(",");
@@ -991,7 +991,7 @@
                                                     }
                                                 }
                                                 break;
-                                            case 'SMM':                                               
+                                            case 'SMM':
 
                                                 if ((filtered[k].Mandate == "Yes")) {
                                                     var crmn = filtered[k].Fld_Src_Name;
@@ -1007,7 +1007,7 @@
 
                                                             str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "'";
                                                             str += "name='" + filtered[k].Field_Col + "' class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
-                                                            
+
                                                             g++;
                                                             if (g == 2) {
                                                                 str += "</tr><tr>";
@@ -1036,7 +1036,7 @@
                                                         for (var f = 0; f < CMfiltmgr.length; f++) {
 
                                                             str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "'";
-                                                            str += "name='" + filtered[k].Field_Col + "' class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";                                                           
+                                                            str += "name='" + filtered[k].Field_Col + "' class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
                                                             g++;
                                                             if (g == 2) {
                                                                 str += "</tr><tr>";
@@ -1050,7 +1050,7 @@
                                                     str += "</div>";
                                                     str += "</td>";
                                                 }
-                                             
+
                                                 break;
                                             case 'SMO':
                                                 const SMOArray = filtered[k].Fld_Src_Field.split(",");
@@ -1146,7 +1146,7 @@
                                                         str += "</td>";
                                                     }
                                                 }
-                                                break;                                           
+                                                break;
                                             case 'CO':
                                                 const COArray = filtered[k].Fld_Src_Field.split(",");
                                                 if ((filtered[k].Mandate == "Yes")) {
@@ -1228,7 +1228,7 @@
                                                             str += "</table>";
                                                             str += "</div>";
                                                             str += "</td>";
-                                                        }                                                      
+                                                        }
                                                     }
                                                     else {
                                                         str += "<td class='stylespc' align='left'>";
@@ -1242,7 +1242,7 @@
                                             case 'CM':
                                                 var crmn = filtered[k].Fld_Src_Name;
                                                 BindCheckboxs(crmn);
-                                                
+
                                                 if ((filtered[k].Mandate == "Yes")) {
                                                     str += "<td class='stylespc' align='left'><br />";
                                                     str += "<div name='" + filtered[k].Field_Col + "' id=" + filtered[k].Field_Col + " class='required'  style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
@@ -1255,7 +1255,7 @@
 
                                                             str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "''";
                                                             str += "name='" + filtered[k].Field_Col + "'  class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
-                                                           
+
                                                             g++;
                                                             if (g == 2) {
                                                                 str += "</tr><tr>";
@@ -1298,7 +1298,7 @@
                                                 }
                                                 break;
                                             case 'RM':
-                                                var rbm = filtered[k].Fld_Src_Name;  
+                                                var rbm = filtered[k].Fld_Src_Name;
                                                 //console.log(rbm)
                                                 BindRadiobutton(rbm);
                                                 //console.log(RMfiltmgr);
@@ -1340,7 +1340,7 @@
 
                                                             str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + RMfiltmgr[f].IDCol + "'";
                                                             str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + RMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + RMfiltmgr[f].IDCol + "'>" + RMfiltmgr[f].TextVal + " </label></td>";
-                                                           
+
                                                             g++;
                                                             if (g == 2) {
                                                                 str += "</tr><tr>";
@@ -1355,7 +1355,7 @@
                                                 }
                                                 break;
                                             case 'RO':
-                                                const ROArray = filtered[k].Fld_Src_Field.split(",");        
+                                                const ROArray = filtered[k].Fld_Src_Field.split(",");
                                                 if ((filtered[k].Mandate == "Yes")) {
                                                     if ((ROArray.length > 0)) {
                                                         if ((ROArray.length == 2)) {
@@ -1379,7 +1379,7 @@
 
                                                                 str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + ROArray[f] + "'";
                                                                 str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + ROArray[f] + "' />&nbsp;<label class='text-wrap' for='" + ROArray[f] + "'>" + ROArray[f] + " </label></td>";
-                                                                
+
                                                                 g++;
                                                                 if (g == 2) {
                                                                     str += "</tr><tr>";
@@ -1423,7 +1423,7 @@
 
                                                                 str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + ROArray[f] + "'";
                                                                 str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + ROArray[f] + "' />&nbsp;<label class='text-wrap' for='" + ROArray[f] + "'>" + ROArray[f] + " </label></td>";
-                                                               
+
                                                                 g++;
                                                                 if (g == 2) {
                                                                     str += "</tr><tr>";
@@ -1447,13 +1447,23 @@
                                                 }
                                                 break;
                                             case 'FS':
-                                                str += "<td class='stylespc' align='left'><input type='file'  id='" + filtered[k].Field_Col + "' name = " + filtered[k].Field_Col + "  accept='image/png, image/jpeg' class='form-control notrequired' /></td>";
+                                                str += "<td class='stylespc' align='left'>";
+                                                //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles'  />";                                              
+                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
                                                 break;
                                             case 'FSC':
-                                                str += "<td class='stylespc' align='left'><input type='file'  id='" + filtered[k].Field_Col + "' name = " + filtered[k].Field_Col + "  accept='image/png, image/jpeg' class='form-control notrequired' /></td>";
+                                                str += "<td class='stylespc' align='left'>";
+                                                //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fscfiles'  />";                                               
+                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
                                                 break;
+
                                             case 'FC':
-                                                str += "<td class='stylespc' align='left'><input type='file'  id='" + filtered[k].Field_Col + "' name = " + filtered[k].Field_Col + "  accept='image/png, image/jpeg' class='form-control notrequired' /></td>";
+                                                str += "<td class='stylespc' align='left'>";
+                                                //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                str += "<input type='file' onchange='getFile(this)'   id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fcfiles'  />";                                                
+                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
                                                 break;
                                             default:
                                                 break
@@ -1463,27 +1473,27 @@
                                         if (m == 2) {
                                             str += "</tr><tr>";
                                             m = 0;
-                                        }                                        
+                                        }
                                     }
 
                                     str += "</tr>";
                                     str += '</table>';
-                                
+
                                     str += "</div>";
 
                                 }
-                                $(".labelnames").append(str);  
-                                                         
+                                $(".labelnames").append(str);
+
                             }
                         }
                     });
                 }
 
-                function GetCustomFormsFields() {             
+                function GetCustomFormsFields() {
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
-                        async: false,                     
+                        async: false,
                         url: "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsFieldsList",
                         data: "{'divcode':'<%=Session["div_code"]%>','ModuleId':'3'}",
                         dataType: "json",
@@ -1547,18 +1557,60 @@
 
                         }
                     });
-                }
+                }                              
 
+                var addfields = new Array();
+                
                 $('#btnSaved').click(function () {                    
                     SaveCustomFielsValues();                    
-                });
-                                
+                });                              
+                
+                
+                var additionalfud = new Array();                
+                
+                function getFile(elm) {
+                    var adDetail = {};
+                    var id = $(elm).attr("id");
+
+                    var fileUpload = $(elm);
+                    var files = fileUpload.context.files;
+                    var numItems = $('.' + id + '').length;
+
+                    console.log(numItems);
+
+                    $('.' + id + '').empty();
+                    //$("#files").append("<h3>List of files to be uploaded:</h3>");
+                    var name = ""; 
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
+                        name = file.name;
+
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            async: false,
+                            url: "ListedDr_DetailAdd_Custom.aspx/SaveFileS3Bucket",
+                            /* data: JSON.stringify({ retailermainflds }),*/
+                            data: "{'filename':'" + name + "'}",
+                            dataType: "json",
+                            success: function (msg) {
+                                alert(msg.d);
+                            }
+                        });
+
+                        
+                        var div = "<div> File name: " + name + " <br /></div>";
+                        console.log(div);
+                        $('.' + id + '').append(div);
+                    }
+
+                    adDetail.FileId = id;      
+                    adDetail.FileName = name;
+                    additionalfud.push(adDetail);
+                }
+                console.log(additionalfud);
                 function SaveCustomFielsValues() {
-
-                    var retailermainflds = new Array();
-
-                    var addfields = new Array();
-                    var addfieldsG = new Array();
+                    
                     var vflag = true;
 
                     if ($('#<%=Txt_id.ClientID%>').val() == "") { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); vflag = false; return vflag; }
@@ -1583,8 +1635,7 @@
 
                     $('#<%=hdnbreedname.ClientID%>').val(sbreed);
 
-                   
-                    $('.required').each(function () {
+                    $('.required').each(function () {                      
                         //alert('hi');
                         var adDetail = {};
                         var fval = $(this).val();
@@ -1592,45 +1643,37 @@
                         values = ""; fields = "";
                         fields = fid;
                         var $label = $("label[for='" + fid + "']");
+
                         //var msg = "Please Fill The " + $label.text() + "";
                         //if ((fval == null || fval == "" || fval == "0")) {
                         //    alert(msg);
                         //    $(fid).focus();
                         //    vflag = false;
                         //    return vflag;
-                        //}
+                        //}                                               
 
-                        $(this).find('input[type="checkbox"]:checked').each(function () {
-                            //console.log($(this).value);
-                            //console.log($(this).val());
+                        $(this).find('input[type="checkbox"]:checked').each(function () {                          
                             fval += this.value + ",";
-
                         });
-
 
                         var rbval = '';
-
-                        $(this).find('input[type="radio"]:checked').each(function () {
-                            //console.log(this.value);
+                        $(this).find('input[type="radio"]:checked').each(function () {                            
                             fval += this.value + ",";
                         });
 
-
                         values = fval;
-
                         adDetail.Fields = fields;
                         adDetail.Values = values;
-
                         addfields.push(adDetail);
                     });
 
                     $('.notrequired').each(function () {
-
+                       
                         var adDetail = {};
                         var fval = $(this).val();
                         var fid = `${this.id}`;
                         fields = "";
-                        fields = fid;
+                        fields = fid;                                               
 
                         $(this).find('input[type="checkbox"]:checked').each(function () {
                             //console.log(this.value);
@@ -1644,7 +1687,6 @@
                         });
 
                         values = fval;
-
                         adDetail.Fields = fields;
                         adDetail.Values = values;
                         addfields.push(adDetail);
@@ -1652,58 +1694,7 @@
 
                     //console.log(addfields);
 
-                    if (vflag) {
-                        var Maindata = {};
-
-                        Maindata.DR_Name = $('#<%=txtName.ClientID%>').val();
-                        Maindata.Mobile_No = $('#<%=txtMobile.ClientID%>').val();
-                        Maindata.retail_code = $('#<%=Txt_id.ClientID%>').val();
-                        Maindata.ERBCode = $('#<%=txtERBCode.ClientID%>').val();
-                        Maindata.advance_amount = $('#<%=txtDOW.ClientID%>').val();
-                        Maindata.DR_Spec = $('#<%=ddlSpec.ClientID%> option:selected').val();
-                        Maindata.dr_spec_name = $('#<%=ddlSpec.ClientID%> option:selected').text();
-                        Maindata.sales_Tax = $('#<%=salestaxno.ClientID%>').val();
-                        Maindata.Tinno = $('#<%=TinNO.ClientID%>').val();
-                        Maindata.DR_Terr = $('#<%=ddlTerritory.ClientID%> option:selected').val();
-                        Maindata.credit_days = $('#<%=creditdays.ClientID%> option:selected').val();
-
-                        Maindata.DR_Class = $('#<%=ddlClass.ClientID%> option:selected').val();
-                        Maindata.drcategory = $('#<%=DDL_category.ClientID%> option:selected').val();
-                        <%--Maindata.dscategoryName = $('#<%=DDL_category.ClientID%>').text();--%>
-                        Maindata.dscategoryName = $('#<%=DDL_category.ClientID%> option:selected').text();
-                        <%--Maindata.dr_class_name = $('#<%=ddlClass.ClientID%>').text();--%>
-                        Maindata.dr_class_name = $('#<%=ddlClass.ClientID %> option:selected').text();
-
-                        Maindata.ad = $('#<%=Txt_advanceamt.ClientID%>').val();
-                        Maindata.DR_Address1 = $('#<%=txtAddress.ClientID%>').val();
-                        Maindata.DR_Address2 = $('#<%=txtStreet.ClientID%>').val();
-
-                        Maindata.Milk_pon = $('#<%=Txt_Mil_Pot.ClientID%>').val();
-                        Maindata.UOM_Name = $('#<%=ddl_uom.ClientID%> option:selected').text();
-                        Maindata.UOM = $('#<%=ddl_uom.ClientID%> option:selected').val();
-
-                        Maindata.outstandng = $('#<%=txtoutstanding.ClientID%>').val();
-                        Maindata.creditlmt = $('#<%=txtcreditlimit.ClientID%>').val();
-                        Maindata.Cus_Alter = ($('input[type="radio"]').prop('checked')) ? 1 : 0;
-                        Maindata.latitude = $('#<%=txtlat.ClientID%>').val();
-                        Maindata.longitude = $('#<%=txtlong.ClientID%>').val();
-                        Maindata.DDL_Re_Type = $('#<%=DDL_Re_Type.ClientID%> option:selected').val();
-                        Maindata.DFDairyMP = $('#<%=txtDMP.ClientID%>').val();
-                        Maindata.MonthlyAI = $('#<%=txtmonA.ClientID%>').val();
-                        Maindata.MCCNFPM = $('#<%=txtMFPM.ClientID%>').val();
-                        Maindata.MCCMilkColDaily = $('#<%=txtMCL.ClientID%>').val();
-                        Maindata.FrequencyOfVisit = $('#<%=ddlfzy.ClientID%>').val();
-                        Maindata.Breed = $('#<%=hdnbreedname.ClientID%>').val();
-                        Maindata.ukeys = $('#<%=hdnukey.ClientID%>').val();
-                        Maindata.curentCom = $('#<%=ddlCC.ClientID%> option:selected').val();
-                        Maindata.curentCompitat = $('#<%=ddlCC.ClientID%> option:selected').text();
-                        Maindata.Email = $('#<%=txtmail.ClientID%>').val();
-
-                        Maindata.Additionsfld = addfields;
-
-                        retailermainflds.push(Maindata);
-                        var fdata1 = JSON.stringify({ retailermainflds });
-
+                    if (vflag) {                        
 
                         var fdata = {
                             "DR_Name": $('#<%=txtName.ClientID%>').val(),
@@ -1748,12 +1739,12 @@
                             "ukeys": $('#<%=hdnukey.ClientID%>').val(),
                             "curentCom": $('#<%=ddlCC.ClientID%> option:selected').val(),
                             "curentCompitat": $('#<%=ddlCC.ClientID%> option:selected').text(),
-                            "Email": $('#<%=txtmail.ClientID%>').val(),                            
-                            "Additionsfld": addfields
+                            "Email": $('#<%=txtmail.ClientID%>').val(),
+                            "Additionsfld": addfields,
+                            "Additionalfileud": additionalfud
                         };
 
-                        //console.log(fdata);
-
+                        //console.log(JSON.stringify(fdata));
 
                         $.ajax({
                             type: "POST",
@@ -1824,8 +1815,7 @@
                             alert(JSON.stringify(data.d));
                         }
                     });
-                }
-                  
+                }                  
                               
                 function BindCustomFieldData(listeddrcode) {
 
@@ -1953,119 +1943,215 @@
                                             });
                                             break;
                                         case 'SSM':
-                                            $('#' + $fldnm +'').find('option').each(function () {
-                                                var sval = $(this).val();
+                                            if (($cval == "" || $cval == '' || $cval == "")) {
 
-                                                if (sval == $cval) {
-                                                    $('#' + $fldnm + '').val($cval);
-                                                }
-                                            });
+                                            }
+                                            else {
+                                                $('#' + $fldnm + '').find('option').each(function () {
+                                                    var sval = $(this).val();
 
-                                        case 'SSO':
-                                            $('#' + $fldnm + '').find('option').each(function () {
-                                                //alert($(this).val());
-                                                var sval = $(this).val();
+                                                    if (sval == $cval) {
+                                                        $('#' + $fldnm + '').val($cval);
+                                                    }
+                                                });
+                                            }
 
-                                                if (sval == $cval) {
-                                                    $('#' + $fldnm + '').val($cval);
-                                                }
-                                            });
+                                        case 'SSO': console.log($cval);
+                                            if (($cval == "" || $cval == '' || $cval == "")) {
+                                                
+                                            }
+                                            else {
+                                                $('#' + $fldnm + '').find('option').each(function () {
+                                                    //alert($(this).val());
+                                                    var sval = $(this).val();
+
+                                                    if (sval == $cval) {
+                                                        $('#' + $fldnm + '').val($cval);
+                                                    }
+                                                });
+                                            }
                                             //var id = $(this).attr("id");
                                             //if (id == $fldnm) {
                                             //    $(id).val($cval);
                                             //}
                                             break;
                                         case 'SMM':
-                                            var arr = $cval.split(',');
-                                           
-                                            for (var l = 0; l < arr.length; l++) {
-                                                var aval = arr[l];
+                                            console.log($cval);
+                                            if (($cval == null || $cval == '' || $cval == "")) {
 
-                                                $("input[type='checkbox']").each(function () {
-                                                    var id = $(this).attr("id");
-                                                    if (aval != "") {
-                                                        if (id == aval) {
-                                                            $(this).prop('checked', true);
+                                            }
+                                            else {
+                                                var arr = $cval.split(',');
+
+                                                for (var l = 0; l < arr.length; l++) {
+                                                    var aval = arr[l];
+
+                                                    $("input[type='checkbox']").each(function () {
+                                                        var id = $(this).attr("id");
+                                                        if (aval != "") {
+                                                            if (id == aval) {
+                                                                $(this).prop('checked', true);
+                                                            }
                                                         }
-                                                    }
-                                                });
-                                            }                                           
+                                                    });
+                                                }
+                                            }
                                         case 'SMO':
-                                            var arr = $cval.split(',');
+                                            console.log($cval);
+                                            if (($cval == null || $cval == '' || $cval == "")) {
 
-                                            for (var l = 0; l < arr.length; l++) {
-                                                var aval = arr[l];
+                                            }
+                                            else {
+                                                var arr = $cval.split(',');
 
-                                                $("input[type='checkbox']").each(function () {
-                                                    var id = $(this).attr("id");
-                                                    if (aval != "") {
-                                                        if (id == aval) {
-                                                            $(this).prop('checked', true);
+                                                for (var l = 0; l < arr.length; l++) {
+                                                    var aval = arr[l];
+
+                                                    $("input[type='checkbox']").each(function () {
+                                                        var id = $(this).attr("id");
+                                                        if (aval != "") {
+                                                            if (id == aval) {
+                                                                $(this).prop('checked', true);
+                                                            }
                                                         }
-                                                    }
-                                                });
-                                            }          
+                                                    });
+                                                }
+                                            }
                                             break;
                                         case 'CM':
-                                            var arr = $cval.split(',');
+                                            console.log($cval);
+                                            if (($cval == null || $cval == '' || $cval == "")) {
 
-                                            for (var l = 0; l < arr.length; l++) {
-                                                var aval = arr[l];
+                                            }
+                                            else {
+                                                var arr = $cval.split(',');
 
-                                                $("input[type='checkbox']").each(function () {
-                                                    var id = $(this).attr("id");
-                                                    if (aval != "") {
-                                                        if (id == aval) {
-                                                            $(this).prop('checked', true);
+                                                for (var l = 0; l < arr.length; l++) {
+                                                    var aval = arr[l];
+
+                                                    $("input[type='checkbox']").each(function () {
+                                                        var id = $(this).attr("id");
+                                                        if (aval != "") {
+                                                            if (id == aval) {
+                                                                $(this).prop('checked', true);
+                                                            }
                                                         }
-                                                    }
-                                                });
+                                                    });
+                                                }
                                             }
                                         case 'CO':
-                                            var arr = $cval.split(',');
+                                            console.log($cval);
+                                            if (($cval == null || $cval == '' || $cval == "")) {
 
-                                            for (var l = 0; l < arr.length; l++) {
-                                                var aval = arr[l];
+                                            }
+                                            else {
+                                                var arr = $cval.split(',');
 
-                                                $("input[type='checkbox']").each(function () {
-                                                    var id = $(this).attr("id");
-                                                    if (aval != "") {
-                                                        if (id == aval) {
-                                                            $(this).prop('checked', true);
+                                                for (var l = 0; l < arr.length; l++) {
+                                                    var aval = arr[l];
+
+                                                    $("input[type='checkbox']").each(function () {
+                                                        var id = $(this).attr("id");
+                                                        if (aval != "") {
+                                                            if (id == aval) {
+                                                                $(this).prop('checked', true);
+                                                            }
                                                         }
-                                                    }
-                                                });
+                                                    });
+                                                }
                                             }
                                             break;
                                         case 'RM':
-                                            var arr = $cval.split(',');
+                                            console.log($cval);
+                                            if (($cval == null || $cval == '' || $cval == "")) {
 
-                                            for (var l = 0; l < arr.length; l++) {
-                                                var aval = arr[l];
+                                            }
+                                            else {
+                                                var arr = $cval.split(',');
 
-                                                $("input[type='radio']").each(function () {
-                                                    var id = $(this).attr("id");
-                                                    if (aval != "") {
-                                                        if (id == aval) {
-                                                            $(this).prop('checked', true);
+                                                for (var l = 0; l < arr.length; l++) {
+                                                    var aval = arr[l];
+
+                                                    $("input[type='radio']").each(function () {
+                                                        var id = $(this).attr("id");
+                                                        if (aval != "") {
+                                                            if (id == aval) {
+                                                                $(this).prop('checked', true);
+                                                            }
                                                         }
-                                                    }
-                                                });
+                                                    });
+                                                }
                                             }
                                         case 'RO':
-                                            var arr = $cval.split(',');
+                                            console.log($cval);
+                                            if (($cval == null || $cval == '' || $cval == "")) {
 
-                                            for (var l = 0; l < arr.length; l++) {
-                                                var aval = arr[l];
+                                            }
+                                            else {
+                                                var arr = $cval.split(',');
 
-                                                $("input[type='radio']").each(function () {
-                                                    var id = $(this).attr("id");
-                                                    if (aval != "") {
-                                                        if (id == aval) {
-                                                            $(this).prop('checked', true);
+                                                for (var l = 0; l < arr.length; l++) {
+                                                    var aval = arr[l];
+
+                                                    $("input[type='radio']").each(function () {
+                                                        var id = $(this).attr("id");
+                                                        if (aval != "") {
+                                                            if (id == aval) {
+                                                                $(this).prop('checked', true);
+                                                            }
                                                         }
+                                                    });
+                                                }
+                                            }
+                                            break;
+                                        case 'FS':
+                                            if (($cval == null || $cval == '' || $cval == "")) {
+
+                                            }
+                                            else {
+                                                $("input[type='file']").each(function () {
+                                                    var id = $(this).attr("id");
+                                                    if (id == $fldnm) {
+                                                        $("." + id + "").empty();
+                                                        var div = "<div> File name: " + $cval + " <br /></div>";
+                                                        console.log(div);
+                                                        $("." + id + "").append(div);
                                                     }
-                                                });
+                                                });                                               
+                                            }
+                                                                                 
+                                            break;
+                                        case 'FSC':
+                                            if (($cval == null || $cval == '' || $cval == "")) {
+
+                                            }
+                                            else {
+                                                $("input[type='file']").each(function () {
+                                                    var id = $(this).attr("id");
+                                                    if (id == $fldnm) {
+                                                        $("." + id + "").empty();
+                                                        var div = "<div> File name: " + $cval + " <br /></div>";
+                                                        console.log(div);
+                                                        $("." + id + "").append(div);
+                                                    }
+                                                });      
+                                            }                                   
+                                            break;
+                                        case 'FC':
+                                            if (($cval == null || $cval == '' || $cval == "")) {
+
+                                            }
+                                            else {
+
+                                                $("input[type='file']").each(function () {
+                                                    var id = $(this).attr("id");
+                                                    if (id == $fldnm) {
+                                                        $("." + id + "").empty();
+                                                        var div = "<div> File name: " + $cval + " <br /></div>";
+                                                        console.log(div);
+                                                        $("." + id + "").append(div);
+                                                    }
+                                                });      
                                             }
                                             break;
                                         default:
@@ -2074,204 +2160,7 @@
                                 }
                             }
                         }
-                    }
-
-                    //$.ajax({
-                    //    type: "POST",
-                    //    contentType: "application/json; charset=utf-8",
-                    //    async: false,
-                    //    url: "ListedDr_DetailAdd_Custom.aspx/GetBindCustomFieldData",
-                    //    data: "{'listeddrcode':'" + listeddrcode + "','columnName':'" + listeddrcode + "'}",
-                    //    dataType: "json",
-                    //    success: function (data) {
-                    //        CFBindData = JSON.parse(data.d) || [];
-                    //        var rowcount = $('#RetaileradditionalField tr').length
-
-                    //        if ((CFBindData.length > 0 && MasFrms.length > 0)) {
-                    //            for (var k = 0; k < MasFrms.length; k++) {
-
-                    //                var $fldnm = MasFrms[k].Field_Col;
-                    //                var fldtyp = MasFrms[k].Fld_Type;
-
-                    //                for (var j = 0; j < CFBindData.length; j++) {
-
-                    //                    var $cval = CFBindData[j][$fldnm];
-
-                    //                    switch (fldtyp) {
-                    //                        case 'TA':
-                    //                            $("input[type='text']").each(function () {
-                    //                                var id = $(this).attr("id");
-                    //                                if (id == $fldnm) {
-                    //                                    $(this).val($cval);
-                    //                                }
-                    //                            });
-                    //                            break;
-                    //                        case 'TAS':
-                    //                            $("input[type='text']").each(function () {
-                    //                                var id = $(this).attr("id");
-                    //                                if (id == $fldnm) {
-                    //                                    $(this).val($cval);
-                    //                                }
-                    //                            });
-                    //                            break;
-                    //                        case 'TAM':
-                    //                            $("textarea").each(function () {
-                    //                                var id = $(this).attr("id");
-                    //                                if (id == $fldnm) {
-                    //                                    $(this).val($cval);
-                    //                                    $(this).value = $cval;
-                    //                                }
-                    //                            });
-                    //                            break;
-                    //                        case 'NC':
-                    //                            $("input[type='number']").each(function () {
-                    //                                var id = $(this).attr("id");
-                    //                                if (id == $fldnm) {
-                    //                                    //alert($cval);
-                                                        
-                    //                                    $(this).val($cval);
-                    //                                }
-                    //                            });
-                    //                            break;
-                    //                        case 'NP':
-                    //                            $("input[type='number']").each(function () {
-                    //                                var id = $(this).attr("id");
-                    //                                if (id == $fldnm) {
-                    //                                    //alert($cval);
-                    //                                    $(this).val($cval);
-                    //                                }
-                    //                            });
-                    //                            break;
-                    //                        case 'N':
-                    //                            $("input[type='number']").each(function () {
-                    //                                var id = $(this).attr("id");
-                    //                                if (id == $fldnm) {
-                    //                                    //alert($cval);
-                    //                                    $(this).val($cval);
-                    //                                }
-                    //                            });
-                    //                            break;
-                    //                        case 'D':
-                    //                            $("input[type='date']").each(function () {
-                    //                                var id = $(this).attr("id");
-                    //                                if (id == $fldnm) {
-                                                        
-                    //                                    var date = new Date($cval);
-
-                    //                                    var day = date.getDate();
-                    //                                    var month = date.getMonth() + 1;
-                    //                                    var year = date.getFullYear();
-
-                    //                                    if (month < 10) month = "0" + month;
-                    //                                    if (day < 10) day = "0" + day;
-
-                    //                                    var today = year + "-" + month + "-" + day;
-                    //                                    $(this).attr("value", today);
-                                                        
-                    //                                }
-                    //                            });
-                    //                            break;
-                    //                        case 'DR':
-                    //                            $("input[type='date']").each(function () {
-                    //                                var id = $(this).attr("id");
-                    //                                if (id == $fldnm) {
-                    //                                    var date = new Date($cval);
-
-                    //                                    var day = date.getDate();
-                    //                                    var month = date.getMonth() + 1;
-                    //                                    var year = date.getFullYear();
-
-                    //                                    if (month < 10) month = "0" + month;
-                    //                                    if (day < 10) day = "0" + day;
-
-                    //                                    var today = year + "-" + month + "-" + day;
-                    //                                    $(this).attr("value", today);
-                                                      
-                    //                                }
-                    //                            });
-                    //                            break;
-                    //                        case 'T':
-                    //                            $("input[type='time']").each(function () {
-                    //                                var id = $(this).attr("id");
-                    //                                if (id == $fldnm) {
-                    //                                    var tv = getFormattedTime($cval);
-                                                       
-                    //                                    $(this).val(tv);
-                    //                                }
-                    //                            });
-                    //                            break;
-                    //                        case 'TR':
-                    //                            $("input[type='time']").each(function () {
-                    //                                var id = $(this).attr("id");
-                    //                                if (id == $fldnm) {
-                    //                                    var tv = getFormattedTime($cval);
-                                                       
-                    //                                    $(this).val(tv);
-                    //                                }
-                    //                            });
-                    //                            break;
-                    //                        case 'SSM':                                                
-                    //                            if (scontrolId == $fldnm) {                                                    
-                    //                                var sddl = "#" + scontrolId;
-                    //                                $(sddl).val($cval);                                                
-                    //                            }
-                    //                            break;
-                    //                        case 'SMM':
-                    //                            var arr = $cval.split(',');
-                                                
-                    //                            var sddl = "#" + scontrolId;
-                    //                            if (mdcontrolId == $fldnm) {
-                    //                                var mddl = "#" + mdcontrolId;
-
-                    //                                for (var l = 0; l < arr.length; l++) {
-                    //                                    var aval = arr[l];
-                    //                                    $(mddl).val(aval);
-                    //                                }
-                    //                            }
-                    //                            break;
-                    //                        case 'CM':
-                    //                            var arr = $cval.split(',');
-                                                
-                    //                            for (var l = 0; l < arr.length; l++) {
-                    //                                var aval = arr[l];
-                                                
-                    //                                $("input[type='checkbox']").each(function () {
-                    //                                    var id = $(this).attr("id");
-                    //                                    if (aval != "") {
-                    //                                        if (id == aval) {
-                    //                                            $(this).prop('checked', true);
-                    //                                        }
-                    //                                    }
-                    //                                });
-                    //                            }
-                    //                            break;
-                    //                        case 'RM':
-                    //                            var arr = $cval.split(',');
-                                                
-                    //                            for (var l = 0; l < arr.length; l++) {
-                    //                                var aval = arr[l];
-                                                
-                    //                                $("input[type='radio']").each(function () {
-                    //                                    var id = $(this).attr("id");
-                    //                                    if (aval != "") {
-                    //                                        if (id == aval) {
-                    //                                            $(this).prop('checked', true);
-                    //                                        }
-                    //                                    }
-                    //                                });
-                    //                            }
-                    //                            break;
-                    //                        default:
-                    //                            break;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }              
-                    //    },
-                    //    error: function (data) {
-                    //        alert(JSON.stringify(data.d));
-                    //    }
-                    //});     
+                    }                    
                 }
 
                 function getFormattedDate(datev) {
