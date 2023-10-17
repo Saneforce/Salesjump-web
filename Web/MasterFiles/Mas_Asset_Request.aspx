@@ -21,7 +21,7 @@
     <form runat="server">
         <div class="row">
     <div class="col-lg-12 sub-header">
-        Asset Master<span style="float: right"><a href="ProductDetail.aspx" class="btn btn-primary btn-update" id="newsf">Add Asset</a></span>
+        Asset Master<span style="float: right"><a href="Asset_Request_creation.aspx" class="btn btn-primary btn-update" id="newsf">Add Asset</a></span>
     </div>
 </div>
             <div class="card">
