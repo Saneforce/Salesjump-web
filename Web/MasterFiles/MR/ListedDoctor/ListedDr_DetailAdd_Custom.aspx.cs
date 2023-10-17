@@ -9,11 +9,10 @@ using System.Web.Services;
 using DBase_EReport;
 using System.Data.SqlClient;
 using System.IO;
+using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
-using System.Threading.Tasks;
-using Amazon;
-using Amazon.Runtime;
+using Microsoft.Ajax.Utilities;
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
 {
@@ -1075,8 +1074,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         }
                     }
 
-
-
                     msg = "Updated Successfully";
                 }
                 else if (iReturn == -2)
@@ -1122,56 +1119,106 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         return msg;
     }
 
+    public static void CopyStream(Stream input, Stream output)
+    {
+        byte[] buffer = new byte[8 * 1024];
+        int len;
+        while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
+        {
+            output.Write(buffer, 0, len);
+        }
+    }
+
+
+    public static void SaveStreamAsFile(string filePath, string fileName)
+    {
+        
+        DirectoryInfo info = new DirectoryInfo(filePath);
+        if (!info.Exists)
+        {
+            info.Create();
+        }
+
+        string path = System.IO.Path.Combine(filePath, fileName);
+        using (FileStream fs = new FileStream(path, FileMode.Create))
+        {
+            byte[] ImageData = new byte[fs.Length];
+            fs.Write(ImageData, 0, System.Convert.ToInt32(fs.Length));
+        }
+
+        //FileStream fs = new FileStream(Path.Combine(folderPath, filename), FileMode.CreateNew, FileAccess.Write);
+        //byte[] ImageData = new byte[fs.Length];
+        //fs.Write(ImageData, 0, System.Convert.ToInt32(fs.Length));
+        //fs.Close();
+        //fs.Dispose();
+    }
+
 
     [WebMethod(EnableSession = true)]
     public static string SaveFileS3Bucket(string filename)
     {
+
+        string fileName = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), filename);
+
         lisdr ld = new lisdr();
         string msg = "";
+        DataSet dsDivision = ld.getStatePerDivision(div_code);
+        string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+        string directoryPath = urlshotName + "_" + "Retailer";
 
         //string currentDirectory = HttpContext.Current.Server.MapPath("~");
         //string relativePath = "FMCGWebRetailer";
+        string folderPath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
 
-        string folderPath = HttpContext.Current.Server.MapPath("~/FMCGWebRetailer/");
-
-        //Check whether Directory (Folder) exists.
+        //Create the Directory.
         if (!Directory.Exists(folderPath))
         {
-            //If Directory (Folder) does not exists. Create it.
             Directory.CreateDirectory(folderPath);
         }
 
         //Save the File to the Directory (Folder).
-        string file = Path.Combine(folderPath, filename);
-        File.WriteAllText(file, filename);
-
-        DataSet dsDivision = ld.getStatePerDivision(div_code);
-        string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
-        //string existingBucketName = "happic";
-        string directoryPath = urlshotName + "_" + "Retailer";
+        //FileStream fs = new FileStream(Path.Combine(folderPath, filename), FileMode.CreateNew, FileAccess.Write);
+        //byte[] ImageData = new byte[fs.Length];
+        //fs.Write(ImageData, 0, System.Convert.ToInt32(fs.Length));
+        //fs.Close();
+        //fs.Dispose();
+        
+        
+        SaveStreamAsFile(folderPath, filename);
+       
 
         string awsKey = "AKIA5OS74MUCASG7HSCG";
-        string awsSecretKey = "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";
-        RegionEndpoint bucketRegion = RegionEndpoint.APSouth1;
+        string awsSecretKey = "4mkW95IZyjYq084SIgBWeXPAr8qhKrLTi+fJ1Irb";        
         string bucketName = "happic";
         string prefix = directoryPath + "/" + filename;       
-
-        string localFilePath = Path.Combine(folderPath, filename);
+        string localFilePath = System.IO.Path.Combine(folderPath);
         string filePath = localFilePath;  
-        
-
-        // Set up your AWS credentials
-        BasicAWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
-
-        // Create a new Amazon S3 client
-        AmazonS3Client s3Client = new AmazonS3Client(credentials, Amazon.RegionEndpoint.APSouth1);
-
+       
         try
         {
             // Upload the file to Amazon S3
-            TransferUtility fileTransferUtility = new TransferUtility(s3Client);
-            fileTransferUtility.Upload(filePath, bucketName, filename);
+            //TransferUtility fT = new TransferUtility(new AmazonS3Client(awsKey, awsSecretKey, Amazon.RegionEndpoint.APSouth1));
+            //string fileKey = filename;
+
+           
+            //TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
+            //if (directoryPath == "" || directoryPath == null)
+            //{
+            //    request.BucketName = bucketName; //no subdirectory just bucket name  
+            //}
+            //else
+            //{   // subdirectory and bucket name  
+            //    request.BucketName = bucketName + @"/" + directoryPath;
+            //}
+            //request.Key = fileKey; //file name up in S3  
+            //request.FilePath = filePath;
+            //fT.Upload(request); //commensing the transfer  
+
+
+            TransferUtility fileTransferUtility = new TransferUtility(new AmazonS3Client(awsKey, awsSecretKey, Amazon.RegionEndpoint.APSouth1));
+            fileTransferUtility.Upload(filePath, bucketName + @"/" + directoryPath, filename);
             //Console.WriteLine("Upload completed!");
+
             msg = "Upload  completed !!";
         }
         catch (AmazonS3Exception e)
@@ -1185,448 +1232,8 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             msg = "Unknown encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
         }
 
-
-
         return msg;
     }
-
-    //[WebMethod]
-    //public static string SaveAdditionalField(List<RetailerMainfld> retailermainflds)
-    //{
-    //    string msg = "";
-    //    System.Threading.Thread.Sleep(time);
-    //    if (retailermainflds.Count > 0)
-    //    {
-    //        string DR_Name = "";  //txtName.Text.Trim();
-    //        string Mobile_No = ""; //txtMobile.Text.Trim();
-    //        string retail_code = ""; //Txt_id.Text.Trim();
-    //        string erbCode = string.Empty;
-    //        string advance_amount = "";//txtDOW.Text.Trim();
-    //        string DR_Spec = "";//ddlSpec.SelectedValue;
-    //        string dr_spec_name = "";// ddlSpec.SelectedItem.ToString();
-    //        string sales_Tax = "";//  salestaxno.Text.Trim();
-    //        string Tinno = "";//  TinNO.Text.Trim();
-    //        string DR_Terr = "";//  ddlTerritory.SelectedValue;
-    //        //string dr_terr_name = ddlTerritory.SelectedItem.ToString();
-    //        string credit_days = ""; //  creditdays.Text.Trim();
-    //        string DR_Class = "";//  ddlClass.SelectedValue;
-    //        string drcategory = "";//  DDL_category.SelectedValue;
-    //        string dscategoryName = "";//  DDL_category.SelectedItem.ToString();
-    //        string dr_class_name = "";//  ddlClass.SelectedItem.ToString();
-    //        string ad = ""; // Txt_advanceamt.Text.Trim();
-    //        string DR_Address1 = "";//  txtAddress.Text.ToString().Trim();
-    //        string DR_Address2 = "";//  txtStreet.Text.Trim();
-    //        string Milk_pon = ""; // Txt_Mil_Pot.Text.Trim();
-    //        string UOM_Name = ""; //  ddl_uom.SelectedItem.ToString();
-    //        string UOM = ""; //  ddl_uom.SelectedValue;
-    //        string DDL_Re_Type = "";// DDL_Re_Type.SelectedValue;
-    //        string outstandng = ""; //  txtoutstanding.Text.Trim();
-    //        string creditlmt = ""; //  txtcreditlimit.Text.Trim();
-    //        string Cus_Alter = ""; //  Convert.ToString(RblAlt.SelectedItem.Value);
-    //        string latitude = ""; //  txtlat.Text.Trim();
-    //        string longitude = ""; //  txtlong.Text.Trim();
-    //        string DFDairyMP = ""; //  txtDMP.Text.Trim();
-    //        string MonthlyAI = ""; // txtmonA.Text.Trim();
-    //        string MCCNFPM = ""; // ""; //  txtMFPM.Text.Trim();
-    //        string MCCMilkColDaily = ""; // txtMCL.Text.Trim();
-    //        string FrequencyOfVisit = ""; // ddlfzy.SelectedValue;
-    //        string Breed = ""; // hdnbreedname.Value;
-    //        string ukeys = ""; // hdnukey.Value;
-    //        string curentCom = ""; // ddlCC.SelectedValue;
-    //        string curentCompitat = ""; // ddlCC.SelectedItem.Text.Trim();
-    //        string Email = "";//  txtmail.Text.Trim();
-
-    //        DB_EReporting db_ER = new DB_EReporting();
-    //        DataSet ds = new DataSet();
-
-    //        foreach (RetailerMainfld rmainfld in retailermainflds)
-    //        {
-    //            DR_Name = Convert.ToString(rmainfld.DR_Name);
-    //            Mobile_No = Convert.ToString(rmainfld.Mobile_No);
-    //            retail_code = Convert.ToString(rmainfld.retail_code);
-
-    //            if (rmainfld.ERBCode == null || rmainfld.ERBCode == "")
-    //            { erbCode = retail_code; }
-    //            else { erbCode = rmainfld.ERBCode; }
-
-    //            advance_amount = Convert.ToString(rmainfld.advance_amount);
-    //            DR_Spec = Convert.ToString(rmainfld.DR_Spec);
-    //            dr_spec_name = Convert.ToString(rmainfld.dr_spec_name);
-    //            sales_Tax = Convert.ToString(rmainfld.sales_Tax);
-    //            Tinno = Convert.ToString(rmainfld.Tinno);
-    //            DR_Terr = Convert.ToString(rmainfld.DR_Terr);
-    //            credit_days = Convert.ToString(rmainfld.credit_days);
-    //            DR_Class = Convert.ToString(rmainfld.DR_Class);
-    //            drcategory = Convert.ToString(rmainfld.drcategory);
-    //            dscategoryName = Convert.ToString(rmainfld.dscategoryName);
-    //            dr_class_name = Convert.ToString(rmainfld.dr_class_name);
-    //            ad = Convert.ToString(rmainfld.ad);
-    //            DR_Address1 = Convert.ToString(rmainfld.DR_Address1);
-    //            DR_Address2 = Convert.ToString(rmainfld.DR_Address2);
-    //            Milk_pon = Convert.ToString(rmainfld.Milk_pon);
-    //            UOM_Name = Convert.ToString(rmainfld.UOM_Name);
-    //            UOM = Convert.ToString(rmainfld.UOM);
-    //            DDL_Re_Type = Convert.ToString(rmainfld.DDL_Re_Type);
-    //            outstandng = Convert.ToString(rmainfld.outstandng);
-    //            creditlmt = Convert.ToString(rmainfld.creditlmt);
-    //            Cus_Alter = Convert.ToString(rmainfld.Cus_Alter);
-    //            latitude = Convert.ToString(rmainfld.latitude);
-    //            longitude = Convert.ToString(rmainfld.longitude);
-    //            DFDairyMP = Convert.ToString(rmainfld.DFDairyMP);
-    //            MonthlyAI = Convert.ToString(rmainfld.MonthlyAI);
-    //            MCCNFPM = Convert.ToString(rmainfld.MCCNFPM);
-    //            MCCMilkColDaily = Convert.ToString(rmainfld.MCCMilkColDaily);
-    //            FrequencyOfVisit = Convert.ToString(rmainfld.FrequencyOfVisit);
-    //            Breed = Convert.ToString(rmainfld.Breed);
-    //            ukeys = Convert.ToString(rmainfld.ukeys);
-    //            curentCom = Convert.ToString(rmainfld.curentCom);
-    //            curentCompitat = Convert.ToString(rmainfld.curentCompitat);
-    //            Email = Convert.ToString(rmainfld.Email);
-
-    //            if (retail_code != "" && DR_Name != "" && DR_Address1 != "")
-    //            {
-    //                if (doctorcode == null)
-    //                { // Add New Listed Doctor
-    //                    //
-    //                    //ListedDR lstDR = new ListedDR();
-    //                    lisdr lstdr = new lisdr();
-    //                    // iReturn = lstDR.RecordAdd(DR_Name, sf_code, Mobile_No, retail_code, advance_amount, DR_Spec, dr_spec_name, sales_Tax, Tinno, DR_Terr, credit_days, DR_Class, dr_class_name, ad, DR_Address1, DR_Address2, div_code, Milk_pon, UOM, UOM_Name, DDL_Re_Type.SelectedValue, outstandng, creditlmt, Cus_Alter, drcategory, dscategoryName, erbCode);
-    //                    if (div_code == "70")
-    //                    {
-    //                        iReturn = lstdr.RecordAdd11(DR_Name, curentCompitat, sf_code, Mobile_No, retail_code, advance_amount, DR_Spec, dr_spec_name, sales_Tax, Tinno, DR_Terr, credit_days, DR_Class, dr_class_name, ad, DR_Address1, DR_Address2, div_code, Milk_pon, UOM, UOM_Name, DDL_Re_Type, outstandng, creditlmt, Cus_Alter, drcategory, dscategoryName, erbCode, latitude, longitude, DFDairyMP, MonthlyAI, MCCNFPM, MCCMilkColDaily, FrequencyOfVisit, Breed, curentCom, Email);
-    //                        //iReturn = lstDR.RecordAdd11(DR_Name, curentCompitat, sf_code, Mobile_No, retail_code, advance_amount, DR_Spec, dr_spec_name, sales_Tax, Tinno, DR_Terr, credit_days, DR_Class, dr_class_name, ad, DR_Address1, DR_Address2, div_code, Milk_pon, UOM, UOM_Name, DDL_Re_Type, outstandng, creditlmt, Cus_Alter, drcategory, dscategoryName, erbCode, latitude, longitude, DFDairyMP, MonthlyAI, MCCNFPM, MCCMilkColDaily, FrequencyOfVisit, Breed, curentCom, Email);
-    //                    }
-    //                    else
-    //                    {
-    //                        iReturn = lstdr.RecordAdd(DR_Name, sf_code, Mobile_No, retail_code, advance_amount, DR_Spec, dr_spec_name, sales_Tax, Tinno, DR_Terr, credit_days, DR_Class, dr_class_name, ad, DR_Address1, DR_Address2, div_code, Milk_pon, UOM, UOM_Name, DDL_Re_Type, outstandng, creditlmt, Cus_Alter, drcategory, dscategoryName, erbCode, latitude, longitude, Email);
-    //                        //iReturn = lstDR.RecordAdd(DR_Name, sf_code, Mobile_No, retail_code, advance_amount, DR_Spec, dr_spec_name, sales_Tax, Tinno, DR_Terr, credit_days, DR_Class, dr_class_name, ad, DR_Address1, DR_Address2, div_code, Milk_pon, UOM, UOM_Name, DDL_Re_Type, outstandng, creditlmt, Cus_Alter, drcategory, dscategoryName, erbCode, latitude, longitude, Email);
-    //                    }
-    //                    if (iReturn > 0)
-    //                    {
-
-    //                        // menu1.Status = "Sub Division created Successfully ";
-    //                        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Created Successfully');</script>");
-    //                        string fld = ""; string val = "";
-    //                        int i = 0;
-
-    //                        List<AddtionalfieldDetails> addfields = new List<AddtionalfieldDetails>();
-
-    //                        addfields = rmainfld.Additionsfld.ToList();
-
-    //                        if (addfields.Count > 0)
-    //                        {
-
-    //                            for (int k = 0; k < addfields.Count; k++)
-    //                            {
-    //                                if ((addfields[k].Fields == "'undefined'" || addfields[k].Fields == "undefined") && (addfields[k].Values == "'undefined'" || addfields[k].Values == "undefined"))
-    //                                {
-
-    //                                }
-    //                                else
-    //                                {
-    //                                    fld += addfields[k].Fields + ",";
-
-    //                                    if (addfields[k].Values == null || addfields[k].Values == "")
-    //                                    {
-    //                                        val += "'0',";
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        val += "'" + addfields[k].Values + "',";
-    //                                    }
-    //                                }
-    //                            }
-
-    //                            ds = new DataSet();
-    //                            string Squery = "SELECT MAX(ListedDrCode) ListedDrCode FROM Mas_ListedDr  Where Division_Code = " + div_code + "";
-
-    //                            db_ER = new DB_EReporting();
-
-    //                            ds = db_ER.Exec_DataSet(Squery);
-
-    //                            if (ds.Tables[0].Rows.Count > 0)
-    //                            {
-    //                                string RetailerID = Convert.ToString(ds.Tables[0].Rows[0]["ListedDrCode"]);
-
-    //                                string Iquery = "Insert Into Trans_Retailer_Custom_Field(RetailerID, " + fld.TrimEnd(',') + ") Values(" + RetailerID + "," + val.TrimEnd(',') + ")";
-
-    //                                i = db_ER.ExecQry(Iquery);
-
-    //                                if (i > 0)
-    //                                { msg = "Created Successfully"; }
-    //                            }
-    //                        }
-
-
-    //                        msg = "Created Successfully";
-    //                        //btnClear_Click(sender, e);
-    //                    }
-    //                    else if (iReturn == -2)
-    //                    {
-    //                        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(' Name Already Exist');</script>");
-    //                        msg = "Name Already Exist";
-    //                    }
-    //                    else if (iReturn == -3)
-    //                    {
-    //                        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(' Code Already Exist');</script>");
-    //                        msg = "Code Already Exist";
-    //                    }
-    //                    else if (iReturn == -4)
-    //                    {
-    //                        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(' ERP Code Already Exist');</script>");
-    //                        msg = "ERP Code Already Exist";
-    //                    }
-    //                }
-    //                else
-    //                {
-
-    //                    //ListedDR lstDR = new ListedDR();
-
-    //                    lisdr lstDR = new lisdr();
-
-    //                    string subdivcode = Convert.ToString(doctorcode);
-    //                    //iReturn = lstDR.Recordupdate_detail(subdivcode, DR_Name, sf_code, Mobile_No, retail_code, advance_amount, DR_Spec, dr_spec_name, sales_Tax, Tinno, DR_Terr, credit_days, DR_Class, dr_class_name, ad, DR_Address1, DR_Address2, div_code, Milk_pon, UOM, UOM_Name, DDL_Re_Type.SelectedValue, outstandng, creditlmt, Cus_Alter, drcategory, dscategoryName, erbCode);
-    //                    if (div_code == "70")
-    //                        iReturn = lstDR.Recordupdate_detail1(subdivcode, curentCompitat, DR_Name, sf_code, Mobile_No, retail_code, advance_amount, DR_Spec, dr_spec_name, sales_Tax, Tinno, DR_Terr, credit_days, DR_Class, dr_class_name, ad, DR_Address1, DR_Address2, div_code, Milk_pon, UOM, UOM_Name, DDL_Re_Type, outstandng, creditlmt, Cus_Alter, drcategory, dscategoryName, erbCode, latitude, longitude, DFDairyMP, MonthlyAI, MCCNFPM, MCCMilkColDaily, FrequencyOfVisit, Breed, curentCom, ukeys, Email);
-    //                    else
-    //                        iReturn = lstDR.Recordupdate_detailCustom(subdivcode, DR_Name, sf_code, Mobile_No, retail_code, advance_amount, DR_Spec, dr_spec_name, sales_Tax, Tinno, DR_Terr, credit_days, DR_Class, dr_class_name, ad, DR_Address1, DR_Address2, div_code, Milk_pon, UOM, UOM_Name, DDL_Re_Type, outstandng, creditlmt, Cus_Alter, drcategory, dscategoryName, erbCode, latitude, longitude, Email);
-
-    //                    if (iReturn == 1)
-    //                    {
-    //                        // menu1.Status = "Sub Division Updated Successfully ";
-    //                        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Updated Successfully');window.location='../Retailer_Details.aspx';</script>");
-
-    //                        db_ER = new DB_EReporting();
-    //                        ds = new DataSet();
-
-    //                        string Squery = "SELECT *FROM  Trans_Retailer_Custom_Field WHERE RetailerID = " + doctorcode + "";
-    //                        ds = db_ER.Exec_DataSet(Squery);
-
-    //                        if (ds.Tables[0].Rows.Count > 0)
-    //                        {
-
-    //                            string fld = ""; string val = "";
-
-    //                            List<AddtionalfieldDetails> addfields = new List<AddtionalfieldDetails>();
-
-    //                            addfields = rmainfld.Additionsfld.ToList();
-
-    //                            if (addfields.Count > 0)
-    //                            {
-    //                                int i = 0;
-
-    //                                for (int k = 0; k < addfields.Count; k++)
-    //                                {
-    //                                    if ((addfields[k].Fields == "'undefined'" || addfields[k].Fields == "undefined") && (addfields[k].Values == "'undefined'" || addfields[k].Values == "undefined"))
-    //                                    {
-
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        //fld += addfields[k].Fields + ","; //val += "'" + addfields[k].Values + "',";
-    //                                        fld = addfields[k].Fields;
-
-    //                                        if (addfields[k].Values == null || addfields[k].Values == "")
-    //                                        { val = "'0'"; }
-    //                                        else
-    //                                        {
-    //                                            val = "'" + addfields[k].Values + "'";
-    //                                        }
-
-    //                                        string uquery = "UPDATE Trans_Retailer_Custom_Field  SET " + fld + " = " + val.TrimEnd(',') + " WHERE RetailerID = " + doctorcode + " ";
-    //                                        i = db_ER.ExecQry(uquery);
-    //                                    }
-    //                                }
-
-    //                                if (i > 0)
-    //                                { msg = "Updated Successfully"; }
-    //                            }
-
-    //                        }
-    //                        else
-    //                        {
-    //                            string fld = ""; string val = "";
-    //                            int i = 0;
-
-    //                            List<AddtionalfieldDetails> addfields = new List<AddtionalfieldDetails>();
-
-    //                            addfields = rmainfld.Additionsfld.ToList();
-
-    //                            if (addfields.Count > 0)
-    //                            {
-    //                                for (int k = 0; k < addfields.Count; k++)
-    //                                {
-    //                                    if ((addfields[k].Fields == "'undefined'" || addfields[k].Fields == "undefined") && (addfields[k].Values == "'undefined'" || addfields[k].Values == "undefined"))
-    //                                    {
-
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        fld += addfields[k].Fields + ",";
-
-    //                                        if (addfields[k].Values == null || addfields[k].Values == "")
-    //                                        {
-    //                                            val += "'0',";
-    //                                        }
-    //                                        else
-    //                                        {
-    //                                            val += "'" + addfields[k].Values + "',";
-    //                                        }
-    //                                    }
-    //                                }
-    //                                if ((fld != null || fld != "") && (val != null || val != ""))
-    //                                {
-
-    //                                    string Iquery = "Insert Into Trans_Retailer_Custom_Field(RetailerID, " + fld.TrimEnd(',') + ")Values(" + doctorcode + "," + val.TrimEnd(',') + ")";
-
-    //                                    db_ER = new DB_EReporting();
-
-    //                                    i = db_ER.ExecQry(Iquery);
-    //                                }
-
-    //                                if (i > 0)
-    //                                { msg = "Updated Successfully"; }
-    //                            }
-    //                            //else { msg = "Error"; }
-    //                        }
-
-    //                        msg = "Updated Successfully";
-    //                    }
-    //                    else if (iReturn == -2)
-    //                    {
-    //                        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(' Name Already Exist');</script>");
-    //                        msg = "Name Already Exist";
-    //                    }
-    //                    else if (iReturn == -3)
-    //                    {
-    //                        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(' Code Already Exist');</script>");
-    //                        msg = "Code Already Exist";
-    //                    }
-    //                    else if (iReturn == -4)
-    //                    {
-    //                        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(' ERP Code Already Exist');</script>");
-    //                        msg = "ERP Code Already Exist";
-    //                    }
-    //                }
-    //            }
-    //            else
-    //            {
-
-    //                //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Invalid Data!!!');</script>");
-    //                if (retail_code == "")
-    //                {
-    //                    //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Enter Retailer Code');</script>");
-    //                    msg = "Enter Retailer Code";
-    //                    //Txt_id.Focus();
-    //                }
-    //                else if (DR_Name == "")
-    //                {
-    //                    //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Enter Retailer Name');</script>");
-    //                    msg = "Enter Retailer Name";
-    //                    //txtName.Focus();
-    //                }
-    //                else if (DR_Address1 == "")
-    //                {
-    //                    //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Please Enter Address...');</script>");
-    //                    msg = "Please Enter Address";
-    //                    //txtAddress.Focus();
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    return msg;
-    //}
-
-
-    //public class AddtionalfieldDetails
-    //{
-    //    public string Fields { get; set; }
-
-    //    public string Values { get; set; }
-    //}
-
-    //public class RetailerMainfld
-    //{
-    //    public string DR_Name { get; set; }
-
-    //    public string Mobile_No { get; set; }
-
-    //    public string retail_code { get; set; }
-
-    //    public string ERBCode { get; set; }
-
-    //    public string advance_amount { get; set; }
-
-    //    public string DR_Spec { get; set; }
-
-    //    public string dr_spec_name { get; set; }
-
-    //    public string sales_Tax { get; set; }
-
-    //    public string Tinno { get; set; }
-
-    //    public string DR_Terr { get; set; }
-
-    //    //string dr_terr_name { get; set; }
-
-    //    public string credit_days { get; set; }
-
-    //    public string DR_Class { get; set; }
-
-    //    public string drcategory { get; set; }
-
-    //    public string dscategoryName { get; set; }
-
-    //    public string dr_class_name { get; set; }
-
-    //    public string ad { get; set; }
-
-    //    public string DR_Address1 { get; set; }
-
-    //    public string DR_Address2 { get; set; }
-
-    //    public string Milk_pon { get; set; }
-
-    //    public string UOM_Name { get; set; }
-
-    //    public string UOM { get; set; }
-
-    //    public string DDL_Re_Type { get; set; }
-
-    //    public string outstandng { get; set; }
-
-    //    public string creditlmt { get; set; }
-
-    //    public string Cus_Alter { get; set; }
-
-    //    public string latitude { get; set; }
-
-    //    public string longitude { get; set; }
-
-    //    public string DFDairyMP { get; set; }
-
-    //    public string MonthlyAI { get; set; }
-
-    //    public string MCCNFPM { get; set; }
-
-    //    public string MCCMilkColDaily { get; set; }
-
-    //    public string FrequencyOfVisit { get; set; }
-
-    //    public string Breed { get; set; }
-
-    //    public string ukeys { get; set; }
-
-    //    public string curentCom { get; set; }
-
-    //    public string curentCompitat { get; set; }
-
-    //    public string Email { get; set; }
-
-    //    public List<AddtionalfieldDetails> Additionsfld { get; set; }
-    //}
-
 
     public class lisdr
     {
