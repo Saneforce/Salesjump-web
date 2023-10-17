@@ -105,14 +105,17 @@ namespace DBase_EReport
             // catch { throw; }
             catch (ArgumentNullException ex)
             {
+                ex.Message.ToString().Trim();
                 //code specifically for a ArgumentNullException
             }
             catch (WebException ex)
             {
+                ex.Message.ToString().Trim();
                 //code specifically for a WebException
             }
             catch (Exception ex)
             {
+                ex.Message.ToString().Trim();
                 //code for any other type of exception
             }
             finally { DL = null; }

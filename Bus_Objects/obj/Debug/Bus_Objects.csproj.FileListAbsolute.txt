@@ -100,3 +100,11 @@ F:\Karthi\FMCG\Bus_Objects\obj\Debug\Bus_Objects.csproj.CoreCompileInputs.cache
 F:\Karthi\FMCG\Bus_Objects\obj\Debug\Bus_Objects.csproj.CopyComplete
 F:\Karthi\FMCG\Bus_Objects\obj\Debug\Bus_Objects.dll
 F:\Karthi\FMCG\Bus_Objects\obj\Debug\Bus_Objects.pdb
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_Objects\bin\Debug\Bus_Objects.dll
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_Objects\bin\Debug\Bus_Objects.pdb
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_Objects\bin\Debug\Newtonsoft.Json.dll
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_Objects\obj\Debug\Bus_Objects.csproj.AssemblyReference.cache
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_Objects\obj\Debug\Bus_Objects.csproj.CoreCompileInputs.cache
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_Objects\obj\Debug\Bus_Objects.csproj.CopyComplete
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_Objects\obj\Debug\Bus_Objects.dll
+D:\GitProject\SalesJump_Web\Salesjump-web\Bus_Objects\obj\Debug\Bus_Objects.pdb

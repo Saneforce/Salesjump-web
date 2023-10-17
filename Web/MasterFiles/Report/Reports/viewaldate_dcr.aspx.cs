@@ -38,6 +38,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
 	static string strsound = string.Empty;
     static string mp3 = string.Empty;
     string serverpath = string.Empty;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         sfcode = Request.QueryString["sf_code"].ToString();
@@ -58,8 +59,10 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         Label1.Text = "Daily Call Report from " + rdt.ToString("dd/MM/yy") + " to " + sdt.ToString("dd/MM/yy");
         Label2.Text = "FieldForce Name: " + sfname;
     }
+
 	static WMPLib.WindowsMediaPlayer wplayer = new WMPLib.WindowsMediaPlayer();
     private static string serverfolder;
+
     [WebMethod]
     public static string getBrandwiseSales(string Div)
     {
@@ -67,6 +70,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         DataSet ds = SFD.dcrgetAllBrd_Qty(Div, sfcode, FDT, TDT, subdiv, BrandCode);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
     [WebMethod]
     public static string getBrandwiseSalesUsr(string Div)
     {
@@ -74,6 +78,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         DataSet ds = SFD.dcrgetAllBrd_USR(Div, sfcode, FDT, TDT, subdiv, BrandCode);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
     [WebMethod]
     public static string getProductBrandlist(string Div)
     {
@@ -81,6 +86,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         DataSet ds = SFD.dcrgetProductBrandlist_DataTable(Div, sfcode, FDT, TDT, subdiv, BrandCode);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
     [WebMethod]
     public static string primgetBrandwiseSales(string Div)
     {
@@ -88,6 +94,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         DataSet ds = SFD.pridcrgetAllBrd_Qty(Div, sfcode, FDT, TDT, subdiv, BrandCode);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
     [WebMethod]
     public static string primgetBrandwiseSalesUsr(string Div)
     {
@@ -95,6 +102,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         DataSet ds = SFD.pridcrgetAllBrd_USR(Div, sfcode, FDT, TDT, subdiv, BrandCode);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
     [WebMethod]
     public static string primgetProductBrandlist(string Div)
     {
@@ -113,6 +121,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
 
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
     public static DataSet getAllSFRemark(string divcode, string sfcode, string FDT, string TDT, string subdiv = "0", string StateCode = "0")
     {
         string strQry = string.Empty;
@@ -132,6 +141,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         }
         return dsRemark;
     }
+
     [WebMethod]
     public static string getdisthuntdet(string Div)
     {
@@ -142,6 +152,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
 
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
     public static DataSet getdisthuntdetail(string divcode, string sfcode, string FDT, string TDT, string StateCode = "0")
     {
         string strQry = string.Empty;
@@ -161,6 +172,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         }
         return dsRemark;
     }
+
     [WebMethod]
     public static string supergetSalesusr(string Div)
     {
@@ -168,6 +180,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         DataSet ds = superdcrgetAllBrd_Qty(Div, sfcode, FDT, TDT, subdiv, BrandCode);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
     public static DataSet superdcrgetAllBrd_Qty(string divcode, string sfcode, string FDT, string TDT, string subdiv = "", string StateCode = "")
     {
         string strQry = string.Empty;
@@ -187,6 +200,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         }
         return dsRemark;
     }
+
     [WebMethod]
     public static string supergetproductwise(string Div)
     {
@@ -194,6 +208,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         DataSet ds = supergetproductwisesales(Div, sfcode, FDT, TDT, subdiv, BrandCode);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
     public static DataSet supergetproductwisesales(string divcode, string sfcode, string FDT, string TDT, string subdiv = "", string StateCode = "")
     {
         string strQry = string.Empty;
@@ -213,6 +228,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         }
         return dsRemark;
     }
+
 	[WebMethod]
     public static string GetAudiofile(string Name, string FileName)
     {
@@ -221,18 +237,19 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         string bucketName = "happic";
         string folderName = "TAPhotos";
         string fileName = FileName;
-        playa.downloadaudio( bucketName,folderName,fileName);
+        playa.downloadaudio(bucketName, folderName, fileName);
         return msg;
     }
-    public string downloadaudio(string bucketName,string folderName,string fileName)
-    {        
+
+    public string downloadaudio(string bucketName, string folderName, string fileName)
+    {
         string accessKey = "AKIA5OS74MUCASG7HSCG", accessSecret = "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";
         AmazonS3Client client = new AmazonS3Client(accessKey, accessSecret, Amazon.RegionEndpoint.APSouth1);
 
-        
+
         var transferUtility = new TransferUtility(client);
         string objectKey = folderName + "/" + fileName;
-        
+
         string localFilePaths = Server.MapPath(@"AudFiles\" + fileName);
 
         string msg = "";
@@ -261,8 +278,9 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
             //Console.WriteLine("Error: {ex.Message}");
         }
         return msg;
-       
+
     }
+
     [WebMethod]
     public static string getvoicedeco(string sound)
     {
@@ -271,6 +289,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         string msg = string.Empty;
         return msg;
     }
+
     public string playaudio(string sound)
     {
         string imagepath = Server.MapPath(@"AudFiles\" + sound);
@@ -281,6 +300,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         msg = "Success";
         return msg;
     }
+
     static void wplayer_PlayStateChange(int NewState)
     {
         if (NewState == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
@@ -289,6 +309,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
             mp3 = Pausefile(strsound);
         }
     }
+
     [WebMethod]
     public static string Pausefile(string sound)
     {
@@ -306,6 +327,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         msg = "Success";
         return msg;
     }
+
     [WebMethod]
     public static string GetVoice(string sound,string audio)
     {
@@ -315,6 +337,7 @@ public partial class MasterFiles_Reports_viewaldate_dcr : System.Web.UI.Page
         msg = "Success";
         return msg;
     }
+
     public  string GetVoice_det(string sound, string audio)
     {
         serverfolder = Server.MapPath(@"AudFiles\");
