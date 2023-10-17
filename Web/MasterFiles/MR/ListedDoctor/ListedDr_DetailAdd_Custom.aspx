@@ -103,7 +103,7 @@
             </style>    
         </head>
         <body>
-            <form id="form1" runat="server" enctype="multipart/form-data">
+            <form id="form1" method="post" enctype="multipart/form-data" runat="server">
                 <asp:ScriptManager ID="scriptmanager1" runat="server"></asp:ScriptManager>
                 <div class="card">
                     <div class="card-header">
@@ -1571,44 +1571,36 @@
                 var additionalfud = new Array();                
                 
                 function getFile(elm) {
-                    var adDetail = {};
                     var id = $(elm).attr("id");
+                    var name = '';
+                    var formData = new FormData();
+                    var filesLength = document.getElementById(id).files.length;                    
 
                     var fileUpload = $(elm);
                     var files = fileUpload.context.files;
-                    var numItems = $('.' + id + '').length;
-
-                    console.log(numItems);
-
-                    $('.' + id + '').empty();
-                    //$("#files").append("<h3>List of files to be uploaded:</h3>");
-                    var name = ""; 
                     for (var i = 0; i < files.length; i++) {
                         var file = files[i].name;
-                        //var filepath = files[i].mozFullPath;
                         name = files[i].name;
-                        
-                        //console.log(filepath);
+
                         $.ajax({
                             type: "POST",
                             contentType: "application/json; charset=utf-8",
                             async: false,
                             url: "ListedDr_DetailAdd_Custom.aspx/SaveFileS3Bucket",
-                            /* data: JSON.stringify({ retailermainflds }),*/
                             data: "{'filename':'" + name + "'}",
                             dataType: "json",
                             success: function (msg) {
                                 alert(msg.d);
                             }
                         });
-
-                        
-                        var div = "<div> File name: " + name + " <br /></div>";
-                        console.log(div);
-                        $('.' + id + '').append(div);
                     }
 
-                    adDetail.FileId = id;      
+                  
+                    var div = "<div> File name: " + name + " <br /></div>";
+                    console.log(div);
+                    $('.' + id + '').append(div);
+
+                    adDetail.FileId = id;
                     adDetail.FileName = name;
                     additionalfud.push(adDetail);
                 }

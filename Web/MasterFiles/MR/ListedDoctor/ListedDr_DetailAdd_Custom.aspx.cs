@@ -13,6 +13,11 @@ using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
 using Microsoft.Ajax.Utilities;
+using Amazon.S3.Model;
+using Amazon.Runtime;
+using System.Net;
+using System.Web.Script.Serialization;
+using Amazon.Runtime.Internal;
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
 {
@@ -1130,35 +1135,15 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     }
 
 
-    public static void SaveStreamAsFile(string filePath, string fileName)
-    {
-        
-        DirectoryInfo info = new DirectoryInfo(filePath);
-        if (!info.Exists)
-        {
-            info.Create();
-        }
-
-        string path = System.IO.Path.Combine(filePath, fileName);
-        using (FileStream fs = new FileStream(path, FileMode.Create))
-        {
-            byte[] ImageData = new byte[fs.Length];
-            fs.Write(ImageData, 0, System.Convert.ToInt32(fs.Length));
-        }
-
-        //FileStream fs = new FileStream(Path.Combine(folderPath, filename), FileMode.CreateNew, FileAccess.Write);
-        //byte[] ImageData = new byte[fs.Length];
-        //fs.Write(ImageData, 0, System.Convert.ToInt32(fs.Length));
-        //fs.Close();
-        //fs.Dispose();
-    }
-
-
     [WebMethod(EnableSession = true)]
     public static string SaveFileS3Bucket(string filename)
     {
 
-        string fileName = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), filename);
+        //string filepath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), filename);
+
+        
+
+        string filepath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory));
 
         lisdr ld = new lisdr();
         string msg = "";
@@ -1168,7 +1153,11 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         //string currentDirectory = HttpContext.Current.Server.MapPath("~");
         //string relativePath = "FMCGWebRetailer";
-        string folderPath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
+        string folderPath =   HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
+
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        int bytesRead = 0;
 
         //Create the Directory.
         if (!Directory.Exists(folderPath))
@@ -1176,47 +1165,84 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             Directory.CreateDirectory(folderPath);
         }
 
-        //Save the File to the Directory (Folder).
-        //FileStream fs = new FileStream(Path.Combine(folderPath, filename), FileMode.CreateNew, FileAccess.Write);
-        //byte[] ImageData = new byte[fs.Length];
-        //fs.Write(ImageData, 0, System.Convert.ToInt32(fs.Length));
-        //fs.Close();
-        //fs.Dispose();
-        
-        
-        SaveStreamAsFile(folderPath, filename);
-       
+        File.Copy(filename, @"~\" + folderPath + "\"" + filename);
+
 
         string awsKey = "AKIA5OS74MUCASG7HSCG";
         string awsSecretKey = "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";        
         string bucketName = "happic";
         string prefix = directoryPath + "/" + filename;       
         string localFilePath = System.IO.Path.Combine(folderPath);
-        string filePath = localFilePath;  
-       
+        string filePath = localFilePath;
         try
         {
+            string keyName = filename;
+                      
+
+            // Set up your AWS credentials
+            BasicAWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
+
+            // Create a new Amazon S3 client
+            AmazonS3Client s3Client = new AmazonS3Client(credentials, Amazon.RegionEndpoint.APSouth1);
             // Upload the file to Amazon S3
-            //TransferUtility fT = new TransferUtility(new AmazonS3Client(awsKey, awsSecretKey, Amazon.RegionEndpoint.APSouth1));
-            //string fileKey = filename;
+            TransferUtility fileTransferUtility = new TransferUtility(s3Client);
 
-           
-            //TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
-            //if (directoryPath == "" || directoryPath == null)
-            //{
-            //    request.BucketName = bucketName; //no subdirectory just bucket name  
-            //}
-            //else
-            //{   // subdirectory and bucket name  
-            //    request.BucketName = bucketName + @"/" + directoryPath;
-            //}
-            //request.Key = fileKey; //file name up in S3  
-            //request.FilePath = filePath;
-            //fT.Upload(request); //commensing the transfer  
+            fileTransferUtility.UploadAsync(filePath, bucketName + @"/" + directoryPath);
+            Console.WriteLine("Upload 1 completed");
+
+            fileTransferUtility.UploadAsync(filePath, bucketName + @"/" + directoryPath, keyName);
+            Console.WriteLine("Upload 2 completed");
 
 
-            TransferUtility fileTransferUtility = new TransferUtility(new AmazonS3Client(awsKey, awsSecretKey, Amazon.RegionEndpoint.APSouth1));
-            fileTransferUtility.Upload(filePath, bucketName + @"/" + directoryPath, filename);
+            using (var fileToUpload =  new FileStream(filePath, FileMode.Open, FileAccess.Read))     
+            {
+                fileTransferUtility.UploadAsync(fileToUpload, bucketName, keyName);
+            }
+            Console.WriteLine("Upload 3 completed");
+
+
+            // Option 4. Specify advanced settings.
+            var fileTransferUtilityRequest = new TransferUtilityUploadRequest
+            {
+                BucketName = bucketName,
+                FilePath = filePath,
+                StorageClass = S3StorageClass.StandardInfrequentAccess,
+                PartSize = 6291456, // 6 MB.
+                Key = keyName,
+                CannedACL = S3CannedACL.PublicRead
+            };
+            fileTransferUtilityRequest.Metadata.Add("param1", "Value1");
+            fileTransferUtilityRequest.Metadata.Add("param2", "Value2");
+
+            fileTransferUtility.UploadAsync(fileTransferUtilityRequest);
+            Console.WriteLine("Upload 4 completed");
+
+
+            //fileTransferUtility.Upload(bucketName + @"/" + directoryPath, keyName);
+
+
+            GetObjectRequest request = new GetObjectRequest
+            {
+                BucketName = bucketName + @"/" + directoryPath,
+                Key = filename
+            };
+
+
+            GetObjectResponse response = s3Client.GetObject(request);
+
+            using (Stream responseStream = response.ResponseStream)
+            using (FileStream fileStream = File.Create(localFilePath))
+            {
+
+                while ((bytesRead = responseStream.Read(buffer, 0, bufferSize)) != 0)
+                {
+                    fileStream.Write(buffer, 0, bytesRead);
+                } // end while
+
+                //responseStream.CopyTo(fileStream);
+            }
+
+
             //Console.WriteLine("Upload completed!");
 
             msg = "Upload  completed !!";
@@ -1251,7 +1277,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 using (var con = new SqlConnection(Globals.ConnString))
                 {
                     using (var cmd = con.CreateCommand())
-
                     {
                         cmd.CommandText = strQry;
                         cmd.CommandType = CommandType.Text;
