@@ -123,6 +123,18 @@ public partial class MIS_Reports_Rpt_FieldPerformance : System.Web.UI.Page
         return JsonConvert.SerializeObject(ds);
     }
     [WebMethod]
+    public static string getPriOrders()
+    {
+        DataTable ds = new DataTable();
+        SqlConnection con = new SqlConnection(Globals.ConnString);
+        con.Open();
+        SqlCommand cmd = new SqlCommand("exec getPerDayPriOrderDetails '" + sfcode + "','" + Div + "','" + FDT + "','" + TDT + "','" + subdiv + "'", con);
+        SqlDataAdapter da = new SqlDataAdapter(cmd);
+        da.Fill(ds);
+        con.Close();
+        return JsonConvert.SerializeObject(ds);
+    }
+    [WebMethod]
     public static string getleave()
     {
         DataTable ds = new DataTable();

@@ -143,7 +143,8 @@
                             <th>First Call</th>
                             <th>Last Call</th>
                             <th>Total Retail Time</th>
-                            <th>Value</th>
+                            <th>SecondaryValue</th>
+                            <th>PrimaryValue</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -240,7 +241,7 @@
     </form>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript">
-        var tbplan = [], dcrcalls = [], stendtimes = [], rtscount = [], sfusers = [], tpdates = [], dayOrders = [], newRPOB = []; leavedet = [];
+        var tbplan = [], dcrcalls = [], stendtimes = [], rtscount = [], sfusers = [], tpdates = [], dayOrders = [], dayPriOrders=[], newRPOB = []; leavedet = [];
         var bDat = [];
         var sfDate = [];
         var sNum = 1;
@@ -381,6 +382,21 @@
                 }
             });
         }
+        function getPriOrders() {
+            return $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                async: true,
+                url: "Rpt_FieldPerformance.aspx/getPriOrders",
+                dataType: "json",
+                success: function (data) {
+                    dayPriOrders = JSON.parse(data.d) || [];
+                },
+                error: function (result) {
+                    alert(JSON.stringify(result));
+                }
+            });
+        }
         function getleave() {
             return $.ajax({
                 type: "POST",
@@ -397,7 +413,7 @@
             });
         }
         function loadData() {
-            $.when(getStartEnd(), getTpdates(), getDayPlan(), getProdCalls(), getNewRetailerPOB(), getRetailerCount(), getOrders(), getleave()).then(function () {
+            $.when(getStartEnd(), getTpdates(), getDayPlan(), getProdCalls(), getNewRetailerPOB(), getRetailerCount(), getOrders(), getPriOrders(), getleave()).then(function () {
                 ReloadData();
                 setTimeout(function () { loadaddrs($('#FFTbl tbody tr')[0]) }, 29);
             });
@@ -429,7 +445,7 @@
             $("#FFTbl>tbody").html('');
             var str = "";
             let slno = 0;
-            let gtotal = 0; var divcode = '<%=Session["div_code"]%>';
+            let gtotal = 0; let gptotal = 0; var divcode = '<%=Session["div_code"]%>';
             if (divcode == "179") {
                 $('.detail').show();
             }
@@ -650,6 +666,13 @@
                         return el.orderAmt;
                     })).toFixed(2);
 
+                    let todayPriOrderval = 0;
+                    todayPriOrderval = parseFloat(dayPriOrders.filter(function (a) {
+                        return a.Sf_Code == sfusers[j].SF_Code && a.dt == tpdates[i].dt;
+                    }).map(function (el) {
+                        return el.orderAmt;
+                    })).toFixed(2);
+
                     if (callsmade.length > 0) {
                         productivity = (parseInt(callsmade[0].EfCall * 100) / parseInt(callsmade[0].TCall));
                         str += `<td>${callsmade[0].TCall}</td><td>${callsmade[0].EfCall}</td><td>${(isNaN(productivity) == true ? 0 : productivity.toFixed(2))}</td>`;
@@ -718,12 +741,14 @@
                         str += `<td></td><td></td><td></td>`;
                     }
                     let daytotal = parseFloat(isNaN(todayOrderval) == true ? 0 : todayOrderval);
+                    let daypritotal = parseFloat(isNaN(todayPriOrderval) == true ? 0 : todayPriOrderval);
                     gtotal = parseFloat(gtotal) + parseFloat(daytotal);
-                    str += `<td>${daytotal.toFixed(2)}</td></tr>`;
+                    gptotal = parseFloat(gptotal) + parseFloat(daypritotal);
+                    str += `<td>${daytotal.toFixed(2)}</td><td>${daypritotal.toFixed(2)}</td></tr>`;
                 }
             }
             //let fstr = `<tr><th colspan="29">Total</th><th>${gtotal.toFixed(2)}</th></tr>`
-            let fstr = `<tr><th colspan="31">Total</th><th>${gtotal.toFixed(2)}</th></tr>`
+            let fstr = `<tr><th colspan="31">Total</th><th>${gtotal.toFixed(2)}</th><th>${gptotal.toFixed(2)}</th></tr>`
             $("#FFTbl >tbody").append(str);
             $("#FFTbl >tfoot").append(fstr);
 
