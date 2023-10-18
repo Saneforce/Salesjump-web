@@ -1139,12 +1139,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     public static string SaveFileS3Bucket(string filename)
     {
 
-        //string filepath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), filename);
-
-        
-
-        string filepath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory));
-
         lisdr ld = new lisdr();
         string msg = "";
         DataSet dsDivision = ld.getStatePerDivision(div_code);
@@ -1153,26 +1147,26 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         //string currentDirectory = HttpContext.Current.Server.MapPath("~");
         //string relativePath = "FMCGWebRetailer";
-        string folderPath =   HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
+        string filepath =   HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
 
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
         int bytesRead = 0;
 
         //Create the Directory.
-        if (!Directory.Exists(folderPath))
+        if (!Directory.Exists(filepath))
         {
-            Directory.CreateDirectory(folderPath);
+            Directory.CreateDirectory(filepath);
         }
 
-        File.Copy(filename, @"~\" + folderPath + "\"" + filename);
+        File.Copy(filename, @"~\" + filepath + "\"" + filename);
 
 
         string awsKey = "AKIA5OS74MUCASG7HSCG";
         string awsSecretKey = "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";        
         string bucketName = "happic";
         string prefix = directoryPath + "/" + filename;       
-        string localFilePath = System.IO.Path.Combine(folderPath);
+        string localFilePath = System.IO.Path.Combine(filepath);
         string filePath = localFilePath;
         try
         {
