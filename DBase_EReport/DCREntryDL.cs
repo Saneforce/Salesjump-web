@@ -757,7 +757,7 @@ namespace DBase_EReport
         }
         public string SaveDCRTemp(DCREntry.DCRDatas DtaHead)
         {
-            string ARCd = "";
+            
             DB_EReporting DL = new DB_EReporting();
             try
             {

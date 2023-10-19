@@ -7,12 +7,15 @@ using ClosedXML.Excel;
 using System.IO;
 using DBase_EReport;
 using System.Web;
+using System.Data.SqlClient;
+using System.Activities.Expressions;
 
 public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 {
 
     #region "Declaration"
     public static string divCode = string.Empty;
+    public static string SfCode = string.Empty;
     public static string sf_type = string.Empty;
     public static string sUSR = string.Empty;
     #endregion
@@ -47,6 +50,7 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
         else
         {
             divCode = Session["div_code"].ToString();
+            SfCode = Session["Sf_Code"].ToString();
         }
     }
 
@@ -102,9 +106,9 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 
     protected void ExportToExcel(object sender, EventArgs e)
     {
-        string name = "admin";
-        string sReport = "admin";
-        DataTable dsProd1 = null;
+        //string name = "admin";
+        //string sReport = "admin";
+        //DataTable dsProd1 = null;
 
         if (divCode == "170")
         {
@@ -130,12 +134,10 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
                 ////httpResponse.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 ////Provide you file name here
                 ////httpResponse.AddHeader("content-disposition", "attachment;filename=\"RetailerMaster.xlsx\"");
-
                 //httpResponse.ClearContent();
                 //httpResponse.ContentType = "application/vnd.ms-excel";
                 ////Provide you file name here
                 //httpResponse.AddHeader("content-disposition", attachment);
-
                 //// Flush the workbook to the Response.OutputStream
                 //using (MemoryStream memoryStream = new MemoryStream())
                 //{
@@ -143,10 +145,7 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
                 //    memoryStream.WriteTo(httpResponse.OutputStream);
                 //    memoryStream.Close();
                 //}
-
                 //httpResponse.End();
-
-
 
                 Response.ClearContent();
                 Response.AddHeader("content-disposition", attachment);
@@ -169,10 +168,8 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
                     }
                     Response.Write("\n");
                 }
+
                 Response.End();
-
-
-
             }
             catch (Exception es)
             {
@@ -181,8 +178,6 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
         }
         else
         {
-
-
             ListedDR LstDoc = new ListedDR();
             try
             {
@@ -400,6 +395,52 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
 
+
+    [WebMethod]
+    public static string InsertUpdateDisplayFileds(string columnName, string ActiveView)
+    {
+        string update = "";
+        update = InsertDisplayFileds(SfCode, columnName, divCode, "3", ActiveView);
+        return update;
+    }
+
+
+    public static string InsertDisplayFileds(string SfCode, string DisPlayName, string DivCode, string ModuleId, string ActiveView)
+    {
+        string update = "";
+
+        int iReturn = 0;
+        string sqlQry = "EXEC [InsertDeleteDisplayFileds] '" + SfCode + "', '" + DisPlayName + "', '" + DivCode + "','" + ModuleId + "'," + ActiveView + "";
+
+        using (var con = new SqlConnection(Global.ConnString))
+        {
+            con.Open();
+            using (var cmd = new SqlCommand(sqlQry, con))
+            {
+                cmd.CommandType = CommandType.Text;                
+                iReturn = cmd.ExecuteNonQuery();
+                if (iReturn == 0) { update = " Not Inserted"; }
+                else { update = "Inserted"; }
+            }
+        }
+
+        return update;
+    }
+
+
+    [WebMethod]
+    public static string DisPlayCutomFields(string ModuleId)
+    {
+        DataTable ds = new DataTable();
+        //AdminSetup Ad = new AdminSetup();
+        rdloc sfd = new rdloc();
+        ds = sfd.getDCFields(divCode, ModuleId, SfCode);
+        //ds = Ad.GetCustomFormsFieldsColumns(divcode, ModuleId, Sf);
+
+        return JsonConvert.SerializeObject(ds);
+    }
+
+
     [WebMethod]
     public static string GetAdditionalRetailer(string divcode, string ModuleId)
     {
@@ -451,6 +492,54 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
                 throw ex;
             }
             return dsAdmin;
+        }
+
+        public DataTable getDCFields(string divcode, string ModuleId, string Sf_Code)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataTable dsAdmin = new DataTable();
+
+
+            if (divcode == null || divcode == "")
+            { divcode = "0"; }
+
+            if (ModuleId == null || ModuleId == "")
+            { ModuleId = "0"; }
+
+            if (Sf_Code == null || Sf_Code == "")
+            { Sf_Code = ""; }
+                      
+
+            string strQry = " SELECT *FROM DisplayFields  (NOLOCK) ";            
+            strQry += " WHERE ModuleId=3 AND ActiveView=1 AND Division_Code=@Division_Code AND Sf_Code=@Sf_Code";
+
+            try
+            {
+                using (var con = new SqlConnection(Globals.ConnString))
+                {
+                    using (var cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = strQry;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@Division_Code", Convert.ToString(divcode));
+                        cmd.Parameters.AddWithValue("@Sf_Code", Convert.ToString(Sf_Code));
+                        SqlDataAdapter dap = new SqlDataAdapter();
+                        dap.SelectCommand = cmd;
+                        con.Open();
+                        dap.Fill(dsAdmin);
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+            return dsAdmin;
+
+
         }
 
         public DataSet getSFHQ(string divcode, string statecode)

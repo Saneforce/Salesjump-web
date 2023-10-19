@@ -1572,16 +1572,13 @@
                 
                 function getFile(elm) {
                     var id = $(elm).attr("id");
-                    var name = '';
-                    var formData = new FormData();
-                    var filesLength = document.getElementById(id).files.length;                    
+                    var name = '';         
 
                     var fileUpload = $(elm);
                     var files = fileUpload.context.files;
                     for (var i = 0; i < files.length; i++) {
                         var file = files[i].name;
-                        name = files[i].name;
-
+                        
                         $.ajax({
                             type: "POST",
                             contentType: "application/json; charset=utf-8",
@@ -1593,6 +1590,9 @@
                                 alert(msg.d);
                             }
                         });
+
+                        adDetail.FileId = id;
+                        adDetail.FileName = file;
                     }
 
                   
@@ -1600,8 +1600,7 @@
                     console.log(div);
                     $('.' + id + '').append(div);
 
-                    adDetail.FileId = id;
-                    adDetail.FileName = name;
+                   
                     additionalfud.push(adDetail);
                 }
                 console.log(additionalfud);
@@ -1610,20 +1609,26 @@
                     
                     var vflag = true;
 
-                    if ($('#<%=Txt_id.ClientID%>').val() == "") { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); vflag = false; return vflag; }
+                    if ($('#<%=Txt_id.ClientID%>').val() == "")
+                    { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); vflag = false; return vflag; }
 
-                    if ($('#<%=txtName.ClientID%>').val() == "") { alert("Enter Retailer Name."); $('#<%=txtName.ClientID%>').focus(); vflag = false; return vflag; }
+                    if ($('#<%=txtName.ClientID%>').val() == "")
+                    { alert("Enter Retailer Name."); $('#<%=txtName.ClientID%>').focus(); vflag = false; return vflag; }
 
                     var spec = $('#<%=ddlSpec.ClientID%> :selected').text();
-                    if (spec == "---Select---") { alert("Select Channel."); $('#<%=ddlSpec.ClientID%>').focus(); vflag = false; return vflag; }
+                    if (spec == "---Select---")
+                    { alert("Select Channel."); $('#<%=ddlSpec.ClientID%>').focus(); vflag = false; return vflag; }
 
                     var clas = $('#<%=ddlClass.ClientID%> :selected').text();
-                    if (clas == "---Select---") { alert("Select Class."); $('#<%=ddlClass.ClientID%>').focus(); vflag = false; return vflag; }
+                    if (clas == "---Select---")
+                    { alert("Select Class."); $('#<%=ddlClass.ClientID%>').focus(); vflag = false; return vflag; }
 
                     var Rou = $('#<%=ddlTerritory.ClientID%> :selected').text();
-                    if (Rou == "---Select---") { alert("Select Route."); $('#<%=ddlTerritory.ClientID%>').focus(); vflag = false; return vflag; }
+                    if (Rou == "---Select---")
+                    { alert("Select Route."); $('#<%=ddlTerritory.ClientID%>').focus(); vflag = false; return vflag; }
 
-                    if ($('#<%=txtAddress.ClientID%>').val() == "") { alert("Enter Address."); $('#<%=txtAddress.ClientID%>').focus(); vflag = false; return vflag; }
+                    if ($('#<%=txtAddress.ClientID%>').val() == "")
+                    { alert("Enter Address."); $('#<%=txtAddress.ClientID%>').focus(); vflag = false; return vflag; }
 
                     var sbreed = '';
                     $('#example-multiple-selected  > option:selected').each(function () {

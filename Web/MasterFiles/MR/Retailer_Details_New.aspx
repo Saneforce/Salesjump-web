@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Master.master" CodeFile="Retailer_Details_New.aspx.cs" Inherits="MasterFiles_MR_Retailer_Details_New" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-    <!DOCTYPE html>
+    <!DOCTYPE>
     <html xmlns="http://www.w3.org/1999/xhtml">
         <head>
             <title></title>            
@@ -361,7 +361,7 @@
 
             <script language="javascript" type="text/javascript">
                 var AllOrders = []; var Allsf = []; var hqsf = []; var Allstate = []; var Ostate = []; var AllHQ = []; var SFHQ = [];
-                
+                var DisPlayF = [];
                 var Orders = []; pgNo = 1; PgRecords = 10; TotalPg = 0; searchKeys = "ListedDrCode,ListedDr_Name,Territory_Name,ListedDr_Mobile,";
                 var filtrkey = '0'; var AllRoutes = []; var MasFrms = []; var ARetailer = [];
                 $(".data-table-basic_length").on("change",
@@ -442,36 +442,36 @@
                                                                     if ($val == "") {
                                                                         $td += "<td></td>";
                                                                         if (Orders[$i].Profilepic == "") {
-                                                                         
+
                                                                             $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
                                                                         }
                                                                         else {
-                                                                       
+
                                                                             $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
                                                                         }
                                                                     }
                                                                     else {
                                                                         $td += "<td>" + $val + "</td>";
-                                                                       
+
                                                                         if (Orders[$i].Profilepic == "") {
-                                                                      
+
                                                                             $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
                                                                         }
                                                                         else {
-                                                                       
+
                                                                             $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
                                                                         }
-                                                                       
+
                                                                     }
 
                                                                 }
                                                                 else {
                                                                     if (Orders[$i].Profilepic == "") {
-                                                                      
+
                                                                         $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
                                                                     }
                                                                     else {
-                                                                    
+
                                                                         $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
                                                                     }
                                                                 }
@@ -481,16 +481,16 @@
                                                     });
                                                 }
                                                 else {
-                                                  
+
                                                     if (Orders[$i].Profilepic == "") {
-                                                       
+
                                                         $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
                                                     }
                                                     else {
                                                         tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
                                                         $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
                                                     }
-                                                    
+
                                                 }
                                             });
                                         });
@@ -605,7 +605,7 @@
                 }
 
                 function fillRoute(hq) {
-                    
+
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
@@ -694,6 +694,9 @@
                             });
                         }
                     });
+
+
+                    loadDisPlayCustomFields();
 
                     loadCustomFields();
 
@@ -799,6 +802,27 @@
                     modal.style.display = "none";
                 }
 
+                function loadDisPlayCustomFields() {
+                    var ModuleId = "3";                    
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        async: false,
+                        url: "Retailer_Details_New.aspx/DisPlayCutomFields",
+                        data: "{'ModuleId':'" + ModuleId + "'}",
+                        dataType: "json",
+                        success: function (data) {                           
+                           
+                            DisPlayF = JSON.parse(data.d) || [];                          
+                           
+                        },
+                        error: function (data) {
+                            alert(JSON.stringify(data.d));
+                        }
+                    });
+
+                }
+
                 function loadCustomFields() {
                     var ModuleId = "3";
                     var Sf = 'admin';
@@ -821,10 +845,11 @@
                                     //var hq = filtered[$i].Sf_Name.split('-');
                                     slno = i + 1;
                                     var fldtype = MasFrms[i].Field_Type;
+                                    var fldview = MasFrms[i].Field_Visible;
                                     //alert(fldtype);
                                     var checkbox = "";
-                                    if (fldtype == "M") {
-                                        checkbox = "<input type='checkbox' checked='checked' disabled='disabled' class='fldName' id='" + i + "' name='fldName' value='" + MasFrms[i].Field_Name + "' />";
+                                    if (fldview == "1") {
+                                        checkbox = "<input type='checkbox' checked='checked'  class='fldName' id='" + i + "' name='fldName' value='" + MasFrms[i].Field_Name + "' />";
                                     }
                                     else {
                                         checkbox = "<input type='checkbox' class='fldName' id='" + i + "' name='fldName' value='" + MasFrms[i].Field_Name + "' />";
@@ -859,12 +884,21 @@
                             if (MasFrms.length > 0) {
                                 MasFrms[tblIndex].Field_Visible = $(this).prop("checked");
                             }
+                            var cbval = $(this).val();
+                            //alert(cbval);
+                            var ActiveView = "1";
+                            UpdateCutomRetailerData(cbval, ActiveView);
                         }
                         else {
+                            $(this).prop("checked", isChecked);
                             var tblIndex = $(this).closest('tr').index();
                             if (MasFrms.length > 0) {
                                 MasFrms[tblIndex].Field_Visible = $(this).prop("checked");
                             }
+                            var cbval = $(this).val();
+                            //alert(cbval);
+                            var ActiveView = "0";
+                            UpdateCutomRetailerData(cbval, ActiveView);
                         }
                     });
                 });
@@ -876,6 +910,20 @@
                     var tblIndex = $(this).closest('tr').index();
 
                     //MasFrms[tblIndex].Field_Visible = $(this).prop("checked");
+
+                    if (isChecked == true) {
+                        var cbval = $(this).val();
+                        //alert(cbval);
+                        var ActiveView = "1";
+                        UpdateCutomRetailerData(cbval, ActiveView);
+                    }
+                    else {
+                        var cbval = $(this).val();
+                        //alert(cbval);
+                        var ActiveView = "0";
+                        UpdateCutomRetailerData(cbval, ActiveView);
+                    }
+
                     if (MasFrms.length > 0) {
                         MasFrms[tblIndex].Field_Visible = isChecked;
 
@@ -903,50 +951,13 @@
                     var html_table_data = "";
                     var bRowStarted = true; var $tctd = ""; var colflg = true;
 
-                    var tblheader = new Array();
-                    $('#OrderList thead>tr').each(function () {
-                        $('th', this).each(function () {
-                            tblheader.push($(this).text());
-                        });
-                    });
-                    var i = 0;
-                    var rowcount = $("#CustoFielddets TBODY").find('tr').length;
-                    if (rowcount > 0) {
-                        $("#CustoFielddets TBODY").find('tr').each(function () {
-                            $(this).find("input[type='checkbox']").each(function () {
-                                if ($(this).is(":checked")) {
-                                    var cbval = $(this).val();
-                                    let CustItem = tblheader.filter(e => e.includes(cbval));
-                                    console.log(CustItem);
-                                    if (CustItem == 0) {
-                                        if (cbval != "on") {
-                                            $tctd += "<th style='text-align:left; color: #fff'>" + cbval + "</th>";
-                                        }
-                                    }
-                                    else {
-                                        if ($(this).prop('checked') == false) {
-                                            $(this).prop('checked', true);
-                                            $(this).prop('checked', 'checked');
-                                        }
-                                    }
-                                }
-                            });
-                            i++;
-                        });
+                    if (DisPlayF.length > 0) {
+                        for (var i = 0; i < DisPlayF.length; i++) {
 
-                        console.log($tctd);
-
-                        //$('#OrderList .one:nth-child(6)').after($tctd);
-
-                        $('#OrderList thead > tr').append($tctd);
-
-
-                        //$('#OrderList thead > tr').append($tctd);
-
-                        ReloadTable();
+                            $tctd += "<th style='text-align:left; color: #fff'>" + DisPlayF[i].DisPlayName + "</th>";
+                        }
                     }
-
-
+                    $('#OrderList thead > tr').append($tctd);
                 }
 
                 function CheckFields() {
@@ -974,6 +985,24 @@
                         });
                     });
 
+                }
+
+                function UpdateCutomRetailerData(columnName, ActiveView) {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        async: false,
+                        url: "Retailer_Details_New.aspx/InsertUpdateDisplayFileds",
+                        data: "{'columnName':'" + columnName + "','ActiveView':'" + ActiveView + "'}",
+                        dataType: "json",
+                        success: function (data) {
+                            alert(data.d);
+                            //CFBindData = JSON.parse(data.d) || [];
+                        },
+                        error: function (data) {
+                            alert(JSON.stringify(data.d));
+                        }
+                    });
                 }
 
             </script>
