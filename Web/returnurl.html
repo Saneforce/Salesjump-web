@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="http://fmcg.sanfmcg.com/images/logoTop.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="css_new/index.css" type="text/css" />
+    <link rel="stylesheet" href="css_new/fontawesome.min.css" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+
+</head>
+<body style="min-height: 490px;">
+
+    <div class="MainContainer">
+        <div class="RightArea">
+            <div class="mwlogo"></div>
+            <div class="cntrlogo"></div>
+        </div>
+        <div class="login-group">
+            <div class="container">
+                <form id="Form1"  class="form-horizontal" >
+                    <div style="display:block;width:100%;height:80px;text-align:center;padding-bottom:40px;">
+                        <img alt="" id="logoo" src="http://fmcg.sanfmcg.com/limg/demo_logo.png" style="max-height:100px;max-width:100%;vertical-align:middle" />
+                    </div>
+                   <div>
+					   <h1>Payment Successfully Completeds</h1>
+				   </div>
+                    </div>
+                    <br>
+                    <br>
+                    
+                    <div style="display:block;width:100%;margin: 0px 0px 0px 0px;text-align:center;">
+                        <div style="font-size: 8px;font-family:Montserrat;margin-left: 15px;">Powered by</div>
+                        <div style="font-size: 13px;font-family: Montserrat;font-weight: 500;"><img src="img/clogo.png" style="height:30px;vertical-align: middle;margin: 0px 5px;font-size: 8px;font-family:Montserrat;"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+   
+
+    <script type="text/javascript">
+        var hash='';
+
+		 function DoesParentExists() {
+			 hash = location.hash.split('#')[1];
+
+			 if (hash == undefined) {
+				 console.log(location.href)
+				 sploc = location.href.replace(/http:\/\//gi, '').replace(/https:\/\//gi, '').split('.');
+				 hash = ((sploc[0] == 'www') ? sploc[1] : sploc[0]) + ".";
+				 console.log(hash + '= ' + hash.replace(".", ''));
+			 }
+			 document.getElementById('HiddenField1').value = hash;
+			 document.getElementById('logoo').src = 'limg/' + hash.replace(".", '') + '_logo.png';
+
+			 console.log('Logo: limg/' + hash + '_logo.png');
+			 genListOfPoster(hash.replace('.', ''), hash);
+		 }
+
+		 $(document).ready(function () {
+			 localStorage.clear();
+			 $('.input').keypress(function (e) {
+				 if (e.which === 32)
+					 return false;
+			 });
+		 });
+
+		 function genListOfPoster(shDiv, key) {
+			 $.ajax({
+				 type: "POST",
+				 contentType: "application/json;charset=utf-8",
+				 url: "Index.aspx/getSlides",
+				 data: JSON.stringify({ shDiv }),
+				 dataType: "json",
+				 success: function (data) {
+					 $owl = $('.owl-carousel');
+					 if (data.d.length > 0) {
+						 document.location.href = "indexs.aspx#" + key;
+					 }
+				 },
+				 error: function ajaxError(result) {
+					 console.log(result.status + ' : ' + result.statusText);
+				 }
+			 });
+		 }
+    </script>
+    <script type='text/javascript'>
+		DoesParentExists();
+    </script>
+</body>
+</html>
