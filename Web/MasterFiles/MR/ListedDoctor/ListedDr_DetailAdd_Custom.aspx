@@ -1451,20 +1451,20 @@
                                             case 'FS':
                                                 str += "<td class='stylespc' align='left'>";
                                                 //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles'  />";                                              
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";                                              
                                                 str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
                                                 break;
                                             case 'FSC':
                                                 str += "<td class='stylespc' align='left'>";
                                                 //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fscfiles'  />";                                               
-                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fscfiles notrequired'  />";                                               
+                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "   ' /></td>";
                                                 break;
 
                                             case 'FC':
                                                 str += "<td class='stylespc' align='left'>";
                                                 //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                                str += "<input type='file' onchange='getFile(this)'   id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fcfiles'  />";                                                
+                                                str += "<input type='file' onchange='getFile(this)'   id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fcfiles notrequired'  />";                                                
                                                 str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
                                                 break;
                                             default:
@@ -1573,35 +1573,35 @@
                 function getFile(elm) {
                     var id = $(elm).attr("id");
                     var name = '';         
-
+                    var div = '';
                     var fileUpload = $(elm);
                     var files = fileUpload.context.files;
                     for (var i = 0; i < files.length; i++) {
                         var file = files[i].name;
-                        
-                        $.ajax({
-                            type: "POST",
-                            contentType: "application/json; charset=utf-8",
-                            async: false,
-                            url: "ListedDr_DetailAdd_Custom.aspx/SaveFileS3Bucket",
-                            data: "{'filename':'" + name + "'}",
-                            dataType: "json",
-                            success: function (msg) {
-                                alert(msg.d);
-                            }
-                        });
+                        name = files[i].name;
+
+                        //$.ajax({
+                        //    type: "POST",
+                        //    contentType: "application/json; charset=utf-8",
+                        //    async: false,
+                        //    url: "ListedDr_DetailAdd_Custom.aspx/SaveFileS3Bucket",
+                        //    data: "{'filename':'" + file + "'}",
+                        //    dataType: "json",
+                        //    success: function (msg) {
+                        //        alert(msg.d);
+                        //    }
+                        //});
+
+                        div = "<div> " + file + " <br /></div>";
 
                         adDetail.FileId = id;
                         adDetail.FileName = file;
+                        additionalfud.push(adDetail);
                     }
 
-                  
-                    var div = "<div> File name: " + name + " <br /></div>";
-                    console.log(div);
                     $('.' + id + '').append(div);
-
                    
-                    additionalfud.push(adDetail);
+                    
                 }
                 console.log(additionalfud);
 
@@ -1675,8 +1675,9 @@
                         var fval = $(this).val();
                         var fid = `${this.id}`;
                         fields = "";
-                        fields = fid;                                               
-
+                        fields = fid;              
+                       
+                       
                         $(this).find('input[type="checkbox"]:checked').each(function () {
                             //console.log(this.value);
                             fval += this.value + ",";
@@ -2115,8 +2116,8 @@
                                                     var id = $(this).attr("id");
                                                     if (id == $fldnm) {
                                                         $("." + id + "").empty();
-                                                        var div = "<div> File name: " + $cval + " <br /></div>";
-                                                        console.log(div);
+                                                        var div = "<div> " + $cval + " <br /></div>";
+                                                        //console.log(div);
                                                         $("." + id + "").append(div);
                                                     }
                                                 });                                               
@@ -2132,8 +2133,8 @@
                                                     var id = $(this).attr("id");
                                                     if (id == $fldnm) {
                                                         $("." + id + "").empty();
-                                                        var div = "<div> File name: " + $cval + " <br /></div>";
-                                                        console.log(div);
+                                                        var div = "<div> " + $cval + " <br /></div>";
+                                                        //console.log(div);
                                                         $("." + id + "").append(div);
                                                     }
                                                 });      
@@ -2149,8 +2150,8 @@
                                                     var id = $(this).attr("id");
                                                     if (id == $fldnm) {
                                                         $("." + id + "").empty();
-                                                        var div = "<div> File name: " + $cval + " <br /></div>";
-                                                        console.log(div);
+                                                        var div = "<div> " + $cval + " <br /></div>";
+                                                        //console.log(div);
                                                         $("." + id + "").append(div);
                                                     }
                                                 });      

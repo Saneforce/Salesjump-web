@@ -18,6 +18,10 @@ using Amazon.Runtime;
 using System.Net;
 using System.Web.Script.Serialization;
 using Amazon.Runtime.Internal;
+using System.Drawing;
+using System.Configuration;
+using System.Windows.Interop;
+using System.Text;
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
 {
@@ -1134,6 +1138,54 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         }
     }
 
+    protected void button1_click(string filename)
+    {
+        try
+        {
+            lisdr ld = new lisdr();
+            string msg = "";
+            DataSet dsDivision = ld.getStatePerDivision(div_code);
+            string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+            string directoryPath = urlshotName + "_" + "Retailer";
+
+
+            string _FullName = filename;
+            string _FilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
+            string awsKey = "AKIA5OS74MUCASG7HSCG";
+            string awsSecretKey = "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";
+            string bucketName = "happic";
+
+            //First I am creating a file with the file name in my local machine in a shared folder
+            string FileLocation = _FilePath + "\\" + _FullName;
+            FileStream fs = File.Create(_FullName);
+            fs.Close();
+
+            // Set up your AWS credentials
+            BasicAWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
+
+            // Create a new Amazon S3 client
+            AmazonS3Client s3Client = new AmazonS3Client(credentials, Amazon.RegionEndpoint.APSouth1);
+            // Upload the file to Amazon S3
+            TransferUtility fileTransferUtility = new TransferUtility(s3Client);
+            fileTransferUtility.Download(FileLocation, bucketName + "\\" + directoryPath, _FullName);
+            fileTransferUtility.Dispose();
+            WebClient webClient = new WebClient();
+            HttpResponse response = HttpContext.Current.Response;
+            response.Clear();
+            response.ClearContent();
+            response.ClearHeaders();
+            response.Buffer = true;
+            response.AddHeader("Content-Disposition", "attachment;filename=" + _FullName.ToString() + "");
+            byte[] data = webClient.DownloadData(FileLocation);
+            File.Delete(FileLocation); //After download starts, then I am deleting the file from the local path which I created initially.
+            response.BinaryWrite(data);
+            response.End();
+        }
+        catch (Exception ex) { }
+
+    }
+
+
 
     [WebMethod(EnableSession = true)]
     public static string SaveFileS3Bucket(string filename)
@@ -1148,23 +1200,40 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         //string currentDirectory = HttpContext.Current.Server.MapPath("~");
         //string relativePath = "FMCGWebRetailer";
         string filepath =   HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
-
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-        int bytesRead = 0;
-
+        string _FullName = filename;
+        string _FilePath = filepath;
         //Create the Directory.
-        if (!Directory.Exists(filepath))
+        if (!Directory.Exists(_FilePath))
         {
-            Directory.CreateDirectory(filepath);
+            Directory.CreateDirectory(_FilePath);
         }
+                
 
-        File.Copy(filename, @"~\" + filepath + "\"" + filename);
+
+        string FileLocation = _FilePath + "\\" + _FullName;
+
+       
+        // convert string to stream
+        byte[] buffer = Encoding.ASCII.GetBytes(_FullName);
+        MemoryStream ms = new MemoryStream(buffer);
+        //write to file
+        //FileStream fileStream = new FileStream(FileLocation, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+        FileStream file = new FileStream(FileLocation, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+        ms.WriteTo(file);
+        file.Close();
+        ms.Close();
 
 
+             
         string awsKey = "AKIA5OS74MUCASG7HSCG";
-        string awsSecretKey = "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";        
+        string awsSecretKey = "4mkW95IZyjYq084SIgBWeXPAr8qhKrLTi+fJ1Irb";
         string bucketName = "happic";
+
+        //First I am creating a file with the file name in my local machine in a shared folder        
+        //FileStream fs = File.Create(_FullName);
+        //fs.Close();
+
+
         string prefix = directoryPath + "/" + filename;       
         string localFilePath = System.IO.Path.Combine(filepath);
         string filePath = localFilePath;
@@ -1182,60 +1251,21 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             TransferUtility fileTransferUtility = new TransferUtility(s3Client);
 
             fileTransferUtility.UploadAsync(filePath, bucketName + @"/" + directoryPath);
-            Console.WriteLine("Upload 1 completed");
+            //Console.WriteLine("Upload 1 completed");
 
             fileTransferUtility.UploadAsync(filePath, bucketName + @"/" + directoryPath, keyName);
-            Console.WriteLine("Upload 2 completed");
+            //Console.WriteLine("Upload 2 completed");
 
 
             using (var fileToUpload =  new FileStream(filePath, FileMode.Open, FileAccess.Read))     
             {
                 fileTransferUtility.UploadAsync(fileToUpload, bucketName, keyName);
             }
-            Console.WriteLine("Upload 3 completed");
+            //Console.WriteLine("Upload 3 completed");
 
 
             // Option 4. Specify advanced settings.
-            var fileTransferUtilityRequest = new TransferUtilityUploadRequest
-            {
-                BucketName = bucketName,
-                FilePath = filePath,
-                StorageClass = S3StorageClass.StandardInfrequentAccess,
-                PartSize = 6291456, // 6 MB.
-                Key = keyName,
-                CannedACL = S3CannedACL.PublicRead
-            };
-            fileTransferUtilityRequest.Metadata.Add("param1", "Value1");
-            fileTransferUtilityRequest.Metadata.Add("param2", "Value2");
-
-            fileTransferUtility.UploadAsync(fileTransferUtilityRequest);
-            Console.WriteLine("Upload 4 completed");
-
-
-            //fileTransferUtility.Upload(bucketName + @"/" + directoryPath, keyName);
-
-
-            GetObjectRequest request = new GetObjectRequest
-            {
-                BucketName = bucketName + @"/" + directoryPath,
-                Key = filename
-            };
-
-
-            GetObjectResponse response = s3Client.GetObject(request);
-
-            using (Stream responseStream = response.ResponseStream)
-            using (FileStream fileStream = File.Create(localFilePath))
-            {
-
-                while ((bytesRead = responseStream.Read(buffer, 0, bufferSize)) != 0)
-                {
-                    fileStream.Write(buffer, 0, bytesRead);
-                } // end while
-
-                //responseStream.CopyTo(fileStream);
-            }
-
+            fileTransferUtility.Upload(FileLocation, bucketName + "\\" + directoryPath, _FullName);
 
             //Console.WriteLine("Upload completed!");
 
@@ -1246,6 +1276,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             //Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
             msg = "Error encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
         }
+
         catch (Exception e)
         {
             //Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
@@ -1253,6 +1284,68 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         }
 
         return msg;
+    }
+
+    [WebMethod(EnableSession = true)]
+    public static string DownloadDirectory(string filename)
+    {
+        string msg = "";
+        try
+        {
+            lisdr ld = new lisdr();
+           
+            DataSet dsDivision = ld.getStatePerDivision(div_code);
+            string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+            string directoryPath = urlshotName + "_" + "Retailer";
+
+
+            string _FullName = filename;
+            string _FilePath = directoryPath;
+            string awsKey = "AKIA5OS74MUCASG7HSCG";
+            string awsSecretKey = "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";
+            string bucketName = "happic";
+
+            //First I am creating a file with the file name in my local machine in a shared folder
+            string FileLocation = _FilePath + "\\" + _FullName;
+            FileStream fs = File.Create(_FullName);
+            fs.Close();
+
+            // Set up your AWS credentials
+            BasicAWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
+
+            // Create a new Amazon S3 client
+            AmazonS3Client s3Client = new AmazonS3Client(credentials, Amazon.RegionEndpoint.APSouth1);
+            // Upload the file to Amazon S3
+            TransferUtility fileTransferUtility = new TransferUtility(s3Client);
+            fileTransferUtility.Download(FileLocation, bucketName + "\\" + directoryPath, _FullName);
+            fileTransferUtility.Dispose();
+            WebClient webClient = new WebClient();
+            HttpResponse response = HttpContext.Current.Response;
+            response.Clear();
+            response.ClearContent();
+            response.ClearHeaders();
+            response.Buffer = true;
+            response.AddHeader("Content-Disposition", "attachment;filename=" + _FullName.ToString() + "");
+            byte[] data = webClient.DownloadData(FileLocation);
+            File.Delete(FileLocation); //After download starts, then I am deleting the file from the local path which I created initially.
+            response.BinaryWrite(data);
+            response.End();
+
+            msg = "File Downloaded";
+        }
+        catch (AmazonS3Exception s3Exception)
+        {
+            //Console.Write(s3Exception.Message, s3Exception.InnerException);
+            msg = " " + s3Exception.Message + " , " + s3Exception.InnerException + " ";
+        }
+        catch (Exception exception)
+        {
+            //Console.WriteLine(exception.Message, exception.InnerException);
+            msg = " " + exception.Message + " , " + exception.InnerException + " ";
+        }
+
+        return msg;
+
     }
 
     public class lisdr

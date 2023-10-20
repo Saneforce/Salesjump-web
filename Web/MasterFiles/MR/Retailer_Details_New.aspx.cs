@@ -8,7 +8,15 @@ using System.IO;
 using DBase_EReport;
 using System.Web;
 using System.Data.SqlClient;
-using System.Activities.Expressions;
+using Amazon.Runtime;
+using Amazon.S3;
+using Amazon.S3.Transfer;
+using System.Net;
+using Amazon.S3.Model;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Drawing;
+using Amazon;
 
 public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 {
@@ -442,12 +450,12 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 
 
     [WebMethod]
-    public static string GetAdditionalRetailer(string divcode, string ModuleId)
+    public static string GetAdditionalRetailer(string divcode, string ModuleId, string ColumnName)
     {
         DataSet ds = new DataSet();
         //AdminSetup Ad = new AdminSetup();
         rdloc sfd = new rdloc();
-        ds = sfd.GetAdditionalRetailer(divcode, ModuleId);
+        ds = sfd.GetAdditionalRetailer(ModuleId, divcode, ColumnName);
         //ds = Ad.GetAdditionalRetailer(divcode, ModuleId);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
@@ -467,6 +475,54 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
         }
         return dt;
     }
+
+    [WebMethod(EnableSession = true)]
+    public static string DownloadImageFromS3(string fileName)
+    {
+        string msg = "";
+        rdloc ld = new rdloc();
+
+        DataSet dsDivision = ld.getStatePerDivision(divCode);
+        string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+        string directoryPath = urlshotName + "_" + "Retailer";
+
+        string accessKey = "AKIA5OS74MUCASG7HSCG";
+        string accessSecret = "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";
+        var bucketRegion = RegionEndpoint.APSouth1;
+        AmazonS3Client client = new AmazonS3Client(accessKey, accessSecret, bucketRegion);
+
+        var transferUtility = new TransferUtility(client);
+        string bucketName = "happic";
+        string folderName = directoryPath;
+
+        string objectKey = folderName + "/" + fileName;
+
+        // Modify this path to save the image to your desired local directory.
+        string localFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/" + fileName);
+
+        try
+        {
+            transferUtility.Download(localFilePath, bucketName, objectKey);
+
+            // Check if the file exists at the localFilePath.
+            if (File.Exists(localFilePath))
+            {
+                msg = "Image downloaded locally on the server successfully.";
+            }
+            else
+            {
+                msg = "Image download failed.";
+            }
+        }
+        catch (AmazonS3Exception ex)
+        {
+            // Handle exceptions here.
+            msg= "Error: " + ex.Message;
+        }
+
+        return msg;
+    }
+
 
     public class rdloc
     {
@@ -509,9 +565,9 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 
             if (Sf_Code == null || Sf_Code == "")
             { Sf_Code = ""; }
-                      
 
-            string strQry = " SELECT *FROM DisplayFields  (NOLOCK) ";            
+
+            string strQry = " SELECT *FROM DisplayFields  (NOLOCK) ";
             strQry += " WHERE ModuleId=3 AND ActiveView=1 AND Division_Code=@Division_Code AND Sf_Code=@Sf_Code";
 
             try
@@ -617,13 +673,14 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
             return dsAdmin;
         }
 
-        public DataSet GetAdditionalRetailer(string divcode, string ModeleId)
+        public DataSet GetAdditionalRetailer(string divcode, string ModeleId, string ColumnName)
         {
+
             DB_EReporting db_ER = new DB_EReporting();
 
             DataSet dsAdmin = null;
 
-            string strQry = "SELECT  *FROM  Trans_Retailer_Custom_Field";
+            strQry = "EXEC [GetDataForDynamicFields] '" + ModeleId + "' ,'" + divcode + "','" + ColumnName + "' ";
 
             try
             {
@@ -635,6 +692,38 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
             }
             return dsAdmin;
         }
-    }
 
+
+        public DataSet getStatePerDivision(string div_code)
+        {
+            DataSet dsAdmin = new DataSet();
+
+            string strQry = "SELECT State_Code,Division_Name,Division_SName,Url_Short_Name  FROM Mas_Division ";
+            strQry += " Where Division_Code = @Division_Code  GROUP BY State_Code,Division_Name,Division_SName,Url_Short_Name ";
+
+            try
+            {
+                using (var con = new SqlConnection(Global.ConnString))
+                {
+                    using (var cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = strQry;
+                        cmd.Parameters.AddWithValue("@Division_Code", Convert.ToInt32(div_code));
+                        cmd.CommandType = CommandType.Text;
+                        SqlDataAdapter dap = new SqlDataAdapter();
+                        dap.SelectCommand = cmd;
+                        con.Open();
+                        dap.Fill(dsAdmin);
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+            return dsAdmin;
+        }
+    }
 }

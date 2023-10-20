@@ -176,7 +176,7 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
     }
     #endregion
 
-     #region ExecuteSqlTransaction
+    #region ExecuteSqlTransaction
     private void ExecuteSqlTransaction(DataTable Dt)
     {
         string sf_Code = string.Empty;
@@ -281,6 +281,10 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
                                 }
                             }
                         }
+                    }
+                    else
+                    {
+                        sMsg += " Error Message: Fill the All Coloumns In Excel , Row No " + j + 1 + " ";
                     }
                 }
 
