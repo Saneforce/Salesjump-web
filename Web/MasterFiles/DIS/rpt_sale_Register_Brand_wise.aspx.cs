@@ -278,7 +278,7 @@ stCrtDtaPnt+="{label:\""+ drFF["Product_Brd_Name"].ToString()+"\",y:";
                         dtCurrent = Convert.ToDateTime(sCurrentDate);
 
 
-                        dsDoc = sf.sale_Brand_value_categorywise(drFF["Product_Brd_Code"].ToString(), divcode, cmonth, cyear, sCurrentDate, cat_code, stockist_code,subdivision);
+                        dsDoc = sf.sale_Brand_value_categorywise(drFF["Product_Brd_Code"].ToString(), divcode, cmonth, cyear, sCurrentDate, cat_code, stockist_code, Convert.ToInt32(subdivision));
 
 
                         if (dsDoc.Tables[0].Rows.Count > 0)

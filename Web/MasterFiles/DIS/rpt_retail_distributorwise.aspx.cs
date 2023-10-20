@@ -84,11 +84,11 @@ public partial class MIS_Reports_rpt_retail_distributorwise : System.Web.UI.Page
     {
         string sURL = string.Empty;
         string stURL = string.Empty;
-string stCrtDtaPnt = string.Empty;
+        string stCrtDtaPnt = string.Empty;
         tbl.Rows.Clear();
 
         SalesForce sf = new SalesForce();
-        dsSalesForce = sf.GetStockName_Customer(divcode);
+        dsSalesForce = sf.GetStockName_Customer(divcode,"0");
 
 
         if (dsSalesForce.Tables[0].Rows.Count > 0)
