@@ -588,6 +588,14 @@ input[type="radio"]{
     width: 50px !important;
 }
 
+                 .auto-style1 {
+                     width: 150px;
+                     height: 165px;
+                 }
+                 .auto-style2 {
+                     height: 165px;
+                 }
+
         </style>
            <link href="../css/SalesForce_New/bootstrap-select.min.css" rel='stylesheet' type='text/css' />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/6.5.0/ol.js"></script>
@@ -611,33 +619,171 @@ input[type="radio"]{
           </script>
           
           <script type="text/javascript">
-              var profilePicInput = document.getElementById("profile-pic-input");
-              profilePicInput.addEventListener("change", function (event) {
-                  handleProfilePicUpload(event, 'profile-label');
-              });
-              function handleProfilePicUpload(event, parameter) {
-                  const selectedFile = event.target.files[0];
-                  const reader = new FileReader();
-                  reader.readAsDataURL(selectedFile);
-                  reader.onload = function () {
-                      const newProfilePic = document.createElement("img");
-                      newProfilePic.src = reader.result;
-                      newProfilePic.alt = "New Profile Picture";
-                      newProfilePic.classList.add("uplimg");
-                      newProfilePic.addEventListener("load", function () {
-                          // Code to animate the transition from default to new profile picture
-                      });
-                      const profilePicLabel = document.getElementById(parameter);
-                      profilePicLabel.innerHTML = "";
-                      profilePicLabel.appendChild(newProfilePic);
-                  };
+              var AllCat = [], AllLoc = [], AllMod = [], AllVend = [];
+              function loadData() {
+                  $.ajax({
+                      type: "POST",
+                      contentType: "application/json; charset=utf-8",
+                      async: false,
+                      url: "Asset_Request_creation.aspx/getAllcategory",
+                      data: "{}",
+                      dataType: "json",
+                      success: function (data) {
+                          AllCat = JSON.parse(data.d) || [];
+                          var cat = $("#ddlcat");
+                          cat.empty().append('<option value="0">Select Category</option>');
+                          if (AllCat.length > 0) {
+                              for (var i = 0; i < AllCat.length; i++) {
+                                  cat.append($('<option value="' + AllCat[i].category_Id + '">' + AllCat[i].category_Name + '</option>'));
+                              }
+                          }
+                      }
+                  });
+                  $.ajax({
+                      type: "POST",
+                      contentType: "application/json; charset=utf-8",
+                      async: false,
+                      url: "Asset_Request_creation.aspx/getAllmodel",
+                      data: "{}",
+                      dataType: "json",
+                      success: function (data) {
+                          AllMod = JSON.parse(data.d) || [];
+                          var mod = $("#ddlmodel");
+                          mod.empty().append('<option value="0">Select Model</option>');
+                          
+                      }
+                  });
+                  $.ajax({
+                      type: "POST",
+                      contentType: "application/json; charset=utf-8",
+                      async: false,
+                      url: "Asset_Request_creation.aspx/getAllvendor",
+                      data: "{}",
+                      dataType: "json",
+                      success: function (data) {
+                          AllVend = JSON.parse(data.d) || [];
+                          var vend = $("#ddlvend");
+                          vend.empty().append('<option value="0">Select Vendor</option>');
+                          if (AllVend.length > 0) {
+                              for (var i = 0; i < AllVend.length; i++) {
+                                  vend.append($('<option value="' + AllVend[i].Vendor_Id + '">' + AllVend[i].Vendor_Name + '</option>'));
+                              }
+                          }
+                      }
+                  });
+                  $.ajax({
+                      type: "POST",
+                      contentType: "application/json; charset=utf-8",
+                      async: false,
+                      url: "Asset_Request_creation.aspx/getAlllocation",
+                      data: "{}",
+                      dataType: "json",
+                      success: function (data) {
+                          AllLoc = JSON.parse(data.d) || [];
+                          var loc = $("#ddlloc");
+                          loc.empty().append('<option value="0">Select Location</option>');
+                          if (AllLoc.length > 0) {
+                              for (var i = 0; i < AllLoc.length; i++) {
+                                  loc.append($('<option value="' + AllLoc[i].Location_Id + '">' + AllLoc[i].Location_Name + '</option>'));
+                              }
+                          }
+                      }
+                  });
               }
+              $('#btnsubmit').on('click', function () {
+                  var assetnam = $('#Txt_Asset_nam').val();
+                  if (assetnam == "") {
+                      alert("AssetName Mandatory!..");
+                      $('#Txt_Asset_nam').focus();
+                      return false;
+                  }
+                  var assetcode = $('#txtAsset_code').val();
+                  var asstcat = $('#ddlcat').val();
+                  if (asstcat == "0") {
+                      alert("Select Category Mandatory!..");
+                      $('#ddlcat').focus();
+                      return false;
+                  }
+                  var asstloc = $('#ddlloc').val();
+                  if (asstloc == "0") {
+                      alert("Select Location Mandatory!..");
+                      $('#ddlloc').focus();
+                      return false;
+                  }
+                  var asststs = $('#ddlstatus').val();
+                  if (asststs == "") {
+                      alert("AssetStatus Mandatory!..");
+                      $('#ddlstatus').focus();
+                      return false;
+                  }
+                  var brndnam = $('#txtbrand_nm').val();
+                  var asstmod = $('#ddlmodel').val();
+                  var serlnum = $('#txtser_nm').val();
+                  var asstcond = $('#ddlcond').val();
+                  if (asstcond == "") {
+                      alert("AssetCondition Mandatory!..");
+                      $('#ddlcond').focus();
+                      return false;
+                  }
+                  var desc = $('#txtdescrpt').val();
+                  var astvend = $('#ddlvend').val();
+                  if (astvend == "0") {
+                      alert("Select Vendor Mandatory!..");
+                      $('#ddlvend').focus();
+                      return false;
+                  }
+                  var purdate = $('#purdt').val();
+                  var invnum = $('#invnum').val();
+                  if (invnum == "") {
+                      alert("Invoice Number Mandatory!..");
+                      $('#invnum').focus();
+                      return false;
+                  }
+                  var invdate = $('#invdt').val();
+                  if (invdate == "") {
+                      alert("Choose Invoice Date!..");
+                      $('#invdt').focus();
+                      return false;
+                  }
+                  var expstartdt = $('#warstdt').val(); 
+                  var expenddt = $('#warendt').val();
+                  var purval = $('#purval').val();
+                  var purtype = $('#ddlpurtyp').val();
+                  var caprice = $('#capval').val();
+                  var capdate = $('#capdate').val();
+                  var valdeprec = $("input[type='radio'][name='vd']:checked").val();
+                  var anuldepre = $('#deprate').val();
+                  var asstendlife = $('#endat').val();
+                  $.ajax({
+                      type: "POST",
+                      contentType: "application/json; charset=utf-8",
+                      async: false,
+                      url: "Asset_Request_creation.aspx/SaveAssetRequest",
+                      data: "{'assetnam':'" + assetnam + "','assetcode':'" + assetcode + "','asstcat':'" + asstcat + "','asstloc':'" + asstloc + "','asststs':'" + asststs + "','brndnam':'" + brndnam + "','asstmod':'" + asstmod+"',}",
+                      dataType: "json",
+                      success: function (data) {
+                          AllLoc = JSON.parse(data.d) || [];
+                      }
+                  });
+              });
+              
               $(document).ready(function () {
+                  loadData();
+                  $(".hid").hide();
+                  $('input[type=radio][name=vd]').change(function () {
+                      var rad = $('input[name="vd"]:checked').val();
+                      if (rad == '1') {
+                          $(".hid").show();
+                      }
+                      else {
+                          $(".hid").hide();
+                      }
+                  });
                   $('#uplfile').on('change', function (e) {
                       var img = URL.createObjectURL(e.target.files[0]);
                       $('#upimg').attr('src', img);
                       $.ajax({
-                          url: 'SalesForce_Handler.ashx',
+                          url: 'Asset_Handler.ashx',
                           type: 'POST',
                           data: new FormData($('form')[0]),
                           cache: false,
@@ -645,16 +791,29 @@ input[type="radio"]{
                           processData: false,
                           success: function (file) {
                               propic_name = file.name;
-                              alert(file.name + "has been uploaded.");
+                              alert(file.name + " uploaded.");
                           }
                       });
+                  });
+                  $('#ddlcat').on('change', function (e) {
+                      var catid = $('#ddlcat').val();
+                      catmod = AllMod.filter(function (a) {
+                          return a.category_Id == catid;
+                      });
+                      var mod = $("#ddlmodel");
+                      mod.empty().append('<option value="">Select Model</option>');
+                      if (catmod.length > 0) {
+                          for (var i = 0; i < catmod.length; i++) {
+                              mod.append($('<option value="' + catmod[i].Model_Id + '">' + catmod[i].Model_Name + '</option>'));
+                        }
+                      }
                   });
               });
           </script>
                </head >
       <body>
           <div class="row">
-                            <div class="col-lg-12 sub-header">Asset Request
+                            <div class="col-lg-12 sub-header" style="margin-left:10px;">Asset Request
 <button style="float: right;margin-right:20px;" type="button" id="btnsubmit" class="btn btn-primary">Save</button>
         </div>
           </div>
@@ -666,31 +825,17 @@ input[type="radio"]{
                        <br />
                         <table id="basicinfo" style="border-collapse: collapse; margin-top: 9px;">
                             <tr>
-                                <td align="left" style="width: 150px;">
-                                    Asset Image
+                                <td align="left" class="auto-style1">
+                                 <label>Asset Image</label>
                                 </td>
-                                <td>
-                                    <div colspan="2" align="center" style="border-radius: 50%;box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;">
-                                         <img alt="upimg" id="upimg" style=" min-width: 75px; min-height: 75px;" src="../Images/Pdf_Img.jpg" />
-                                           <label for="uplfile" class="input-group-btn">
-                                               <span><i class="fa fa-cloud-upload append-icon"></i></span>
-                   
-                                           <input accept=".jpg,.jpeg,.png" id="uplfile" class="sr-only" name="uplfile" type="file" /></label>
-                                    </div>
+                                <td class="auto-style2">
+                                    <img alt="upimg" id="upimg" style="margin-left:50px;width: 50%;height:150px;" src="../Images/default.jpg" />
+                                    <label for="uplfile" style="margin-left:120px;">
+                                        <span class="btn btn-primary"><i class="fa fa-cloud-upload append-icon"></i></span>
+                                    </label>
+                                    <input accept=".jpg,.jpeg,.png" id="uplfile" class="sr-only" name="uplfile" type="file" />
                                 </td>
                             </tr>
-                            <%--<tr>
-                                <td align="left" style="width: 150px;">
-                                    Asset Image
-                                </td>
-                                <td>
-                                    <label for="profile-pic-input" id="profile-label" style="border-radius: 50%;box-shadow: rgb(0 0 0 / 16%) 0px 3px 6px, rgb(0 0 0 / 23%) 0px 3px 6px;">
-                                         <img src="../Images/Pdf_Img.jpg" id="custimg" alt="Default Profile Picture" class="lik" style=" min-width: 75px; min-height: 75px;" />
-                                        Select Image
-                                        <input type="file" accept=".jpg,.jpeg,.png" id="profile-pic-input" style="display:none;" />
-                                    </label>
-                                </td>
-                            </tr>--%>
                              <tr>
                              <td align="left">
                                  <label>Asset Name</label><span style="color: red;margin-left: 20px;">*</span>
@@ -702,7 +847,6 @@ input[type="radio"]{
                             <tr>
                                 <td align="left" >
                                     <label>Asset Code</label>
-                                    <span style="color: red;margin-left: 20px;">*</span>
                                 </td>
                                 <td>
                                     <input class="col-xs-9" id="txtAsset_code" type="text" autocomplete="off" maxlength="30" required />
@@ -735,6 +879,10 @@ input[type="radio"]{
                                  </td>
                                  <td>
                                      <select id="ddlstatus" class="col-xs-9">
+                                         <option value="">--Select Status--</option>
+                                         <option value="0">In Stock</option>
+                                         <option value="1">In Use</option>
+                                         <option value="2">Disposed</option>
                                       </select>
                                  </td>
                              </tr>
@@ -770,6 +918,10 @@ input[type="radio"]{
                                 </td>
                                 <td>
                                     <select id="ddlcond" class="col-xs-9">
+                                        <option value="">--Select Condition--</option>
+                                        <option value="Good">Good</option>
+                                        <option value="Bad">Bad</option>
+                                        <option value="Damaged">Damaged/Defective</option>
                                      </select>
                                 </td>
                             </tr>
@@ -853,6 +1005,9 @@ input[type="radio"]{
                                 </td>
                                 <td>
                                     <select id="ddlpurtyp" class="col-xs-9">
+                                        <option value="Owned">Owned</option>
+                                        <option value="Rented">Rented</option>
+                                        <option value="Leased">Leased</option>
                                     </select>
                                 </td>
                             </tr>
@@ -890,8 +1045,8 @@ input[type="radio"]{
                                     <label>Value Depreciates?</label>
                                 </td>
                                 <td>
-                                    <input type="radio" name="vd" id="fixed" value="0" checked="true" />Yes
-                                    <input type="radio" name="vd" id="" value="0" />No
+                                    <input type="radio" name="vd" id="yes" value="0" checked="true" />Yes
+                                    <input type="radio" name="vd" id="no" value="1" />No
                                 </td>
                             </tr>
                             <tr class="hid">
