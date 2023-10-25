@@ -27,8 +27,6 @@ public partial class MIS_Reports_rptLeaveFormAll : System.Web.UI.Page
         public string LeaveValue { get; set; }
         public string LeaveAvailability { get; set; }
         public string LeaveTaken { get; set; }
-
-
     }
 
     [WebMethod(EnableSession = true)]
