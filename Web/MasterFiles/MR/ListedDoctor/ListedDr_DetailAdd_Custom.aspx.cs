@@ -12,19 +12,11 @@ using System.IO;
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
-using Microsoft.Ajax.Utilities;
 using Amazon.S3.Model;
 using Amazon.Runtime;
 using System.Net;
-using System.Web.Script.Serialization;
-using Amazon.Runtime.Internal;
-using System.Drawing;
-using System.Configuration;
-using System.Windows.Interop;
 using System.Text;
-using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Web.UI.WebControls;
-using AjaxControlToolkit.HTMLEditor.ToolbarButton;
 using DocumentFormat.OpenXml.Spreadsheet;
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
@@ -34,6 +26,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     DataSet dsDivision = null;
     DataSet dsTerritory = null;
     DataSet newcontactDR = null;
+        
     public static string state_cd = string.Empty;
     public static string sf_type = string.Empty;
     public static string sState = string.Empty;
@@ -70,6 +63,14 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     public static string HQNm = string.Empty;
     public static string baseUrl = "";
     string error;
+    public static DataTable tb = new DataTable();
+    DataRow dr;
+    private const string bucketName = "happic";
+    
+    // Specify your bucket region (an example region is shown).
+    private static readonly RegionEndpoint bucketRegion = RegionEndpoint.APSouth1;
+    private static IAmazonS3 s3Client;
+
     #endregion
 
     protected override void OnPreInit(EventArgs e)
@@ -454,14 +455,18 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         DataSet ds = new DataSet();
         lisdr ad = new lisdr();
 
-
         ds = ad.GetCustomFormsFieldsFilesData(div_code, "3");
 
         if (ds.Tables.Count > 0)
         {
             DataTable dt = ds.Tables[0];
-            fugv.DataSource = dt;
-            fugv.DataBind();           
+            if (dt.Rows.Count > 0)
+            {
+                fugv.Visible = true;
+                fugv.DataSource = dt;
+                fugv.DataBind();
+            }
+            else { fugv.Visible = false; }
         }
     }
 
@@ -570,10 +575,8 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         ddlTerritory.DataBind();
         if (dsListedDR.Tables[0].Rows.Count <= 1)
         {
-
             //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Territory must be created prior to Customer creation');</script>");
         }
-
     }
 
     private void FillSpeciality()
@@ -1020,6 +1023,28 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         }
                     }
 
+                    if(tb.Rows.Count>0)
+                    {
+                        int i = 0; string fld = ""; string val = ""; 
+
+                        for (int k = 0; k < tb.Rows.Count; k++)
+                        {
+                            if ((Convert.ToString(tb.Rows[k]["FieldId"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldId"]) != "undefined") && (Convert.ToString(tb.Rows[k]["FieldVal"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldVal"]) != "undefined"))
+                            {
+                                fld = Convert.ToString(tb.Rows[k]["FieldId"]);
+
+                                val = Convert.ToString(tb.Rows[k]["FieldVal"]);
+
+                                if ((val == null || val == ""))
+                                { val = ""; }                              
+
+                                string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + RetailerID + "'";
+                                i = db_ER.ExecQry(uquery);
+                            }
+                        }
+                    }
+                    
+
                     //if (addfileuds.Count > 0)
                     //{
                     //    int i = 0; string fld = ""; string val = "";
@@ -1211,7 +1236,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     }
 
 
-
     [WebMethod(EnableSession = true)]
     public static string SaveFileS3Bucket(string filename)
     {
@@ -1221,78 +1245,66 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         DataSet dsDivision = ld.getStatePerDivision(div_code);
         string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
         string directoryPath = urlshotName + "_" + "Retailer";
-
-        //string currentDirectory = HttpContext.Current.Server.MapPath("~");
-        //string relativePath = "FMCGWebRetailer";
+      
         string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
-        string _FullName = filename;
-        string _FilePath = filepath;
+       
         //Create the Directory.
-        if (!Directory.Exists(_FilePath))
+        if (!Directory.Exists(filepath))
         {
-            Directory.CreateDirectory(_FilePath);
+            Directory.CreateDirectory(filepath);
         }
 
-
-
-        string FileLocation = _FilePath + "\\" + _FullName;
-
-
-        // convert string to stream
-        byte[] buffer = Encoding.ASCII.GetBytes(_FullName);
-        MemoryStream ms = new MemoryStream(buffer);
-        //write to file
-        //FileStream fileStream = new FileStream(FileLocation, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-        FileStream file = new FileStream(FileLocation, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-        ms.WriteTo(file);
-        file.Close();
-        ms.Close();
-
-
-
-        string awsKey = "AKIA5OS74MUCASG7HSCG";
-        string awsSecretKey = "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";
-        string bucketName = "happic";
-
-        //First I am creating a file with the file name in my local machine in a shared folder        
-        //FileStream fs = File.Create(_FullName);
-        //fs.Close();
-
-
-        string prefix = directoryPath + "/" + filename;
-        string localFilePath = System.IO.Path.Combine(filepath);
-        string filePath = localFilePath;
-        try
+        string Ext = System.IO.Path.GetExtension(filename);
+                
+        if (((Ext == ".jpg") || (Ext == ".jpeg") || (Ext == ".png")))
         {
-            string keyName = filename;
-
-
-            // Set up your AWS credentials
-            BasicAWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
-
-            // Create a new Amazon S3 client
-            AmazonS3Client s3Client = new AmazonS3Client(credentials, Amazon.RegionEndpoint.APSouth1);
-            // Upload the file to Amazon S3
-            TransferUtility fileTransferUtility = new TransferUtility(s3Client);
-
-            fileTransferUtility.UploadAsync(filePath, bucketName + @"/" + directoryPath);
-            //Console.WriteLine("Upload 1 completed");
-
-            fileTransferUtility.UploadAsync(filePath, bucketName + @"/" + directoryPath, keyName);
-            //Console.WriteLine("Upload 2 completed");
-
-
-            using (var fileToUpload = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var memoryStream = new MemoryStream())
             {
-                fileTransferUtility.UploadAsync(fileToUpload, bucketName, keyName);
+                System.Drawing.Image image = System.Drawing.Image.FromStream(memoryStream, true);
+                string filePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + filename;
+                image.Save(filePath);
+            }         
+        }
+        else
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                var fileName = filename;
+                string tempFilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fileName);
+                using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    memoryStream.WriteTo(fs);
+                }
             }
-            //Console.WriteLine("Upload 3 completed");
+        }
+       
+       
 
+        string name = filename;
+        string myBucketName = bucketName; //your s3 bucket name goes here  
+        string s3DirectoryName = directoryPath;
+        string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + name;
+        string s3FileName = @name;
+        string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
+        string awsSecretAccessKey = "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";
+        try
+        {        
+            
+            s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+            IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
+            TransferUtility utility = new TransferUtility(client);
+            TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
+            if (s3DirectoryName == "" || s3DirectoryName == null)
+            {
+                request.BucketName = myBucketName; //no subdirectory just bucket name  
+            }
+            else
+            {   // subdirectory and bucket name  
+                request.BucketName = myBucketName + @"/" + s3DirectoryName;
+            }
+            request.Key = s3FileName; //file name up in S3             
+            utility.Upload(request);
 
-            // Option 4. Specify advanced settings.
-            fileTransferUtility.Upload(FileLocation, bucketName + "\\" + directoryPath, _FullName);
-
-            //Console.WriteLine("Upload completed!");
 
             msg = "Upload  completed !!";
         }
@@ -1311,6 +1323,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         return msg;
     }
 
+
     [WebMethod(EnableSession = true)]
     public static string DownloadDirectory(string filename)
     {
@@ -1323,40 +1336,59 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
             string directoryPath = urlshotName + "_" + "Retailer";
 
+            string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
 
-            string _FullName = filename;
-            string _FilePath = directoryPath;
-            string awsKey = "AKIA5OS74MUCASG7HSCG";
-            string awsSecretKey = "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";
+            //Create the Directory.
+            if (!Directory.Exists(filepath))
+            {
+                Directory.CreateDirectory(filepath);
+            }
+
+            string name = filename;
+            string myBucketName = "happic"; //your s3 bucket name goes here
             string bucketName = "happic";
+            string s3DirectoryName = directoryPath;
+            string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + name;
+            string s3FileName = @name;
+            string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
+            string awsSecretAccessKey = "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";
 
-            //First I am creating a file with the file name in my local machine in a shared folder
-            string FileLocation = _FilePath + "\\" + _FullName;
-            FileStream fs = File.Create(_FullName);
-            fs.Close();
+            AmazonS3Client s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+            IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
+            TransferUtility transferUtility = new TransferUtility(client);
+              
 
-            // Set up your AWS credentials
-            BasicAWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
+            if (s3DirectoryName == "" || s3DirectoryName == null)
+            {
+                bucketName = myBucketName; //no subdirectory just bucket name  
+            }
+            else
+            {   // subdirectory and bucket name  
+                bucketName = myBucketName + @"/" + s3DirectoryName;
+            }
 
-            // Create a new Amazon S3 client
-            AmazonS3Client s3Client = new AmazonS3Client(credentials, Amazon.RegionEndpoint.APSouth1);
-            // Upload the file to Amazon S3
-            TransferUtility fileTransferUtility = new TransferUtility(s3Client);
-            fileTransferUtility.Download(FileLocation, bucketName + "\\" + directoryPath, _FullName);
-            fileTransferUtility.Dispose();
-            WebClient webClient = new WebClient();
-            HttpResponse response = HttpContext.Current.Response;
-            response.Clear();
-            response.ClearContent();
-            response.ClearHeaders();
-            response.Buffer = true;
-            response.AddHeader("Content-Disposition", "attachment;filename=" + _FullName.ToString() + "");
-            byte[] data = webClient.DownloadData(FileLocation);
-            File.Delete(FileLocation); //After download starts, then I am deleting the file from the local path which I created initially.
-            response.BinaryWrite(data);
-            response.End();
+            
+            var s3Key = filename;
+            var filePath = HttpContext.Current.Server.MapPath("" + directoryPath + "") + "\\" + s3Key;
 
-            msg = "File Downloaded";
+            transferUtility.DownloadAsync(new TransferUtilityDownloadRequest
+            {
+                BucketName = bucketName,
+                Key = s3Key,
+                FilePath = cutrrentFilePath,
+            });
+
+            // Check to see if the file was downloaded.
+            if (File.Exists(filePath))
+            {
+                //Console.WriteLine("File successfully downloaded.");
+                msg = "File successfully downloaded. ";
+            }
+            else
+            {
+                msg = "File could not be downloaded. Make sure " + s3Key + "  ";
+                msg += "exists in the bucket, " + bucketName + " ";
+            }
         }
         catch (AmazonS3Exception s3Exception)
         {
@@ -1394,36 +1426,93 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         try
         {  // Get the HttpFileCollection
-
-
+            tb = new DataTable();
+            tb.Columns.Add("FieldId", typeof(string));
+            tb.Columns.Add("FieldVal", typeof(string));
             int search_results = Convert.ToInt32(fugv.Rows.Count);
             if (search_results > 0)
             {
                 for (int i = 0; i < fugv.Rows.Count; i++)
                 {
+
+                    dr = tb.NewRow();
+                   
                     Label GLabelFC = fugv.Rows[i].FindControl("LabelFC") as Label;
                     string FieldId = GLabelFC.Text.ToString().Trim();
 
+
+                    dr["FieldId"] = GLabelFC.Text.ToString().Trim();
+
                     FileUpload fu = fugv.Rows[i].FindControl("flupslip") as FileUpload;
 
-                    if (fu.HasFile)
+                    if (fu.PostedFile.ContentLength > 0)
                     {
-                        string address = Server.MapPath("") + "\\" + fu.FileName;
-                        string Ext = System.IO.Path.GetExtension(fu.FileName);
-
-                        if (((Ext == ".txt") || (Ext == ".doc") || (Ext == ".docx") || (Ext == ".xls")
-                            || (Ext == ".xlsx") || (Ext == ".pdf") || (Ext == ".jpg")
-                            || (Ext == ".jpeg") || (Ext == ".png") || (Ext == ".gif")))
+                        if (fu.PostedFile.ContentLength < 307200)
                         {
+                            string address = HttpContext.Current.Server.MapPath("") + "\\" + fu.FileName;                          
 
-                            fu.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + "doc[" + (i + 1).ToString() + "]@" + System.DateTime.Now.Date.Date.ToString("dd-MM-yy") + Ext);
+                            string Ext = System.IO.Path.GetExtension(fu.FileName);
 
-                            error = "'" + FileName.ToString() + "'" + " Uploaded Successfully..." + "<br>";
+                            if (((Ext == ".txt") || (Ext == ".doc") || (Ext == ".docx") || (Ext == ".xls")
+                                || (Ext == ".xlsx") || (Ext == ".pdf") || (Ext == ".jpg")
+                                || (Ext == ".jpeg") || (Ext == ".png") || (Ext == ".gif")))
+                            {
+
+                                //fu.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + "doc[" + (i + 1).ToString() + "]@" + System.DateTime.Now.Date.Date.ToString("dd-MM-yy") + Ext);
+
+                                fu.PostedFile.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fu.FileName);
+
+                                Stream st = fu.PostedFile.InputStream;
+
+                                string name = Path.GetFileName(fu.FileName);
+                                string myBucketName = bucketName; //your s3 bucket name goes here  
+                                string s3DirectoryName = directoryPath;
+                                string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fu.FileName;
+                                string s3FileName = @name;
+                                string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
+                                string awsSecretAccessKey = "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";
+
+                                s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+                                IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
+                                TransferUtility utility = new TransferUtility(client);
+                                TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
+                                if (s3DirectoryName == "" || s3DirectoryName == null)
+                                {
+                                    request.BucketName = myBucketName; //no subdirectory just bucket name  
+                                }
+                                else
+                                {   // subdirectory and bucket name  
+                                    request.BucketName = myBucketName + @"/" + s3DirectoryName;
+                                }
+                                request.Key = fu.FileName; //file name up in S3  
+                                request.InputStream = fu.PostedFile.InputStream;
+                                utility.Upload(request);
+
+                                error = "'" + FileName.ToString() + "'" + " Uploaded Successfully..." + "<br>";
+
+                                ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+
+                               
+                                dr["FieldVal"] = fu.FileName.ToString().Trim();
+                                tb.Rows.Add(dr);
+                            }
+                            else
+                            {
+                                error = "'" + FileName.ToString() + "'" + " Failed :" + "'" + Ext.ToString() + "'" + " Extension not supported... " + "<br>";
+                                ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+                            }
                         }
-
                         else
-                        { error = "'" + FileName.ToString() + "'" + " Failed :" + "'" + Ext.ToString() + "'" + " Extension not supported... " + "<br>"; }
+                        { 
+                            error = "'" + FileName.ToString() + "'" + " Failed : " + " file length should not exceed 3MB... " + "<br>";
+                            ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+                        }
                     }
+                    else
+                    { 
+                        error = "'" + FileName.ToString() + "'" + " Failed : " + " File is Empty... " + "<br>";
+                        ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+                    }                   
                 }
             }
 

@@ -410,9 +410,6 @@
                         })
                     }
 
-
-
-
                     st = PgRecords * (pgNo - 1);
                     for ($i = st; $i < st + Number(PgRecords); $i++) {
                         if ($i < Orders.length) {
@@ -458,10 +455,12 @@
                                                         else {
 
                                                             if (($val.includes(".xlsx") || $val.includes(".xlx") || $val.includes(".doc"))) {
+                                                                alert('files');
                                                                 DownloadFiels($val);
                                                                 //alert('doc');
                                                             }
                                                             else if (($val.includes(".jpg") || $val.includes(".jpeg") || $val.includes(".png"))) {
+                                                                console.log($val);
                                                                 DownloadFiels($val);
                                                             }
                                                             else if (($val.includes(".mp3") || $val.includes(".mp4") || $val.includes(".gif"))) {

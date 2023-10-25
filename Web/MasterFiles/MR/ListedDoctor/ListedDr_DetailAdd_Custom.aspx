@@ -470,29 +470,27 @@
                                     <asp:Label ID="lblError" runat="server" Font-Bold="true" ForeColor="Red"> </asp:Label><br />
                                     <asp:GridView ID="fugv" runat="server" AutoGenerateColumns="false">
                                         <Columns>
-                                            <asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Field Name">
                                                 <ItemTemplate>
                                                     <asp:Label ID="lblFname" runat="server" Text='<%#Bind("Field_Name") %>'></asp:Label>
                                                     <asp:Label ID="LabelFC" runat="server" Text='<%#Bind("Field_Col") %>' Visible="false"></asp:Label>
                                                 </ItemTemplate>
                                                 
                                             </asp:TemplateField>
-                                            <asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Files Upload">
                                                  <ItemTemplate>
-                                                     <asp:FileUpload ID="flupslip" runat="server" />                                                     
+                                                     <asp:FileUpload ID="flupslip" runat="server" />                                                                                                         
+                                                 </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                 <ItemTemplate>                                                                                                     
                                                      <asp:Button ID="Button1" runat="server" Text="Upload" OnClick="btnUpload_Click" />
                                                  </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
-                                    </asp:GridView>
-                                    
-                                    <div id="FileUploadContainer">
-                                        <asp:FileUpload ID="FileUpload1" runat="server" />
-                                        <br /><br />
-                                        <!--FileUpload Controls will be added here -->
-                                    </div>    
-                                    <br /><br />    
-                                    <asp:Button ID="btnUpload" runat="server" Text="Upload" onclick="btnUpload_Click" />
+                                    </asp:GridView>                                   
+                                   
+                                   
                                 </div>
                                 <div class="col-lg-12 labelnames" style="width:100%;">
 
@@ -1484,99 +1482,29 @@
                                                 }
                                                 break;
                                             case 'FS':
-                                                var div = document.createElement('DIV');
-                                                var fstr = "";
-                                                fstr += "<table id='tblro" + k + "' class='table-responsive'>";
-                                                fstr += "<tr>";
-                                                var g = 0;
-                                                fstr += "<td style='font-weight:bold; font-size:10px;'> <label for='" + filtered[k].Field_Col + "' value='" + filtered[k].Field_Name + "'>" + ((Mandate == "Yes") ? "<span class='fldm' style='Color:Red'>*</span>" : "<span />") + filtered[k].Field_Name + "</label> ";
-                                                fstr += "&nbsp;&nbsp;<input id='" + filtered[k].Field_Col + "' name='file" + filtered[k].Field_Col + "' type='file'   /></td>";
+                                             
 
-                                                g++;
-                                                if (g == 2) {
-                                                    fstr += "</tr><tr>";
-                                                    g = 0;
-                                                }
-
-                                                fstr += "</tr>";
-                                                fstr += '</table>';
-
-
-                                                div.innerHTML = fstr;
-                                                document.getElementById("FileUploadContainer").appendChild(div);
-
-
-                                                //str += "<td class='stylespc' align='left'>";
-                                                ////str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                                //str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
-                                                //str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+                                                str += "<td class='stylespc' align='left'>";
+                                                //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
+                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
 
                                                 break;
                                             case 'FSC':
-                                                var counter = 0;                                               
-                                                var div = document.createElement('DIV');
-                                                var fstr = "";
-                                                fstr += "<table id='tblro" + k + "' class='table-responsive'>";
-                                                fstr += "<tr>";
-                                                var g = 0;                                               
-                                                fstr += "<td style='font-weight:bold; font-size:10px;'> <label for='" + filtered[k].Field_Col + "' value='" + filtered[k].Field_Name + "'>" + ((Mandate == "Yes") ? "<span class='fldm' style='Color:Red'>*</span>" : "<span />") + filtered[k].Field_Name + "</label> ";
-                                                fstr += "&nbsp;&nbsp;<input id='" + filtered[k].Field_Col + "' name='file" + filtered[k].Field_Col + "' type='file'   /></td>";
+                                              
 
-                                                g++;
-                                                if (g == 2) {
-                                                    fstr += "</tr><tr>";
-                                                    g = 0;
-                                                }
                                                 
-                                                fstr += "</tr>";
-                                                fstr += '</table>';
-
-
-                                                div.innerHTML = fstr;
-                                                document.getElementById("FileUploadContainer").appendChild(div);
-                                                //document.getElementById("FileUploadContainer").append(fstr);
-
-
-                                                //div.innerHTML = "<label for='" + filtered[k].Field_Col + "' value='" + filtered[k].Field_Name + "'>" + ((Mandate == "Yes") ? "<span class='fldm' style='Color:Red'>*</span>" : "<span />") + filtered[k].Field_Name + "</label><input id='" + filtered[k].Field_Col + "' name='file" + filtered[k].Field_Col + "' type='file'   /><br />";
-                                                //document.getElementById("FileUploadContainer").appendChild(div);
-
-                                                //counter++;
-
-                                                //str += "<td class='stylespc' align='left'>";
-                                                ////str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                                //str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fscfiles notrequired'  />";
-                                                //str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "   ' /></td>";
+                                                str += "<td class='stylespc' align='left'>";
+                                                //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fscfiles notrequired'  />";
+                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "   ' /></td>";
 
                                                 break;
 
                                             case 'FC':
-                                                var counter = 0;
-                                                var div = document.createElement('DIV');
-                                                var fstr = "";
-                                                fstr += "<table id='tblro" + k + "' class='table-responsive'>";
-                                                fstr += "<tr>";
-                                                var g = 0;
-                                                fstr += "<td style='font-weight:bold; font-size:10px;'> <label for='" + filtered[k].Field_Col + "' value='" + filtered[k].Field_Name + "'>" + ((Mandate == "Yes") ? "<span class='fldm' style='Color:Red'>*</span>" : "<span />") + filtered[k].Field_Name + "</label> ";
-                                                fstr += "&nbsp;&nbsp;<input id='" + filtered[k].Field_Col + "' name='file" + filtered[k].Field_Col + "' type='file'   /></td>";
-
-                                                g++;
-                                                if (g == 2) {
-                                                    fstr += "</tr><tr>";
-                                                    g = 0;
-                                                }
-
-                                                fstr += "</tr>";
-                                                fstr += '</table>';
-
-
-                                                div.innerHTML = fstr;
-                                                document.getElementById("FileUploadContainer").appendChild(div);
-
-
-                                                //str += "<td class='stylespc' align='left'>";
-                                                ////str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                                //str += "<input type='file' onchange='getFile(this)'   id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fcfiles notrequired'  />";
-                                                //str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+                                                str += "<td class='stylespc' align='left'>";                                               
+                                                str += "<input type='file' onchange='getFile(this)'   id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fcfiles notrequired'  />";
+                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
 
                                                 break;
                                             default:
@@ -1694,17 +1622,17 @@
                         var file = files[i].name;
                         name = files[i].name;
 
-                        //$.ajax({
-                        //    type: "POST",
-                        //    contentType: "application/json; charset=utf-8",
-                        //    async: false,
-                        //    url: "ListedDr_DetailAdd_Custom.aspx/SaveFileS3Bucket",
-                        //    data: "{'filename':'" + file + "'}",
-                        //    dataType: "json",
-                        //    success: function (msg) {
-                        //        alert(msg.d);
-                        //    }
-                        //});
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            async: false,
+                            url: "ListedDr_DetailAdd_Custom.aspx/SaveFileS3Bucket",
+                            data: "{'filename':'" + file + "'}",
+                            dataType: "json",
+                            success: function (msg) {
+                                alert(msg.d);
+                            }
+                        });
 
                         div = "<div> " + file + " <br /></div>";
 

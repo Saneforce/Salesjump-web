@@ -476,8 +476,92 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
         return dt;
     }
 
+
     [WebMethod(EnableSession = true)]
-    public static string DownloadImageFromS3(string fileName)
+    public static string DownloadImageFromS3(string filename)
+    {
+        string msg = "";
+        try
+        {
+            rdloc ld = new rdloc();
+
+            DataSet dsDivision = ld.getStatePerDivision(divCode);
+            string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+            string directoryPath = urlshotName + "_" + "Retailer";
+
+            string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
+
+            //Create the Directory.
+            if (!Directory.Exists(filepath))
+            {
+                Directory.CreateDirectory(filepath);
+            }
+
+            string name = filename;
+            string myBucketName = "happic"; //your s3 bucket name goes here
+            string bucketName = "happic";
+            string s3DirectoryName = directoryPath;
+            string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + name;
+            string s3FileName = @name;
+            string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
+            string awsSecretAccessKey = "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";
+            var bucketRegion = RegionEndpoint.APSouth1;
+
+            AmazonS3Client s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+            IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
+            TransferUtility transferUtility = new TransferUtility(client);
+
+
+            if (s3DirectoryName == "" || s3DirectoryName == null)
+            {
+                bucketName = myBucketName; //no subdirectory just bucket name  
+            }
+            else
+            {   // subdirectory and bucket name  
+                bucketName = myBucketName + @"/" + s3DirectoryName;
+            }
+
+
+            var s3Key = filename;
+            var filePath = HttpContext.Current.Server.MapPath("" + directoryPath + "") + "\\" + s3Key;
+
+            transferUtility.DownloadAsync(new TransferUtilityDownloadRequest
+            {
+                BucketName = bucketName,
+                Key = s3Key,
+                FilePath = cutrrentFilePath,
+            });
+
+            // Check to see if the file was downloaded.
+            if (File.Exists(filePath))
+            {
+                //Console.WriteLine("File successfully downloaded.");
+                msg = "File successfully downloaded. ";
+            }
+            else
+            {
+                msg = "File could not be downloaded. Make sure " + s3Key + "  ";
+                msg += "exists in the bucket, " + bucketName + " ";
+            }
+        }
+        catch (AmazonS3Exception s3Exception)
+        {
+            //Console.Write(s3Exception.Message, s3Exception.InnerException);
+            msg = " " + s3Exception.Message + " , " + s3Exception.InnerException + " ";
+        }
+        catch (Exception exception)
+        {
+            //Console.WriteLine(exception.Message, exception.InnerException);
+            msg = " " + exception.Message + " , " + exception.InnerException + " ";
+        }
+
+        return msg;
+
+    }
+
+
+    [WebMethod(EnableSession = true)]
+    public static string DownloadDirectory(string fileName)
     {
         string msg = "";
         rdloc ld = new rdloc();

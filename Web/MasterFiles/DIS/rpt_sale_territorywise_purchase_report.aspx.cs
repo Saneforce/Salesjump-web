@@ -86,23 +86,19 @@ public partial class MIS_Reports_rpt_sale_territorywise_purchase_report : System
 
         lblHead.Text = "sale Register -Territory Wise for  " + strFMonthName + " " + FYear + " " + "To" + " " + strTMonthName + " " + TYear;
 
-
         lblIDMonth.Visible = false;
         lblIDYear.Visible = false;
 
         FillSF();
-
-
-
     }
+
     private void FillSF()
     {
         string sURL = string.Empty;
         string stURL = string.Empty;
-string stCrtDtaPnt = string.Empty;
+        string stCrtDtaPnt = string.Empty;
 
         tbl.Rows.Clear();
-
 
         SalesForce sf = new SalesForce();
         //dsSalesForce = sf.GetStockName_Customer(divcode);
@@ -123,15 +119,12 @@ string stCrtDtaPnt = string.Empty;
             tc_SNo.BorderWidth = 1;
             tc_SNo.Width = 50;
             tc_SNo.RowSpan = 1;
-            Literal lit_SNo =
-                new Literal();
+            Literal lit_SNo = new Literal();
             lit_SNo.Text = "S.No";
             tc_SNo.BorderColor = System.Drawing.Color.Black;
             tc_SNo.Controls.Add(lit_SNo);
             tc_SNo.Attributes.Add("Class", "rptCellBorder");
             tr_header.Cells.Add(tc_SNo);
-
-
 
             TableCell tc_DR_Name = new TableCell();
             tc_DR_Name.BorderStyle = BorderStyle.Solid;
@@ -145,23 +138,15 @@ string stCrtDtaPnt = string.Empty;
             tc_DR_Name.Controls.Add(lit_DR_Name);
             tr_header.Cells.Add(tc_DR_Name);
 
-
-
-
-
-
-
             int months = (Convert.ToInt32(TYear) - Convert.ToInt32(FYear)) * 12 + Convert.ToInt32(TMonth) - Convert.ToInt32(FMonth); //(Date2.Year - Date1.Year) * 12 + Date2.Month - Date1.Month;
             int cmonth = Convert.ToInt32(FMonth);
             int cyear = Convert.ToInt32(FYear);
-
 
             ViewState["months"] = months;
             ViewState["cmonth"] = cmonth;
             ViewState["cyear"] = cyear;
 
             SalesForce sal = new SalesForce();
-
 
             if (months >= 0)
             {
@@ -204,13 +189,8 @@ string stCrtDtaPnt = string.Empty;
             cmonth = Convert.ToInt16(ViewState["cmonth"].ToString());
             cyear = Convert.ToInt16(ViewState["cyear"].ToString());
 
-
-
-
-
             int iCount = 0;
             Decimal iTotLstCount = 0;
-
 
             foreach (DataRow drFF in dsSalesForce.Tables[0].Rows)
             {
@@ -242,20 +222,16 @@ string stCrtDtaPnt = string.Empty;
                 TableCell tc_det_FF = new TableCell();
                 Literal lit_det_FF = new Literal();
                 lit_det_FF.Text = "&nbsp;" + drFF["Territory_Name"].ToString();
-stCrtDtaPnt+="{label:\""+ drFF["Territory_Name"].ToString()+"\",y:";
+                stCrtDtaPnt += "{label:\"" + drFF["Territory_Name"].ToString() + "\",y:";
                 tc_det_FF.BorderStyle = BorderStyle.Solid;
                 tc_det_FF.BorderWidth = 1;
                 tc_det_FF.Attributes.Add("Class", "rptCellBorder");
                 tc_det_FF.Controls.Add(lit_det_FF);
                 tr_det.Cells.Add(tc_det_FF);
 
-
-
-
                 months = Convert.ToInt16(ViewState["months"].ToString());
                 cmonth = Convert.ToInt16(ViewState["cmonth"].ToString());
                 cyear = Convert.ToInt16(ViewState["cyear"].ToString());
-
 
                 if (months >= 0)
                 {
@@ -264,20 +240,13 @@ stCrtDtaPnt+="{label:\""+ drFF["Territory_Name"].ToString()+"\",y:";
                     {
 
                         if (cmonth == 12)
-                        {
-                            sCurrentDate = "01-01-" + (cyear + 1);
-                        }
-
+                        { sCurrentDate = "01-01-" + (cyear + 1); }
                         else
-                        {
-                            sCurrentDate = (cmonth + 1) + "-01-" + cyear;
-                        }
+                        { sCurrentDate = (cmonth + 1) + "-01-" + cyear; }
 
                         dtCurrent = Convert.ToDateTime(sCurrentDate);
 
-
-                        dsDoc = sf.sale_Territorywise_purchase_value(drFF["Territory_code"].ToString(), divcode, cmonth, cyear, sCurrentDate);
-
+                        dsDoc = sf.sale_Territorywise_purchase_value(divcode, Convert.ToInt32(cmonth), Convert.ToInt32(cyear), "", 0, "", "", drFF["Territory_code"].ToString(), "0");
 
                         if (dsDoc.Tables[0].Rows.Count > 0)
                             tot_dr = dsDoc.Tables[0].Rows[0].ItemArray.GetValue(0).ToString();
@@ -290,21 +259,14 @@ stCrtDtaPnt+="{label:\""+ drFF["Territory_Name"].ToString()+"\",y:";
                             hyp_lst_month.Text = tot_dr;
                             if (tot_dr != "")
                             {
-
                                 iTotLstCount1 += (Decimal.Parse(tot_dr));
                                 iTotLstCount2 += (Decimal.Parse(tot_dr));
                             }
 
-
                             sURL = "rpt_sale_territorywise_product_detail.aspx?Territory_code=" + drFF["Territory_code"] + "&Territory_Name=" + drFF["Territory_Name"].ToString() + " &CYear=" + cyear + "&CMonth=" + cmonth + " &sCurrentDate=" + sCurrentDate + "";
                             hyp_lst_month.Attributes["onclick"] = "javascript:window.open('" + sURL + "' ,'','resizable=yes,toolbar=no,menubar=no,scrollbars=1,status=no,width=500,height=600,left=0,top=0,zoom=50%');";
 
-
                             hyp_lst_month.NavigateUrl = "#";
-
-
-
-
 
                         }
 
@@ -316,12 +278,6 @@ stCrtDtaPnt+="{label:\""+ drFF["Territory_Name"].ToString()+"\",y:";
                         tc_lst_month.BorderStyle = BorderStyle.Solid;
                         tc_lst_month.BorderWidth = 1;
 
-
-
-
-
-
-
                         //hyp_lst_month.Text = Convert.ToString(iTotLstCount);
                         tc_lst_month.BackColor = System.Drawing.Color.White;
                         tc_lst_month.Width = 200;
@@ -330,7 +286,6 @@ stCrtDtaPnt+="{label:\""+ drFF["Territory_Name"].ToString()+"\",y:";
                         tc_lst_month.Controls.Add(hyp_lst_month);
                         tc_lst_month.Attributes.Add("Class", "rptCellBorder");
                         tr_det.Cells.Add(tc_lst_month);
-
 
                         //iTotLstCount = 0;
 
@@ -343,7 +298,6 @@ stCrtDtaPnt+="{label:\""+ drFF["Territory_Name"].ToString()+"\",y:";
                             cyear = cyear + 1;
                         }
 
-
                     }
                     if (iTotLstCount1 != 0)
                     {
@@ -355,7 +309,7 @@ stCrtDtaPnt+="{label:\""+ drFF["Territory_Name"].ToString()+"\",y:";
                         tc_tot_month12.Width = 200;
                         tc_tot_month12.Style.Add("font-family", "Calibri");
                         hyp_lst_month12.Text = Convert.ToString(iTotLstCount1);
-stCrtDtaPnt+=Convert.ToString(iTotLstCount1) + "},";
+                        stCrtDtaPnt += Convert.ToString(iTotLstCount1) + "},";
                         tc_tot_month12.HorizontalAlign = HorizontalAlign.Center;
                         tc_tot_month12.VerticalAlign = VerticalAlign.Middle;
                         tc_tot_month12.Controls.Add(hyp_lst_month12);
@@ -374,7 +328,7 @@ stCrtDtaPnt+=Convert.ToString(iTotLstCount1) + "},";
                         tc_tot_month12.Width = 200;
                         tc_tot_month12.Style.Add("font-family", "Calibri");
                         hyp_lst_month12.Text = "";
-stCrtDtaPnt+= "0},";
+                        stCrtDtaPnt += "0},";
                         tc_tot_month12.HorizontalAlign = HorizontalAlign.Center;
                         tc_tot_month12.VerticalAlign = VerticalAlign.Middle;
                         tc_tot_month12.Controls.Add(hyp_lst_month12);
@@ -409,9 +363,6 @@ stCrtDtaPnt+= "0},";
             tc_Count_Total.Style.Add("font-size", "10pt");
 
             tr_total.Cells.Add(tc_Count_Total);
-
-
-
 
             months = Convert.ToInt16(ViewState["months"].ToString());
             cmonth = Convert.ToInt16(ViewState["cmonth"].ToString());
@@ -454,7 +405,6 @@ stCrtDtaPnt+= "0},";
                         }
                     }
 
-
                     tc_tot_month.BorderStyle = BorderStyle.Solid;
                     tc_tot_month.BorderWidth = 1;
                     tc_tot_month.BackColor = System.Drawing.Color.White;
@@ -475,7 +425,6 @@ stCrtDtaPnt+= "0},";
                         cmonth = 1;
                         cyear = cyear + 1;
                     }
-
                 }
                 TableCell tc_tot_monthq = new TableCell();
                 HyperLink hyp_monthq = new HyperLink();
@@ -496,21 +445,19 @@ stCrtDtaPnt+= "0},";
             }
 
             tbl.Rows.Add(tr_total);
-string scrpt = "arr=[" + stCrtDtaPnt + "];window.onload = function () {genChart(arr);}";
-         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "SetupData", scrpt, true);
-
-
-
-
+            string scrpt = "arr=[" + stCrtDtaPnt + "];window.onload = function () {genChart(arr);}";
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "SetupData", scrpt, true);
         }
         //Session["MultiProd_Code"] = Multi_Prod.Remove(Multi_Prod.Length - 1);
     }
+
     protected void btnPrint_Click(object sender, EventArgs e)
     {
         Session["ctrl"] = pnlContents;
         Control ctrl = (Control)Session["ctrl"];
         PrintWebControl(ctrl);
     }
+
     public static void PrintWebControl(Control ControlToPrint)
     {
         StringWriter stringWrite = new StringWriter();
