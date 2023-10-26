@@ -61,11 +61,13 @@
                     entries</label><div style="float: right; padding-top: 3px;">
                         <ul class="segment">
                             <li data-va='All'>ALL</li>
-                            <li data-va='0' class="active">Active</li>
+                            <li data-va='0' class="active">In Stock</li>
+                            <li data-va='1'>In Use</li>
+                            <li data-va='2'>Disposed</li>
                         </ul>
                     </div>
             </div>
-            <table class="table table-hover" id="OrderList" style="font-size: 12px">
+            <table class="table table-hover" id="atable" style="font-size: 12px">
                 <thead class="text-warning">
                     <tr>
                         <th style="text-align: left">Sl.No</th>
@@ -165,6 +167,30 @@
                 Orders = AllOrders
             ReloadTable();
         });
+        function ReloadTable() {
+
+            var tr = '';
+            $("#atable TBODY").html("");
+            if (filtrkey != "All") {
+                Orders = Orders.filter(function (a) { //dataobj
+                    return a.Asset_Flag == filtrkey;
+                })
+            }
+            st = PgRecords * (pgNo - 1);
+            for ($i = st; $i < st + Number(PgRecords); $i++) {
+                if ($i < Orders.length) { //dataobj
+
+                    tr = $("<tr ascode='" + Orders[$i].Asset_Id + "'></tr>");
+                    $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Asset_Id + "</td><td>" + Orders[$i].Asset_Code + "</td><td>" + Orders[$i].Asset_Name + "</td><td>" + Orders[$i].category_Name + "</td><td>" + Orders[$i].Location_Name + "</td><td>" + Orders[$i].Brand_Name + "</td><td>" + Orders[$i].Model_Name + "</td><td>" + Orders[$i].Serial_Number + "</td><td>" + Orders[$i].Asset_Condition + "</td><td id='" + Orders[$i].Asset_Id + "' class='roedit'><a href='#'>Edit</a></td><td><ul class='nav' style='margin: 0px'><li class='dropdown'><a href='#' style='padding: 0px' class='dropdown - toggle' data-toggle='dropdown'>"
+                        + '<span><span class="aState" data-val="' + Orders[$i].Status + '">' + Orders[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
+                        '<ul class="dropdown-menu dropdown-custom dropdown-menu-right ddlStatus" style="right:0;left:auto;">' + ((Orders[$i].Status == "In Stock") ? '<li><a href="#" v="1">In Use</a></li><li><a href="#" v="2">Disposed</a></li>' : (Orders[$i].Status == "In Use") ? '<li><a href="#" v="0">In Stock</a></li><li><a href="#" v="2">Disposed</a></li>' : '<li><a href="#" v="0">In Stock</a></li><li><a href="#" v="1">In Use</a></li>') + '</ul></li></ul></td>');
+
+                    $("#atable TBODY").append(tr);
+                }
+            }
+            $("#orders_info").html("Showing " + (st + 1) + " to " + (((st + PgRecords) < Orders.length) ? (st + PgRecords) : Orders.length) + " of " + Orders.length + " entries")
+            loadPgNos();
+        }
         function loadData() {
 
             $.ajax({
@@ -183,7 +209,7 @@
             });
         }
         $(document).ready(function () {
-            
+            loadData();
         });
     </script>
 </asp:Content>
