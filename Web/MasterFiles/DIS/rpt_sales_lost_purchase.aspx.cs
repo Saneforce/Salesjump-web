@@ -93,7 +93,7 @@ public partial class MIS_Reports_rpt_sales_lost_purchase : System.Web.UI.Page
         tbl.Rows.Clear();
 
         SalesForce sf = new SalesForce();
-        dsSalesForce = sf.GetStockName_Customer(divcode);
+        dsSalesForce = sf.GetStockName_Customer(divcode, "0");
 
 
         if (dsSalesForce.Tables[0].Rows.Count > 0)
@@ -275,7 +275,7 @@ public partial class MIS_Reports_rpt_sales_lost_purchase : System.Web.UI.Page
                         dtCurrent = Convert.ToDateTime(sCurrentDate);
 
 
-                        dsDoc = sf.Sales_lost_Purchase_value_stockist(drFF["Stockist_Code"].ToString(), divcode, cmonth, cyear, sCurrentDate);
+                        dsDoc = sf.Sales_lost_Purchase_value_stockist(drFF["Stockist_Code"].ToString(), divcode, cmonth, cyear, sCurrentDate, "0");
 
 
                         if (dsDoc.Tables[0].Rows.Count > 0)

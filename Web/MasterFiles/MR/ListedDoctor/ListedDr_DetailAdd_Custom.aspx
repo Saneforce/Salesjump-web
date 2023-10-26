@@ -103,7 +103,7 @@
             </style>    
         </head>
         <body>
-            <form id="form1" method="post" enctype="multipart/form-data" runat="server">
+            <form id="form1" runat="server">
                 <asp:ScriptManager ID="scriptmanager1" runat="server"></asp:ScriptManager>
                 <div class="card">
                     <div class="card-header">
@@ -463,9 +463,40 @@
                                     </table>
                                 </div>
                             </div> 
-                            <div class="col-lg-12 labelnames" style="width:100%;">
+                            
 
+                            <div class="col-lg-12" style="width:100%;">
+                                <div class="col-lg-12">
+                                    <asp:Label ID="lblError" runat="server" Font-Bold="true" ForeColor="Red"> </asp:Label><br />
+                                    <asp:GridView ID="fugv" runat="server" AutoGenerateColumns="false">
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Field Name">
+                                                <ItemTemplate>
+                                                    <asp:Label ID="lblFname" runat="server" Text='<%#Bind("Field_Name") %>'></asp:Label>
+                                                    <asp:Label ID="LabelFC" runat="server" Text='<%#Bind("Field_Col") %>' Visible="false"></asp:Label>
+                                                </ItemTemplate>
+                                                
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Files Upload">
+                                                 <ItemTemplate>
+                                                     <asp:FileUpload ID="flupslip" runat="server" />                                                                                                         
+                                                 </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField>
+                                                 <ItemTemplate>                                                                                                     
+                                                     <asp:Button ID="Button1" runat="server" Text="Upload" OnClick="btnUpload_Click" />
+                                                 </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>                                   
+                                   
+                                   
+                                </div>
+                                <div class="col-lg-12 labelnames" style="width:100%;">
+
+                                </div>
                             </div>
+                            
                             <br />
                             <%-- <div class="col-lg-12">
                                  <asp:Panel ID="pnl2" runat="server">
@@ -807,7 +838,9 @@
 
                                         var FldType = filtered[k].Fld_Type;
                                         var Mandate = filtered[k].Mandate;
-                                        str += "<td class='space' align='left'><label for='" + filtered[k].Field_Col + "' value='" + filtered[k].Field_Name + "'>" + ((Mandate == "Yes") ? "<span class='fldm' style='Color:Red'>*</span>" : "<span />") + filtered[k].Field_Name + "</label></td>";
+                                        if (FldType == "FS" || FldType == "FC" || FldType == "FSC") { }
+                                        else { str += "<td class='space' align='left'><label for='" + filtered[k].Field_Col + "' value='" + filtered[k].Field_Name + "'>" + ((Mandate == "Yes") ? "<span class='fldm' style='Color:Red'>*</span>" : "<span />") + filtered[k].Field_Name + "</label></td>"; }
+                                        
                                         switch (FldType) {
                                             case 'TA':
                                                 if ((filtered[k].Mandate == "Yes")) { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
@@ -1449,23 +1482,30 @@
                                                 }
                                                 break;
                                             case 'FS':
+                                             
+
                                                 str += "<td class='stylespc' align='left'>";
                                                 //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles'  />";                                              
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
                                                 str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+
                                                 break;
                                             case 'FSC':
+                                              
+
+                                                
                                                 str += "<td class='stylespc' align='left'>";
                                                 //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fscfiles'  />";                                               
-                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fscfiles notrequired'  />";
+                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "   ' /></td>";
+
                                                 break;
 
                                             case 'FC':
-                                                str += "<td class='stylespc' align='left'>";
-                                                //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                                str += "<input type='file' onchange='getFile(this)'   id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fcfiles'  />";                                                
+                                                str += "<td class='stylespc' align='left'>";                                               
+                                                str += "<input type='file' onchange='getFile(this)'   id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fcfiles notrequired'  />";
                                                 str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+
                                                 break;
                                             default:
                                                 break
@@ -1476,6 +1516,10 @@
                                             str += "</tr><tr>";
                                             m = 0;
                                         }
+
+
+
+
                                     }
 
                                     str += "</tr>";
@@ -1560,75 +1604,69 @@
                         }
                     });
                 }                              
-
-                var addfields = new Array();
-                
+                                              
                 $('#btnSaved').click(function () {                    
                     SaveCustomFielsValues();                    
                 });                              
-                
-                
+                                
                 var additionalfud = new Array();                
                 
                 function getFile(elm) {
+                    var adDetail = {};
                     var id = $(elm).attr("id");
                     var name = '';         
-
+                    var div = '';
                     var fileUpload = $(elm);
                     var files = fileUpload.context.files;
                     for (var i = 0; i < files.length; i++) {
                         var file = files[i].name;
-                        
+                        name = files[i].name;
+
                         $.ajax({
                             type: "POST",
                             contentType: "application/json; charset=utf-8",
                             async: false,
                             url: "ListedDr_DetailAdd_Custom.aspx/SaveFileS3Bucket",
-                            data: "{'filename':'" + name + "'}",
+                            data: "{'filename':'" + file + "'}",
                             dataType: "json",
                             success: function (msg) {
                                 alert(msg.d);
                             }
                         });
 
+                        div = "<div> " + file + " <br /></div>";
+
                         adDetail.FileId = id;
                         adDetail.FileName = file;
+                        additionalfud.push(adDetail);
                     }
 
-                  
-                    var div = "<div> File name: " + name + " <br /></div>";
-                    console.log(div);
-                    $('.' + id + '').append(div);
-
-                   
-                    additionalfud.push(adDetail);
+                    $('.' + id + '').append(div);                  
+                    
                 }
+
                 console.log(additionalfud);
 
                 function SaveCustomFielsValues() {
-                    
+
+                 
+
                     var vflag = true;
 
-                    if ($('#<%=Txt_id.ClientID%>').val() == "")
-                    { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); vflag = false; return vflag; }
+                    if ($('#<%=Txt_id.ClientID%>').val() == "") { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); vflag = false; return vflag; }
 
-                    if ($('#<%=txtName.ClientID%>').val() == "")
-                    { alert("Enter Retailer Name."); $('#<%=txtName.ClientID%>').focus(); vflag = false; return vflag; }
+                    if ($('#<%=txtName.ClientID%>').val() == "") { alert("Enter Retailer Name."); $('#<%=txtName.ClientID%>').focus(); vflag = false; return vflag; }
 
                     var spec = $('#<%=ddlSpec.ClientID%> :selected').text();
-                    if (spec == "---Select---")
-                    { alert("Select Channel."); $('#<%=ddlSpec.ClientID%>').focus(); vflag = false; return vflag; }
+                    if (spec == "---Select---") { alert("Select Channel."); $('#<%=ddlSpec.ClientID%>').focus(); vflag = false; return vflag; }
 
                     var clas = $('#<%=ddlClass.ClientID%> :selected').text();
-                    if (clas == "---Select---")
-                    { alert("Select Class."); $('#<%=ddlClass.ClientID%>').focus(); vflag = false; return vflag; }
+                    if (clas == "---Select---") { alert("Select Class."); $('#<%=ddlClass.ClientID%>').focus(); vflag = false; return vflag; }
 
                     var Rou = $('#<%=ddlTerritory.ClientID%> :selected').text();
-                    if (Rou == "---Select---")
-                    { alert("Select Route."); $('#<%=ddlTerritory.ClientID%>').focus(); vflag = false; return vflag; }
+                    if (Rou == "---Select---") { alert("Select Route."); $('#<%=ddlTerritory.ClientID%>').focus(); vflag = false; return vflag; }
 
-                    if ($('#<%=txtAddress.ClientID%>').val() == "")
-                    { alert("Enter Address."); $('#<%=txtAddress.ClientID%>').focus(); vflag = false; return vflag; }
+                    if ($('#<%=txtAddress.ClientID%>').val() == "") { alert("Enter Address."); $('#<%=txtAddress.ClientID%>').focus(); vflag = false; return vflag; }
 
                     var sbreed = '';
                     $('#example-multiple-selected  > option:selected').each(function () {
@@ -1637,15 +1675,17 @@
 
                     $('#<%=hdnbreedname.ClientID%>').val(sbreed);
 
-                    $('.required').each(function () {                      
+                    var addfields = new Array();
+
+                    $('.required').each(function () {
                         //alert('hi');
                         var adDetail = {};
                         var fval = $(this).val();
                         var fid = `${this.id}`;
                         values = ""; fields = "";
                         fields = fid;
-                        var $label = $("label[for='" + fid + "']");
 
+                        //var $label = $("label[for='" + fid + "']");
                         //var msg = "Please Fill The " + $label.text() + "";
                         //if ((fval == null || fval == "" || fval == "0")) {
                         //    alert(msg);
@@ -1654,12 +1694,12 @@
                         //    return vflag;
                         //}                                               
 
-                        $(this).find('input[type="checkbox"]:checked').each(function () {                          
+                        $(this).find('input[type="checkbox"]:checked').each(function () {
                             fval += this.value + ",";
                         });
 
                         var rbval = '';
-                        $(this).find('input[type="radio"]:checked').each(function () {                            
+                        $(this).find('input[type="radio"]:checked').each(function () {
                             fval += this.value + ",";
                         });
 
@@ -1670,12 +1710,12 @@
                     });
 
                     $('.notrequired').each(function () {
-                       
+
                         var adDetail = {};
                         var fval = $(this).val();
                         var fid = `${this.id}`;
                         fields = "";
-                        fields = fid;                                               
+                        fields = fid;
 
                         $(this).find('input[type="checkbox"]:checked').each(function () {
                             //console.log(this.value);
@@ -1694,112 +1734,117 @@
                         addfields.push(adDetail);
                     });
 
-                    //console.log(addfields);
-
-                    if (vflag) {                        
-
-                        var fdata = {
-                            "DR_Name": $('#<%=txtName.ClientID%>').val(),
-                            "Mobile_No": $('#<%=txtMobile.ClientID%>').val(),
-                            "retail_code": $('#<%=Txt_id.ClientID%>').val(),
-                            "ERBCode": $('#<%=txtERBCode.ClientID%>').val(),
-                            "advance_amount": $('#<%=txtDOW.ClientID%>').val(),
-                            "DR_Spec": $('#<%=ddlSpec.ClientID%> option:selected').val(),
-                            "dr_spec_name": $('#<%=ddlSpec.ClientID%> option:selected').text(),
-                            "sales_Tax": $('#<%=salestaxno.ClientID%>').val(),
-                            "Tinno": $('#<%=TinNO.ClientID%>').val(),
-                            "DR_Terr": $('#<%=ddlTerritory.ClientID%> option:selected').val(),
-                            "credit_days": $('#<%=creditdays.ClientID%> option:selected').val(),
-
-                            "DR_Class": $('#<%=ddlClass.ClientID%> option:selected').val(),
-                            "drcategory": $('#<%=DDL_category.ClientID%> option:selected').val(),
-                            <%--"dscategoryName":$('#<%=DDL_category.ClientID%>').text(),--%>
-                            "dscategoryName": $('#<%=DDL_category.ClientID%> option:selected').text(),
-                            <%--"dr_class_name":$('#<%=ddlClass.ClientID%>').text(),--%>
-                            "dr_class_name": $('#<%=ddlClass.ClientID %> option:selected').text(),
-
-                            "ad": $('#<%=Txt_advanceamt.ClientID%>').val(),
-                            "DR_Address1": $('#<%=txtAddress.ClientID%>').val(),
-                            "DR_Address2": $('#<%=txtStreet.ClientID%>').val(),
-
-                            "Milk_pon": $('#<%=Txt_Mil_Pot.ClientID%>').val(),
-                            "UOM_Name": $('#<%=ddl_uom.ClientID%> option:selected').text(),
-                            "UOM": $('#<%=ddl_uom.ClientID%> option:selected').val(),
-
-                            "outstandng": $('#<%=txtoutstanding.ClientID%>').val(),
-                            "creditlmt": $('#<%=txtcreditlimit.ClientID%>').val(),
-                            "Cus_Alter": ($('input[type="radio"]').prop('checked')) ? 1 : 0,
-                            "latitude": $('#<%=txtlat.ClientID%>').val(),
-                            "longitude": $('#<%=txtlong.ClientID%>').val(),
-                            "DDL_Re_Type": $('#<%=DDL_Re_Type.ClientID%> option:selected').val(),
-                            "DFDairyMP": $('#<%=txtDMP.ClientID%>').val(),
-                            "MonthlyAI": $('#<%=txtmonA.ClientID%>').val(),
-                            "MCCNFPM": $('#<%=txtMFPM.ClientID%>').val(),
-                            "MCCMilkColDaily": $('#<%=txtMCL.ClientID%>').val(),
-                            "FrequencyOfVisit": $('#<%=ddlfzy.ClientID%>').val(),
-                            "Breed": $('#<%=hdnbreedname.ClientID%>').val(),
-                            "ukeys": $('#<%=hdnukey.ClientID%>').val(),
-                            "curentCom": $('#<%=ddlCC.ClientID%> option:selected').val(),
-                            "curentCompitat": $('#<%=ddlCC.ClientID%> option:selected').text(),
-                            "Email": $('#<%=txtmail.ClientID%>').val(),
-                            "Additionsfld": addfields,
-                            "Additionalfileud": additionalfud
-                        };
-
-                        //console.log(JSON.stringify(fdata));
-
-                        $.ajax({
-                            type: "POST",
-                            contentType: "application/json; charset=utf-8",
-                            async: false,
-                            url: "ListedDr_DetailAdd_Custom.aspx/SaveAdditionalField",
-                            /* data: JSON.stringify({ retailermainflds }),*/
-                            data: "{'fdata':'" + JSON.stringify(fdata) + "'}",
-                            dataType: "json",
-                            success: function (msg) {
-                                if (msg.d == "Updated Successfully") {
-                                    alert(msg.d);
-
-                                    ClearControls();
-
-                                    window.location.href = '../Retailer_Details_New.aspx';
-                                }
-                                else if (msg.d == "Created Successfully") {
-                                    alert(msg.d);
-
-                                    ClearControls();
-
-                                    window.location.href = '../Retailer_Details_New.aspx';
-                                }
-                                else if (msg.d == "Name Already Exist") {
-                                    alert(msg.d);
-
-                                    ClearControls();
-
-                                    window.location.href = '../Retailer_Details_New.aspx';
-                                }
-                                else if (msg.d == "Code Already Exist") {
-                                    alert(msg.d);
-
-                                    ClearControls();
-
-                                    window.location.href = '../Retailer_Details_New.aspx';
-                                }
-                                else if (msg.d == "ERP Code Already Exist") {
-                                    alert(msg.d);
-
-                                    ClearControls();
-
-                                    window.location.href = '../Retailer_Details_New.aspx';
-                                }
-                                else {
-                                    //alert(msg.d);                                    
-                                    // window.location.href = '../Retailer_Details.aspx';
-                                    //ClearControls();
-                                }
-                            }
-                        });
+                    if (additionalfud.length > 0) {
+                        for (var i = 0; i < additionalfud.length; i++) {
+                            var adDetail = {};
+                            adDetail.Fields = additionalfud[i].FileId;
+                            adDetail.Values = additionalfud[i].FileName;
+                            addfields.push(adDetail);
+                        }
                     }
+
+                    console.log(addfields);
+
+                    var fdata = {
+                        "DR_Name": $('#<%=txtName.ClientID%>').val(),
+                        "Mobile_No": $('#<%=txtMobile.ClientID%>').val(),
+                        "retail_code": $('#<%=Txt_id.ClientID%>').val(),
+                        "ERBCode": $('#<%=txtERBCode.ClientID%>').val(),
+                        "advance_amount": $('#<%=txtDOW.ClientID%>').val(),
+                        "DR_Spec": $('#<%=ddlSpec.ClientID%> option:selected').val(),
+                        "dr_spec_name": $('#<%=ddlSpec.ClientID%> option:selected').text(),
+                        "sales_Tax": $('#<%=salestaxno.ClientID%>').val(),
+                        "Tinno": $('#<%=TinNO.ClientID%>').val(),
+                        "DR_Terr": $('#<%=ddlTerritory.ClientID%> option:selected').val(),
+                        "credit_days": $('#<%=creditdays.ClientID%> option:selected').val(),
+
+                        "DR_Class": $('#<%=ddlClass.ClientID%> option:selected').val(),
+                        "drcategory": $('#<%=DDL_category.ClientID%> option:selected').val(),
+                        <%--"dscategoryName":$('#<%=DDL_category.ClientID%>').text(),--%>
+                        "dscategoryName": $('#<%=DDL_category.ClientID%> option:selected').text(),
+                        <%--"dr_class_name":$('#<%=ddlClass.ClientID%>').text(),--%>
+                        "dr_class_name": $('#<%=ddlClass.ClientID %> option:selected').text(),
+
+                        "ad": $('#<%=Txt_advanceamt.ClientID%>').val(),
+                        "DR_Address1": $('#<%=txtAddress.ClientID%>').val(),
+                        "DR_Address2": $('#<%=txtStreet.ClientID%>').val(),
+
+                        "Milk_pon": $('#<%=Txt_Mil_Pot.ClientID%>').val(),
+                        "UOM_Name": $('#<%=ddl_uom.ClientID%> option:selected').text(),
+                        "UOM": $('#<%=ddl_uom.ClientID%> option:selected').val(),
+
+                        "outstandng": $('#<%=txtoutstanding.ClientID%>').val(),
+                        "creditlmt": $('#<%=txtcreditlimit.ClientID%>').val(),
+                        "Cus_Alter": ($('input[type="radio"]').prop('checked')) ? 1 : 0,
+                        "latitude": $('#<%=txtlat.ClientID%>').val(),
+                        "longitude": $('#<%=txtlong.ClientID%>').val(),
+                        "DDL_Re_Type": $('#<%=DDL_Re_Type.ClientID%> option:selected').val(),
+                        "DFDairyMP": $('#<%=txtDMP.ClientID%>').val(),
+                        "MonthlyAI": $('#<%=txtmonA.ClientID%>').val(),
+                        "MCCNFPM": $('#<%=txtMFPM.ClientID%>').val(),
+                        "MCCMilkColDaily": $('#<%=txtMCL.ClientID%>').val(),
+                        "FrequencyOfVisit": $('#<%=ddlfzy.ClientID%>').val(),
+                        "Breed": $('#<%=hdnbreedname.ClientID%>').val(),
+                        "ukeys": $('#<%=hdnukey.ClientID%>').val(),
+                        "curentCom": $('#<%=ddlCC.ClientID%> option:selected').val(),
+                        "curentCompitat": $('#<%=ddlCC.ClientID%> option:selected').text(),
+                        "Email": $('#<%=txtmail.ClientID%>').val(),
+                        "Additionsfld": addfields
+                    };
+
+                    console.log(JSON.stringify(fdata));
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        async: false,
+                        url: "ListedDr_DetailAdd_Custom.aspx/SaveAdditionalField",
+                        /* data: JSON.stringify({ retailermainflds }),*/
+                        data: "{'fdata':'" + JSON.stringify(fdata) + "'}",
+                        dataType: "json",
+                        success: function (msg) {
+                            if (msg.d == "Updated Successfully") {
+                                alert(msg.d);
+
+                                ClearControls();
+
+                                window.location.href = '../Retailer_Details_New.aspx';
+                            }
+                            else if (msg.d == "Created Successfully") {
+                                alert(msg.d);
+
+                                ClearControls();
+
+                                window.location.href = '../Retailer_Details_New.aspx';
+                            }
+                            else if (msg.d == "Name Already Exist") {
+                                alert(msg.d);
+
+                                ClearControls();
+
+                                window.location.href = '../Retailer_Details_New.aspx';
+                            }
+                            else if (msg.d == "Code Already Exist") {
+                                alert(msg.d);
+
+                                ClearControls();
+
+                                window.location.href = '../Retailer_Details_New.aspx';
+                            }
+                            else if (msg.d == "ERP Code Already Exist") {
+                                alert(msg.d);
+
+                                ClearControls();
+
+                                window.location.href = '../Retailer_Details_New.aspx';
+                            }
+                            else {
+                                //alert(msg.d);                                    
+                                // window.location.href = '../Retailer_Details.aspx';
+                                //ClearControls();
+                            }
+                        }
+                    });
                 }
 
                 function GetCutomRetailerData(listeddrcode, columnName) {
@@ -2115,8 +2160,8 @@
                                                     var id = $(this).attr("id");
                                                     if (id == $fldnm) {
                                                         $("." + id + "").empty();
-                                                        var div = "<div> File name: " + $cval + " <br /></div>";
-                                                        console.log(div);
+                                                        var div = "<div> " + $cval + " <br /></div>";
+                                                        //console.log(div);
                                                         $("." + id + "").append(div);
                                                     }
                                                 });                                               
@@ -2132,8 +2177,8 @@
                                                     var id = $(this).attr("id");
                                                     if (id == $fldnm) {
                                                         $("." + id + "").empty();
-                                                        var div = "<div> File name: " + $cval + " <br /></div>";
-                                                        console.log(div);
+                                                        var div = "<div> " + $cval + " <br /></div>";
+                                                        //console.log(div);
                                                         $("." + id + "").append(div);
                                                     }
                                                 });      
@@ -2149,8 +2194,8 @@
                                                     var id = $(this).attr("id");
                                                     if (id == $fldnm) {
                                                         $("." + id + "").empty();
-                                                        var div = "<div> File name: " + $cval + " <br /></div>";
-                                                        console.log(div);
+                                                        var div = "<div> " + $cval + " <br /></div>";
+                                                        //console.log(div);
                                                         $("." + id + "").append(div);
                                                     }
                                                 });      

@@ -12,12 +12,12 @@ using System.IO;
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
-using Microsoft.Ajax.Utilities;
 using Amazon.S3.Model;
 using Amazon.Runtime;
 using System.Net;
-using System.Web.Script.Serialization;
-using Amazon.Runtime.Internal;
+using System.Text;
+using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
 {
@@ -26,6 +26,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     DataSet dsDivision = null;
     DataSet dsTerritory = null;
     DataSet newcontactDR = null;
+        
     public static string state_cd = string.Empty;
     public static string sf_type = string.Empty;
     public static string sState = string.Empty;
@@ -61,6 +62,15 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     public static string HQ = string.Empty;
     public static string HQNm = string.Empty;
     public static string baseUrl = "";
+    string error;
+    public static DataTable tb = new DataTable();
+    DataRow dr;
+    private const string bucketName = "happic";
+    
+    // Specify your bucket region (an example region is shown).
+    private static readonly RegionEndpoint bucketRegion = RegionEndpoint.APSouth1;
+    private static IAmazonS3 s3Client;
+
     #endregion
 
     protected override void OnPreInit(EventArgs e)
@@ -93,56 +103,60 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         //if ((Convert.ToString(Session["div_code"]) != null || Convert.ToString(Session["div_code"]) != ""))
         //{
-       
-        div_code = Session["div_code"].ToString();
-        try
-        {
-            sf_code = Session["Sf_Code"].ToString();
-            Terr_Code = Request.QueryString["terrcode"];
-        }
-        catch (Exception)
+
+        if (!Page.IsPostBack)
         {
 
-        }
-        doctorcode = Request.QueryString["ListedDrCode"];
-
-        Num();
-        if (Session["sf_type"].ToString() == "1")
-        {
-            sf_code = Session["sf_code"].ToString();
-            // UserControl_MR_Menu Usc_MR =
-            //(UserControl_MR_Menu)LoadControl("~/UserControl/MR_Menu.ascx");
-            // Divid.Controls.Add(Usc_MR);
-            // Usc_MR.Title = this.Page.Title;
-            lblTerrritory.Text = "( " + "<span style='font-weight: bold;color:Maroon;'>For " + Session["sf_Name"] + " </span>" + " - " + "<span style='font-weight: bold;color:Maroon;'>  " + Session["Terr_Name"] + "</span>" + " )";
-            btnBack.Visible = false;
-
-        }
-        else
-        {
+            div_code = Session["div_code"].ToString();
             try
             {
-                //sf_code = Session["
-                //"].ToString();
+                sf_code = Session["Sf_Code"].ToString();
+                Terr_Code = Request.QueryString["terrcode"];
             }
             catch (Exception)
             {
 
             }
+            doctorcode = Request.QueryString["ListedDrCode"];
 
-            //UserControl_MenuUserControl Usc_Menu =
-            // (UserControl_MenuUserControl)LoadControl("~/UserControl/MenuUserControl.ascx");
-            //Divid.Controls.Add(Usc_Menu);
-            //Divid.FindControl("btnBack").Visible = false;
-            //Usc_Menu.Title = this.Page.Title;
-            //menu1.Visible = false;
-            Session["backurl"] = "../Retailer_Details.aspx";
-            lblTerrritory.Text = "( " + "<span style='font-weight: bold;color:Maroon;'>For " + Session["sf_Name"] + " </span>" + " - " +
+            Num();
+            if (Session["sf_type"].ToString() == "1")
+            {
+                sf_code = Session["sf_code"].ToString();
+                // UserControl_MR_Menu Usc_MR =
+                //(UserControl_MR_Menu)LoadControl("~/UserControl/MR_Menu.ascx");
+                // Divid.Controls.Add(Usc_MR);
+                // Usc_MR.Title = this.Page.Title;
+                lblTerrritory.Text = "( " + "<span style='font-weight: bold;color:Maroon;'>For " + Session["sf_Name"] + " </span>" + " - " + "<span style='font-weight: bold;color:Maroon;'>  " + Session["Terr_Name"] + "</span>" + " )";
+                btnBack.Visible = false;
 
-                                 "<span style='font-weight: bold;color:Maroon;'>  " + Session["Terr_Name"] + "</span>" + " )";
-        }
-        if (!Page.IsPostBack)
-        {
+            }
+            else
+            {
+                try
+                {
+                    //sf_code = Session["
+                    //"].ToString();
+                }
+                catch (Exception)
+                {
+
+                }
+
+                //UserControl_MenuUserControl Usc_Menu =
+                // (UserControl_MenuUserControl)LoadControl("~/UserControl/MenuUserControl.ascx");
+                //Divid.Controls.Add(Usc_Menu);
+                //Divid.FindControl("btnBack").Visible = false;
+                //Usc_Menu.Title = this.Page.Title;
+                //menu1.Visible = false;
+                Session["backurl"] = "../Retailer_Details.aspx";
+                lblTerrritory.Text = "( " + "<span style='font-weight: bold;color:Maroon;'>For " + Session["sf_Name"] + " </span>" + " - " +
+
+                                     "<span style='font-weight: bold;color:Maroon;'>  " + Session["Terr_Name"] + "</span>" + " )";
+            }
+
+
+            error = "";
             Session["backurl"] = "../Retailer_Details.aspx";
             //menu1.Title = this.Page.Title;
 
@@ -160,6 +174,10 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             FillFzyofVisit();
             FillddlCC();
             FillType(div_code);
+
+            AddFileUploadControls();
+
+
             if (Request.QueryString["type"] != null)
             {
                 if ((Request.QueryString["type"].ToString() == "1") || (Request.QueryString["type"].ToString() == "2"))
@@ -170,8 +188,14 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 }
             }
         }
+
+        
+        //if (!Page.IsPostBack)
+        //{
+            
         //}
-        //else { Page.Response.Redirect(baseUrl, true); }
+        ////}
+        ////else { Page.Response.Redirect(baseUrl, true); }
 
     }
 
@@ -426,6 +450,26 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         return pid.ToArray();
     }
 
+    private void AddFileUploadControls()
+    {
+        DataSet ds = new DataSet();
+        lisdr ad = new lisdr();
+
+        ds = ad.GetCustomFormsFieldsFilesData(div_code, "3");
+
+        if (ds.Tables.Count > 0)
+        {
+            DataTable dt = ds.Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                fugv.Visible = true;
+                fugv.DataSource = dt;
+                fugv.DataBind();
+            }
+            else { fugv.Visible = false; }
+        }
+    }
+
     [WebMethod]
     public static string GetCustomFormsFieldsList(string divcode, string ModuleId)
     {
@@ -531,10 +575,8 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         ddlTerritory.DataBind();
         if (dsListedDR.Tables[0].Rows.Count <= 1)
         {
-
             //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Territory must be created prior to Customer creation');</script>");
         }
-
     }
 
     private void FillSpeciality()
@@ -759,14 +801,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         public string Values { get; set; }
     }
 
-    public class AfileUploadDetails
-    {
-        [JsonProperty("FileName")]
-        public string FileId { get; set; }
-
-        [JsonProperty("FileName")]
-        public string FileName { get; set; }
-    }
 
     public class RetailerMainfld
     {
@@ -886,8 +920,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         [JsonProperty("Additionsfld")]
         public List<AddtionalfieldDetails> Additionsfld { get; set; }
 
-        [JsonProperty("Additionalfileud")]
-        public List<AfileUploadDetails> Additionalfileud { get; set; }
     }
 
     [WebMethod(EnableSession = true)]
@@ -898,7 +930,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         RetailerMainfld sd = JsonConvert.DeserializeObject<RetailerMainfld>(fdata);
 
         List<AddtionalfieldDetails> addfields = sd.Additionsfld;
-        List<AfileUploadDetails> addfileuds = sd.Additionalfileud;
+
 
         string DR_Name = Convert.ToString(sd.DR_Name);
         string Mobile_No = Convert.ToString(sd.Mobile_No);
@@ -991,22 +1023,44 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         }
                     }
 
-                    if (addfileuds.Count > 0)
+                    if(tb.Rows.Count>0)
                     {
-                        int i = 0; string fld = ""; string val = "";
+                        int i = 0; string fld = ""; string val = ""; 
 
-                        for (int k = 0; k < addfileuds.Count; k++)
+                        for (int k = 0; k < tb.Rows.Count; k++)
                         {
-                            if ((addfileuds[k].FileId != "'undefined'" || addfileuds[k].FileId != "undefined") && (addfileuds[k].FileName != "'undefined'" || addfileuds[k].FileName != "undefined"))
+                            if ((Convert.ToString(tb.Rows[k]["FieldId"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldId"]) != "undefined") && (Convert.ToString(tb.Rows[k]["FieldVal"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldVal"]) != "undefined"))
                             {
-                                fld = addfileuds[k].FileId;
-                                val = addfileuds[k].FileName;
+                                fld = Convert.ToString(tb.Rows[k]["FieldId"]);
+
+                                val = Convert.ToString(tb.Rows[k]["FieldVal"]);
+
+                                if ((val == null || val == ""))
+                                { val = ""; }                              
 
                                 string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + RetailerID + "'";
                                 i = db_ER.ExecQry(uquery);
                             }
                         }
                     }
+                    
+
+                    //if (addfileuds.Count > 0)
+                    //{
+                    //    int i = 0; string fld = ""; string val = "";
+
+                    //    for (int k = 0; k < addfileuds.Count; k++)
+                    //    {
+                    //        if ((addfileuds[k].FileId != "'undefined'" || addfileuds[k].FileId != "undefined") && (addfileuds[k].FileName != "'undefined'" || addfileuds[k].FileName != "undefined"))
+                    //        {
+                    //            fld = addfileuds[k].FileId;
+                    //            val = addfileuds[k].FileName;
+
+                    //            string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + RetailerID + "'";
+                    //            i = db_ER.ExecQry(uquery);
+                    //        }
+                    //    }
+                    //}
 
                     msg = "Created Successfully";
                     //btnClear_Click(sender, e);
@@ -1062,22 +1116,22 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         }
                     }
 
-                    if (addfileuds.Count > 0)
-                    {
-                        int i = 0; string fld = ""; string val = "";
+                    //if (addfileuds.Count > 0)
+                    //{
+                    //    int i = 0; string fld = ""; string val = "";
 
-                        for (int k = 0; k < addfileuds.Count; k++)
-                        {
-                            if ((addfileuds[k].FileId != "'undefined'" || addfileuds[k].FileId != "undefined") && (addfileuds[k].FileName != "'undefined'" || addfileuds[k].FileName != "undefined"))
-                            {
-                                fld = addfileuds[k].FileId;
-                                val = addfileuds[k].FileName;
+                    //    for (int k = 0; k < addfileuds.Count; k++)
+                    //    {
+                    //        if ((addfileuds[k].FileId != "'undefined'" || addfileuds[k].FileId != "undefined") && (addfileuds[k].FileName != "'undefined'" || addfileuds[k].FileName != "undefined"))
+                    //        {
+                    //            fld = addfileuds[k].FileId;
+                    //            val = addfileuds[k].FileName;
 
-                                string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
-                                i = db_ER.ExecQry(uquery);
-                            }
-                        }
-                    }
+                    //            string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
+                    //            i = db_ER.ExecQry(uquery);
+                    //        }
+                    //    }
+                    //}
 
                     msg = "Updated Successfully";
                 }
@@ -1134,6 +1188,53 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         }
     }
 
+    protected void button1_click(string filename)
+    {
+        try
+        {
+            lisdr ld = new lisdr();
+            string msg = "";
+            DataSet dsDivision = ld.getStatePerDivision(div_code);
+            string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+            string directoryPath = urlshotName + "_" + "Retailer";
+
+
+            string _FullName = filename;
+            string _FilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
+            string awsKey = "AKIA5OS74MUCASG7HSCG";
+            string awsSecretKey = "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";
+            string bucketName = "happic";
+
+            //First I am creating a file with the file name in my local machine in a shared folder
+            string FileLocation = _FilePath + "\\" + _FullName;
+            FileStream fs = File.Create(_FullName);
+            fs.Close();
+
+            // Set up your AWS credentials
+            BasicAWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
+
+            // Create a new Amazon S3 client
+            AmazonS3Client s3Client = new AmazonS3Client(credentials, Amazon.RegionEndpoint.APSouth1);
+            // Upload the file to Amazon S3
+            TransferUtility fileTransferUtility = new TransferUtility(s3Client);
+            fileTransferUtility.Download(FileLocation, bucketName + "\\" + directoryPath, _FullName);
+            fileTransferUtility.Dispose();
+            WebClient webClient = new WebClient();
+            HttpResponse response = HttpContext.Current.Response;
+            response.Clear();
+            response.ClearContent();
+            response.ClearHeaders();
+            response.Buffer = true;
+            response.AddHeader("Content-Disposition", "attachment;filename=" + _FullName.ToString() + "");
+            byte[] data = webClient.DownloadData(FileLocation);
+            File.Delete(FileLocation); //After download starts, then I am deleting the file from the local path which I created initially.
+            response.BinaryWrite(data);
+            response.End();
+        }
+        catch (Exception ex) { }
+
+    }
+
 
     [WebMethod(EnableSession = true)]
     public static string SaveFileS3Bucket(string filename)
@@ -1144,100 +1245,66 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         DataSet dsDivision = ld.getStatePerDivision(div_code);
         string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
         string directoryPath = urlshotName + "_" + "Retailer";
-
-        //string currentDirectory = HttpContext.Current.Server.MapPath("~");
-        //string relativePath = "FMCGWebRetailer";
-        string filepath =   HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
-
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-        int bytesRead = 0;
-
+      
+        string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
+       
         //Create the Directory.
         if (!Directory.Exists(filepath))
         {
             Directory.CreateDirectory(filepath);
         }
 
-        File.Copy(filename, @"~\" + filepath + "\"" + filename);
-
-
-        string awsKey = "AKIA5OS74MUCASG7HSCG";
-        string awsSecretKey = "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";        
-        string bucketName = "happic";
-        string prefix = directoryPath + "/" + filename;       
-        string localFilePath = System.IO.Path.Combine(filepath);
-        string filePath = localFilePath;
-        try
+        string Ext = System.IO.Path.GetExtension(filename);
+                
+        if (((Ext == ".jpg") || (Ext == ".jpeg") || (Ext == ".png")))
         {
-            string keyName = filename;
-                      
-
-            // Set up your AWS credentials
-            BasicAWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
-
-            // Create a new Amazon S3 client
-            AmazonS3Client s3Client = new AmazonS3Client(credentials, Amazon.RegionEndpoint.APSouth1);
-            // Upload the file to Amazon S3
-            TransferUtility fileTransferUtility = new TransferUtility(s3Client);
-
-            fileTransferUtility.UploadAsync(filePath, bucketName + @"/" + directoryPath);
-            Console.WriteLine("Upload 1 completed");
-
-            fileTransferUtility.UploadAsync(filePath, bucketName + @"/" + directoryPath, keyName);
-            Console.WriteLine("Upload 2 completed");
-
-
-            using (var fileToUpload =  new FileStream(filePath, FileMode.Open, FileAccess.Read))     
+            using (var memoryStream = new MemoryStream())
             {
-                fileTransferUtility.UploadAsync(fileToUpload, bucketName, keyName);
-            }
-            Console.WriteLine("Upload 3 completed");
-
-
-            // Option 4. Specify advanced settings.
-            var fileTransferUtilityRequest = new TransferUtilityUploadRequest
+                System.Drawing.Image image = System.Drawing.Image.FromStream(memoryStream, true);
+                string filePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + filename;
+                image.Save(filePath);
+            }         
+        }
+        else
+        {
+            using (var memoryStream = new MemoryStream())
             {
-                BucketName = bucketName,
-                FilePath = filePath,
-                StorageClass = S3StorageClass.StandardInfrequentAccess,
-                PartSize = 6291456, // 6 MB.
-                Key = keyName,
-                CannedACL = S3CannedACL.PublicRead
-            };
-            fileTransferUtilityRequest.Metadata.Add("param1", "Value1");
-            fileTransferUtilityRequest.Metadata.Add("param2", "Value2");
-
-            fileTransferUtility.UploadAsync(fileTransferUtilityRequest);
-            Console.WriteLine("Upload 4 completed");
-
-
-            //fileTransferUtility.Upload(bucketName + @"/" + directoryPath, keyName);
-
-
-            GetObjectRequest request = new GetObjectRequest
-            {
-                BucketName = bucketName + @"/" + directoryPath,
-                Key = filename
-            };
-
-
-            GetObjectResponse response = s3Client.GetObject(request);
-
-            using (Stream responseStream = response.ResponseStream)
-            using (FileStream fileStream = File.Create(localFilePath))
-            {
-
-                while ((bytesRead = responseStream.Read(buffer, 0, bufferSize)) != 0)
+                var fileName = filename;
+                string tempFilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fileName);
+                using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write))
                 {
-                    fileStream.Write(buffer, 0, bytesRead);
-                } // end while
-
-                //responseStream.CopyTo(fileStream);
+                    memoryStream.WriteTo(fs);
+                }
             }
+        }
+       
+       
 
+        string name = filename;
+        string myBucketName = bucketName; //your s3 bucket name goes here  
+        string s3DirectoryName = directoryPath;
+        string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + name;
+        string s3FileName = @name;
+        string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
+        string awsSecretAccessKey = "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";
+        try
+        {        
+            
+            s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+            IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
+            TransferUtility utility = new TransferUtility(client);
+            TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
+            if (s3DirectoryName == "" || s3DirectoryName == null)
+            {
+                request.BucketName = myBucketName; //no subdirectory just bucket name  
+            }
+            else
+            {   // subdirectory and bucket name  
+                request.BucketName = myBucketName + @"/" + s3DirectoryName;
+            }
+            request.Key = s3FileName; //file name up in S3             
+            utility.Upload(request);
 
-            //Console.WriteLine("Upload completed!");
 
             msg = "Upload  completed !!";
         }
@@ -1246,6 +1313,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             //Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
             msg = "Error encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
         }
+
         catch (Exception e)
         {
             //Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
@@ -1254,6 +1322,244 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         return msg;
     }
+
+
+    [WebMethod(EnableSession = true)]
+    public static string DownloadDirectory(string filename)
+    {
+        string msg = "";
+        try
+        {
+            lisdr ld = new lisdr();
+
+            DataSet dsDivision = ld.getStatePerDivision(div_code);
+            string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+            string directoryPath = urlshotName + "_" + "Retailer";
+
+            string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
+
+            //Create the Directory.
+            if (!Directory.Exists(filepath))
+            {
+                Directory.CreateDirectory(filepath);
+            }
+
+            string name = filename;
+            string myBucketName = "happic"; //your s3 bucket name goes here
+            string bucketName = "happic";
+            string s3DirectoryName = directoryPath;
+            string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + name;
+            string s3FileName = @name;
+            string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
+            string awsSecretAccessKey = "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";
+
+            AmazonS3Client s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+            IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
+            TransferUtility transferUtility = new TransferUtility(client);
+              
+
+            if (s3DirectoryName == "" || s3DirectoryName == null)
+            {
+                bucketName = myBucketName; //no subdirectory just bucket name  
+            }
+            else
+            {   // subdirectory and bucket name  
+                bucketName = myBucketName + @"/" + s3DirectoryName;
+            }
+
+            
+            var s3Key = filename;
+            var filePath = HttpContext.Current.Server.MapPath("" + directoryPath + "") + "\\" + s3Key;
+
+            transferUtility.DownloadAsync(new TransferUtilityDownloadRequest
+            {
+                BucketName = bucketName,
+                Key = s3Key,
+                FilePath = cutrrentFilePath,
+            });
+
+            // Check to see if the file was downloaded.
+            if (File.Exists(filePath))
+            {
+                //Console.WriteLine("File successfully downloaded.");
+                msg = "File successfully downloaded. ";
+            }
+            else
+            {
+                msg = "File could not be downloaded. Make sure " + s3Key + "  ";
+                msg += "exists in the bucket, " + bucketName + " ";
+            }
+        }
+        catch (AmazonS3Exception s3Exception)
+        {
+            //Console.Write(s3Exception.Message, s3Exception.InnerException);
+            msg = " " + s3Exception.Message + " , " + s3Exception.InnerException + " ";
+        }
+        catch (Exception exception)
+        {
+            //Console.WriteLine(exception.Message, exception.InnerException);
+            msg = " " + exception.Message + " , " + exception.InnerException + " ";
+        }
+
+        return msg;
+
+    }
+
+
+    protected void btnUpload_Click(object sender, EventArgs e)
+    {
+
+        string FileName = ""; string FileID = "";
+        string error = "";
+        lisdr ld = new lisdr();
+
+        DataSet dsDivision = ld.getStatePerDivision(div_code);
+        string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+        string directoryPath = urlshotName + "_" + "Retailer";
+        string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
+
+        //Create the Directory.
+        if (!Directory.Exists(filepath))
+        {
+            Directory.CreateDirectory(filepath);
+        }
+
+        try
+        {  // Get the HttpFileCollection
+            tb = new DataTable();
+            tb.Columns.Add("FieldId", typeof(string));
+            tb.Columns.Add("FieldVal", typeof(string));
+            int search_results = Convert.ToInt32(fugv.Rows.Count);
+            if (search_results > 0)
+            {
+                for (int i = 0; i < fugv.Rows.Count; i++)
+                {
+
+                    dr = tb.NewRow();
+                   
+                    Label GLabelFC = fugv.Rows[i].FindControl("LabelFC") as Label;
+                    string FieldId = GLabelFC.Text.ToString().Trim();
+
+
+                    dr["FieldId"] = GLabelFC.Text.ToString().Trim();
+
+                    FileUpload fu = fugv.Rows[i].FindControl("flupslip") as FileUpload;
+
+                    if (fu.PostedFile.ContentLength > 0)
+                    {
+                        if (fu.PostedFile.ContentLength < 307200)
+                        {
+                            string address = HttpContext.Current.Server.MapPath("") + "\\" + fu.FileName;                          
+
+                            string Ext = System.IO.Path.GetExtension(fu.FileName);
+
+                            if (((Ext == ".txt") || (Ext == ".doc") || (Ext == ".docx") || (Ext == ".xls")
+                                || (Ext == ".xlsx") || (Ext == ".pdf") || (Ext == ".jpg")
+                                || (Ext == ".jpeg") || (Ext == ".png") || (Ext == ".gif")))
+                            {
+
+                                //fu.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + "doc[" + (i + 1).ToString() + "]@" + System.DateTime.Now.Date.Date.ToString("dd-MM-yy") + Ext);
+
+                                fu.PostedFile.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fu.FileName);
+
+                                Stream st = fu.PostedFile.InputStream;
+
+                                string name = Path.GetFileName(fu.FileName);
+                                string myBucketName = bucketName; //your s3 bucket name goes here  
+                                string s3DirectoryName = directoryPath;
+                                string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fu.FileName;
+                                string s3FileName = @name;
+                                string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
+                                string awsSecretAccessKey = "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";
+
+                                s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+                                IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
+                                TransferUtility utility = new TransferUtility(client);
+                                TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
+                                if (s3DirectoryName == "" || s3DirectoryName == null)
+                                {
+                                    request.BucketName = myBucketName; //no subdirectory just bucket name  
+                                }
+                                else
+                                {   // subdirectory and bucket name  
+                                    request.BucketName = myBucketName + @"/" + s3DirectoryName;
+                                }
+                                request.Key = fu.FileName; //file name up in S3  
+                                request.InputStream = fu.PostedFile.InputStream;
+                                utility.Upload(request);
+
+                                error = "'" + FileName.ToString() + "'" + " Uploaded Successfully..." + "<br>";
+
+                                ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+
+                               
+                                dr["FieldVal"] = fu.FileName.ToString().Trim();
+                                tb.Rows.Add(dr);
+                            }
+                            else
+                            {
+                                error = "'" + FileName.ToString() + "'" + " Failed :" + "'" + Ext.ToString() + "'" + " Extension not supported... " + "<br>";
+                                ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+                            }
+                        }
+                        else
+                        { 
+                            error = "'" + FileName.ToString() + "'" + " Failed : " + " file length should not exceed 3MB... " + "<br>";
+                            ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+                        }
+                    }
+                    else
+                    { 
+                        error = "'" + FileName.ToString() + "'" + " Failed : " + " File is Empty... " + "<br>";
+                        ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+                    }                   
+                }
+            }
+
+            //HttpFileCollection hfc = Request.Files;
+
+            //for (int i = 0; i < hfc.Count; i++)
+            //{
+            //    HttpPostedFile hpf = hfc[i];
+
+            //    FileName = System.IO.Path.GetFileName(hpf.FileName);
+            //    FileID = System.IO.Path.GetFileName(hpf.FileName);
+
+            //    if (hpf.ContentLength > 0)
+            //    {
+            //        if (hpf.ContentLength < 307200)
+            //        {
+            //            string Ext = System.IO.Path.GetExtension(hpf.FileName);
+
+            //            if (((Ext == ".txt") || (Ext == ".doc") || (Ext == ".docx") || (Ext == ".xls")
+            //                || (Ext == ".xlsx") || (Ext == ".pdf") || (Ext == ".jpg")
+            //                || (Ext == ".jpeg") || (Ext == ".png") || (Ext == ".gif")))
+            //            {
+
+            //                hpf.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + "doc[" + (i + 1).ToString() + "]@" + System.DateTime.Now.Date.Date.ToString("dd-MM-yy") + Ext);
+
+            //                error = "'" + FileName.ToString() + "'" + " Uploaded Successfully..." + "<br>";
+            //            }
+
+            //            else
+            //            { error = "'" + FileName.ToString() + "'" + " Failed :" + "'" + Ext.ToString() + "'" + " Extension not supported... " + "<br>"; }
+
+            //        }
+            //        else
+            //        { error = "'" + FileName.ToString() + "'" + " Failed : " + " file length should not exceed 3MB... " + "<br>"; }
+
+            //    }
+            //    else
+            //    { error = "'" + FileName.ToString() + "'" + " Failed : " + " File is Empty... " + "<br>"; }
+
+            //    lblError.Text = error + lblError.Text;
+            //}
+        }
+        catch (Exception ex)
+        { Response.Write(ex.Message); }
+
+    }
+
 
     public class lisdr
     {
@@ -1291,8 +1597,8 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             return dsAdmin;
         }
 
-
         string strQry = string.Empty;
+
         public DataSet ViewListedDr(string drcode)
         {
             DB_EReporting db_ER = new DB_EReporting();
@@ -1760,6 +2066,42 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             return dsAdmin;
         }
 
+        public DataSet GetCustomFormsFieldsFilesData(string divcode, string ModeleId)
+        {
+
+            DataSet dsAdmin = new DataSet();
+
+            string strQry = "SELECT * FROM Trans_Custom_Fields_Details ";
+            strQry += " WHERE Div_code = @Division_Code AND ModuleId=@ModuleId AND Fld_Type IN('FSC','FS','FC') ";
+
+            try
+            {
+                using (var con = new SqlConnection(Global.ConnString))
+                {
+                    using (var cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = strQry;
+                        cmd.Parameters.AddWithValue("@Division_Code", Convert.ToInt32(div_code));
+                        cmd.Parameters.AddWithValue("@ModuleId", Convert.ToInt32(ModeleId));
+                        cmd.CommandType = CommandType.Text;
+                        SqlDataAdapter dap = new SqlDataAdapter();
+                        dap.SelectCommand = cmd;
+                        con.Open();
+                        dap.Fill(dsAdmin);
+                        con.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+            return dsAdmin;
+
+        }
+
+
         public int Recordupdate_detail1(string Dr_Code, string curentCompitat, string DR_Name, string sf_code, string Mobile_No, string retail_code, string advance_amount, string DR_Spec, string dr_spec_name, string sales_Tax, string Tinno, string DR_Terr, string credit_days, string DR_Class, string dr_class_name, string ad, string DR_Address1, string DR_Address2, string div_code, string Milk_Potential, string UOM, string UOM_Name, string Retailer_Type, string outstanding, string credit_limit, string Cus_alt, string catgoryCode, string catgoryName, string erbCode, string latitude, string longitude, string DFDairyMP, string MonthlyAI, string MCCNFPM, string MCCMilkColDaily, string FrequencyOfVisit, string Breed, string curentCom, string ukey, string txtmail)
         {
             int iReturn = -1;
@@ -2112,6 +2454,5 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             }
             return dsAdmin;
         }
-
     }
 }
