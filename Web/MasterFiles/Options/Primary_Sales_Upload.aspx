@@ -130,56 +130,62 @@
                                                 <td>
                                                     <asp:Label ID="lblExc" runat="server" Text="Excel Format File" style="position:relative;color: #336277;font-family: Verdana;font-weight: bold;text-transform: capitalize;font-size: 12px;"></asp:Label>
                                                 </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center">                                                
-                                                        <asp:ImageButton ID="Upldbt" runat="server" ImageUrl="~/Images/button_download-here.png" OnClick="lnkDownload_Click" />
-                                                    </td>
-                                                </tr>
-                                               <tr style="border: 1px solid Black;"></tr>
-                                                <tr>
-                                                    <td style="padding-right:auto">
-                                                        <asp:Label ID="Label1" runat="server" class="pad HDBg" style="position:relative;color: #336277;font-family: Verdana;font-weight: bold;text-transform: capitalize;font-size: 14px;">Excel file</asp:Label>
-                                                        <br />
-                                                        <asp:FileUpload ID="FlUploadcsv" runat="server" style="padding-left:20px;"  />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="right" style="padding-right:4px;">
-                                                        <asp:Label ID="lbldiv" runat="server" Text="Select Division :" ></asp:Label>                                   
-                                                        <asp:DropDownList ID="ddldiv" SkinID="ddlRequired" runat="server" ValidationGroup="Val" AutoPostBack="false">
-                                                        </asp:DropDownList>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center">
-                                                        <asp:ImageButton ID="upbt" runat="server"  Width="100px" Height="30px" ImageUrl="~/Images/button_upload.jpg" Text="Upload" OnClick="upbt_Click" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <br />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="border: 1px solid Black; padding-left:70px; ">
-                                                        <asp:Label ID="lblIns" runat="server" Visible="false" Text="Upload File Details:" ForeColor="Red"></asp:Label>
-                                                        <br />
-                                                        <asp:Label ID="Label2" Font-Size="11px" Visible="false" Font-Names="Verdana" runat="server" Width="280px" Text="1) File Name:"></asp:Label>
-                                                        <br />
-                                                        <asp:Label ID="Label3" Font-Size="11px" Visible="false" Font-Names="Verdana" runat="server" Text="2) File size:"></asp:Label>
-                                                        <br />
-                                                        <asp:Label ID="Label4" Font-Size="11px" Visible="false" Font-Names="Verdana" runat="server" Text="3) File Analysis:"></asp:Label>
-                                                        <br />
-                                                        <asp:Label ID="Label5" Font-Size="11px" Visible="false" Font-Names="Verdana" runat="server" Text="4) Status:"></asp:Label>
-                                                        <br />
-                                                        <div id="dvStatus" style="display:block;width:80%;overflow:auto;height:auto !important">
+                                            </tr>
+                                            <tr>
+                                                <td align="center">                                                
+                                                    <asp:ImageButton ID="Upldbt" runat="server" ImageUrl="~/Images/button_download-here.png" OnClick="lnkDownload_Click" />
+                                                </td>
+                                            </tr>
+                                            <tr style="border: 1px solid Black;"></tr>
+                                            <tr>
+                                                <td style="padding-right:auto">
+                                                    <asp:Label ID="Label1" runat="server" class="pad HDBg" style="position:relative;color: #336277;font-family: Verdana;font-weight: bold;text-transform: capitalize;font-size: 14px;">Excel file</asp:Label>
+                                                    <br />
+                                                    <asp:FileUpload ID="FlUploadcsv" runat="server" style="padding-left:20px;"  />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" style="padding-right:4px;">
+                                                    <asp:Label ID="lbldiv" runat="server" Text="Select Division :" ></asp:Label>                                   
+                                                    <asp:DropDownList ID="ddldiv" SkinID="ddlRequired" runat="server" ValidationGroup="Val" AutoPostBack="false">
 
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                
-                                            </table>
+                                                    </asp:DropDownList>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center">
+                                                    <asp:ImageButton ID="upbt" runat="server"  Width="100px" Height="30px" ImageUrl="~/Images/button_upload.jpg" Text="Upload" OnClick="upbt_Click" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="border: 1px solid Black; padding-left:70px; ">
+                                                    <asp:Label ID="lblIns" runat="server" Visible="false" Text="Upload File Details:" ForeColor="Red"></asp:Label>
+                                                    <br />
+                                                    <asp:Label ID="Label2" Font-Size="11px" Visible="false" Font-Names="Verdana" runat="server" Width="280px" Text="1) File Name:"></asp:Label>
+                                                    <br />
+                                                    <asp:Label ID="Label3" Font-Size="11px" Visible="false" Font-Names="Verdana" runat="server" Text="2) File size:"></asp:Label>
+                                                    <br />
+                                                    <asp:Label ID="Label4" Font-Size="11px" Visible="false" Font-Names="Verdana" runat="server" Text="3) File Analysis:"></asp:Label>
+                                                    <br />
+                                                    <asp:Label ID="Label5" Font-Size="11px" Visible="false" Font-Names="Verdana" runat="server" Text="4) Status:"></asp:Label>
+                                                    <br />
+                                                    <div id="dvStatus" style="display:block;width:80%;overflow:auto;height:auto !important">
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <br />
+                                                    <asp:Label ID="Label6" runat="server" Text="" style="position:relative;color: #336277;font-family: Verdana;font-weight: bold;text-transform: capitalize;font-size: 12px;"></asp:Label>
+                                                </td>
+                                            </tr>
+                                        </table>
                                         </td>
                                     </tr>
                                 </table>

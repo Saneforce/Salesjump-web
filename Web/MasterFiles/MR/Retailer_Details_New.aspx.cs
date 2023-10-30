@@ -476,7 +476,6 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
         return dt;
     }
 
-
     [WebMethod(EnableSession = true)]
     public static string DownloadImageFromS3(string filename)
     {
@@ -497,58 +496,13 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
                 Directory.CreateDirectory(filepath);
             }
 
-            string name = filename;
-            string myBucketName = "happic"; //your s3 bucket name goes here
-            string bucketName = "happic";
-            string s3DirectoryName = directoryPath;
-            string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + name;
-            string s3FileName = @name;
-            string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
-            string awsSecretAccessKey = "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";
-            var bucketRegion = RegionEndpoint.APSouth1;
+            string currentDirectory = HttpContext.Current.Server.MapPath("~");
+            string relativePath = directoryPath;
 
-            AmazonS3Client s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
-            IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
-            TransferUtility transferUtility = new TransferUtility(client);
-
-
-            if (s3DirectoryName == "" || s3DirectoryName == null)
-            {
-                bucketName = myBucketName; //no subdirectory just bucket name  
-            }
-            else
-            {   // subdirectory and bucket name  
-                bucketName = myBucketName + @"/" + s3DirectoryName;
-            }
-
-
-            var s3Key = filename;
-            var filePath = HttpContext.Current.Server.MapPath("" + directoryPath + "") + "\\" + s3Key;
-
-            transferUtility.DownloadAsync(new TransferUtilityDownloadRequest
-            {
-                BucketName = bucketName,
-                Key = s3Key,
-                FilePath = cutrrentFilePath,
-            });
-
-            // Check to see if the file was downloaded.
-            if (File.Exists(filePath))
-            {
-                //Console.WriteLine("File successfully downloaded.");
-                msg = "File successfully downloaded. ";
-            }
-            else
-            {
-                msg = "File could not be downloaded. Make sure " + s3Key + "  ";
-                msg += "exists in the bucket, " + bucketName + " ";
-            }
+            // Iterate through the static fields for image fields and retrieve/save them
+            msg = RetrieveAndSaveImage(filename, currentDirectory, relativePath);
         }
-        catch (AmazonS3Exception s3Exception)
-        {
-            //Console.Write(s3Exception.Message, s3Exception.InnerException);
-            msg = " " + s3Exception.Message + " , " + s3Exception.InnerException + " ";
-        }
+        
         catch (Exception exception)
         {
             //Console.WriteLine(exception.Message, exception.InnerException);
@@ -559,54 +513,52 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 
     }
 
-
-    [WebMethod(EnableSession = true)]
-    public static string DownloadDirectory(string fileName)
+    private static string RetrieveAndSaveImage(string objectKey, string currentDirectory, string relativePath)
     {
         string msg = "";
-        rdloc ld = new rdloc();
-
-        DataSet dsDivision = ld.getStatePerDivision(divCode);
-        string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
-        string directoryPath = urlshotName + "_" + "Retailer";
-
-        string accessKey = "AKIA5OS74MUCASG7HSCG";
-        string accessSecret = "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";
-        var bucketRegion = RegionEndpoint.APSouth1;
-        AmazonS3Client client = new AmazonS3Client(accessKey, accessSecret, bucketRegion);
-
-        var transferUtility = new TransferUtility(client);
-        string bucketName = "happic";
-        string folderName = directoryPath;
-
-        string objectKey = folderName + "/" + fileName;
-
-        // Modify this path to save the image to your desired local directory.
-        string localFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/" + fileName);
-
-        try
+        if (!string.IsNullOrWhiteSpace(objectKey))
         {
-            transferUtility.Download(localFilePath, bucketName, objectKey);
+            string localFilePath = Path.Combine(currentDirectory, relativePath, objectKey);
 
-            // Check if the file exists at the localFilePath.
-            if (File.Exists(localFilePath))
+            try
             {
-                msg = "Image downloaded locally on the server successfully.";
+
+
+                var awsKey = "AKIA5OS74MUCASG7HSCG";
+                var awsSecretKey = "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";
+                var bucketRegion = RegionEndpoint.APSouth1;
+                string bucketName = "hoppic";
+                string prefix = "hoppic/" + relativePath + "/" + objectKey;
+                string fullObjectKey = "hoppic/" + relativePath + "/" + objectKey;
+                using (IAmazonS3 client = new AmazonS3Client(awsKey, awsSecretKey, bucketRegion))
+                {
+                    GetObjectRequest request = new GetObjectRequest
+                    {
+                        BucketName = bucketName,
+                        Key = fullObjectKey
+                    };
+
+                    GetObjectResponse response = client.GetObject(request);
+
+                    using (Stream responseStream = response.ResponseStream)
+                    using (FileStream fileStream = File.Create(localFilePath))
+                    {
+                        responseStream.CopyTo(fileStream);
+                    }
+
+                    msg = " " + objectKey + " retrieved and saved locally.";
+
+                    Console.WriteLine(" " + objectKey + " retrieved and saved locally.");
+                }
             }
-            else
+            catch (AmazonS3Exception ex)
             {
-                msg = "Image download failed.";
+                msg = " " + ex.Message.ToString() + " ";
+                //throw ex;
             }
         }
-        catch (AmazonS3Exception ex)
-        {
-            // Handle exceptions here.
-            msg= "Error: " + ex.Message;
-        }
-
         return msg;
     }
-
 
     public class rdloc
     {

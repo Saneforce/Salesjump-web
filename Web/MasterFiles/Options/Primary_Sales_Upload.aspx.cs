@@ -7,6 +7,11 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.IO;
 using System.Data.OleDb;
+using System.Reflection;
+using System.Windows.Interop;
+using System.Globalization;
+using System.Web;
+using System.Drawing;
 
 public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Page
 {
@@ -24,7 +29,8 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
     #region  OnPreInit
     protected override void OnPreInit(EventArgs e)
     {
-        baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+        baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/Index.apx";
+
         if ((Convert.ToString(Session["div_code"]) != null || Convert.ToString(Session["div_code"]) != ""))
         {
             base.OnPreInit(e);
@@ -49,7 +55,7 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
     #region Page_Load
     protected void Page_Load(object sender, EventArgs e)
     {
-        baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+        baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/Index.apx";
         if ((Convert.ToString(Session["div_code"]) != null || Convert.ToString(Session["div_code"]) != ""))
         {
             div_code = Session["div_code"].ToString();
@@ -102,11 +108,10 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
     }
     #endregion
 
-   
+
     #region upbt_Click
     protected void upbt_Click(object sender, EventArgs e)
     {
-        
         ImporttoDatatable();       
     }
     #endregion
@@ -114,64 +119,160 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
     #region ImporttoDatatable
     private void ImporttoDatatable()
     {
+        String sMsg = "";
         try
         {
+            bool extFlag = false;
+            string connectionString = "";
+
             if (FlUploadcsv.HasFile)
             {
+                string fileName = Path.GetFileName(FlUploadcsv.PostedFile.FileName);
+                string fileExtension = Path.GetExtension(FlUploadcsv.PostedFile.FileName);
+                string excelPath = HttpContext.Current.Server.MapPath("~/Upload_Document/");
 
-                string excelPath = Server.MapPath("~/Upload_Document/") + Path.GetFileName(FlUploadcsv.PostedFile.FileName);
-                FlUploadcsv.SaveAs(excelPath);
-
-                string conString = string.Empty;
-                string extension = Path.GetExtension(FlUploadcsv.PostedFile.FileName);
-
-                if (extension == ".xls" || extension == ".xlsx")
+                //Create the Directory.
+                if (!Directory.Exists(excelPath))
                 {
-                    switch (extension)
-                    {
-                        case ".xls": //Excel 97-03
-                            conString = ConfigurationManager.ConnectionStrings["Excel03ConString"].ConnectionString;
-                            break;
-                        case ".xlsx": //Excel 07 or higher
-                            conString = ConfigurationManager.ConnectionStrings["Excel07+ConString"].ConnectionString;
-                            break;
-                    }
+                    Directory.CreateDirectory(excelPath);
+                }
 
-                    conString = string.Format(conString, excelPath);
-                    using (OleDbConnection excel_con = new OleDbConnection(conString))
-                    {
-                        excel_con.Open();
-                        string sheet1 = excel_con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null).Rows[0]["TABLE_NAME"].ToString();
-                        DataTable dtExcelData = new DataTable();
+                string fileLocation = HttpContext.Current.Server.MapPath("~/Upload_Document/" + fileName);
+               
+                
+                if (fileExtension == ".xls")
+                {
+                    FlUploadcsv.SaveAs(fileLocation);
 
-                        string squery = " SELECT [Contract_No],[Contract_Date],[Customer_Erp_Code],[Customer_Contract],[Item],";
-                        squery += " [Item_ERP_Code],[Unit],[Pack],[Qty_In_Mt],[Rate],[Item_Amount]";
-                        squery += "  FROM [" + sheet1 + "]";
-                        //squery = "SELECT [Contract_No],[Contract_Date],[Customer_Erp_Code],[Customer_Contract],[Item],[Item_ERP_Code],[Unit],[Pack],[Qty_In_Mt],[Rate],[Item_Amount]  FROM [" + sheet1 + "]"
+                    connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";                    
+                    extFlag = true;
+                }
+                else if(fileExtension == ".xlsx")
+                {
 
-                        using (OleDbDataAdapter oda = new OleDbDataAdapter(squery, excel_con))
-                        {
-                            ds = new DataSet();
-                            oda.Fill(ds);
-                            Dt = ds.Tables[0];
-                        }
-                        excel_con.Close();
-                    }
+                    FlUploadcsv.SaveAs(fileLocation);
 
-                    if(Dt.Rows.Count > 0)
-                    {
-                        ExecuteSqlTransaction(Dt);
-                    }
+                    connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";                   
+                    extFlag = true;
+                }
+                else
+                {                    
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "onload", "alert('invalid file format!! you must upload a file having an extention of either (.xls) or (.xlsx)');", true);
+                    extFlag = false;
+
+                    Label6.Text = "invalid file format!! you must upload a file having an extention of either (.xls) or (.xlsx)";
+                }   
+            }
+            if (extFlag == true)
+            {
+
+                OleDbConnection con = new OleDbConnection(connectionString);
+                OleDbCommand cmd = new OleDbCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Connection = con;
+                OleDbDataAdapter dAdapter = new OleDbDataAdapter(cmd);
+                //DataSet ds = new DataSet();
+                DataTable dtExcelRecords = new DataTable();
+                con.Open();
+                DataTable dtExcelSheetName = con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                string getExcelSheetName = dtExcelSheetName.Rows[0]["Table_Name"].ToString();
+                cmd.CommandText = "SELECT [Contract_No],[Contract_Date],[Customer_Erp_Code],[Customer_Contract],[Item],[Item_ERP_Code],[Unit],[Pack],[Qty_In_Mt],[Rate],[Item_Amount] FROM [" + getExcelSheetName + "]";
+                dAdapter.SelectCommand = cmd;
+                dAdapter.Fill(dtExcelRecords);
+                con.Close();
+
+                ExecuteSqlTransaction(dtExcelRecords);
+
+                if (dtExcelRecords.Rows.Count > 0)
+                {
+                   
+                    ExecuteSqlTransaction(dtExcelRecords);
                 }
                 else
                 {
-                    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Upload Only Excel File'); return false;</script>");
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "onload", "alert('Empty Excel File');", true);
+
+                    Label6.Text = "Empty Excel File";
                 }
             }
+           
+
+            //if (FlUploadcsv.HasFile)
+            //{
+            //    string excelPath = HttpContext.Current.Server.MapPath("~/Upload_Document/");
+
+            //    //Create the Directory.
+            //    if (!Directory.Exists(excelPath))
+            //    {
+            //        Directory.CreateDirectory(excelPath);
+            //    }
+
+
+            //    FlUploadcsv.SaveAs(excelPath + Path.GetFileName(FlUploadcsv.PostedFile.FileName));
+
+            //    string conString = string.Empty;
+            //    string extension = Path.GetExtension(FlUploadcsv.PostedFile.FileName);
+            
+            //    string sheet1 = ""; string squery = "";
+              
+            //    if ((extension == ".xls" || extension == ".xlsx"))
+            //    {
+            //        if ((extension == ".xls"))
+            //        {
+            //            conString = ConfigurationManager.ConnectionStrings["Excel03ConString"].ConnectionString;
+            //        }
+            //        else if ((extension == ".xlsx"))
+            //        {
+            //            conString = ConfigurationManager.ConnectionStrings["Excel07+ConString"].ConnectionString;
+            //        }
+
+            //        OleDbConnection excel_con = new OleDbConnection(conString);
+                    
+            //        excel_con.Open();
+            //        sheet1 = excel_con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null).Rows[0]["TABLE_NAME"].ToString();
+                    
+            //        squery = " SELECT [Contract_No],[Contract_Date],[Customer_Erp_Code],[Customer_Contract],[Item],";
+            //        squery += " [Item_ERP_Code],[Unit],[Pack],[Qty_In_Mt],[Rate],[Item_Amount]";
+            //        squery += "  FROM [" + sheet1 + "]";
+
+            //        //squery = "SELECT [Contract_No],[Contract_Date],[Customer_Erp_Code],[Customer_Contract],[Item],[Item_ERP_Code],[Unit],[Pack],[Qty_In_Mt],[Rate],[Item_Amount]  FROM [" + sheet1 + "]"
+            //        OleDbCommand cmd = new OleDbCommand(squery, excel_con);
+            //        cmd.CommandType = CommandType.Text;
+            //        OleDbDataAdapter oda = new OleDbDataAdapter();
+            //        oda.SelectCommand = cmd;
+            //        oda.Fill(ds);
+            //        excel_con.Close();
+            //        excel_con.Dispose();
+
+            //        if (ds.Tables.Count > 0)
+            //        {
+            //            Dt = ds.Tables[0];
+            //            ExecuteSqlTransaction(Dt);
+            //        }
+            //        else
+            //        {
+            //            Label6.Text = "Empty Excel Sheet";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        sMsg += "Upload Only Excel File";
+
+            //        Label6.Text = "Upload Only Excel File";
+            //        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANG
+            //        //UAGE='javascript'>alert('Upload Only Excel File'); return false;</script>");
+            //    }
+            //}
         }
         catch (Exception ex)
         {
-            ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('" + ex.Message + "'); return false;</script>");
+
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "onload", "alert('" + Convert.ToString(ex.Message.ToString()) + "');", true);
+
+            //sMsg += "Error Message: " + Convert.ToString(ex.Message) + "";
+            Label6.Text = ex.Message;
+
+            //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('" + ex.Message + "'); return false;</script>");            
         }
     }
     #endregion
@@ -185,7 +286,9 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
         string stk_Name = string.Empty;
         string prod_Code = string.Empty;
         string prod_Name = string.Empty;
-        String sMsg = ""; lstdr dr = new lstdr();
+
+        String sMsg = ""; 
+        lstdr dr = new lstdr();
 
         try
         {
@@ -242,44 +345,75 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
 
                             if (dslstst.Rows.Count > 0 && dslstprod.Rows.Count > 0)
                             {
-
                                 try
                                 {
-                                    con.Open();
 
+                                    string cd = Convert.ToString(columns[1].Trim());
+
+                                    //DateTime ContractDate = DateTime.ParseExact(Convert.ToString(columns[1].Trim()), "yyyy-MM-dd hh:mm:ss", CultureInfo.InvariantCulture);                                   
+                                    //DateTime date =  DateTime.ParseExact(columns[1].Trim(), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                                    DateTime date = Convert.ToDateTime(columns[1]);
+                                    string formattedDate = date.ToString("yyyy-MM-dd HH:mm:ss");
+
+
+                                    con.Open();
                                     SqlCommand cmd = new SqlCommand("Insert_PrimarySalesValue", con);
                                     cmd.CommandType = CommandType.StoredProcedure;
-
-                                    SqlParameter[] parameters = new SqlParameter[]
-                                    {
-                                new SqlParameter("@Div", div_code.Trim()),
-                                new SqlParameter("@ContractNo",Convert.ToString(columns[0].Trim()) ),
-                                new SqlParameter("@ContractDate", Convert.ToDateTime(columns[1].Trim())),
-                                new SqlParameter("@Erp_Cust_Code", Convert.ToString(columns[2].Trim())),
-                                new SqlParameter("@CustomerContract", Convert.ToString(columns[3].Trim())),
-                                new SqlParameter("@Item", Convert.ToString(columns[4]).Trim()),
-                                new SqlParameter("@EDPItemCode", Convert.ToString(columns[5].Trim())),
-                                new SqlParameter("@Unit", Convert.ToString(columns[6]).Trim()),
-                                new SqlParameter("@Pack", Convert.ToString(columns[7]).Trim()),
-                                new SqlParameter("@QtyINMt", Convert.ToString(columns[8]).Trim()),
-                                new SqlParameter("@Rate", Convert.ToString(columns[9].Trim())),
-                                new SqlParameter("@Sales_Value", Convert.ToDecimal(columns[10].Trim()))
-                                    };
-                                    cmd.Parameters.AddRange(parameters);
-
-                                    int i = cmd.ExecuteNonQuery();
-
+                                    cmd.Parameters.AddWithValue("@Div", div_code.ToString().Trim());
+                                    cmd.Parameters.AddWithValue("@ContractNo", Convert.ToString(columns[0].Trim()));
+                                    cmd.Parameters.AddWithValue("@ContractDate", Convert.ToString(formattedDate));
+                                    cmd.Parameters.AddWithValue("@Erp_Cust_Code", Convert.ToString(columns[2].Trim()));
+                                    cmd.Parameters.AddWithValue("@CustomerContract", Convert.ToString(columns[3].Trim()));
+                                    cmd.Parameters.AddWithValue("@Item", Convert.ToString(columns[4].Trim()));
+                                    cmd.Parameters.AddWithValue("@EDPItemCode", Convert.ToString(columns[5].Trim()));
+                                    cmd.Parameters.AddWithValue("@Unit", Convert.ToString(columns[6].Trim()));
+                                    cmd.Parameters.AddWithValue("@Pack", Convert.ToString(columns[7].Trim()));
+                                    cmd.Parameters.AddWithValue("@QtyINMt", Convert.ToString(columns[8].Trim()));
+                                    cmd.Parameters.AddWithValue("@Rate", Convert.ToString(columns[9].Trim()));
+                                    cmd.Parameters.AddWithValue("@Sales_Value", Convert.ToDecimal(columns[10].Trim()));
+                                    //cmd.Parameters.Add("@returnMessage", SqlDbType.NVarChar, 150).Direction = ParameterDirection.Output;
+                                    cmd.Parameters.Add("@returnMessage", SqlDbType.NVarChar, 150);
+                                    cmd.Parameters["@returnMessage"].Direction = ParameterDirection.Output;
+                                    cmd.ExecuteNonQuery();
+                                    string outmsg = Convert.ToString(cmd.Parameters["@returnMessage"].Value);
                                     con.Close();
-                                    if (i > 0)
-                                    {
-                                        sMsg += " Product_Code : " + Convert.ToString(columns[5]).Trim() + "  AND  Distributor_Code : " + Convert.ToString(columns[2]).Trim() + "  Uploaded Successfully... " + (j + 2) + " <br /> ";
-                                    }
+                                                                        
+                                    sMsg += Convert.ToString(outmsg);
+
+                                    //    con.Open();
+                                    //    SqlCommand cmd = new SqlCommand("Insert_PrimarySalesValue", con);
+                                    //    cmd.CommandType = CommandType.StoredProcedure;
+                                    //    SqlParameter[] parameters = new SqlParameter[]
+                                    //    {
+                                    //new SqlParameter("@Div", div_code.Trim()),
+                                    //new SqlParameter("@ContractNo",Convert.ToString(columns[0].Trim()) ),
+                                    //new SqlParameter("@ContractDate", Convert.ToDateTime(columns[1].Trim())),
+                                    //new SqlParameter("@Erp_Cust_Code", Convert.ToString(columns[2].Trim())),
+                                    //new SqlParameter("@CustomerContract", Convert.ToString(columns[3].Trim())),
+                                    //new SqlParameter("@Item", Convert.ToString(columns[4]).Trim()),
+                                    //new SqlParameter("@EDPItemCode", Convert.ToString(columns[5].Trim())),
+                                    //new SqlParameter("@Unit", Convert.ToString(columns[6]).Trim()),
+                                    //new SqlParameter("@Pack", Convert.ToString(columns[7]).Trim()),
+                                    //new SqlParameter("@QtyINMt", Convert.ToString(columns[8]).Trim()),
+                                    //new SqlParameter("@Rate", Convert.ToString(columns[9].Trim())),
+                                    //new SqlParameter("@Sales_Value", Convert.ToDecimal(columns[10].Trim()))
+                                    //    };
+                                    //    cmd.Parameters.AddRange(parameters);
+
+                                    //    int i = cmd.ExecuteNonQuery();
+
+                                    //    con.Close();
+                                    //    if (i > 0)
+                                    //    {
+                                    //        sMsg += " Product_Code : " + Convert.ToString(columns[5]).Trim() + "  AND  Distributor_Code : " + Convert.ToString(columns[2]).Trim() + "  Uploaded Successfully... " + (j + 2) + " <br /> ";
+                                    //    }
                                 }
                                 catch (Exception ex)
                                 {
                                     sMsg += " Error Message: " + Convert.ToString(ex.Message.ToString()) + " ";
                                 }
                             }
+                           
                         }
                     }
                     else
@@ -289,21 +423,23 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
                 }
 
                 ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>document.getElementById('dvStatus').innerHTML='" + sMsg + "';</script>");
-
-                //if (sMsg == "")
-                //{
-                //    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Uploaded Successfully...');</script>");
-                //}
-                //else
-                //{
-                //    ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>document.getElementById('dvStatus').innerHTML='" + sMsg + "';</script>");
-                //}
+            }
+            else
+            {
+                //sMsg += " Error Message: No Data In Excel ";
+                Label6.Text = "Error Message: No Data In Excel";
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "onload", "alert('Error Message: No Data In Excel ');", true);
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('" + ex.Message + "'); return false;</script>");
+            //sMsg += Convert.ToString(ex.Message);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "onload", "alert('" + Convert.ToString(ex.Message) + "');", true);
+            Label6.Text = Convert.ToString(ex.Message);
+            //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('" + ex.Message + "'); return false;</script>");
         }
+
+       
     }
     #endregion
 
@@ -311,12 +447,12 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
     public class lstdr
     {
 
-        public DataTable GetProd_detail(string Sale_Erp_code, string Product_Detail_Name,string product_unit, string div_code)
+        public DataTable GetProd_detail(string Sale_Erp_code, string Product_Detail_Name, string product_unit, string div_code)
         {
 
             DataTable dsAdmin = new DataTable();
 
-            string strQry = " SELECT TOP(1) * FROM Mas_Product_Detail  Where Sale_Erp_code=@Sale_Erp_code AND ";
+            string strQry = " SELECT TOP(1) * FROM Mas_Product_Detail  Where Sale_Erp_code=@Sale_Erp_code AND Product_Detail_Name=@Product_Detail_Name   AND ";
             //strQry += " Product_Detail_Name=@Product_Detail_Name   AND Product_Active_Flag=0 AND product_unit=@product_unit AND Division_Code = @Division_Code ";
             strQry += "  Product_Active_Flag=0  AND  Division_Code = @Division_Code ";
 
@@ -329,11 +465,8 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
                         cmd.CommandText = strQry;
                         cmd.CommandType = CommandType.Text;
                         cmd.Parameters.AddWithValue("@Sale_Erp_code", Convert.ToString(Sale_Erp_code));
-                        //cmd.Parameters.AddWithValue("@Product_Detail_Name", Convert.ToString(Product_Detail_Name));
-                        //cmd.Parameters.AddWithValue("@product_unit", Convert.ToString(product_unit));
+                        cmd.Parameters.AddWithValue("@Product_Detail_Name", Convert.ToString(Product_Detail_Name));
                         cmd.Parameters.AddWithValue("@Division_Code", Convert.ToInt32(div_code));
-
-
                         SqlDataAdapter dap = new SqlDataAdapter();
                         dap.SelectCommand = cmd;
                         con.Open();
@@ -347,7 +480,7 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
                 throw ex;
 
             }
-            return dsAdmin;           
+            return dsAdmin;
         }
 
         public DataTable Getstk_code(string stk_Name, string ERP_Code, string div_code)
@@ -358,8 +491,8 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
             //string strQry = "SELECT TOP(1) * FROM Mas_Stockist  Where stockist_name=@stockist_name AND ";
             //strQry += " ERP_Code=@ERP_Code   AND Stockist_Active_Flag=0 AND Division_Code = @Division_Code ";
 
-            string strQry = "SELECT TOP(1) * FROM Mas_Stockist  Where  ";
-            strQry += " ERP_Code=@ERP_Code   AND Stockist_Active_Flag=0 AND Division_Code = @Division_Code  ";
+            string strQry = "SELECT TOP(1) * FROM Mas_Stockist  Where stockist_name=@stockist_name  AND ";
+            strQry += " ERP_Code=@ERP_Code  AND Stockist_Active_Flag=0 AND Division_Code = @Division_Code  ";
 
 
             try
@@ -370,8 +503,8 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
                     {
                         cmd.CommandText = strQry;
                         cmd.CommandType = CommandType.Text;
-                        ///cmd.Parameters.AddWithValue("@stockist_name", Convert.ToString(stk_Name));
-                        cmd.Parameters.AddWithValue("@ERP_Code", Convert.ToString(ERP_Code));                        
+                        cmd.Parameters.AddWithValue("@stockist_name", Convert.ToString(stk_Name));
+                        cmd.Parameters.AddWithValue("@ERP_Code", Convert.ToString(ERP_Code));
                         cmd.Parameters.AddWithValue("@Division_Code", Convert.ToInt32(div_code));
 
                         SqlDataAdapter dap = new SqlDataAdapter();
@@ -394,13 +527,13 @@ public partial class MasterFiles_Options_Primary_Sales_Upload : System.Web.UI.Pa
         public int insert_PrimarySalesValue(string div_code, string ContractNo, string ContractDate, string Erp_Cust_Code, string CustomerContract,
             string Item, string EDPItemCode, string Unit, string pack, string QtyINMt, string Rate, string Sales_Value)
         {
-           int iReturn = -1;
+            int iReturn = -1;
 
             using (SqlConnection _conn = new SqlConnection(Globals.ConnString))
             {
                 try
                 {
-                    System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand("Insert_PrimarySalesValue", _conn);                   
+                    System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand("Insert_PrimarySalesValue", _conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     SqlParameter[] parameters = new SqlParameter[]

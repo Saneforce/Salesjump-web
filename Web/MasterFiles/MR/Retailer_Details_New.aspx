@@ -437,10 +437,9 @@
                                                     if (CustItem.length > 0) {
                                                         var $val = CustItem[0][$fldnc];
                                                         console.log($val);
-                                                        if (($val == null || $val == '')) {
+                                                        if (($val == null || $val == '' || $val == "")) {
                                                             $val = "";
-                                                        }
-                                                        if ($val == "") {
+
                                                             $td += "<td></td>";
                                                             if (Orders[$i].Profilepic == "") {
                                                                 tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
@@ -450,23 +449,28 @@
                                                                 tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
                                                                 $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
                                                             }
-                                                            
-                                                        }
+                                                        }                                                       
                                                         else {
-
-                                                            if (($val.includes(".xlsx") || $val.includes(".xlx") || $val.includes(".doc"))) {
-                                                                alert('files');
-                                                                DownloadFiels($val);
-                                                                //alert('doc');
+                                                            //alert($val);
+                                                            //if (($val.includes(".xlsx") || $val.includes(".xlx") || $val.includes(".doc"))) {
+                                                            //    alert('files');
+                                                            //    DownloadFiels($val);
+                                                            //    //alert('doc');
+                                                            //}
+                                                            //else if (($val.includes(".jpg") || $val.includes(".jpeg") || $val.includes(".png"))) {
+                                                            //    console.log($val);
+                                                            //    DownloadFiels($val);
+                                                            //}
+                                                            //else if (($val.includes(".mp3") || $val.includes(".mp4") || $val.includes(".gif"))) {
+                                                            //    DownloadFiels($val);
+                                                            //}
+                                                            var ans = $val.includes('.') ? "true" : "false";
+                                                            if (ans == "true") {
+                                                                //alert('file');
                                                             }
-                                                            else if (($val.includes(".jpg") || $val.includes(".jpeg") || $val.includes(".png"))) {
-                                                                console.log($val);
-                                                                DownloadFiels($val);
+                                                            else {
+                                                               // alert('text');
                                                             }
-                                                            else if (($val.includes(".mp3") || $val.includes(".mp4") || $val.includes(".gif"))) {
-                                                                DownloadFiels($val);
-                                                            }
-                                                                                                                       
 
                                                             $td += "<td>" + $val + "</td>";
                                                             if (Orders[$i].Profilepic == "") {
@@ -663,11 +667,11 @@
                         contentType: "application/json; charset=utf-8",
                         async: false,
                         url: "Retailer_Details_New.aspx/DownloadImageFromS3",
-                        data: "{'fileName':'" + fileName + "'}",
+                        data: "{'filename':'" + fileName + "'}",
                         dataType: "json",
                         success: function (data) {
 
-                            //alert(data.d);
+                            alert(data.d);
 
                         }
                     });

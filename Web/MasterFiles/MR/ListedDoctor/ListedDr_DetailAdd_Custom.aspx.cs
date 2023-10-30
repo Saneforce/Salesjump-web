@@ -18,6 +18,9 @@ using System.Net;
 using System.Text;
 using System.Web.UI.WebControls;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Net.Http;
+using System.Configuration;
+using System.Security.Cryptography.X509Certificates;
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
 {
@@ -801,6 +804,17 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         public string Values { get; set; }
     }
 
+    public class fileNames
+    {
+        [JsonProperty("fId")]
+        public string fId { get; set; }
+
+        [JsonProperty("fName")]
+        public string fName { get; set; }      
+
+    }
+
+
 
     public class RetailerMainfld
     {
@@ -1116,6 +1130,27 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         }
                     }
 
+                    if (tb.Rows.Count > 0)
+                    {
+                        int i = 0; string fld = ""; string val = "";
+
+                        for (int k = 0; k < tb.Rows.Count; k++)
+                        {
+                            if ((Convert.ToString(tb.Rows[k]["FieldId"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldId"]) != "undefined") && (Convert.ToString(tb.Rows[k]["FieldVal"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldVal"]) != "undefined"))
+                            {
+                                fld = Convert.ToString(tb.Rows[k]["FieldId"]);
+
+                                val = Convert.ToString(tb.Rows[k]["FieldVal"]);
+
+                                if ((val == null || val == ""))
+                                { val = ""; }
+
+                                string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
+                                i = db_ER.ExecQry(uquery);
+                            }
+                        }
+                    }
+
                     //if (addfileuds.Count > 0)
                     //{
                     //    int i = 0; string fld = ""; string val = "";
@@ -1245,171 +1280,148 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         DataSet dsDivision = ld.getStatePerDivision(div_code);
         string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
         string directoryPath = urlshotName + "_" + "Retailer";
-      
+
         string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
-       
+
         //Create the Directory.
         if (!Directory.Exists(filepath))
         {
             Directory.CreateDirectory(filepath);
         }
 
-        string Ext = System.IO.Path.GetExtension(filename);
-                
+        fileNames sd = JsonConvert.DeserializeObject<fileNames>(filename);
+
+        string fid = Convert.ToString(sd.fId);
+        string fname = Convert.ToString(sd.fName);
+        
+
+        string Ext = System.IO.Path.GetExtension(fname);
         if (((Ext == ".jpg") || (Ext == ".jpeg") || (Ext == ".png")))
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                System.Drawing.Image image = System.Drawing.Image.FromStream(memoryStream, true);
-                string filePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + filename;
-                image.Save(filePath);
-            }         
-        }
-        else
-        {
-            using (var memoryStream = new MemoryStream())
-            {
-                var fileName = filename;
-                string tempFilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fileName);
-                using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write))
-                {
-                    memoryStream.WriteTo(fs);
-                }
-            }
-        }
-       
-       
+            FileStream fs = null;
 
-        string name = filename;
-        string myBucketName = bucketName; //your s3 bucket name goes here  
-        string s3DirectoryName = directoryPath;
-        string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + name;
-        string s3FileName = @name;
-        string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
-        string awsSecretAccessKey = "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";
-        try
-        {        
-            
-            s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
-            IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
-            TransferUtility utility = new TransferUtility(client);
-            TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
-            if (s3DirectoryName == "" || s3DirectoryName == null)
-            {
-                request.BucketName = myBucketName; //no subdirectory just bucket name  
-            }
-            else
-            {   // subdirectory and bucket name  
-                request.BucketName = myBucketName + @"/" + s3DirectoryName;
-            }
-            request.Key = s3FileName; //file name up in S3             
-            utility.Upload(request);
+            string filePath = filepath + sf_code + "__" + fname;
+
+            Stream myStream = new FileStream(filePath, FileMode.OpenOrCreate);
+
+            fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+            StreamReader sr = new StreamReader(fs);
+            StreamWriter sw = new StreamWriter(fs);
+            sw.Flush(); //HERE
+            fs.Close();
+
+            //HttpFileCollection hfc = Page.Request.Files;
+
+            //for (int i = 0; i < hfc.Count; i++)
+            //{
+            //    HttpPostedFile hpf = fname.ToString();
+
+            //    FileName = System.IO.Path.GetFileName(hpf.FileName);
+            //    FileID = System.IO.Path.GetFileName(hpf.FileName);
+
+            //    if (hpf.ContentLength > 0)
+            //    {
+            //        if (hpf.ContentLength < 307200)
+            //        {
 
 
-            msg = "Upload  completed !!";
-        }
-        catch (AmazonS3Exception e)
-        {
-            //Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
-            msg = "Error encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
+            //            if (((Ext == ".txt") || (Ext == ".doc") || (Ext == ".docx") || (Ext == ".xls")
+            //                || (Ext == ".xlsx") || (Ext == ".pdf") || (Ext == ".jpg")
+            //                || (Ext == ".jpeg") || (Ext == ".png") || (Ext == ".gif")))
+            //            {
+
+            //                hpf.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + "doc[" + (i + 1).ToString() + "]@" + System.DateTime.Now.Date.Date.ToString("dd-MM-yy") + Ext);
+
+            //                msg = "'" + fname.ToString() + "'" + " Uploaded Successfully..." + "<br>";
+            //            }
+
+            //            else
+            //            { msg = "'" + fname.ToString() + "'" + " Failed :" + "'" + Ext.ToString() + "'" + " Extension not supported... " + "<br>"; }
+
+            //        }
+            //        else
+            //        { msg = "'" + fname.ToString() + "'" + " Failed : " + " file length should not exceed 3MB... " + "<br>"; }
+
+            //    }
+            //    else
+            //    { msg = "'" + fname.ToString() + "'" + " Failed : " + " File is Empty... " + "<br>"; }
+
+
+            //}
         }
 
-        catch (Exception e)
-        {
-            //Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
-            msg = "Unknown encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
-        }
+        //if (((Ext == ".jpg") || (Ext == ".jpeg") || (Ext == ".png")))
+        //{
+        //    using (var memoryStream = new MemoryStream())
+        //    {
+        //        System.Drawing.Image image = System.Drawing.Image.FromStream(memoryStream, true);
+        //        string filePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + filename;
+        //        image.Save(filePath);
+        //    }         
+        //}
+        //else
+        //{
+        //    using (var memoryStream = new MemoryStream())
+        //    {
+        //        var fileName = filename;
+        //        string tempFilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fileName);
+        //        using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write))
+        //        {
+        //            memoryStream.WriteTo(fs);
+        //        }
+        //    }
+        //}
+
+
+
+        //string name = filename;
+        //string myBucketName = bucketName; //your s3 bucket name goes here  
+        //string s3DirectoryName = directoryPath;
+        //string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + name;
+        //string s3FileName = @name;
+        //string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
+        //string awsSecretAccessKey = "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";
+        //try
+        //{        
+
+        //    s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
+        //    IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
+        //    TransferUtility utility = new TransferUtility(client);
+        //    TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
+        //    if (s3DirectoryName == "" || s3DirectoryName == null)
+        //    {
+        //        request.BucketName = myBucketName; //no subdirectory just bucket name  
+        //    }
+        //    else
+        //    {   // subdirectory and bucket name  
+        //        request.BucketName = myBucketName + @"/" + s3DirectoryName;
+        //    }
+        //    request.Key = s3FileName; //file name up in S3             
+        //    utility.Upload(request);
+
+
+        //    msg = "Upload  completed !!";
+        //}
+        //catch (AmazonS3Exception e)
+        //{
+        //    //Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
+        //    msg = "Error encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
+        //}
+
+        //catch (Exception e)
+        //{
+        //    //Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+        //    msg = "Unknown encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
+        //}
 
         return msg;
     }
-
-
-    [WebMethod(EnableSession = true)]
-    public static string DownloadDirectory(string filename)
-    {
-        string msg = "";
-        try
-        {
-            lisdr ld = new lisdr();
-
-            DataSet dsDivision = ld.getStatePerDivision(div_code);
-            string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
-            string directoryPath = urlshotName + "_" + "Retailer";
-
-            string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
-
-            //Create the Directory.
-            if (!Directory.Exists(filepath))
-            {
-                Directory.CreateDirectory(filepath);
-            }
-
-            string name = filename;
-            string myBucketName = "happic"; //your s3 bucket name goes here
-            string bucketName = "happic";
-            string s3DirectoryName = directoryPath;
-            string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + name;
-            string s3FileName = @name;
-            string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
-            string awsSecretAccessKey = "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";
-
-            AmazonS3Client s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
-            IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
-            TransferUtility transferUtility = new TransferUtility(client);
-              
-
-            if (s3DirectoryName == "" || s3DirectoryName == null)
-            {
-                bucketName = myBucketName; //no subdirectory just bucket name  
-            }
-            else
-            {   // subdirectory and bucket name  
-                bucketName = myBucketName + @"/" + s3DirectoryName;
-            }
-
-            
-            var s3Key = filename;
-            var filePath = HttpContext.Current.Server.MapPath("" + directoryPath + "") + "\\" + s3Key;
-
-            transferUtility.DownloadAsync(new TransferUtilityDownloadRequest
-            {
-                BucketName = bucketName,
-                Key = s3Key,
-                FilePath = cutrrentFilePath,
-            });
-
-            // Check to see if the file was downloaded.
-            if (File.Exists(filePath))
-            {
-                //Console.WriteLine("File successfully downloaded.");
-                msg = "File successfully downloaded. ";
-            }
-            else
-            {
-                msg = "File could not be downloaded. Make sure " + s3Key + "  ";
-                msg += "exists in the bucket, " + bucketName + " ";
-            }
-        }
-        catch (AmazonS3Exception s3Exception)
-        {
-            //Console.Write(s3Exception.Message, s3Exception.InnerException);
-            msg = " " + s3Exception.Message + " , " + s3Exception.InnerException + " ";
-        }
-        catch (Exception exception)
-        {
-            //Console.WriteLine(exception.Message, exception.InnerException);
-            msg = " " + exception.Message + " , " + exception.InnerException + " ";
-        }
-
-        return msg;
-
-    }
-
+        
 
     protected void btnUpload_Click(object sender, EventArgs e)
     {
 
-        string FileName = ""; string FileID = "";
+        string FileName = ""; 
         string error = "";
         lisdr ld = new lisdr();
 
@@ -1436,7 +1448,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 {
 
                     dr = tb.NewRow();
-                   
+
                     Label GLabelFC = fugv.Rows[i].FindControl("LabelFC") as Label;
                     string FieldId = GLabelFC.Text.ToString().Trim();
 
@@ -1449,8 +1461,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                     {
                         if (fu.PostedFile.ContentLength < 307200)
                         {
-                            string address = HttpContext.Current.Server.MapPath("") + "\\" + fu.FileName;                          
-
                             string Ext = System.IO.Path.GetExtension(fu.FileName);
 
                             if (((Ext == ".txt") || (Ext == ".doc") || (Ext == ".docx") || (Ext == ".xls")
@@ -1460,103 +1470,74 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
                                 //fu.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + "doc[" + (i + 1).ToString() + "]@" + System.DateTime.Now.Date.Date.ToString("dd-MM-yy") + Ext);
 
-                                fu.PostedFile.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fu.FileName);
+                                FileName = Convert.ToString(sf_code + "__" + Path.GetFileName(fu.FileName));
 
-                                Stream st = fu.PostedFile.InputStream;
+                                fu.PostedFile.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + FileName);
 
-                                string name = Path.GetFileName(fu.FileName);
-                                string myBucketName = bucketName; //your s3 bucket name goes here  
-                                string s3DirectoryName = directoryPath;
-                                string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fu.FileName;
-                                string s3FileName = @name;
-                                string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
-                                string awsSecretAccessKey = "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";
+                                var awsKey = "AKIA5OS74MUCASG7HSCG";
+                                var awsSecretKey = "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";
+                                var bucketRegion = RegionEndpoint.APSouth1;                                                             
 
-                                s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
-                                IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
-                                TransferUtility utility = new TransferUtility(client);
-                                TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
-                                if (s3DirectoryName == "" || s3DirectoryName == null)
+                                try
                                 {
-                                    request.BucketName = myBucketName; //no subdirectory just bucket name  
+                                    string fileToBackup = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + FileName; // test file path from the local computer
+                                    string myBucketName = "happic"; // your s3 bucket name goes here
+                                    string s3DirectoryName = directoryPath; // the directory path to a sub folder goes here
+                                    string s3FileName = FileName; // the name of the file when its saved into the S3 buscket
+                                    
+                                    IAmazonS3 client = new AmazonS3Client(awsKey, awsSecretKey, RegionEndpoint.APSouth1);
+                                    TransferUtility utility = new TransferUtility(client);
+                                    TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
+                                    if (s3DirectoryName == "" || s3DirectoryName == null)
+                                    {
+                                        request.BucketName = myBucketName; //no subdirectory just bucket name
+                                    }
+                                    else
+                                    {   // subdirectory and bucket name
+                                        request.BucketName = myBucketName + @"/" + s3DirectoryName;
+                                    }
+                                    request.Key = FileName;
+                                    request.FilePath = fileToBackup;
+                                    utility.Upload(request);
+                                   
+                                    error += "" + FileName.ToString() + "  " + " File uploaded to S3..." + "<br>";
+                                    //Console.WriteLine("Image '{fieldName}' retrieved and saved locally.");                                    
                                 }
-                                else
-                                {   // subdirectory and bucket name  
-                                    request.BucketName = myBucketName + @"/" + s3DirectoryName;
+                                catch (AmazonS3Exception ex)
+                                {
+                                    error += "" + ex.Message.ToString() + "  " + " Uploaded Successfully..." + "<br>";
                                 }
-                                request.Key = fu.FileName; //file name up in S3  
-                                request.InputStream = fu.PostedFile.InputStream;
-                                utility.Upload(request);
 
-                                error = "'" + FileName.ToString() + "'" + " Uploaded Successfully..." + "<br>";
-
-                                ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
-
-                               
-                                dr["FieldVal"] = fu.FileName.ToString().Trim();
                                 tb.Rows.Add(dr);
                             }
                             else
                             {
-                                error = "'" + FileName.ToString() + "'" + " Failed :" + "'" + Ext.ToString() + "'" + " Extension not supported... " + "<br>";
-                                ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+                                error += "" + FileName.ToString() + "  " + " Failed :" + "'" + Ext.ToString() + "'" + " Extension not supported... " + "<br>";
+                                //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
                             }
                         }
                         else
-                        { 
-                            error = "'" + FileName.ToString() + "'" + " Failed : " + " file length should not exceed 3MB... " + "<br>";
-                            ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+                        {
+                            error += "" + FileName.ToString() + "  " + " Failed : " + " file length should not exceed 3MB... " + "<br>";
+                            //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
                         }
                     }
                     else
-                    { 
-                        error = "'" + FileName.ToString() + "'" + " Failed : " + " File is Empty... " + "<br>";
-                        ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
-                    }                   
+                    {
+                        error +=  "'" + FileName.ToString() + "'" + " Failed : " + " File is Empty... " + "<br>";
+                        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
+                    }
                 }
             }
 
-            //HttpFileCollection hfc = Request.Files;
-
-            //for (int i = 0; i < hfc.Count; i++)
-            //{
-            //    HttpPostedFile hpf = hfc[i];
-
-            //    FileName = System.IO.Path.GetFileName(hpf.FileName);
-            //    FileID = System.IO.Path.GetFileName(hpf.FileName);
-
-            //    if (hpf.ContentLength > 0)
-            //    {
-            //        if (hpf.ContentLength < 307200)
-            //        {
-            //            string Ext = System.IO.Path.GetExtension(hpf.FileName);
-
-            //            if (((Ext == ".txt") || (Ext == ".doc") || (Ext == ".docx") || (Ext == ".xls")
-            //                || (Ext == ".xlsx") || (Ext == ".pdf") || (Ext == ".jpg")
-            //                || (Ext == ".jpeg") || (Ext == ".png") || (Ext == ".gif")))
-            //            {
-
-            //                hpf.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + "doc[" + (i + 1).ToString() + "]@" + System.DateTime.Now.Date.Date.ToString("dd-MM-yy") + Ext);
-
-            //                error = "'" + FileName.ToString() + "'" + " Uploaded Successfully..." + "<br>";
-            //            }
-
-            //            else
-            //            { error = "'" + FileName.ToString() + "'" + " Failed :" + "'" + Ext.ToString() + "'" + " Extension not supported... " + "<br>"; }
-
-            //        }
-            //        else
-            //        { error = "'" + FileName.ToString() + "'" + " Failed : " + " file length should not exceed 3MB... " + "<br>"; }
-
-            //    }
-            //    else
-            //    { error = "'" + FileName.ToString() + "'" + " Failed : " + " File is Empty... " + "<br>"; }
-
-            //    lblError.Text = error + lblError.Text;
-            //}
+            
         }
         catch (Exception ex)
-        { Response.Write(ex.Message); }
+        {
+            error += ex.Message.ToString(); //Response.Write(ex.Message);
+        }
+
+        lblError.Text= error;
 
     }
 
