@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Web.Services;
 using Newtonsoft.Json;
 using DBase_EReport;
-
+using System.Web;
 
 public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
 {
@@ -52,9 +52,9 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
         if ((Convert.ToString(Session["div_code"]) != null || Convert.ToString(Session["div_code"]) != ""))
         {
             sf_code = Request.QueryString["sfcode"];
-        chksfcode = sf_code;
-        Div = Session["div_code"].ToString();
-        divcode = Session["div_code"].ToString();
+            chksfcode = sf_code;
+            Div = Session["div_code"].ToString();
+            divcode = Session["div_code"].ToString();
         }
         else { Page.Response.Redirect(baseUrl, true); }
     }
@@ -221,7 +221,7 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
     public static string getDesignation(string divcode)
     {
         //SalesForce SFD = new SalesForce();
-       
+
         if (divcode == null || divcode == "")
         { divcode = "0"; }
 
@@ -258,7 +258,7 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
                 using (var cmd = con.CreateCommand())
                 {
                     cmd.CommandText = strQry;
-                    cmd.Parameters.AddWithValue("@divcode", Convert.ToString(divcode));                    
+                    cmd.Parameters.AddWithValue("@divcode", Convert.ToString(divcode));
                     cmd.CommandType = CommandType.Text;
 
                     SqlDataAdapter dap = new SqlDataAdapter();
@@ -311,7 +311,7 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
         //DB_EReporting db_ER = new DB_EReporting();
 
         DataSet dsSF = new DataSet();
-      
+
         //strQry = "select subdivision_code,subdivision_name from mas_subdivision where Div_Code='" + divcode + "' and SubDivision_Active_Flag=0 and charindex(','+cast(subdivision_code as varchar)+',',','+iif('" + subdiv + "'='0',cast(subdivision_code as varchar),'" + subdiv + "')+',')>0";
 
         try
@@ -322,7 +322,7 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
                 {
                     cmd.CommandText = "SELECT subdivision_code,subdivision_name FROM Mas_Subdivision WHERE Div_Code=@divcode  AND SubDivision_Active_Flag=0 AND charindex(','+cast(subdivision_code as varchar)+',',','+iif(@subdiv='0',cast(subdivision_code as varchar),@subdiv)+',')>0 ";
                     cmd.Parameters.AddWithValue("@divcode", Convert.ToString(divcode));
-                    cmd.Parameters.AddWithValue("@subdiv", Convert.ToString(subdiv));                    
+                    cmd.Parameters.AddWithValue("@subdiv", Convert.ToString(subdiv));
                     cmd.CommandType = CommandType.Text;
 
                     SqlDataAdapter dap = new SqlDataAdapter();
@@ -423,7 +423,7 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
     {
         //SalesForce SFD = new SalesForce();
         //DataSet dds = SFD.getDivisname(divcode);
-        
+
         DataSet dds = getDivisname(divcode);
         return JsonConvert.SerializeObject(dds.Tables[0]);
     }
@@ -446,7 +446,7 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
                 using (var cmd = con.CreateCommand())
                 {
                     cmd.CommandText = strQry;
-                    cmd.Parameters.AddWithValue("@divcode", Convert.ToString(divcode));                    
+                    cmd.Parameters.AddWithValue("@divcode", Convert.ToString(divcode));
                     cmd.CommandType = CommandType.Text;
 
                     SqlDataAdapter dap = new SqlDataAdapter();
@@ -516,7 +516,7 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
     {
         //SalesForce SFD = new SalesForce();
         //DataSet dds = SFD.getAllSF_Territory(divcode);
-        
+
         DataSet dds = getAllSF_Territory(divcode);
         return JsonConvert.SerializeObject(dds.Tables[0]);
     }
@@ -641,7 +641,7 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
                 using (var cmd = con.CreateCommand())
                 {
                     cmd.CommandText = "SELECT * FROM Mas_Employee_Fields WHERE Division_Code=@divcode ";
-                    cmd.Parameters.AddWithValue("@divcode", Convert.ToString(divcode));                   
+                    cmd.Parameters.AddWithValue("@divcode", Convert.ToString(divcode));
                     cmd.CommandType = CommandType.Text;
 
                     SqlDataAdapter dap = new SqlDataAdapter();
@@ -674,7 +674,7 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
     public static string saveFieldForceWithCustom(string data, string Itype)
     {
         string msg = string.Empty;
-        
+
         locsf.SaveSalesForceCustom Data = JsonConvert.DeserializeObject<locsf.SaveSalesForceCustom>(data);
 
         //SalesForce dss = new SalesForce();
@@ -834,6 +834,20 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
     }
 
     [WebMethod]
+    public static string GetCustomFormsFieldsGroups(string divcode, string ModuleId)
+    {
+        DataSet ds = new DataSet();
+
+        //AdminSetup Ad = new AdminSetup();
+
+        locsf Ad = new locsf();
+
+        ds = Ad.GetCustomFormsFieldsGroupData(divcode, ModuleId);
+        return JsonConvert.SerializeObject(ds.Tables[0]);
+    }
+
+
+    [WebMethod]
     public static string GetCustomFormsFieldsList(string divcode, string ModuleId)
     {
         DataSet ds = new DataSet();
@@ -847,17 +861,43 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string GetCustomFormsSeclectionMastesList(string TableName, string ColumnsName)
+    public static string GetCustomFormsSeclectionMastesList(string TableName)
     {
         DataSet ds = new DataSet();
+        
+        string DivCode = Convert.ToString(HttpContext.Current.Session["div_Code"]);
 
-        //AdminSetup Ad = new AdminSetup();
+        if ((DivCode == null || DivCode == ""))
+        { DivCode = "0"; }
 
-        locsf Ad = new locsf();
+        ds = GetCustomMatersData(TableName, DivCode);
+        DataTable dt = new DataTable();
+        dt = ds.Tables[0];
 
-        ds = Ad.GetCustomFormsMastesdata(TableName, ColumnsName, divcode);
-        return JsonConvert.SerializeObject(ds.Tables[0]);
+        return JsonConvert.SerializeObject(dt);
     }
+
+    public static DataSet GetCustomMatersData(string TableName, string Divcode)
+    {
+        DB_EReporting db_ER = new DB_EReporting();
+
+        DataSet dsAdmin = null;
+
+        //strQry = "EXEC [Get_CustomForms_SeclectionMastesList] '" + TableName + "' ,'" + ColumnsName + "'";
+
+        string strQry = "EXEC [Get_CustomForms_MastesTablesData] '" + TableName + "' ," + Divcode + "";
+
+        try
+        {
+            dsAdmin = db_ER.Exec_DataSet(strQry);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return dsAdmin;
+    }
+
 
     [WebMethod]
     public static string GetBindAddtionalFieldData(string SfCode)
@@ -1047,6 +1087,25 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
             DataSet dsAdmin = null;
 
             strQry = "EXEC [Get_CustomForms_Fields] '" + divcode + "' ,'" + ModeleId + "' ";
+
+            try
+            {
+                dsAdmin = db_ER.Exec_DataSet(strQry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dsAdmin;
+        }
+
+        public DataSet GetCustomFormsFieldsGroupData(string divcode, string ModeleId)
+        {
+            DB_EReporting db_ER = new DB_EReporting();
+
+            DataSet dsAdmin = null;
+
+            strQry = "EXEC [Get_CustomForms_FieldsGroups] '" + divcode + "' ,'" + ModeleId + "' ";
 
             try
             {

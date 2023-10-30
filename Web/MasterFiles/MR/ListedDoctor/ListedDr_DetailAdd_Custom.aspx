@@ -944,7 +944,7 @@
                                                 else {
                                                     str += "<td class='stylespc' align='left'>";
 
-                                                    str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
+                                                    str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control notrequired'>";
                                                     str += "<option value='0'>Select</option>";
                                                     //$('.SSMDetails').append('<option value="0">Select</option>');
                                                     for (var j = 0; j < SSMList.length; j++) {

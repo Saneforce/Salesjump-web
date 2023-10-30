@@ -44,10 +44,9 @@
             li {
                 font-weight: 100;
             }
-    .sub-header {
-    
-    margin-top: 54px;
-}
+            .sub-header {
+                margin-top: 54px;
+            }
         </style>
         <title></title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

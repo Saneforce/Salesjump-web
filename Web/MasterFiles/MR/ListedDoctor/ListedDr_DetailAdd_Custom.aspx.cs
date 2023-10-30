@@ -9,18 +9,12 @@ using System.Web.Services;
 using DBase_EReport;
 using System.Data.SqlClient;
 using System.IO;
+using System.Net;
+using System.Web.UI.WebControls;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
-using Amazon.S3.Model;
-using Amazon.Runtime;
-using System.Net;
-using System.Text;
-using System.Web.UI.WebControls;
-using DocumentFormat.OpenXml.Spreadsheet;
-using System.Net.Http;
-using System.Configuration;
-using System.Security.Cryptography.X509Certificates;
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
 {
@@ -538,8 +532,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     }
 
 
-
-
     [WebMethod]
     public static string GetBindCustomFieldData(string listeddrcode, string columnName)
     {
@@ -813,8 +805,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         public string fName { get; set; }      
 
     }
-
-
 
     public class RetailerMainfld
     {
