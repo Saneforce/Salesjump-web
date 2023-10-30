@@ -598,28 +598,28 @@ input[type="radio"]{
 
         </style>
            <link href="../css/SalesForce_New/bootstrap-select.min.css" rel='stylesheet' type='text/css' />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/6.5.0/ol.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/6.5.0/ol.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/6.5.0/ol.css" />
           <script type="text/javascript">
-    function ShowProgress() {
-        setTimeout(function () {
-            var modal = $('<div />');
-            modal.addClass("modal");
-            $('body').append(modal);
-            var loading = $(".loading");
-            loading.show();
-            var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
-            var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
-            loading.css({ top: top, left: left });
-        }, 200);
-    }
-    $('form').live("submit", function () {
-        ShowProgress();
-    });
+    //function ShowProgress() {
+    //    setTimeout(function () {
+    //        var modal = $('<div />');
+    //        modal.addClass("modal");
+    //        $('body').append(modal);
+    //        var loading = $(".loading");
+    //        loading.show();
+    //        var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
+    //        var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
+    //        loading.css({ top: top, left: left });
+    //    }, 200);
+    //}
+    //$('form').live("submit", function () {
+    //    ShowProgress();
+    //});
           </script>
           
           <script type="text/javascript">
-              var AllCat = [], AllLoc = [], AllMod = [], AllVend = [];
+              var AllCat = [], AllLoc = [], AllMod = [], AllVend = [], astpic_name = '', astivnfile='';
               function loadData() {
                   $.ajax({
                       type: "POST",
@@ -690,82 +690,7 @@ input[type="radio"]{
                       }
                   });
               }
-              $('#btnsubmit').on('click', function () {
-                  var assetnam = $('#Txt_Asset_nam').val();
-                  if (assetnam == "") {
-                      alert("AssetName Mandatory!..");
-                      $('#Txt_Asset_nam').focus();
-                      return false;
-                  }
-                  var assetcode = $('#txtAsset_code').val();
-                  var asstcat = $('#ddlcat').val();
-                  if (asstcat == "0") {
-                      alert("Select Category Mandatory!..");
-                      $('#ddlcat').focus();
-                      return false;
-                  }
-                  var asstloc = $('#ddlloc').val();
-                  if (asstloc == "0") {
-                      alert("Select Location Mandatory!..");
-                      $('#ddlloc').focus();
-                      return false;
-                  }
-                  var asststs = $('#ddlstatus').val();
-                  if (asststs == "") {
-                      alert("AssetStatus Mandatory!..");
-                      $('#ddlstatus').focus();
-                      return false;
-                  }
-                  var brndnam = $('#txtbrand_nm').val();
-                  var asstmod = $('#ddlmodel').val();
-                  var serlnum = $('#txtser_nm').val();
-                  var asstcond = $('#ddlcond').val();
-                  if (asstcond == "") {
-                      alert("AssetCondition Mandatory!..");
-                      $('#ddlcond').focus();
-                      return false;
-                  }
-                  var desc = $('#txtdescrpt').val();
-                  var astvend = $('#ddlvend').val();
-                  if (astvend == "0") {
-                      alert("Select Vendor Mandatory!..");
-                      $('#ddlvend').focus();
-                      return false;
-                  }
-                  var purdate = $('#purdt').val();
-                  var invnum = $('#invnum').val();
-                  if (invnum == "") {
-                      alert("Invoice Number Mandatory!..");
-                      $('#invnum').focus();
-                      return false;
-                  }
-                  var invdate = $('#invdt').val();
-                  if (invdate == "") {
-                      alert("Choose Invoice Date!..");
-                      $('#invdt').focus();
-                      return false;
-                  }
-                  var expstartdt = $('#warstdt').val(); 
-                  var expenddt = $('#warendt').val();
-                  var purval = $('#purval').val();
-                  var purtype = $('#ddlpurtyp').val();
-                  var caprice = $('#capval').val();
-                  var capdate = $('#capdate').val();
-                  var valdeprec = $("input[type='radio'][name='vd']:checked").val();
-                  var anuldepre = $('#deprate').val();
-                  var asstendlife = $('#endat').val();
-                  $.ajax({
-                      type: "POST",
-                      contentType: "application/json; charset=utf-8",
-                      async: false,
-                      url: "Asset_Request_creation.aspx/SaveAssetRequest",
-                      data: "{'assetnam':'" + assetnam + "','assetcode':'" + assetcode + "','asstcat':'" + asstcat + "','asstloc':'" + asstloc + "','asststs':'" + asststs + "','brndnam':'" + brndnam + "','asstmod':'" + asstmod+"',}",
-                      dataType: "json",
-                      success: function (data) {
-                          AllLoc = JSON.parse(data.d) || [];
-                      }
-                  });
-              });
+              
               
               $(document).ready(function () {
                   loadData();
@@ -790,11 +715,26 @@ input[type="radio"]{
                           contentType: false,
                           processData: false,
                           success: function (file) {
-                              propic_name = file.name;
-                              alert(file.name + " uploaded.");
+                              astpic_name = e.target.files[0].name;
+                              alert(e.target.files[0].name + " uploaded.");
                           }
                       });
                   });
+                  <%--$('#<%=FlUploadcsv.ClientID%>').on('change', function (e) {
+                      var file = URL.createObjectURL(e.target.files[0]);
+                      $.ajax({
+                          url: 'Asset_Handler.ashx',
+                          type: 'POST',
+                          data: new FormData($('form')[0]),
+                          cache: false,
+                          contentType: false,
+                          processData: false,
+                          success: function (file) {
+                              astivnfile = e.target.files[0].name;
+                              alert(e.target.files[0].name + " uploaded.");
+                          }
+                      });
+                  });--%>
                   $('#ddlcat').on('change', function (e) {
                       var catid = $('#ddlcat').val();
                       catmod = AllMod.filter(function (a) {
@@ -807,6 +747,83 @@ input[type="radio"]{
                               mod.append($('<option value="' + catmod[i].Model_Id + '">' + catmod[i].Model_Name + '</option>'));
                         }
                       }
+                  });
+                  $('#btnsubmit').on('click', function () {
+                      var assetnam = $('#Txt_Asset_nam').val();
+                      if (assetnam == "") {
+                          alert("AssetName Mandatory!..");
+                          $('#Txt_Asset_nam').focus();
+                          return false;
+                      }
+                      var assetcode = $('#txtAsset_code').val();
+                      var asstcat = $('#ddlcat').val();
+                      if (asstcat == "0") {
+                          alert("Select Category Mandatory!..");
+                          $('#ddlcat').focus();
+                          return false;
+                      }
+                      var asstloc = $('#ddlloc').val();
+                      if (asstloc == "0") {
+                          alert("Select Location Mandatory!..");
+                          $('#ddlloc').focus();
+                          return false;
+                      }
+                      var asststs = $('#ddlstatus').val();
+                      if (asststs == "") {
+                          alert("AssetStatus Mandatory!..");
+                          $('#ddlstatus').focus();
+                          return false;
+                      }
+                      var brndnam = $('#txtbrand_nm').val();
+                      var asstmod = $('#ddlmodel').val();
+                      var serlnum = $('#txtser_nm').val();
+                      var asstcond = $('#ddlcond').val();
+                      if (asstcond == "") {
+                          alert("AssetCondition Mandatory!..");
+                          $('#ddlcond').focus();
+                          return false;
+                      }
+                      var desc = $('#txtdescrpt').val();
+                      var astvend = $('#ddlvend').val();
+                      if (astvend == "0") {
+                          alert("Select Vendor Mandatory!..");
+                          $('#ddlvend').focus();
+                          return false;
+                      }
+                      var purdate = $('#purdt').val();
+                      var invnum = $('#invnum').val();
+                      if (invnum == "") {
+                          alert("Invoice Number Mandatory!..");
+                          $('#invnum').focus();
+                          return false;
+                      }
+                      var invdate = $('#invdt').val();
+                      if (invdate == "") {
+                          alert("Choose Invoice Date!..");
+                          $('#invdt').focus();
+                          return false;
+                      }
+                      var expstartdt = $('#warstdt').val();
+                      var expenddt = $('#warendt').val();
+                      var purval = $('#purval').val();
+                      var purtype = $('#ddlpurtyp').val();
+                      var caprice = $('#capval').val();
+                      var capdate = $('#capdate').val();
+                      var valdeprec = $("input[type='radio'][name='vd']:checked").val();
+                      var anuldepre = $('#deprate').val();
+                      var asstendlife = $('#endat').val();
+                      $.ajax({
+                          type: "POST",
+                          contentType: "application/json; charset=utf-8",
+                          async: false,
+                          url: "Asset_Request_creation.aspx/SaveAssetRequest",
+                          data: "{'assetnam':'" + assetnam + "','assetcode':'" + assetcode + "','asstcat':'" + asstcat + "','asstloc':'" + asstloc + "','asststs':'" + asststs + "','brndnam':'" + brndnam + "','asstmod':'" + asstmod + "','serlnum':'" + serlnum + "','asstcond':'" + asstcond + "','desc':'" + desc + "','astvend':'" + astvend + "','purdate':'" + purdate + "','invnum':'" + invnum + "','invdate':'" + invdate + "','expstartdt':'" + expstartdt + "','expenddt':'" + expenddt + "','purval':'" + purval + "','purtype':'" + purtype + "','caprice':'" + caprice + "','capdate':'" + capdate + "','valdeprec':'" + valdeprec + "','anuldepre':'" + anuldepre + "','asstendlife':'" + asstendlife + "','astpic_name':'" + astpic_name + "','astivnfile':'" + astivnfile + "'}",
+                          dataType: "json",
+                          success: function (data) {
+                              alert(data.d);
+                              window.location.href = "Mas_Asset_Request.aspx";
+                          }
+                      });
                   });
               });
           </script>
@@ -1015,8 +1032,8 @@ input[type="radio"]{
                                 <td align="left">
                                     <label>Invoice Upload</label>
                                 </td>
-                                <td>
-                                     <asp:FileUpload ID="FlUploadcsv" runat="server" style="padding-left:20px;width:210px"  />
+                                <td rowspan="2">
+                                         <asp:FileUpload ID="FlUploadcsv" runat="server" style="padding-left:20px;width:210px" />
                                 </td>
                             </tr>
                         </table>
