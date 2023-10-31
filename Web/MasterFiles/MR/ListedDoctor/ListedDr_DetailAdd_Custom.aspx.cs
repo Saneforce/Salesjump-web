@@ -1286,13 +1286,13 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         string Ext = System.IO.Path.GetExtension(fname);
         if (((Ext == ".jpg") || (Ext == ".jpeg") || (Ext == ".png")))
         {
-            FileStream fs = null;
+            
 
             string filePath = filepath + sf_code + "__" + fname;
 
             Stream myStream = new FileStream(filePath, FileMode.OpenOrCreate);
 
-            fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+            FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
             StreamReader sr = new StreamReader(fs);
             StreamWriter sw = new StreamWriter(fs);
             sw.Flush(); //HERE
@@ -1572,7 +1572,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         {
             DB_EReporting db_ER = new DB_EReporting();
 
-            DataSet dsListedDR = null;
+            DataSet dsListedDR = new DataSet();
 
             string strQry = " EXEC Get_Retailer_Details '" + drcode + "' ";
 
@@ -1596,7 +1596,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         public int RecordAdd11(string DR_Name, string curentCompitat, string sf_code, string Mobile_No, string retail_code, string advance_amount, string DR_Spec, string dr_spec_name, string sales_Tax, string Tinno, string DR_Terr, string credit_days, string DR_Class, string dr_class_name, string ad, string DR_Address1, string DR_Address2, string Div_code, string Milk_pot, string Uom, string Uom_Name, string re_type, string outstanding, string credit_limit, string Cus_Alt, string drcategory, string drcategoryName, string erbCode, string latitude, string longitude, string DFDairyMP, string MonthlyAI, string MCCNFPM, string MCCMilkColDaily, string FrequencyOfVisit, string Breed, string curentCom, string txtmail)
         {
-            int iReturn = -1;
+            //int iReturn = -1;
             //int jReturn = -1;
             //int Listed_DR_Code;
             if (!sRecordExist(retail_code, DR_Name, Div_code))
@@ -2073,7 +2073,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         public int Recordupdate_detail1(string Dr_Code, string curentCompitat, string DR_Name, string sf_code, string Mobile_No, string retail_code, string advance_amount, string DR_Spec, string dr_spec_name, string sales_Tax, string Tinno, string DR_Terr, string credit_days, string DR_Class, string dr_class_name, string ad, string DR_Address1, string DR_Address2, string div_code, string Milk_Potential, string UOM, string UOM_Name, string Retailer_Type, string outstanding, string credit_limit, string Cus_alt, string catgoryCode, string catgoryName, string erbCode, string latitude, string longitude, string DFDairyMP, string MonthlyAI, string MCCNFPM, string MCCMilkColDaily, string FrequencyOfVisit, string Breed, string curentCom, string ukey, string txtmail)
         {
-            int iReturn = -1;
+            //int iReturn = -1;
             DB_EReporting db = new DB_EReporting();
             if (!sRecordExist1(erbCode, Dr_Code, div_code))
             {

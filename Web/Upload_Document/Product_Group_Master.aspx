@@ -66,7 +66,7 @@
                                                 <label style="padding-top: 4px;">Group Name</label>
                                             </div>
                                             <div class="col-sm-4" style="margin-left: -61px;">
-                                                <input type="text" id="txtgrname" class="form-control"  />
+                                                <input type="text" id="txtgrname" class="form-control" />
                                             </div>
                                         </div>
                                         <div class="row" style="margin-top: 10px;">
@@ -74,7 +74,7 @@
                                                 <label style="white-space:nowrap;padding-top: 4px;">Group Short Name</label>
                                             </div>
                                             <div class="col-sm-4" style="margin-left: -61px;">
-                                                <input type="text" id="txtsname" class="form-control"   />
+                                                <input type="text" id="txtsname" class="form-control"  />
                                             </div>
                                         </div>
                                     </div>
@@ -182,18 +182,10 @@
                             //var hq = filtered[$i].Sf_Name.split('-');
                             slno = $i + 1;
 
-                            
-                            var Product_GrpSName = Orders[$i].Product_Grp_SName;
-                            var Product_GrpName = Orders[$i].Product_Grp_Name;
-                            var Product_GrpCode = Orders[$i].Product_Grp_Code;
-
-                            var Product_Grp_SName = Product_GrpSName.replace(/[^\w\s]/gi, '');
-                            var Product_Grp_Name = Product_GrpName.replace(/[^\w\s]/gi, '');
-                            var Product_Grp_Code = Product_GrpCode;//.replace(/[^\w\s]/gi, '');
-
-                            //var Product_Grp_Name = Orders[$i].Product_Grp_Name;//.replace(regex, "");
-                            
-                            //var Product_Grp_Code = Orders[$i].Product_Grp_Code;//.replace(regex, "");
+                            var regex = /(<([^>]+)>)/ig;
+                            var Product_Grp_SName = Orders[$i].Product_Grp_SName;//.replace(regex, "");
+                            var Product_Grp_Name = Orders[$i].Product_Grp_Name;//.replace(regex, "");
+                            var Product_Grp_Code = Orders[$i].Product_Grp_Code;//.replace(regex, "");
                             var grp_count = Orders[$i].grp_count;//.replace(regex, "");
                             var Status = Orders[$i].Status;//.replace(regex, "");
                             
@@ -303,35 +295,12 @@
                         return false;
                     }
 
-                    if (grname.match(/([\<])([^\>]{1,})*([\>])/i) == null) {
-
-                        // valid text entered
-                    }
-                    else {
-                        alert('Enter  Valid Group Name');
-                        $('#txtgrname').focus();
-                        return false;
-                        // not valid 
-                    }
-
-
                     if (sgrname == '' || sgrname == null) {
                         alert('Enter  Group Short Name');
                         $('#txtsname').focus();
                         return false;
                     }
-
-                    if (sgrname.match(/([\<])([^\>]{1,})*([\>])/i) == null) {
-
-                        // valid text entered
-                    }
-                    else {
-                        alert('Enter  Valid Group Short Name');
-                        $('#txtsname').focus();
-                        return false;
-                        // not valid 
-                    }
-
+                    
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
@@ -360,16 +329,8 @@
                         dataType: "json",
                         success: function (data) {
                             var getegr = JSON.parse(data.d) || [];
-
-                            var Product_GrpSName = getegr[0].Product_Grp_SName;
-                            var Product_GrpName = getegr[0].Product_Grp_Name;
-                            
-
-                            var Product_Grp_SName = Product_GrpSName.replace(/[^\w\s]/gi, '');
-                            var Product_Grp_Name = Product_GrpName.replace(/[^\w\s]/gi, '');
-
-                            $('#txtgrname').val(Product_Grp_Name);
-                            $('#txtsname').val(Product_Grp_SName);
+                            $('#txtgrname').val(getegr[0].Product_Grp_Name);
+                            $('#txtsname').val(getegr[0].Product_Grp_SName);
                         },
                         error: function (result) {
                             //alert(JSON.stringify(result));
@@ -440,8 +401,7 @@
                     });
                 });
 
-
-                function alpha(e) {
+               function alpha(e) {
                     var k;
                     //document.all ? k = e.keyCode : k = e.which;
                     e.keyCode ? k = e.keyCode : k = e.which;

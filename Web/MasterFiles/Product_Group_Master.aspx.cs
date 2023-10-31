@@ -39,6 +39,7 @@ public partial class MasterFiles_Product_Group_Master : System.Web.UI.Page
             this.MasterPageFile = "~/Master_MR.master";
         }
     }
+
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -56,6 +57,7 @@ public partial class MasterFiles_Product_Group_Master : System.Web.UI.Page
         //Session["Div_code"] = div_code.ToString();
 
     }
+
     [WebMethod]
     public static string GetProductCate(string div)
     {
@@ -63,6 +65,7 @@ public partial class MasterFiles_Product_Group_Master : System.Web.UI.Page
         DataSet ds = Rut.newgetProgrp(div.Replace(",", ""));
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
     [WebMethod]
     public static string saveprogrp(string div, string grpname, string grpsname, string grpcode)
     {
@@ -79,13 +82,15 @@ public partial class MasterFiles_Product_Group_Master : System.Web.UI.Page
         DataSet ds = Rut.editProgrp(div.Replace(",", ""), grpcode);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
-	 [WebMethod]
+
+	[WebMethod]
     public static string getdataliprod(string div, string prodcode)
     {
         grp Rut = new grp();
         DataTable ds = Rut.get_proddtl(div.Replace(",", ""), prodcode);
         return JsonConvert.SerializeObject(ds);
     }
+
     public class grp
     {
 

@@ -110,9 +110,13 @@
             st = PgRecords * (pgNo - 1);
             for ($i = st; $i < st + Number(PgRecords); $i++) {
                 if ($i < Orders.length) {
+                                       
+                    var TName = Orders[$i].TownName;
+
+                    var TownName = TName.replace(/[^\w\s]/gi, '');
                   
-                    tr = $("<tr rname='" + Orders[$i].TownName + "' rocode='" + Orders[$i].TownCode + "'></tr>");
-                    $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].TownCode + "</td><td>" + Orders[$i].TownName + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
+                    tr = $("<tr rname='" + TownName + "' rocode='" + Orders[$i].TownCode + "'></tr>");
+                    $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].TownCode + "</td><td>" + TownName + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
                     $("#OrderList TBODY").append(tr);
                 }
             }

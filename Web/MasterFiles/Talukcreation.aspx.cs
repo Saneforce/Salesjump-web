@@ -76,14 +76,14 @@ public partial class MasterFiles_Talukcreation : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string saveData(string nme, string hoid,string divcode)
+    public static string saveData(string nme, string hoid, string divcode)
     {
         string getreturn;
 
         try
         {
             tlk sf = new tlk();
-            getreturn = sf.addtaluk(nme,hoid,divcode);
+            getreturn = sf.addtaluk(nme, hoid, divcode);
 
         }
         catch (Exception ex)
@@ -92,6 +92,7 @@ public partial class MasterFiles_Talukcreation : System.Web.UI.Page
         }
         return getreturn;
     }
+
     [WebMethod]
     public static string filldata(int hoid)
     {
@@ -107,36 +108,41 @@ public partial class MasterFiles_Talukcreation : System.Web.UI.Page
         {
             DataSet i = null;
             DB_EReporting db = new DB_EReporting();
-
-
-            if (!RecordExistertlog(nme, hoid))
+            string msg = "";
+            if ((hoid == null || hoid == "" || hoid == "null"))
             {
-
-                try
+                if (!RecordExistertlog(nme, divcode))
                 {
+                    try
+                    {
+                        //string strQry = "SELECT isnull(max(TownCode)+1,'1')TownCode from Route_Town_master";
+                        //int getid = db.Exec_Scalar(strQry);
 
-                    string strQry = "SELECT isnull(max(TownCode)+1,'1')TownCode from Route_Town_master";
-                    int getid = db.Exec_Scalar(strQry);
-                    strQry = "INSERT INTO Route_Town_master(TownCode,TownName,Division_Code,Active_Flag,CreatedDate,Last_UpdtDate)" +
-                                 "values('" + getid + "','" + nme + "','" + divcode + "','0',getdate(),getdate())";
-
-                    i = db.Exec_DataSet(strQry);
+                        string strQry = "INSERT INTO Route_Town_master(TownCode,TownName,Division_Code,Active_Flag,CreatedDate,Last_UpdtDate)";
+                        //strQry += "values('" + getid + "','" + nme + "','" + divcode + "','0',getdate(),getdate())";
+                        strQry += " SELECT CONVERT(numeric, isnull(max(TownCode)+1,1)) TownCode,'" + nme + "' TownName,'" + divcode + "' Division_Code,";
+                        strQry += "0 Active_Flag,getdate() CreatedDate,getdate() Last_UpdtDate FROM Route_Town_master WHERE Division_Code=" + divcode + "";
+                        i = db.Exec_DataSet(strQry);
+                        msg = "Saved";
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }                    
 
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw ex;
+                    msg = "Exist";
                 }
-                return "Saved";
             }
-
             else
             {
                 string strQry = "update Route_Town_master set TownName='" + nme + "' where division_code='" + divcode + "'  and  TownCode = '" + hoid + "'";
                 i = db.Exec_DataSet(strQry);
-                return "Exist";
+                msg = "Update";
             }
-
+            return msg;
         }
         public bool RecordExistertlog(string nme, string divcode)
         {
@@ -146,7 +152,7 @@ public partial class MasterFiles_Talukcreation : System.Web.UI.Page
             {
                 DB_EReporting db = new DB_EReporting();
 
-               string strQry = "SELECT COUNT(*) FROM Route_Town_master where  TownCode='" + divcode + "' and Townname='"+ nme + "'";
+                string strQry = "SELECT COUNT(*) FROM Route_Town_master where  Division_Code='" + divcode + "' AND Townname='" + nme + "'";
                 int iRecordExist = db.Exec_Scalar(strQry);
 
                 if (iRecordExist > 0)
@@ -157,6 +163,7 @@ public partial class MasterFiles_Talukcreation : System.Web.UI.Page
                 throw ex;
             }
             return bRecordExist;
+
         }
         public DataSet gettalk_textfill(int hoid, string divcode)
         {

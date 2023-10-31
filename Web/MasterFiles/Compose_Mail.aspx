@@ -243,10 +243,10 @@
             </script>
             <script type="text/javascript">
                 var transid = 0;
-                var name = 0;
+                var names = 0;
                 $(function () {
                     transid = getParameterValues('Trans_Sl_No');
-                    name = getParameterValues('From');
+                    names = getParameterValues('From');
                 });
 
                 function getParameterValues(key) {
@@ -318,11 +318,19 @@
                 }
                              
 
+                function alpha(e) {
+                    var k;
+                    //document.all ? k = e.keyCode : k = e.which;
+                    e.keyCode ? k = e.keyCode : k = e.which;
+                    return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+                }
+
+
                 $("input[type='text']").on("keypress", function (e) {
-                    var val = $(this).val();
-                    var regex = /(<([^>]+)>)/ig;
-                    var result = val.replace(regex, "");
-                    $(this).val(result);
+                    var k;
+                    //document.all ? k = e.keyCode : k = e.which;
+                    e.keyCode ? k = e.keyCode : k = e.which;
+                    return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
                 });
 
                 $(document).ready(function () {
@@ -333,7 +341,7 @@
                     if (transid != 0 && transid != undefined) {
                         $('#txtSearch  > option').each(function () {
                             //if ('admin' == $(this).val()) { $(this).prop('selected', true); }
-                            var name1 = (name).split(',');
+                            var name1 = (names).split(',');
                             for ($i = 0; $i < name1.length; $i++) {
                                 if (name1[$i] == $(this).val()) { $(this).prop('selected', true); }
                             }
