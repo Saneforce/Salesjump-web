@@ -7,6 +7,8 @@ using System.Web.Services;
 using Newtonsoft.Json;
 using DBase_EReport;
 using System.Web;
+using Amazon.S3;
+using Amazon;
 
 public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
 {
@@ -18,6 +20,13 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
     public static string Div = string.Empty;
     public static string divcode = string.Empty;
     public static string baseUrl = "";
+    public static DataTable tb = new DataTable();
+    DataRow dr;
+    private const string bucketName = "happic";
+
+    // Specify your bucket region (an example region is shown).
+    private static readonly RegionEndpoint bucketRegion = RegionEndpoint.APSouth1;
+    private static IAmazonS3 s3Client;
     #endregion
 
     #region OnPreInit
@@ -796,11 +805,11 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
                     cmd.CommandText = "svApprovalHierarchy";
                     SqlParameter[] parameters = new SqlParameter[]
                     {
-                                new SqlParameter("@Sf_Code",sf),
-                                new SqlParameter("@Appr_Type", Appr_Type),
-                                new SqlParameter("@Appr_Name",Appr_Name),
-                                new SqlParameter("@Div",Div),
-                                new SqlParameter("@cusxml",cusxml)
+                        new SqlParameter("@Sf_Code",sf),
+                        new SqlParameter("@Appr_Type", Appr_Type),
+                        new SqlParameter("@Appr_Name",Appr_Name),
+                        new SqlParameter("@Div",Div),
+                        new SqlParameter("@cusxml",cusxml)
                     };
                     cmd.Parameters.AddRange(parameters);
                     try
@@ -1214,41 +1223,56 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
                     {
                         msg = ex.Message;
                     }
-                    if (msg == "Success")
+                    if ((msg == "Success"))
                     {
                         strSfCode = sd.sfcode.ToString(); //Pass Sf Code for Salesforce_ApprovalManager table data creation
 
-                        if (af.Count > 0)
-                        {
-                            string fld = ""; string val = "";
-                            int i = 0;
-                            for (int k = 0; k < af.Count; k++)
-                            {
-                                if ((af[k].Fields == null || af[k].Fields == "'undefined'" || af[k].Fields == "undefined") && (af[k].Values == "'undefined'" || af[k].Values == "undefined"))
-                                { }
-                                else
-                                {
-                                    fld += af[k].Fields + ",";
+                        msg = "SalesForce Created";
 
-                                    if ((af[k].Values == null || af[k].Values == "")) { val += "''" + ","; }
-                                    else { val += af[k].Values + ","; }
-                                }
-                            }
+                        if ((msg == "SalesForce Created"))
+                        {
+
                             DB_EReporting db_ER = new DB_EReporting();
 
-                            //string Iquery = " EXEC Insert_TransSFCustomField  '" + strSfCode + "', " + fld.TrimEnd(',') + "," + val.TrimEnd(',') + "";
+                            if (af.Count > 0)
+                            {
+                                int i = 0; string fld = ""; string val = "";
 
-                            string Iquery = "Insert Into Trans_SF_Custom_Field(SFID, " + fld.TrimEnd(',') + ") Values('" + strSfCode + "'," + val.TrimEnd(',') + ")";
+                                for (int k = 0; k < af.Count; k++)
+                                {
+                                    if ((af[k].Fields != "'undefined'" || af[k].Fields != "undefined") && (af[k].Values != "'undefined'" || af[k].Values != "undefined"))
+                                    {
+                                        fld = af[k].Fields;
 
-                            i = db_ER.ExecQry(Iquery);
+                                        val = af[k].Values;
 
-                            if (i > 0)
-                            { msg = "SalesForce Created"; }
-                            else { msg = "SalesForce Created"; }
+                                        string uquery = "EXEC [InsertUpdate_CustomSalesForceDetails] '" + divcode + "', '" + fld + "', '" + val + "','" + strSfCode + "'";
+                                        i = db_ER.ExecQry(uquery);
+                                    }
+                                }
+                            }
 
-                        }
+                            if (tb.Rows.Count > 0)
+                            {
+                                int i = 0; string fld = ""; string val = "";
 
-                        msg = "SalesForce Created";
+                                for (int k = 0; k < tb.Rows.Count; k++)
+                                {
+                                    if ((Convert.ToString(tb.Rows[k]["FieldId"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldId"]) != "undefined") && (Convert.ToString(tb.Rows[k]["FieldVal"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldVal"]) != "undefined"))
+                                    {
+                                        fld = Convert.ToString(tb.Rows[k]["FieldId"]);
+
+                                        val = Convert.ToString(tb.Rows[k]["FieldVal"]);
+
+                                        if ((val == null || val == ""))
+                                        { val = ""; }
+
+                                        string uquery = "EXEC [InsertUpdate_CustomSalesForceDetails] '" + divcode + "', '" + fld + "', '" + val + "','" + strSfCode + "'";
+                                        i = db_ER.ExecQry(uquery);
+                                    }
+                                }
+                            }
+                        }                       
                     }
                 }
                 else
@@ -1299,88 +1323,55 @@ public partial class MasterFiles_SalesForce_ApprvHyr_New : System.Web.UI.Page
                             new SqlParameter("@SFDistrict",sd.sfdistrict),
                             new SqlParameter("@SfRDate", sd.Sfrdate)
                         };
-
                         if (sd.sfcode.ToString() != "")
                         {
                             try
                             {
                                 db.Exec_NonQueryWithParamNew("updateNewSalesForce", CommandType.StoredProcedure, parameters);
                                 msg = "Update Success";
-
-                                DB_EReporting db_ER = new DB_EReporting();
-                                //string Squery = "SELECT *FROM  Trans_SF_Custom_Field WHERE SFID = '" + sd.sfcode + "'";
-                                //DataSet ds = db_ER.Exec_DataSet(Squery);
-                                DataSet ds = GetSFAddtionalFieldData(Convert.ToString(sd.sfcode));
-
-                                if (ds.Tables[0].Rows.Count > 0)
+                                if ((msg == "Update Success"))
                                 {
-                                    string fld = ""; string val = "";
-
+                                    DB_EReporting db_ER = new DB_EReporting();
                                     if (af.Count > 0)
                                     {
-                                        int i = 0;
+                                        int i = 0; string fld = ""; string val = "";
 
                                         for (int k = 0; k < af.Count; k++)
                                         {
-                                            if ((af[k].Fields == "'undefined'" || af[k].Fields == "undefined") && (af[k].Values == "'undefined'" || af[k].Values == "undefined"))
-                                            { }
-                                            else
+                                            if ((af[k].Fields != "'undefined'" || af[k].Fields != "undefined") && (af[k].Values != "'undefined'" || af[k].Values != "undefined"))
                                             {
-                                                //fld += addfields[k].Fields + ",";//val += "'" + addfields[k].Values + "',";                                        
                                                 fld = af[k].Fields;
-                                                if ((af[k].Values == null || af[k].Values == "")) { val = "''"; }
-                                                else { val = "'" + af[k].Values + "'"; }
 
+                                                val = af[k].Values;
 
-                                                string uquery = "UPDATE Trans_SF_Custom_Field  SET " + fld + " = " + val.TrimEnd(',') + " WHERE SFID = '" + Convert.ToString(sd.sfcode) + "' ";
+                                                string uquery = "EXEC [InsertUpdate_CustomSalesForceDetails] '" + divcode + "', '" + fld + "', '" + val + "','" + sd.sfcode + "'";
                                                 i = db_ER.ExecQry(uquery);
                                             }
-
                                         }
-
-                                        if (i > 0)
-                                        { msg = "Updated Success"; }
-                                        else { msg = "Updated Success"; }
                                     }
 
-                                }
-                                else
-                                {
-                                    string fld = ""; string val = "";
-                                    int i = 0;
-
-                                    if (af.Count > 0)
+                                    if (tb.Rows.Count > 0)
                                     {
-                                        for (int k = 0; k < af.Count; k++)
-                                        {
-                                            if ((af[k].Fields == "'undefined'" || af[k].Fields == "undefined") && (af[k].Values == "'undefined'" || af[k].Values == "undefined"))
-                                            { }
-                                            else
-                                            {
-                                                fld += af[k].Fields + ",";
+                                        int i = 0; string fld = ""; string val = "";
 
-                                                if ((af[k].Values == null || af[k].Values == "")) { val += "'',"; }
-                                                else { val += "'" + af[k].Values + "',"; }
+                                        for (int k = 0; k < tb.Rows.Count; k++)
+                                        {
+                                            if ((Convert.ToString(tb.Rows[k]["FieldId"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldId"]) != "undefined") && (Convert.ToString(tb.Rows[k]["FieldVal"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldVal"]) != "undefined"))
+                                            {
+                                                fld = Convert.ToString(tb.Rows[k]["FieldId"]);
+
+                                                val = Convert.ToString(tb.Rows[k]["FieldVal"]);
+
+                                                if ((val == null || val == ""))
+                                                { val = ""; }
+
+                                                string uquery = "EXEC [InsertUpdate_CustomSalesForceDetails] '" + divcode + "', '" + fld + "', '" + val + "','" + sd.sfcode + "'";
+                                                i = db_ER.ExecQry(uquery);
                                             }
                                         }
-
-                                        if ((fld != null || fld != "") && (val != null || val != ""))
-                                        {
-                                            string Sf_Code = Convert.ToString(sd.sfcode);
-
-                                            //string Iquery = " EXEC Insert_TransSFCustomField  '" + Sf_Code + "', " + fld.TrimEnd(',') + "," + val.TrimEnd(',') + "";
-
-                                            string Iquery = "Insert Into Trans_SF_Custom_Field(SFID, " + fld.TrimEnd(',') + ") Values('" + Sf_Code + "'," + val.TrimEnd(',') + ")";
-
-                                            i = db_ER.ExecQry(Iquery);
-                                        }
-
-                                        if (i > 0)
-                                        { msg = "Updated Success"; }
-                                        else { msg = "Updated Success"; }
                                     }
-                                    //else { msg = "Error"; }
                                 }
+
                             }
                             catch (Exception ex)
                             {

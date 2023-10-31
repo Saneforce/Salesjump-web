@@ -1027,9 +1027,9 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         }
                     }
 
-                    if(tb.Rows.Count>0)
+                    if (tb.Rows.Count > 0)
                     {
-                        int i = 0; string fld = ""; string val = ""; 
+                        int i = 0; string fld = ""; string val = "";
 
                         for (int k = 0; k < tb.Rows.Count; k++)
                         {
@@ -1040,7 +1040,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                                 val = Convert.ToString(tb.Rows[k]["FieldVal"]);
 
                                 if ((val == null || val == ""))
-                                { val = ""; }                              
+                                { val = ""; }
 
                                 string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + RetailerID + "'";
                                 i = db_ER.ExecQry(uquery);

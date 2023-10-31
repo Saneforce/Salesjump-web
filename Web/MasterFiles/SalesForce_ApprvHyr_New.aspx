@@ -1261,703 +1261,703 @@
 
                                         var FldType = filtered[k].Fld_Type;
                                         var Mandate = filtered[k].Mandate;
-                                        if (FldType == "FS" || FldType == "FC" || FldType == "FSC") { }
-                                        else { str += "<td class='space' align='left'><label for='" + filtered[k].Field_Col + "' value='" + filtered[k].Field_Name + "'>" + ((Mandate == "Yes") ? "<span class='fldm' style='Color:Red'>*</span>" : "<span />") + filtered[k].Field_Name + "</label></td>"; }
 
-                                        switch (FldType) {
-                                            case 'TA':
-                                                if ((filtered[k].Mandate == "Yes")) { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
-                                                else { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
-                                                break;
-                                            case 'TAS':
-                                                if ((filtered[k].Mandate == "Yes")) { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
-                                                else { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
-                                                break;
-                                            case 'TAM':
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    str += "<td class='stylespc' align='left'><textarea type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "'></textarea></td>";
-                                                }
-                                                else { str += "<td class='stylespc' align='left'><textarea type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "'></textarea></td>"; }
-                                                break;
-                                            case 'NC':
-                                                str += "<td class='stylespc' align='left'>";
-                                                str += "<div class='row'>";
-                                                str += "<div class='col-sm-6'>";
-                                                str += "<div class='input-group input-group-sm mb-3' style='display: flex'>";
-                                                str += "<div class='input-group-prepend'>";
-                                                str += "<div class='input-group-text' style='width:50px; padding: 5px 2px 5px 5px; background: #868383; color: white; border-radius: 4px 0px 0px 4px;' id='NCS'>" + filtered[k].Fld_Symbol + "</div>";
-                                                str += "</div>";
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    str += "<input type='number' onfocus='this.style.backgroundColor='LavenderBlush'' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "' />";
-                                                }
-                                                else {
-                                                    str += "<input type='number' onfocus='this.style.backgroundColor='LavenderBlush'' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' />";
-                                                }
-                                                str += "</div>";
-                                                str += "</div>";
-                                                str += "</div>";
-                                                str += "</td>";
-                                                break;
-                                            case 'NP':
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
-                                                }
-                                                else { str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
-                                                break;
-                                            case 'N':
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
-                                                }
-                                                else {
-                                                    str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>";
-                                                }
-                                                break;
-                                            case 'DR':
-
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' /></td>";
-                                                }
-                                                else { str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired'  /></td>"; }
-                                                break;
-                                            case 'D':
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
-                                                }
-                                                else { str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
-                                                break;
-                                            case 'TR':
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
-                                                }
-                                                else { str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
-                                                break;
-                                            case 'T':
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
-                                                }
-                                                else {
-                                                    str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>";
-                                                }
-                                                break;
-                                            case 'SSM':
-                                                ssmtablename = filtered[k].Fld_Src_Name;
-                                                scontrolId = filtered[k].Field_Col;
-
-                                                BindDropdown(ssmtablename);
-
-                                                if ((filtered[k].Mandate == "Yes")) {
-
-                                                    str += "<td class='stylespc' align='left'>";
-
-                                                    str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
-                                                    str += "<option value='0'>Select</option>";
-                                                    //$('.SSMDetails').append('<option value="0">Select</option>');
-                                                    for (var j = 0; j < SSMList.length; j++) {
-                                                        str += "<option value='" + SSMList[j].IDCol + "'>" + SSMList[j].TextVal + "</option>";
-                                                        //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
-                                                    }
-                                                    str += "</select>";
-
-                                                    str += "</td>";
-                                                }
-                                                else {
-                                                    str += "<td class='stylespc' align='left'>";
-
-                                                    str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
-                                                    str += "<option value='0'>Select</option>";
-                                                    //$('.SSMDetails').append('<option value="0">Select</option>');
-                                                    for (var j = 0; j < SSMList.length; j++) {
-                                                        str += "<option value='" + SSMList[j].IDCol + "'>" + SSMList[j].TextVal + "</option>";
-                                                        //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
-                                                    }
-                                                    str += "</select>";
-
-                                                    str += "</td>";
-                                                }
-
-                                                break;
-                                            case 'SSO':
-                                                const SSOArray = filtered[k].Fld_Src_Field.split(",");
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    if (SSOArray.length > 0) {
-
-                                                        if ((SSOArray.length = 2)) {
-                                                            str += "<td class='stylespc' align='left'>";
-
-                                                            str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
-                                                            str += "<option value='0'>Select</option>";
-                                                            //$('.SSMDetails').append('<option value="0">Select</option>');
-                                                            for (var j = 0; j < SSOArray.length; j++) {
-                                                                str += "<option value='" + SSOArray[j] + "'>" + SSOArray[j] + "</option>";
-                                                                //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
-                                                            }
-                                                            str += "</select>";
-
-                                                            str += "</td>";
-                                                        }
-                                                        else {
-                                                            str += "<td class='stylespc' align='left'>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
-                                                            for (var ro = 0; ro < SSOArray.length; ro++) {
-                                                                str += "<input type='checkbox' id='" + SSOArray[ro] + "' value='" + SSOArray[ro] + "' />&nbsp;&nbsp;<label>" + SSOArray[ro] + "<lable>&nbsp;&nbsp;";
-                                                            }
-                                                            str += "</div>";
-                                                            str += "</td>";
-                                                        }
-                                                    }
-                                                    else {
-                                                        str += "<td class='stylespc' align='left'>";
-                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
-                                                        str += "<input type='checkbox' id='" + SSOArray[0] + "' value='" + SSOArray[0] + "' />&nbsp;<label>" + SSOArray[0] + "<lable>&nbsp;";
-                                                        str += "</div>";
-                                                        str += "</td>";
-                                                    }
-                                                }
-                                                else {
-                                                    if (SSOArray.length > 0) {
-
-                                                        if ((SSOArray.length = 2)) {
-                                                            str += "<td class='stylespc' align='left'>";
-
-                                                            str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control notrequired'>";
-                                                            str += "<option value='0'>Select</option>";
-                                                            //$('.SSMDetails').append('<option value="0">Select</option>');
-                                                            for (var j = 0; j < SSOArray.length; j++) {
-                                                                str += "<option value='" + SSOArray[j] + "'>" + SSOArray[j] + "</option>";
-                                                                //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
-                                                            }
-                                                            str += "</select>";
-
-                                                            str += "</td>";
-                                                        }
-                                                        else {
-                                                            str += "<td class='stylespc' align='left'>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
-                                                            for (var ro = 0; ro < SSOArray.length; ro++) {
-                                                                str += "<input type='checkbox' id='" + SSOArray[ro] + "' value='" + SSOArray[ro] + "' />&nbsp;&nbsp;<label>" + SSOArray[ro] + "<lable>&nbsp;&nbsp;";
-                                                            }
-                                                            str += "</div>";
-                                                            str += "</td>";
-                                                        }
-                                                    }
-                                                    else {
-                                                        str += "<td class='stylespc' align='left'>";
-                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
-                                                        str += "<input type='checkbox' id='" + SSOArray[0] + "' value='" + SSOArray[0] + "' />&nbsp;<label>" + SSOArray[0] + "<lable>&nbsp;";
-                                                        str += "</div>";
-                                                        str += "</td>";
-                                                    }
-                                                }
-                                                break;
-                                            case 'SMM':
-
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    var crmn = filtered[k].Fld_Src_Name;
-                                                    BindCheckboxs(crmn);
-                                                    str += "<td class='stylespc' align='left'><br \>";
-                                                    str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-                                                    if (CMfiltmgr.length > 0) {
-                                                        str += "<table id='tblsmm" + k + "' class='table-responsive'>";
-
-                                                        str += "<tr>";
-                                                        var g = 0;
-                                                        for (var f = 0; f < CMfiltmgr.length; f++) {
-
-                                                            str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "'";
-                                                            str += "name='" + filtered[k].Field_Col + "' class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
-
-                                                            g++;
-                                                            if (g == 2) {
-                                                                str += "</tr><tr>";
-                                                                g = 0;
-                                                            }
-                                                        }
-                                                        str += "</tr>";
-                                                        str += "</table>";
-                                                    }
-
-                                                    str += "</div>";
-
-                                                    str += "</td>";
-
-                                                }
-                                                else {
-                                                    var crmn = filtered[k].Fld_Src_Name;
-                                                    BindCheckboxs(crmn);
-                                                    str += "<td class='stylespc' align='left'>";
-                                                    str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-                                                    if (CMfiltmgr.length > 0) {
-                                                        str += "<table id='tblsmm" + k + "' class='table-responsive'>";
-
-                                                        str += "<tr>";
-                                                        var g = 0;
-                                                        for (var f = 0; f < CMfiltmgr.length; f++) {
-
-                                                            str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "'";
-                                                            str += "name='" + filtered[k].Field_Col + "' class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
-                                                            g++;
-                                                            if (g == 2) {
-                                                                str += "</tr><tr>";
-                                                                g = 0;
-                                                            }
-                                                        }
-                                                        str += "</tr>";
-                                                        str += '</table>';
-                                                    }
-
-                                                    str += "</div>";
-                                                    str += "</td>";
-                                                }
-
-                                                break;
-                                            case 'SMO':
-                                                const SMOArray = filtered[k].Fld_Src_Field.split(",");
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    if (SMOArray.length > 0) {
-
-
-                                                        if ((SMOArray.length == 2)) {
-                                                            str += "<td class='stylespc' align='left'>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
-                                                            for (var ro = 0; ro < SMOArray.length; ro++) {
-                                                                str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + SMOArray[ro] + "' class='rbnsnRow' value='" + SMOArray[ro] + "' />&nbsp;&nbsp;<label>" + SMOArray[ro] + "</lable>&nbsp;&nbsp;";
-                                                            }
-                                                            str += "</div>";
-                                                            str += "</td>";
-                                                        }
-                                                        else {
-                                                            str += "<td class='stylespc' align='left'><br \>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-
-                                                            str += "<table id='tblsmo" + k + "'  class='table-responsive'>";
-
-                                                            str += "<tr>";
-                                                            var g = 0;
-                                                            for (var f = 0; f < SMOArray.length; f++) {
-
-                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + SMOArray[f] + "'";
-                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + SMOArray[f] + "' />&nbsp;<label class='text-wrap' for='" + SMOArray[f] + "'>" + SMOArray[f] + " </label></td>";
-
-                                                                g++;
-                                                                if (g == 2) {
-                                                                    str += "</tr><tr>";
-                                                                    g = 0;
-                                                                }
-                                                            }
-                                                            str += "</tr>";
-                                                            str += "</table>";
-                                                            str += "</div>";
-                                                            str += "</td>";
-                                                        }
-
-                                                    }
-                                                    else {
-                                                        str += "<td class='stylespc' align='left'>";
-                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
-                                                        str += "<input type='checkbox' id='" + SMOArray[0] + "' value='" + SMOArray[0] + "' />&nbsp<label>" + SMOArray[0] + "</lable>";
-                                                        str += "</div>";
-                                                        str += "</td>";
-                                                    }
-                                                }
-                                                else {
-                                                    if (SMOArray.length > 0) {
-                                                        if ((SMOArray.length == 2)) {
-                                                            str += "<td class='stylespc' align='left'>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
-                                                            for (var ro = 0; ro < SMOArray.length; ro++) {
-                                                                str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + SMOArray[ro] + "' class='rbnsnRow' value='" + SMOArray[ro] + "' />&nbsp;&nbsp;<label>" + SMOArray[ro] + "</lable>&nbsp;&nbsp;";
-                                                            }
-                                                            str += "</div>";
-                                                            str += "</td>";
-                                                        }
-                                                        else {
-                                                            str += "<td class='stylespc' align='left'><br \>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-
-                                                            str += "<table id='tblsmo" + k + "'  class='table-responsive'>";
-
-                                                            str += "<tr>";
-                                                            var g = 0;
-                                                            for (var f = 0; f < SMOArray.length; f++) {
-
-                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + SMOArray[f] + "'";
-                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + SMOArray[f] + "' />&nbsp;<label class='text-wrap' for='" + SMOArray[f] + "'>" + SMOArray[f] + " </label></td>";
-
-                                                                g++;
-                                                                if (g == 2) {
-                                                                    str += "</tr><tr>";
-                                                                    g = 0;
-                                                                }
-                                                            }
-                                                            str += "</tr>";
-                                                            str += "</table>";
-                                                            str += "</div>";
-                                                            str += "</td>";
-                                                        }
-
-                                                    }
-                                                    else {
-                                                        str += "<td class='stylespc' align='left'>";
-                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
-                                                        str += "<input type='checkbox' id='" + SMOArray[0] + "' value='" + SMOArray[0] + "' />&nbsp<label>" + SMOArray[0] + "</lable>";
-                                                        str += "</div>";
-                                                        str += "</td>";
-                                                    }
-                                                }
-                                                break;
-                                            case 'CO':
-                                                const COArray = filtered[k].Fld_Src_Field.split(",");
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    if ((COArray.length > 0)) {
-
-                                                        if ((COArray.length == 2)) {
-                                                            str += "<td class='stylespc' align='left'>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
-                                                            for (var ro = 0; ro < COArray.length; ro++) {
-                                                                str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + COArray[ro] + "' class='rbnsnRow' value='" + COArray[ro] + "' />&nbsp;&nbsp;<label>" + COArray[ro] + "</lable>&nbsp;&nbsp;";
-                                                            }
-                                                            str += "</div>";
-                                                            str += "</td>";
-                                                        }
-                                                        else {
-                                                            str += "<td class='stylespc' align='left'><br \>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-
-                                                            str += "<table id='tblco" + k + "' class='table-responsive'>";
-
-                                                            str += "<tr>";
-                                                            var g = 0;
-                                                            for (var f = 0; f < COArray.length; f++) {
-
-                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + COArray[f] + "'";
-                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + COArray[f] + "' />&nbsp;<label class='text-wrap' for='" + COArray[f] + "'>" + COArray[f] + " </label></td>";
-
-                                                                g++;
-                                                                if (g == 2) {
-                                                                    str += "</tr><tr>";
-                                                                    g = 0;
-                                                                }
-                                                            }
-                                                            str += "</tr>";
-                                                            str += "</table>";
-                                                            str += "</div>";
-                                                            str += "</td>";
-                                                        }
-                                                    }
-                                                    else {
-                                                        str += "<td class='stylespc' align='left'>";
-                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
-                                                        str += "<input type='radio' id='" + COArray[0] + "' value='" + COArray[0] + "' />&nbps<label>" + COArray[0] + "</lable></td>";
-                                                        str += "</div>";
-                                                        str += "</td>";
-                                                    }
-                                                }
-                                                else {
-                                                    if ((COArray.length > 0)) {
-                                                        if ((COArray.length == 2)) {
-                                                            str += "<td class='stylespc' align='left'>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
-                                                            for (var ro = 0; ro < COArray.length; ro++) {
-                                                                str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + COArray[ro] + "' class='rbnsnRow' value='" + COArray[ro] + "' />&nbsp;&nbsp;<label>" + COArray[ro] + "</lable>&nbsp;&nbsp;";
-                                                            }
-                                                            str += "</div>";
-                                                            str += "</td>";
-                                                        }
-                                                        else {
-                                                            str += "<td class='stylespc' align='left'><br \>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-
-                                                            str += "<table id='tblco" + k + "'  class='table-responsive'>";
-
-                                                            str += "<tr>";
-                                                            var g = 0;
-                                                            for (var f = 0; f < COArray.length; f++) {
-
-                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + COArray[f] + "'";
-                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + COArray[f] + "' />&nbsp;<label class='text-wrap' for='" + COArray[f] + "'>" + COArray[f] + " </label></td>";
-
-                                                                g++;
-                                                                if (g == 2) {
-                                                                    str += "</tr><tr>";
-                                                                    g = 0;
-                                                                }
-                                                            }
-                                                            str += "</tr>";
-                                                            str += "</table>";
-                                                            str += "</div>";
-                                                            str += "</td>";
-                                                        }
-                                                    }
-                                                    else {
-                                                        str += "<td class='stylespc' align='left'>";
-                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
-                                                        str += "<input type='radio' id='" + COArray[0] + "' value='" + COArray[0] + "' />&nbps<label>" + COArray[0] + "</lable>";
-                                                        str += "</div>";
-                                                        str += "</td>";
-                                                    }
-                                                }
-                                                break;
-                                            case 'CM':
-                                                var crmn = filtered[k].Fld_Src_Name;
-                                                BindCheckboxs(crmn);
-
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    str += "<td class='stylespc' align='left'><br />";
-                                                    str += "<div name='" + filtered[k].Field_Col + "' id=" + filtered[k].Field_Col + " class='required'  style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-                                                    if (CMfiltmgr.length > 0) {
-                                                        str += "<table id='tblcm" + k + "' class='tChblControl table-responsive'>";
-
-                                                        str += "<tr>";
-                                                        var g = 0;
-                                                        for (var f = 0; f < CMfiltmgr.length; f++) {
-
-                                                            str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "''";
-                                                            str += "name='" + filtered[k].Field_Col + "'  class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
-
-                                                            g++;
-                                                            if (g == 2) {
-                                                                str += "</tr><tr>";
-                                                                g = 0;
-                                                            }
-                                                        }
-                                                        str += "</tr>";
-                                                        str += '</table>';
-                                                    }
-
-                                                    str += "</div>";
-                                                    str += "</td> ";
-                                                }
-                                                else {
-                                                    str += "<td class='stylespc' align='left'><br />";
-                                                    str += "<div name='" + filtered[k].Field_Col + "' id=" + filtered[k].Field_Col + " class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-                                                    if (CMfiltmgr.length > 0) {
-                                                        str += "<table id='tblcm" + k + "'  class='tChblControl table-responsive'>";
-
-                                                        str += "<tr>";
-                                                        var g = 0;
-                                                        for (var f = 0; f < CMfiltmgr.length; f++) {
-
-                                                            str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "''";
-                                                            str += "name='" + filtered[k].Field_Col + "'  class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
-                                                            //str += "<td></td>";
-
-                                                            g++;
-                                                            if (g == 2) {
-                                                                str += "</tr><tr>";
-                                                                g = 0;
-                                                            }
-                                                        }
-                                                        str += "</tr>";
-                                                        str += '</table>';
-                                                    }
-
-                                                    str += "</div>";
-                                                    str += "</td> ";
-                                                }
-                                                break;
-                                            case 'RM':
-                                                var rbm = filtered[k].Fld_Src_Name;
-                                                //console.log(rbm)
-                                                BindRadiobutton(rbm);
-                                                //console.log(RMfiltmgr);
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    str += "<td class='stylespc' align='left'><br/>";
-                                                    str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-                                                    if (RMfiltmgr.length > 0) {
-                                                        str += "<table id='tblrm" + k + "' class='RbtnlControl table-responsive'>";
-
-                                                        str += "<tr>";
-                                                        var g = 0;
-                                                        for (var f = 0; f < RMfiltmgr.length; f++) {
-
-                                                            str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + RMfiltmgr[f].IDCol + "'";
-                                                            str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + RMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + RMfiltmgr[f].IDCol + "'>" + RMfiltmgr[f].TextVal + " </label></td>";
-                                                            //str += "<td><label class='text-wrap' for='" + RMfiltmgr[f].IDCol + "'>" + RMfiltmgr[f].TextVal + " </label></td>";
-
-                                                            g++;
-                                                            if (g == 2) {
-                                                                str += "</tr><tr>";
-                                                                g = 0;
-                                                            }
-                                                        }
-                                                        str += "</tr>";
-                                                        str += '</table>';
-                                                    }
-                                                    str += "</div>";
-                                                    str += "</td> ";
-                                                }
-                                                else {
-                                                    str += "<td class='stylespc' align='left'><br />";
-                                                    str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-                                                    if (RMfiltmgr.length > 0) {
-                                                        str += "<table id='tblrm" + k + "'  class='table-responsive'>";
-
-                                                        str += "<tr>";
-                                                        var g = 0;
-                                                        for (var f = 0; f < RMfiltmgr.length; f++) {
-
-                                                            str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + RMfiltmgr[f].IDCol + "'";
-                                                            str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + RMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + RMfiltmgr[f].IDCol + "'>" + RMfiltmgr[f].TextVal + " </label></td>";
-
-                                                            g++;
-                                                            if (g == 2) {
-                                                                str += "</tr><tr>";
-                                                                g = 0;
-                                                            }
-                                                        }
-                                                        str += "</tr>";
-                                                        str += "</table>";
-                                                    }
-                                                    str += "</div>";
-                                                    str += "</td>";
-                                                }
-                                                break;
-                                            case 'RO':
-                                                const ROArray = filtered[k].Fld_Src_Field.split(",");
-                                                if ((filtered[k].Mandate == "Yes")) {
-                                                    if ((ROArray.length > 0)) {
-                                                        if ((ROArray.length == 2)) {
-                                                            str += "<td class='stylespc' align='left'>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
-                                                            for (var ro = 0; ro < ROArray.length; ro++) {
-                                                                str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[ro] + "' class='rbnsnRow' value='" + ROArray[ro] + "' />&nbsp;&nbsp;<label>" + ROArray[ro] + "</lable>&nbsp;&nbsp;";
-                                                            }
-                                                            str += "</div>";
-                                                            str += "</td> ";
-                                                        }
-                                                        else {
-                                                            str += "<td class='stylespc' align='left'><br />";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-
-                                                            str += "<table id='tblro" + k + "' class='table-responsive'>";
-
-                                                            str += "<tr>";
-                                                            var g = 0;
-                                                            for (var f = 0; f < ROArray.length; f++) {
-
-                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + ROArray[f] + "'";
-                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + ROArray[f] + "' />&nbsp;<label class='text-wrap' for='" + ROArray[f] + "'>" + ROArray[f] + " </label></td>";
-
-                                                                g++;
-                                                                if (g == 2) {
-                                                                    str += "</tr><tr>";
-                                                                    g = 0;
-                                                                }
-                                                            }
-                                                            str += "</tr>";
-                                                            str += '</table>';
-                                                            str += "</div>";
-                                                            str += "</td> ";
-                                                        }
-                                                    }
-                                                    else {
-                                                        str += "<td class='stylespc' align='left'>";
-                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
-                                                        str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[0] + "' value='" + ROArray[0] + "' />&nbps<label>" + ROArray[0] + "</lable>";
-                                                        str += "</div>";
-                                                        str += "</td>";
-                                                    }
-                                                }
-                                                else {
-                                                    if ((ROArray.length > 0)) {
-                                                        if ((ROArray.length == 2)) {
-                                                            str += "<td class='stylespc' align='left'>";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
-                                                            for (var ro = 0; ro < ROArray.length; ro++) {
-                                                                str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[ro] + "' class='rbnsnRow' value='" + ROArray[ro] + "' />&nbsp;&nbsp;<label>" + ROArray[ro] + "</lable>&nbsp;&nbsp;";
-                                                            }
-                                                            str += "</div>";
-                                                            str += "</td> ";
-                                                        }
-                                                        else {
-                                                            str += "<td class='stylespc' align='left'><br />";
-                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
-
-                                                            str += "<table id='tblro" + k + "' class='table-responsive'>";
-
-                                                            str += "<tr>";
-                                                            var g = 0;
-                                                            for (var f = 0; f < ROArray.length; f++) {
-
-                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + ROArray[f] + "'";
-                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + ROArray[f] + "' />&nbsp;<label class='text-wrap' for='" + ROArray[f] + "'>" + ROArray[f] + " </label></td>";
-
-                                                                g++;
-                                                                if (g == 2) {
-                                                                    str += "</tr><tr>";
-                                                                    g = 0;
-                                                                }
-                                                            }
-                                                            str += "</tr>";
-                                                            str += '</table>';
-
-                                                            str += "</div>";
-                                                            str += "</td> ";
-                                                        }
-                                                    }
-                                                    else {
-                                                        str += "<td class='stylespc' align='left'>";
-                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
-                                                        str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[0] + "' value='" + ROArray[0] + "' />&nbps<label>" + ROArray[0] + "</lable>&nbps";
-                                                        str += "</div>";
-                                                        str += "</td>";
-                                                    }
-                                                }
-                                                break;
-                                            //case 'FS':
-
-
-                                            //    str += "<td class='stylespc' align='left'>";
-
-                                            //    //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                            //    str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
-                                            //    str += "<input type='button' onclick='fnADD()' />";
-
-                                            //    str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
-
-                                            //    break;
-                                            //case 'FSC':                                             
-
-
-                                            //    str += "<td class='stylespc' align='left'>";
-
-                                            //    //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                            //    str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
-                                            //    str += "<input type='button' onclick='fnADD()' />";
-                                            //    str += "<div width='100' height='100'  class='" + filtered[k].Field_Col + "' /></td>";
-
-                                            //    break;
-
-                                            //case 'FC':
-                                            //    str += "<td class='stylespc' align='left'>";
-
-                                            //    //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                            //    str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
-                                            //    str += "<input type='button' onclick='fnADD()' />";
-                                            //    str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
-
-                                            //    break;
-
-                                            default:
-                                                break
+                                        if (FldType == "L") {
+                                            str += "<td colspan='2'><label for=" + MasFrms[k].Field_Col + " value=" + MasFrms[k].Field_Name + "><span>" + MasFrms[k].Field_Name + "</span></label></td>";
                                         }
+                                        else {
+                                            if (FldType == "FS" || FldType == "FC" || FldType == "FSC") { }
+                                            else { str += "<td class='space' align='left'><label for='" + filtered[k].Field_Col + "' value='" + filtered[k].Field_Name + "'>" + ((Mandate == "Yes") ? "<span class='fldm' style='Color:Red'>*</span>" : "<span />") + filtered[k].Field_Name + "</label></td>"; }
 
+                                            switch (FldType) {
+                                                case 'TA':
+                                                    if ((filtered[k].Mandate == "Yes")) { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
+                                                    else { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
+                                                    break;
+                                                case 'TAS':
+                                                    if ((filtered[k].Mandate == "Yes")) { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
+                                                    else { str += "<td class='stylespc' align='left'><input type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
+                                                    break;
+                                                case 'TAM':
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        str += "<td class='stylespc' align='left'><textarea type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "'></textarea></td>";
+                                                    }
+                                                    else { str += "<td class='stylespc' align='left'><textarea type='text' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "'></textarea></td>"; }
+                                                    break;
+                                                case 'NC':
+                                                    str += "<td class='stylespc' align='left'>";
+                                                    str += "<div class='row'>";
+                                                    str += "<div class='col-sm-6'>";
+                                                    str += "<div class='input-group input-group-sm mb-3' style='display: flex'>";
+                                                    str += "<div class='input-group-prepend'>";
+                                                    str += "<div class='input-group-text' style='width:50px; padding: 5px 2px 5px 5px; background: #868383; color: white; border-radius: 4px 0px 0px 4px;' id='NCS'>" + filtered[k].Fld_Symbol + "</div>";
+                                                    str += "</div>";
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        str += "<input type='number' onfocus='this.style.backgroundColor='LavenderBlush'' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "' />";
+                                                    }
+                                                    else {
+                                                        str += "<input type='number' onfocus='this.style.backgroundColor='LavenderBlush'' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' />";
+                                                    }
+                                                    str += "</div>";
+                                                    str += "</div>";
+                                                    str += "</div>";
+                                                    str += "</td>";
+                                                    break;
+                                                case 'NP':
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
+                                                    }
+                                                    else { str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
+                                                    break;
+                                                case 'N':
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'><input type='number' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>";
+                                                    }
+                                                    break;
+                                                case 'DR':
+
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' /></td>";
+                                                    }
+                                                    else { str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired'  /></td>"; }
+                                                    break;
+                                                case 'D':
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
+                                                    }
+                                                    else { str += "<td class='stylespc' align='left'><input type='date' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
+                                                    break;
+                                                case 'TR':
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
+                                                    }
+                                                    else { str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>"; }
+                                                    break;
+                                                case 'T':
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control required' maxLength='" + filtered[k].Fld_Length + "' /></td>";
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'><input type='time' id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "'  class='form-control notrequired' maxLength='" + filtered[k].Fld_Length + "' /></td>";
+                                                    }
+                                                    break;
+                                                case 'SSM':
+                                                    ssmtablename = filtered[k].Fld_Src_Name;
+                                                    scontrolId = filtered[k].Field_Col;
+
+                                                    BindDropdown(ssmtablename);
+
+                                                    if ((filtered[k].Mandate == "Yes")) {
+
+                                                        str += "<td class='stylespc' align='left'>";
+
+                                                        str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
+                                                        str += "<option value='0'>Select</option>";
+                                                        //$('.SSMDetails').append('<option value="0">Select</option>');
+                                                        for (var j = 0; j < SSMList.length; j++) {
+                                                            str += "<option value='" + SSMList[j].IDCol + "'>" + SSMList[j].TextVal + "</option>";
+                                                            //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
+                                                        }
+                                                        str += "</select>";
+
+                                                        str += "</td>";
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'>";
+
+                                                        str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
+                                                        str += "<option value='0'>Select</option>";
+                                                        //$('.SSMDetails').append('<option value="0">Select</option>');
+                                                        for (var j = 0; j < SSMList.length; j++) {
+                                                            str += "<option value='" + SSMList[j].IDCol + "'>" + SSMList[j].TextVal + "</option>";
+                                                            //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
+                                                        }
+                                                        str += "</select>";
+
+                                                        str += "</td>";
+                                                    }
+
+                                                    break;
+                                                case 'SSO':
+                                                    const SSOArray = filtered[k].Fld_Src_Field.split(",");
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        if (SSOArray.length > 0) {
+
+                                                            if ((SSOArray.length = 2)) {
+                                                                str += "<td class='stylespc' align='left'>";
+
+                                                                str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control required'>";
+                                                                str += "<option value='0'>Select</option>";
+                                                                //$('.SSMDetails').append('<option value="0">Select</option>');
+                                                                for (var j = 0; j < SSOArray.length; j++) {
+                                                                    str += "<option value='" + SSOArray[j] + "'>" + SSOArray[j] + "</option>";
+                                                                    //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
+                                                                }
+                                                                str += "</select>";
+
+                                                                str += "</td>";
+                                                            }
+                                                            else {
+                                                                str += "<td class='stylespc' align='left'>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                                for (var ro = 0; ro < SSOArray.length; ro++) {
+                                                                    str += "<input type='checkbox' id='" + SSOArray[ro] + "' value='" + SSOArray[ro] + "' />&nbsp;&nbsp;<label>" + SSOArray[ro] + "<lable>&nbsp;&nbsp;";
+                                                                }
+                                                                str += "</div>";
+                                                                str += "</td>";
+                                                            }
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                            str += "<input type='checkbox' id='" + SSOArray[0] + "' value='" + SSOArray[0] + "' />&nbsp;<label>" + SSOArray[0] + "<lable>&nbsp;";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    else {
+                                                        if (SSOArray.length > 0) {
+
+                                                            if ((SSOArray.length = 2)) {
+                                                                str += "<td class='stylespc' align='left'>";
+
+                                                                str += "<select name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='form-control notrequired'>";
+                                                                str += "<option value='0'>Select</option>";
+                                                                //$('.SSMDetails').append('<option value="0">Select</option>');
+                                                                for (var j = 0; j < SSOArray.length; j++) {
+                                                                    str += "<option value='" + SSOArray[j] + "'>" + SSOArray[j] + "</option>";
+                                                                    //$('.SSMDetails').append('<option value="' + SSMList[j].IDCol + '">' + SSMList[j].TextVal + '</option>');
+                                                                }
+                                                                str += "</select>";
+
+                                                                str += "</td>";
+                                                            }
+                                                            else {
+                                                                str += "<td class='stylespc' align='left'>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                                for (var ro = 0; ro < SSOArray.length; ro++) {
+                                                                    str += "<input type='checkbox' id='" + SSOArray[ro] + "' value='" + SSOArray[ro] + "' />&nbsp;&nbsp;<label>" + SSOArray[ro] + "<lable>&nbsp;&nbsp;";
+                                                                }
+                                                                str += "</div>";
+                                                                str += "</td>";
+                                                            }
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                            str += "<input type='checkbox' id='" + SSOArray[0] + "' value='" + SSOArray[0] + "' />&nbsp;<label>" + SSOArray[0] + "<lable>&nbsp;";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    break;
+                                                case 'SMM':
+
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        var crmn = filtered[k].Fld_Src_Name;
+                                                        BindCheckboxs(crmn);
+                                                        str += "<td class='stylespc' align='left'><br \>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                        if (CMfiltmgr.length > 0) {
+                                                            str += "<table id='tblsmm" + k + "' class='table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < CMfiltmgr.length; f++) {
+
+                                                                str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "'";
+                                                                str += "name='" + filtered[k].Field_Col + "' class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
+
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += "</table>";
+                                                        }
+
+                                                        str += "</div>";
+
+                                                        str += "</td>";
+
+                                                    }
+                                                    else {
+                                                        var crmn = filtered[k].Fld_Src_Name;
+                                                        BindCheckboxs(crmn);
+                                                        str += "<td class='stylespc' align='left'>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                        if (CMfiltmgr.length > 0) {
+                                                            str += "<table id='tblsmm" + k + "' class='table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < CMfiltmgr.length; f++) {
+
+                                                                str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "'";
+                                                                str += "name='" + filtered[k].Field_Col + "' class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += '</table>';
+                                                        }
+
+                                                        str += "</div>";
+                                                        str += "</td>";
+                                                    }
+
+                                                    break;
+                                                case 'SMO':
+                                                    const SMOArray = filtered[k].Fld_Src_Field.split(",");
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        if (SMOArray.length > 0) {
+
+
+                                                            if ((SMOArray.length == 2)) {
+                                                                str += "<td class='stylespc' align='left'>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                                for (var ro = 0; ro < SMOArray.length; ro++) {
+                                                                    str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + SMOArray[ro] + "' class='rbnsnRow' value='" + SMOArray[ro] + "' />&nbsp;&nbsp;<label>" + SMOArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                                }
+                                                                str += "</div>";
+                                                                str += "</td>";
+                                                            }
+                                                            else {
+                                                                str += "<td class='stylespc' align='left'><br \>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                                str += "<table id='tblsmo" + k + "'  class='table-responsive'>";
+
+                                                                str += "<tr>";
+                                                                var g = 0;
+                                                                for (var f = 0; f < SMOArray.length; f++) {
+
+                                                                    str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + SMOArray[f] + "'";
+                                                                    str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + SMOArray[f] + "' />&nbsp;<label class='text-wrap' for='" + SMOArray[f] + "'>" + SMOArray[f] + " </label></td>";
+
+                                                                    g++;
+                                                                    if (g == 2) {
+                                                                        str += "</tr><tr>";
+                                                                        g = 0;
+                                                                    }
+                                                                }
+                                                                str += "</tr>";
+                                                                str += "</table>";
+                                                                str += "</div>";
+                                                                str += "</td>";
+                                                            }
+
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                            str += "<input type='checkbox' id='" + SMOArray[0] + "' value='" + SMOArray[0] + "' />&nbsp<label>" + SMOArray[0] + "</lable>";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    else {
+                                                        if (SMOArray.length > 0) {
+                                                            if ((SMOArray.length == 2)) {
+                                                                str += "<td class='stylespc' align='left'>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                                for (var ro = 0; ro < SMOArray.length; ro++) {
+                                                                    str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + SMOArray[ro] + "' class='rbnsnRow' value='" + SMOArray[ro] + "' />&nbsp;&nbsp;<label>" + SMOArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                                }
+                                                                str += "</div>";
+                                                                str += "</td>";
+                                                            }
+                                                            else {
+                                                                str += "<td class='stylespc' align='left'><br \>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                                str += "<table id='tblsmo" + k + "'  class='table-responsive'>";
+
+                                                                str += "<tr>";
+                                                                var g = 0;
+                                                                for (var f = 0; f < SMOArray.length; f++) {
+
+                                                                    str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + SMOArray[f] + "'";
+                                                                    str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + SMOArray[f] + "' />&nbsp;<label class='text-wrap' for='" + SMOArray[f] + "'>" + SMOArray[f] + " </label></td>";
+
+                                                                    g++;
+                                                                    if (g == 2) {
+                                                                        str += "</tr><tr>";
+                                                                        g = 0;
+                                                                    }
+                                                                }
+                                                                str += "</tr>";
+                                                                str += "</table>";
+                                                                str += "</div>";
+                                                                str += "</td>";
+                                                            }
+
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                            str += "<input type='checkbox' id='" + SMOArray[0] + "' value='" + SMOArray[0] + "' />&nbsp<label>" + SMOArray[0] + "</lable>";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    break;
+                                                case 'CO':
+                                                    const COArray = filtered[k].Fld_Src_Field.split(",");
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        if ((COArray.length > 0)) {
+
+                                                            if ((COArray.length == 2)) {
+                                                                str += "<td class='stylespc' align='left'>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                                for (var ro = 0; ro < COArray.length; ro++) {
+                                                                    str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + COArray[ro] + "' class='rbnsnRow' value='" + COArray[ro] + "' />&nbsp;&nbsp;<label>" + COArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                                }
+                                                                str += "</div>";
+                                                                str += "</td>";
+                                                            }
+                                                            else {
+                                                                str += "<td class='stylespc' align='left'><br \>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                                str += "<table id='tblco" + k + "' class='table-responsive'>";
+
+                                                                str += "<tr>";
+                                                                var g = 0;
+                                                                for (var f = 0; f < COArray.length; f++) {
+
+                                                                    str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + COArray[f] + "'";
+                                                                    str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + COArray[f] + "' />&nbsp;<label class='text-wrap' for='" + COArray[f] + "'>" + COArray[f] + " </label></td>";
+
+                                                                    g++;
+                                                                    if (g == 2) {
+                                                                        str += "</tr><tr>";
+                                                                        g = 0;
+                                                                    }
+                                                                }
+                                                                str += "</tr>";
+                                                                str += "</table>";
+                                                                str += "</div>";
+                                                                str += "</td>";
+                                                            }
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                            str += "<input type='radio' id='" + COArray[0] + "' value='" + COArray[0] + "' />&nbps<label>" + COArray[0] + "</lable></td>";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    else {
+                                                        if ((COArray.length > 0)) {
+                                                            if ((COArray.length == 2)) {
+                                                                str += "<td class='stylespc' align='left'>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                                for (var ro = 0; ro < COArray.length; ro++) {
+                                                                    str += "<input type='checkbox' name='" + filtered[k].Field_Col + "' id='" + COArray[ro] + "' class='rbnsnRow' value='" + COArray[ro] + "' />&nbsp;&nbsp;<label>" + COArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                                }
+                                                                str += "</div>";
+                                                                str += "</td>";
+                                                            }
+                                                            else {
+                                                                str += "<td class='stylespc' align='left'><br \>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                                str += "<table id='tblco" + k + "'  class='table-responsive'>";
+
+                                                                str += "<tr>";
+                                                                var g = 0;
+                                                                for (var f = 0; f < COArray.length; f++) {
+
+                                                                    str += "<td style='font-weight:bold; font-size:10px;'><input type='checkbox' id='" + COArray[f] + "'";
+                                                                    str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + COArray[f] + "' />&nbsp;<label class='text-wrap' for='" + COArray[f] + "'>" + COArray[f] + " </label></td>";
+
+                                                                    g++;
+                                                                    if (g == 2) {
+                                                                        str += "</tr><tr>";
+                                                                        g = 0;
+                                                                    }
+                                                                }
+                                                                str += "</tr>";
+                                                                str += "</table>";
+                                                                str += "</div>";
+                                                                str += "</td>";
+                                                            }
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                            str += "<input type='radio' id='" + COArray[0] + "' value='" + COArray[0] + "' />&nbps<label>" + COArray[0] + "</lable>";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    break;
+                                                case 'CM':
+                                                    var crmn = filtered[k].Fld_Src_Name;
+                                                    BindCheckboxs(crmn);
+
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        str += "<td class='stylespc' align='left'><br />";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id=" + filtered[k].Field_Col + " class='required'  style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                        if (CMfiltmgr.length > 0) {
+                                                            str += "<table id='tblcm" + k + "' class='tChblControl table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < CMfiltmgr.length; f++) {
+
+                                                                str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "''";
+                                                                str += "name='" + filtered[k].Field_Col + "'  class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
+
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += '</table>';
+                                                        }
+
+                                                        str += "</div>";
+                                                        str += "</td> ";
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'><br />";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id=" + filtered[k].Field_Col + " class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                        if (CMfiltmgr.length > 0) {
+                                                            str += "<table id='tblcm" + k + "'  class='tChblControl table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < CMfiltmgr.length; f++) {
+
+                                                                str += "<td style='font-weight: bold; font-size:10px;'><input type='checkbox' id='" + CMfiltmgr[f].IDCol + "''";
+                                                                str += "name='" + filtered[k].Field_Col + "'  class='chkfnRow' value='" + CMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + CMfiltmgr[f].IDCol + "'>" + CMfiltmgr[f].TextVal + " </label></td>";
+                                                                //str += "<td></td>";
+
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += '</table>';
+                                                        }
+
+                                                        str += "</div>";
+                                                        str += "</td> ";
+                                                    }
+                                                    break;
+                                                case 'RM':
+                                                    var rbm = filtered[k].Fld_Src_Name;
+                                                    //console.log(rbm)
+                                                    BindRadiobutton(rbm);
+                                                    //console.log(RMfiltmgr);
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        str += "<td class='stylespc' align='left'><br/>";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                        if (RMfiltmgr.length > 0) {
+                                                            str += "<table id='tblrm" + k + "' class='RbtnlControl table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < RMfiltmgr.length; f++) {
+
+                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + RMfiltmgr[f].IDCol + "'";
+                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + RMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + RMfiltmgr[f].IDCol + "'>" + RMfiltmgr[f].TextVal + " </label></td>";
+                                                                //str += "<td><label class='text-wrap' for='" + RMfiltmgr[f].IDCol + "'>" + RMfiltmgr[f].TextVal + " </label></td>";
+
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += '</table>';
+                                                        }
+                                                        str += "</div>";
+                                                        str += "</td> ";
+                                                    }
+                                                    else {
+                                                        str += "<td class='stylespc' align='left'><br />";
+                                                        str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+                                                        if (RMfiltmgr.length > 0) {
+                                                            str += "<table id='tblrm" + k + "'  class='table-responsive'>";
+
+                                                            str += "<tr>";
+                                                            var g = 0;
+                                                            for (var f = 0; f < RMfiltmgr.length; f++) {
+
+                                                                str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + RMfiltmgr[f].IDCol + "'";
+                                                                str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + RMfiltmgr[f].IDCol + "' />&nbsp;<label class='text-wrap' for='" + RMfiltmgr[f].IDCol + "'>" + RMfiltmgr[f].TextVal + " </label></td>";
+
+                                                                g++;
+                                                                if (g == 2) {
+                                                                    str += "</tr><tr>";
+                                                                    g = 0;
+                                                                }
+                                                            }
+                                                            str += "</tr>";
+                                                            str += "</table>";
+                                                        }
+                                                        str += "</div>";
+                                                        str += "</td>";
+                                                    }
+                                                    break;
+                                                case 'RO':
+                                                    const ROArray = filtered[k].Fld_Src_Field.split(",");
+                                                    if ((filtered[k].Mandate == "Yes")) {
+                                                        if ((ROArray.length > 0)) {
+                                                            if ((ROArray.length == 2)) {
+                                                                str += "<td class='stylespc' align='left'>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                                for (var ro = 0; ro < ROArray.length; ro++) {
+                                                                    str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[ro] + "' class='rbnsnRow' value='" + ROArray[ro] + "' />&nbsp;&nbsp;<label>" + ROArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                                }
+                                                                str += "</div>";
+                                                                str += "</td> ";
+                                                            }
+                                                            else {
+                                                                str += "<td class='stylespc' align='left'><br />";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                                str += "<table id='tblro" + k + "' class='table-responsive'>";
+
+                                                                str += "<tr>";
+                                                                var g = 0;
+                                                                for (var f = 0; f < ROArray.length; f++) {
+
+                                                                    str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + ROArray[f] + "'";
+                                                                    str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + ROArray[f] + "' />&nbsp;<label class='text-wrap' for='" + ROArray[f] + "'>" + ROArray[f] + " </label></td>";
+
+                                                                    g++;
+                                                                    if (g == 2) {
+                                                                        str += "</tr><tr>";
+                                                                        g = 0;
+                                                                    }
+                                                                }
+                                                                str += "</tr>";
+                                                                str += '</table>';
+                                                                str += "</div>";
+                                                                str += "</td> ";
+                                                            }
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='required'>";
+                                                            str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[0] + "' value='" + ROArray[0] + "' />&nbps<label>" + ROArray[0] + "</lable>";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    else {
+                                                        if ((ROArray.length > 0)) {
+                                                            if ((ROArray.length == 2)) {
+                                                                str += "<td class='stylespc' align='left'>";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                                for (var ro = 0; ro < ROArray.length; ro++) {
+                                                                    str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[ro] + "' class='rbnsnRow' value='" + ROArray[ro] + "' />&nbsp;&nbsp;<label>" + ROArray[ro] + "</lable>&nbsp;&nbsp;";
+                                                                }
+                                                                str += "</div>";
+                                                                str += "</td> ";
+                                                            }
+                                                            else {
+                                                                str += "<td class='stylespc' align='left'><br />";
+                                                                str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired' style='width:350px;height:auto;max-height:200px;overflow-y:scroll;'>";
+
+                                                                str += "<table id='tblro" + k + "' class='table-responsive'>";
+
+                                                                str += "<tr>";
+                                                                var g = 0;
+                                                                for (var f = 0; f < ROArray.length; f++) {
+
+                                                                    str += "<td style='font-weight:bold; font-size:10px;'><input type='radio' id='" + ROArray[f] + "'";
+                                                                    str += "name='" + filtered[k].Field_Col + "' class='rbnmsRow' value='" + ROArray[f] + "' />&nbsp;<label class='text-wrap' for='" + ROArray[f] + "'>" + ROArray[f] + " </label></td>";
+
+                                                                    g++;
+                                                                    if (g == 2) {
+                                                                        str += "</tr><tr>";
+                                                                        g = 0;
+                                                                    }
+                                                                }
+                                                                str += "</tr>";
+                                                                str += '</table>';
+
+                                                                str += "</div>";
+                                                                str += "</td> ";
+                                                            }
+                                                        }
+                                                        else {
+                                                            str += "<td class='stylespc' align='left'>";
+                                                            str += "<div name='" + filtered[k].Field_Col + "' id='" + filtered[k].Field_Col + "' class='notrequired'>";
+                                                            str += "<input type='radio' name='" + filtered[k].Field_Col + "' id='" + ROArray[0] + "' value='" + ROArray[0] + "' />&nbps<label>" + ROArray[0] + "</lable>&nbps";
+                                                            str += "</div>";
+                                                            str += "</td>";
+                                                        }
+                                                    }
+                                                    break;
+                                                //case 'FS':
+
+
+                                                //    str += "<td class='stylespc' align='left'>";
+
+                                                //    //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                //    str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
+                                                //    str += "<input type='button' onclick='fnADD()' />";
+
+                                                //    str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+
+                                                //    break;
+                                                //case 'FSC':                                             
+
+
+                                                //    str += "<td class='stylespc' align='left'>";
+
+                                                //    //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                //    str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
+                                                //    str += "<input type='button' onclick='fnADD()' />";
+                                                //    str += "<div width='100' height='100'  class='" + filtered[k].Field_Col + "' /></td>";
+
+                                                //    break;
+
+                                                //case 'FC':
+                                                //    str += "<td class='stylespc' align='left'>";
+
+                                                //    //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                //    str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
+                                                //    str += "<input type='button' onclick='fnADD()' />";
+                                                //    str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+
+                                                //    break;
+
+                                                default:
+                                                    break
+                                            }
+                                        }
                                         m++;
                                         if (m == 2) {
                                             str += "</tr><tr>";
                                             m = 0;
                                         }
-
-
-
-
                                     }
 
                                     str += "</tr>";
                                     str += '</table>';
 
                                     str += "</div>";
-
                                 }
                                 $(".labelnames").append(str);
 
@@ -2292,49 +2292,8 @@
                         }
                     });
                 }
-                                
-                function getFormattedDate(datev) {
-
-                    var date = new Date(datev);
-
-                    var day = date.getDate();
-                    var month = date.getMonth() + 1;
-                    var year = date.getFullYear();
-
-                    if (month < 10) month = "0" + month;
-                    if (day < 10) day = "0" + day;
-
-                    var today = year + "-" + month + "-" + day;
-
-                    return today;
-                }
-
-                function getFormattedTime(time) {
-
-                    var dat = new Date(time);
-
-                    var dd = dat.getDate();
-                    var mm = 1 + dat.getMonth();
-                    var yy = dat.getFullYear();
-
-                    if (dd < 10) dd = '0' + dd;
-                    if (mm < 10) mm = '0' + mm;
-
-                    var dval = dd + '-' + mm + '-' + yy;
-
-                    var h = dat.getHours();
-                    var m = dat.getMinutes();
-                    var s = dat.getSeconds();
-
-                    if (h < 10) h = '0' + h;
-                    if (m < 10) m = '0' + m;
-                    if (s < 10) s = '0' + s;
-
-                    var tval = h + ':' + m + ':' + s;
-
-                    return tval;
-                }
-
+                               
+               
                 $(document).ready(function () {
                     $('#btnsubmit').text('Next');
 
@@ -3265,6 +3224,12 @@
                                     console.log(this.value);
                                     fval += this.value + ",";
                                 });
+
+                                $(this).find('input[type="radio"]:checked').each(function () {
+                                    console.log(this.value);
+                                    fval += this.value + ",";
+                                });
+
                                 values = fval;
                                 adDetail.Fields = fields;
                                 adDetail.Values = values;
@@ -3284,6 +3249,13 @@
                                     console.log(this.value);
                                     fval += this.value + ",";
                                 });
+
+                                $(this).find('input[type="radio"]:checked').each(function () {
+                                    console.log(this.value);
+                                    fval += this.value + ",";
+                                });
+
+
                                 values = fval;
                                 adDetail.Fields = fields;
                                 adDetail.Values = values;
