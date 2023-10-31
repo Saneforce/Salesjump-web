@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web;
-using System.Web.UI;
+using System.Web.UI.WebControls;
 using System.Data;
 using Bus_EReport;
 using Newtonsoft.Json;
@@ -10,8 +10,6 @@ using DBase_EReport;
 using System.Data.SqlClient;
 using System.IO;
 using System.Net;
-using System.Web.UI.WebControls;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
@@ -470,9 +468,9 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     [WebMethod]
     public static string GetCustomFormsFieldsList(string divcode, string ModuleId)
     {
-        DataSet ds = new DataSet();
+        //DataSet ds = new DataSet();
         lisdr ad = new lisdr();
-        ds = ad.GetCustomFormsFieldsData(divcode, ModuleId);
+        DataSet ds = ad.GetCustomFormsFieldsData(divcode, ModuleId);
         //AdminSetup Ad = new AdminSetup();
         //ds = Ad.GetCustomFormsFieldsData(divcode, ModuleId);
         return JsonConvert.SerializeObject(ds.Tables[0]);
@@ -1236,10 +1234,10 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             fs.Close();
 
             // Set up your AWS credentials
-            BasicAWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
+           
 
             // Create a new Amazon S3 client
-            AmazonS3Client s3Client = new AmazonS3Client(credentials, Amazon.RegionEndpoint.APSouth1);
+            AmazonS3Client s3Client = new AmazonS3Client(awsKey, awsSecretKey, Amazon.RegionEndpoint.APSouth1);
             // Upload the file to Amazon S3
             TransferUtility fileTransferUtility = new TransferUtility(s3Client);
             fileTransferUtility.Download(FileLocation, bucketName + "\\" + directoryPath, _FullName);

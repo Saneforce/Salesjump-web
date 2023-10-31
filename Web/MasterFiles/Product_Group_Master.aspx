@@ -161,8 +161,7 @@
                         pgNo = parseInt($(this).attr("data-dt-idx")); ReloadTable();
                         /* $(".paginate_button").removeClass("active");
                          $(this).closest(".paginate_button").addClass("active");*/
-                    }
-                    );
+                    });
                 }
 
                 function ReloadTable() {
@@ -182,11 +181,20 @@
                             tr = $("<tr></tr>");
                             //var hq = filtered[$i].Sf_Name.split('-');
                             slno = $i + 1;
-                            $(tr).html('<td>' + slno + '</td><td style="display:none">' + Orders[$i].Product_Grp_SName + '</td><td>' + Orders[$i].Product_Grp_Name + '</td><td cd=' + Orders[$i].Product_Grp_Code + ' nm=' + Orders[$i].Product_Grp_Name + ' class="deptsurs">' + Orders[$i].grp_count +
-                                '</td><td id=' + Orders[$i].Product_Grp_Code +
+
+                            var regex = /(<([^>]+)>)/ig;
+                            var Product_Grp_SName = Orders[$i].Product_Grp_SName.replace(regex, "");
+                            var Product_Grp_Name = Orders[$i].Product_Grp_Name.replace(regex, "");
+                            var Product_Grp_Code = Orders[$i].Product_Grp_Code.replace(regex, "");
+                            var grp_count = Orders[$i].grp_count.replace(regex, "");
+                            var Status = Orders[$i].Status.replace(regex, "");
+                            
+
+                            $(tr).html('<td>' + slno + '</td><td style="display:none">' + Product_Grp_SName + '</td><td>' + Product_Grp_Name + '</td><td cd=' + Product_Grp_Code + ' nm=' + Product_Grp_Name + ' class="deptsurs">' + grp_count +
+                                '</td><td id=' + Product_Grp_Code +
                                 ' class="sfedit"><a href="#">Edit</a></td>' +
                                 '<td><ul class="nav" style="margin:0px"><li class="dropdown"><a href="#" style="padding:0px" class="dropdown-toggle" data-toggle="dropdown">'
-                                + '<span><span class="aState" data-val="' + Orders[$i].Status + '">' + Orders[$i].Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
+                                + '<span><span class="aState" data-val="' + Status + '">' + Status + '</span><i class="caret" style="float:right;margin-top:8px;margin-right:0px"></i></span></a>' +
                                 '<ul class="dropdown-menu dropdown-custom dropdown-menu-right ddlStatus" style="right:0;left:auto;">' + optStatus + '</ul></li></ul></td>');
 
                             $("#OrderList TBODY").append(tr);
@@ -280,14 +288,42 @@
                     var grname = $('#txtgrname').val();
                     var sgrname = $('#txtsname').val();
                     var grcode = hscode.value;
+
                     if (grname == '' || grname == null) {
                         alert('Enter a Group Name');
+                        $('#txtgrname').focus();
                         return false;
                     }
+
+                    if (grname.match(/([\<])([^\>]{1,})*([\>])/i) == null) {
+
+                        // valid text entered
+                    }
+                    else {
+                        alert('Enter  Valid Group Name');
+                        $('#txtgrname').focus();
+                        return false;
+                        // not valid 
+                    }
+
+
                     if (sgrname == '' || sgrname == null) {
                         alert('Enter  Group Short Name');
+                        $('#txtsname').focus();
                         return false;
                     }
+
+                    if (sgrname.match(/([\<])([^\>]{1,})*([\>])/i) == null) {
+
+                        // valid text entered
+                    }
+                    else {
+                        alert('Enter  Valid Group Short Name');
+                        $('#txtsname').focus();
+                        return false;
+                        // not valid 
+                    }
+
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
@@ -296,7 +332,7 @@
                         data: "{'div':'<%=Session["div_code"]%>','grpname':'" + grname + "','grpsname':'" + sgrname + "','grpcode':'" + grcode + "'}",
                         dataType: "json",
                         success: function (data) {
-                            alert(data.d);
+                            //alert(data.d);
                             clear(); loadData();
                             $('#exampleModal').modal('hide');
                         },
@@ -333,13 +369,16 @@
                         hscode.value = this.id;
                         editgrp(x);
                     });
+
                     $(document).on('click', '#sgrp', function () {
                         savegrp();
                     });
+
                     $(document).on('click', '#nwgrp', function () {
                         clear();
                         $('#exampleModal').modal('toggle');
                     });
+
                     $(document).on("click", ".deptsurs", function () {
                         let prodc = $(this).attr("cd");
                         let prodn = $(this).attr("nm");
@@ -363,8 +402,15 @@
                                     for ($i = 0; $i < AllOrders.length; $i++) {
                                         if (AllOrders.length > 0) {
                                             slno += 1;
+                                            var regex = /(<([^>]+)>)/ig;
+                                            var Product_Detail_Code = AllOrders[$i].Product_Detail_Code.replace(regex, "");
+                                            var Product_Detail_Name = AllOrders[$i].Product_Detail_Name.replace(regex, "");
+                                            var Product_Description = AllOrders[$i].Product_Description.replace(regex, "");
+                                            var Product_Sale_Unit = AllOrders[$i].Product_Sale_Unit.replace(regex, "");
+                                            var Product_Cat_Name = AllOrders[$i].Product_Cat_Name.replace(regex, "");
+                                            var Product_Brd_Name = AllOrders[$i].Product_Brd_Name.replace(regex, "");
                                             tr = $("<tr></tr>");
-                                            $(tr).html("<td>" + slno + "</td><td>" + AllOrders[$i].Product_Detail_Code + "</td><td>" + AllOrders[$i].Product_Detail_Name + "</td><td>" + AllOrders[$i].Product_Description + "</td><td>" + AllOrders[$i].Product_Sale_Unit + "</td><td>" + AllOrders[$i].Product_Cat_Name + "</td><td>" + AllOrders[$i].Product_Brd_Name + "</td>");
+                                            $(tr).html("<td>" + slno + "</td><td>" + Product_Detail_Code + "</td><td>" + Product_Detail_Name + "</td><td>" + Product_Description + "</td><td>" + Product_Sale_Unit + "</td><td>" + Product_Cat_Name + "</td><td>" + Product_Brd_Name + "</td>");
                                             $("#leavedets TBODY").append(tr);
                                         }
                                     }
