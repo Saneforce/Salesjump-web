@@ -5238,12 +5238,6 @@
             <param name="count"></param>
             <returns></returns>
         </member>
-        <member name="M:Amazon.Runtime.Internal.Util.ChunkedUploadWrapperStream.FillInputBufferAsync(System.Threading.CancellationToken)">
-            <summary>
-            Attempt to read sufficient data for a whole chunk from the wrapped stream,
-            returning the number of bytes successfully read to be processed into a chunk
-            </summary>
-        </member>
         <member name="P:Amazon.Runtime.Internal.Util.ChunkedUploadWrapperStream.HeaderSigningResult">
             <summary>
             Results of the header-signing portion of the request when using SigV4 signing
@@ -5430,36 +5424,6 @@
             or zero (0) if the end of the stream has been reached.
             </returns>
         </member>
-        <member name="M:Amazon.Runtime.Internal.Util.CompressionWrapperStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Reads a sequence of bytes from the current stream and compresses it. The compressed bytes
-            are written into internal buffer <see cref="F:Amazon.Runtime.Internal.Util.CompressionWrapperStream._outputBufferStream"/>. If the count of compressed bytes
-            is larger than <paramref name="count"/>, we still write the leftover bytes into the internal buffer.
-            We then write the compressed bytes into the <paramref name="buffer"/> up to <paramref name="count"/>.
-            However, if we have leftover bytes from previous iteration(s), we would not read or compress the stream, 
-            but instead, we would write leftover bytes into the <paramref name="buffer"/> up to <paramref name="count"/>.
-            </summary>
-            <param name="buffer">
-            An array of bytes. When this method returns, the buffer contains the specified
-            byte array with the values between offset and (offset + count - 1) replaced
-            by the bytes read from the current source.
-            </param>
-            <param name="offset">
-            The zero-based byte offset in buffer at which to begin storing the data read
-            from the current stream.
-            </param>
-            <param name="count">
-            The maximum number of bytes to be read from the current stream.
-            </param>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests.
-            </param>
-            <returns>
-            The total number of compressed bytes returned into the buffer. This can be less than the
-            number of bytes requested if that many bytes are not currently available,
-            or zero (0) if the end of the stream has been reached.
-            </returns>
-        </member>
         <member name="M:Amazon.Runtime.Internal.Util.CompressionWrapperStream.Close">
             <summary>
             Closes the compression and memory streams
@@ -5529,33 +5493,6 @@
             </param>
             <param name="count">
             The maximum number of bytes to be read from the current stream.
-            </param>
-            <returns>
-            The total number of bytes read into the buffer. This can be less than the
-            number of bytes requested if that many bytes are not currently available,
-            or zero (0) if the end of the stream has been reached.
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.Util.DecryptStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously reads a sequence of bytes from the current stream and advances
-            the position within the stream by the number of bytes read.
-            </summary>
-            <param name="buffer">
-            An array of bytes. When this method returns, the buffer contains the specified
-            byte array with the values between offset and (offset + count - 1) replaced
-            by the bytes read from the current source.
-            </param>
-            <param name="offset">
-            The zero-based byte offset in buffer at which to begin storing the data read
-            from the current stream.
-            </param>
-            <param name="count">
-            The maximum number of bytes to be read from the current stream.
-            </param>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
             </param>
             <returns>
             The total number of bytes read into the buffer. This can be less than the
@@ -5682,35 +5619,6 @@
             or zero (0) if the end of the stream has been reached.
             </returns>
         </member>
-        <member name="M:Amazon.Runtime.Internal.Util.EncryptStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously reads a sequence of bytes from the current stream, advances
-            the position within the stream by the number of bytes read, and monitors
-            cancellation requests.
-            </summary>
-            <param name="buffer">
-            An array of bytes. When this method returns, the buffer contains the specified
-            byte array with the values between offset and (offset + count - 1) replaced
-            by the bytes read from the current source.
-            </param>
-            <param name="offset">
-            The zero-based byte offset in buffer at which to begin storing the data read
-            from the current stream.
-            </param>
-            <param name="count">
-            The maximum number of bytes to be read from the current stream.
-            </param>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
-            </param>
-            <returns>
-            A task that represents the asynchronous read operation. The value of the TResult
-            parameter contains the total number of bytes read into the buffer. This can be
-            less than the number of bytes requested if that many bytes are not currently
-            available, or zero (0) if the end of the stream has been reached.
-            </returns>
-        </member>
         <member name="P:Amazon.Runtime.Internal.Util.EncryptStream.CanSeek">
             <summary>
             Gets a value indicating whether the current stream supports seeking.
@@ -5802,35 +5710,6 @@
             The total number of bytes read into the buffer. This can be less than the
             number of bytes requested if that many bytes are not currently available,
             or zero (0) if the end of the stream has been reached.
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.Util.EncryptUploadPartStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously reads a sequence of bytes from the current stream, advances
-            the position within the stream by the number of bytes read, and monitors
-            cancellation requests.
-            </summary>
-            <param name="buffer">
-            An array of bytes. When this method returns, the buffer contains the specified
-            byte array with the values between offset and (offset + count - 1) replaced
-            by the bytes read from the current source.
-            </param>
-            <param name="offset">
-            The zero-based byte offset in buffer at which to begin storing the data read
-            from the current stream.
-            </param>
-            <param name="count">
-            The maximum number of bytes to be read from the current stream.
-            </param>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
-            </param>
-            <returns>
-            A task that represents the asynchronous read operation. The value of the TResult
-            parameter contains the total number of bytes read into the buffer. This can be
-            less than the number of bytes requested if that many bytes are not currently
-            available, or zero (0) if the end of the stream has been reached.
             </returns>
         </member>
         <member name="P:Amazon.Runtime.Internal.Util.EncryptUploadPartStream.CanSeek">
@@ -6024,35 +5903,6 @@
             The total number of bytes read into the buffer. This can be less than the
             number of bytes requested if that many bytes are not currently available,
             or zero (0) if the end of the stream has been reached.
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.Util.HashStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously reads a sequence of bytes from the current stream, advances
-            the position within the stream by the number of bytes read, and monitors
-            cancellation requests.
-            </summary>
-            <param name="buffer">
-            An array of bytes. When this method returns, the buffer contains the specified
-            byte array with the values between offset and (offset + count - 1) replaced
-            by the bytes read from the current source.
-            </param>
-            <param name="offset">
-            The zero-based byte offset in buffer at which to begin storing the data read
-            from the current stream.
-            </param>
-            <param name="count">
-            The maximum number of bytes to be read from the current stream.
-            </param>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
-            </param>
-            <returns>
-            A task that represents the asynchronous read operation. The value of the TResult
-            parameter contains the total number of bytes read into the buffer. This can be
-            less than the number of bytes requested if that many bytes are not currently
-            available, or zero (0) if the end of the stream has been reached.
             </returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.Util.HashStream.Close">
@@ -6868,54 +6718,6 @@
             makes that segment look like you are reading from beginning to end of the stream.
             </summary>
         </member>
-        <member name="M:Amazon.Runtime.Internal.Util.PartialWrapperStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously reads a sequence of bytes from the current stream, advances
-            the position within the stream by the number of bytes read, and monitors
-            cancellation requests.
-            </summary>
-            <param name="buffer">
-            An array of bytes. When this method returns, the buffer contains the specified
-            byte array with the values between offset and (offset + count - 1) replaced
-            by the bytes read from the current source.
-            </param>
-            <param name="offset">
-            The zero-based byte offset in buffer at which to begin storing the data read
-            from the current stream.
-            </param>
-            <param name="count">
-            The maximum number of bytes to be read from the current stream.
-            </param>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
-            </param>
-            <returns>
-            A task that represents the asynchronous read operation. The value of the TResult
-            parameter contains the total number of bytes read into the buffer. This can be
-            less than the number of bytes requested if that many bytes are not currently
-            available, or zero (0) if the end of the stream has been reached.
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.Util.PartialWrapperStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously writes a sequence of bytes to the current stream and advances the
-            current position within this stream by the number of bytes written.
-            </summary>
-            <param name="buffer">
-            An array of bytes. This method copies count bytes from buffer to the current stream.
-            </param>
-            <param name="offset">
-            The zero-based byte offset in buffer at which to begin copying bytes to the
-            current stream.
-            </param>
-            <param name="count">The number of bytes to be written to the current stream.</param>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
-            </param>
-            <returns>A task that represents the asynchronous write operation.</returns>
-        </member>
         <member name="T:Amazon.Runtime.Internal.Util.ProfileIniFile">
             <summary>
             Subclass of IniFile that allows INI sections to be read with the profile keyword in front of the section name.
@@ -6925,38 +6727,6 @@
             <summary>
             Wrapper stream that only supports reading
             </summary>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.Util.ReadOnlyWrapperStream.FlushAsync(System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously clears all buffers for this stream and causes any buffered data
-            to be written to the underlying device.
-            </summary>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
-            </param>
-            <returns>
-            A task that represents the asynchronous flush operation.
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.Util.ReadOnlyWrapperStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously writes a sequence of bytes to the current stream and advances the
-            current position within this stream by the number of bytes written.
-            </summary>
-            <param name="buffer">
-            An array of bytes. This method copies count bytes from buffer to the current stream.
-            </param>
-            <param name="offset">
-            The zero-based byte offset in buffer at which to begin copying bytes to the
-            current stream.
-            </param>
-            <param name="count">The number of bytes to be written to the current stream.</param>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
-            </param>
-            <returns>A task that represents the asynchronous write operation.</returns>
         </member>
         <member name="T:Amazon.Runtime.Internal.Util.PartialReadOnlyWrapperStream">
             <summary>
@@ -7250,18 +7020,6 @@
             <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if 
             that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
         </member>
-        <member name="M:Amazon.Runtime.Internal.Util.TrailingHeadersWrapperStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
-            </summary>
-            <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte 
-            array with the values between offset and (offset + count - 1) replaced by the bytes read from the current source.</param>
-            <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the current stream.</param>
-            <param name="count">The maximum number of bytes to be read from the current stream.</param>
-            <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-            <returns>The total number of bytes read into the buffer. This can be less than the number of bytes requested if 
-            that many bytes are not currently available, or zero (0) if the end of the stream has been reached.</returns>
-        </member>
         <member name="M:Amazon.Runtime.Internal.Util.TrailingHeadersWrapperStream.GenerateContentChunkLength">
             <summary>
             Generates the prefix for the content chunk, which is 
@@ -7458,67 +7216,6 @@
             </param>
             <param name="count">The number of bytes to be written to the current stream.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.Util.WrapperStream.FlushAsync(System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously clears all buffers for this stream and causes any buffered data
-            to be written to the underlying device.
-            </summary>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
-            </param>
-            <returns>
-            A task that represents the asynchronous flush operation.
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.Util.WrapperStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously reads a sequence of bytes from the current stream, advances
-            the position within the stream by the number of bytes read, and monitors
-            cancellation requests.
-            </summary>
-            <param name="buffer">
-            An array of bytes. When this method returns, the buffer contains the specified
-            byte array with the values between offset and (offset + count - 1) replaced
-            by the bytes read from the current source.
-            </param>
-            <param name="offset">
-            The zero-based byte offset in buffer at which to begin storing the data read
-            from the current stream.
-            </param>
-            <param name="count">
-            The maximum number of bytes to be read from the current stream.
-            </param>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
-            </param>
-            <returns>
-            A task that represents the asynchronous read operation. The value of the TResult
-            parameter contains the total number of bytes read into the buffer. This can be
-            less than the number of bytes requested if that many bytes are not currently
-            available, or zero (0) if the end of the stream has been reached.
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.Util.WrapperStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously writes a sequence of bytes to the current stream and advances the
-            current position within this stream by the number of bytes written.
-            </summary>
-            <param name="buffer">
-            An array of bytes. This method copies count bytes from buffer to the current stream.
-            </param>
-            <param name="offset">
-            The zero-based byte offset in buffer at which to begin copying bytes to the
-            current stream.
-            </param>
-            <param name="count">The number of bytes to be written to the current stream.</param>
-            <param name="cancellationToken">
-            The token to monitor for cancellation requests. The default value is
-            System.Threading.CancellationToken.None.
-            </param>
-            <returns>A task that represents the asynchronous write operation.</returns>
-        </member>
         <member name="T:Amazon.Runtime.Internal.Util.XMLEncodedStringWriter">
             <summary>
             Overridden StringWriter that escapes additional characters in XML requests for consistency across AWS SDKs.
@@ -7534,24 +7231,6 @@
             <param name="buffer">Characters to write to underlying string buffer</param>
             <param name="index">Position in buffer to start writing from</param>
             <param name="count">Number of characters to write</param>
-        </member>
-        <member name="T:Amazon.Runtime.Internal.AsyncRunner">
-            <summary>
-            This class is no longer used anymore and should be avoided as it is just meant
-            as a last resort when blending async and sync operations. The code is still
-            here to support versions before 3.3.9.0 of AWSSDK.DynamoDBv2.
-            </summary>
-        </member>
-        <member name="T:Amazon.Runtime.Internal.SSOServiceClientHelpers">
-            <summary>
-            Collection of helper methods for constructing the necessary Service client to
-            interrogate AWS SSO Services.
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.SSOServiceClientHelpers.CreateClient``1(Amazon.RegionEndpoint,System.String,System.String,System.String,System.Net.WebProxy)">
-            <summary>
-            Attempts to get a service client at runtime which cannot be made a project reference.
-            </summary>
         </member>
         <member name="T:Amazon.Runtime.Internal.ParameterCollection">
             <summary>
@@ -7625,14 +7304,12 @@
             <param name="executionContext">The execution context which contains both the
             request and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.ErrorHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.ErrorHandler.InvokeAsyncCallback(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
-            Handles and processes any exception thrown from underlying handlers.
+             Handles and processes any exception thrown from underlying handlers.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
             <param name="executionContext">The execution context, it contains the
             request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.ErrorHandler.DisposeReponse(Amazon.Runtime.IResponseContext)">
             <summary>
@@ -7641,21 +7318,6 @@
             <param name="responseContext">The response context.</param>
         </member>
         <member name="M:Amazon.Runtime.Internal.ErrorHandler.ProcessException(Amazon.Runtime.IExecutionContext,System.Exception)">
-            <summary>
-            Processes an exception by invoking a matching exception handler
-            for the given exception.
-            </summary>
-            <param name="executionContext">The execution context, it contains the
-            request and response context.</param>
-            <param name="exception">The exception to be processed.</param>
-            <returns>
-            This method returns a boolean value which indicates if the original exception
-            should be rethrown.
-            This method can also throw a new exception that may be thrown by exception
-            processing by a matching exception handler.
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.ErrorHandler.ProcessExceptionAsync(Amazon.Runtime.IExecutionContext,System.Exception)">
             <summary>
             Processes an exception by invoking a matching exception handler
             for the given exception.
@@ -7688,19 +7350,6 @@
             <param name="logger">in instance of ILogger.</param>
         </member>
         <member name="M:Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleException(Amazon.Runtime.IExecutionContext,Amazon.Runtime.Internal.HttpErrorResponseException)">
-            <summary>
-            Handles an exception for the given execution context.
-            </summary>
-            <param name="executionContext">The execution context, it contains the
-            request and response context.</param>
-            <param name="exception">The exception to handle.</param>
-            <returns>
-            Returns a boolean value which indicates if the original exception
-            should be rethrown.
-            This method can also throw a new exception to replace the original exception.
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.HttpErrorResponseExceptionHandler.HandleExceptionAsync(Amazon.Runtime.IExecutionContext,Amazon.Runtime.Internal.HttpErrorResponseException)">
             <summary>
             Handles an exception for the given execution context.
             </summary>
@@ -7788,15 +7437,21 @@
             <param name="executionContext">The execution context which contains both the
             request and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.CallbackHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.CallbackHandler.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
-            Calls the PreInvoke and PostInvoke methods before and after calling the next handler 
+            Calls the PreInvoke method before calling the next handler in the pipeline.
+            </summary>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
+            <returns>IAsyncResult which represent an async operation.</returns>
+        </member>
+        <member name="M:Amazon.Runtime.Internal.CallbackHandler.InvokeAsyncCallback(Amazon.Runtime.IAsyncExecutionContext)">
+            <summary>
+            Calls the PostInvoke methods after calling the next handler 
             in the pipeline.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
             <param name="executionContext">The execution context, it contains the
             request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.CallbackHandler.PreInvoke(Amazon.Runtime.IExecutionContext)">
             <summary>
@@ -7826,15 +7481,13 @@
             <param name="executionContext">The execution context which contains both the
             request and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.ChecksumHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.ChecksumHandler.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
-            Calls pre invoke logic before calling the next handler 
-            in the pipeline.
+            Calls pre invoke logic before calling the next handler in the pipeline.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
-            <param name="executionContext">The execution context, it contains the
+            <param name="asyncExecutionContext">The execution context which contains both the
             request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
+            <returns>IAsyncResult which represents an async operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.ChecksumHandler.PreInvoke(Amazon.Runtime.IExecutionContext)">
             <summary>
@@ -7857,15 +7510,14 @@
             <param name="executionContext">The execution context which contains both the
             request and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.CompressionHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.CompressionHandler.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Calls pre invoke logic before calling the next handler 
             in the pipeline.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
-            <param name="executionContext">The execution context, it contains the
+            <param name="asyncExecutionContext">The execution context which contains both the
             request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
+            <returns>IAsyncResult which represent an async operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.CompressionHandler.PreInvoke(Amazon.Runtime.IExecutionContext)">
             <summary>
@@ -7900,15 +7552,14 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.CredentialsRetriever.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.CredentialsRetriever.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Calls pre invoke logic before calling the next handler 
             in the pipeline.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
-            <param name="executionContext">The execution context, it contains the
-            request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
+            <returns>IAsyncResult which represent an async operation.</returns>
         </member>
         <member name="T:Amazon.Runtime.Internal.CSMCallAttemptHandler">
             <summary>
@@ -7920,10 +7571,9 @@
             Invokes the CSM handler and captures data for the CSM attempts.
             </summary>
         </member>
-        <member name="M:Amazon.Runtime.Internal.CSMCallAttemptHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.CSMCallAttemptHandler.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
-            Calls the PreInvoke and PostInvoke methods before and after calling the next handler 
-            in the pipeline.
+            Invokes the CSM handler and captures data for the CSM attempts.
             </summary>
         </member>
         <member name="M:Amazon.Runtime.Internal.CSMCallAttemptHandler.CSMCallAttemptMetricsCapture(Amazon.Runtime.IRequestContext,Amazon.Runtime.IResponseContext)">
@@ -7957,10 +7607,9 @@
             Invokes the CSM handler and captures data for the CSM events.
             </summary>
         </member>
-        <member name="M:Amazon.Runtime.Internal.CSMCallEventHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.CSMCallEventHandler.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
-            Calls the PreInvoke and PostInvoke methods before and after calling the next handler 
-            in the pipeline.
+            Invokes the CSM handler and captures data for the CSM events.
             </summary>
         </member>
         <member name="M:Amazon.Runtime.Internal.CSMCallEventHandler.CSMCallEventMetricsCapture(Amazon.Runtime.IExecutionContext)">
@@ -7990,15 +7639,12 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.EndpointDiscoveryHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.EndpointDiscoveryHandler.InvokeAsyncCallback(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
-            Calls pre invoke logic before calling the next handler 
-            in the pipeline.
+            Invokes the inner handler
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
-            <param name="executionContext">The execution context, it contains the
-            request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
         </member>
         <member name="M:Amazon.Runtime.Internal.EndpointDiscoveryHandler.PreInvoke(Amazon.Runtime.IExecutionContext)">
             <summary>
@@ -8021,15 +7667,14 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.EndpointResolver.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.EndpointResolver.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Calls pre invoke logic before calling the next handler 
             in the pipeline.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
-            <param name="executionContext">The execution context, it contains the
-            request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
+            <returns>IAsyncResult which represent an async operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.EndpointResolver.PreInvoke(Amazon.Runtime.IExecutionContext)">
             <summary>
@@ -8079,15 +7724,14 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.Marshaller.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.Marshaller.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Calls pre invoke logic before calling the next handler 
             in the pipeline.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
-            <param name="executionContext">The execution context, it contains the
-            request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
+            <returns>IAsyncResult which represent an async operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.Marshaller.PreInvoke(Amazon.Runtime.IExecutionContext)">
             <summary>
@@ -8115,15 +7759,20 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.MetricsHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.MetricsHandler.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
+            <summary>
+            Captures the overall execution time.
+            </summary>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
+            <returns>IAsyncResult which represent an async operation.</returns>
+        </member>
+        <member name="M:Amazon.Runtime.Internal.MetricsHandler.InvokeAsyncCallback(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Captures the overall execution time and logs final metrics.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
-            <param name="executionContext">
-            The execution context, it contains the request and response context.
-            </param>
-            <returns>A task that represents the asynchronous operation.</returns>
+            <param name="executionContext">The execution context, it contains the
+            request and response context.</param>
         </member>
         <member name="T:Amazon.Runtime.Internal.RedirectHandler">
             <summary>
@@ -8139,15 +7788,13 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.RedirectHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.RedirectHandler.InvokeAsyncCallback(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Processes HTTP redirects and reissues the call to the
             redirected location.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
             <param name="executionContext">The execution context, it contains the
             request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.RedirectHandler.HandleRedirect(Amazon.Runtime.IExecutionContext)">
             <summary>
@@ -8174,15 +7821,14 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.Signer.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.Signer.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Calls pre invoke logic before calling the next handler 
             in the pipeline.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
-            <param name="executionContext">The execution context, it contains the
-            request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
+            <returns>IAsyncResult which represent an async operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.Signer.PreInvoke(Amazon.Runtime.IExecutionContext)">
             <summary>
@@ -8200,12 +7846,6 @@
             <returns>A boolean value that indicated if the request should be signed.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.Signer.SignRequest(Amazon.Runtime.IRequestContext)">
-            <summary>
-            Signs the request.
-            </summary>
-            <param name="requestContext">The request context.</param>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.Signer.SignRequestAsync(Amazon.Runtime.IRequestContext)">
             <summary>
             Signs the request.
             </summary>
@@ -8232,14 +7872,12 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.Unmarshaller.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.Unmarshaller.InvokeAsyncCallback(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Unmarshalls the response returned by the HttpHandler.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
             <param name="executionContext">The execution context, it contains the
             request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.Unmarshaller.Unmarshall(Amazon.Runtime.IExecutionContext)">
             <summary>
@@ -8292,25 +7930,15 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.HttpHandler`1.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.HttpHandler`1.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Issues an HTTP request for the current request context.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
-            <param name="executionContext">The execution context, it contains the
-            request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
+            <returns>IAsyncResult which represent an async operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.HttpHandler`1.WriteContentToRequestBody(`0,Amazon.Runtime.IHttpRequest{`0},Amazon.Runtime.IRequestContext)">
-            <summary>
-            Determines the content for request body and uses the HTTP request
-            to write the content to the HTTP request body.
-            </summary>
-            <param name="requestContent">Content to be written.</param>
-            <param name="httpRequest">The HTTP request.</param>
-            <param name="requestContext">The request context.</param>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.HttpHandler`1.WriteContentToRequestBodyAsync(`0,Amazon.Runtime.IHttpRequest{`0},Amazon.Runtime.IRequestContext)">
             <summary>
             Determines the content for request body and uses the HTTP request
             to write the content to the HTTP request body.
@@ -8408,42 +8036,35 @@
             Aborts the HTTP request.
             </summary>
         </member>
-        <member name="M:Amazon.Runtime.Internal.HttpRequest.WriteToRequestBodyAsync(System.IO.Stream,System.IO.Stream,System.Collections.Generic.IDictionary{System.String,System.String},Amazon.Runtime.IRequestContext)">
+        <member name="M:Amazon.Runtime.Internal.HttpRequest.BeginGetRequestContent(System.AsyncCallback,System.Object)">
             <summary>
-            Writes a stream to the request body.
+            Initiates the operation to gets a handle to the request content.
             </summary>
-            <param name="requestContent">The destination where the content stream is written.</param>
-            <param name="contentStream">The content stream to be written.</param>
-            <param name="contentHeaders">HTTP content headers.</param>
-            <param name="requestContext">The request context.</param>
+            <param name="callback">The async callback invoked when the operation completes.</param>
+            <param name="state">The state object to be passed to the async callback.</param>
+            <returns>IAsyncResult that represents an async operation.</returns>
         </member>
-        <member name="M:Amazon.Runtime.Internal.HttpRequest.WriteToRequestBodyAsync(System.IO.Stream,System.Byte[],System.Collections.Generic.IDictionary{System.String,System.String},System.Threading.CancellationToken)">
+        <member name="M:Amazon.Runtime.Internal.HttpRequest.EndGetRequestContent(System.IAsyncResult)">
             <summary>
-            Writes a byte array to the request body.
+            Ends the operation to gets a handle to the request content.
             </summary>
-            <param name="requestContent">The destination where the content stream is written.</param>
-            <param name="content">The content stream to be written.</param>
-            <param name="contentHeaders">HTTP content headers.</param>
+            <param name="asyncResult">IAsyncResult that represents an async operation.</param>
+            <returns>The request content.</returns>
         </member>
-        <member name="M:Amazon.Runtime.Internal.HttpRequest.GetRequestContentAsync">
+        <member name="M:Amazon.Runtime.Internal.HttpRequest.BeginGetResponse(System.AsyncCallback,System.Object)">
             <summary>
-            Gets a handle to the request content.
+            Initiates the operation to Returns the HTTP response.
             </summary>
-            <returns></returns>
+            <param name="callback">The async callback invoked when the operation completes.</param>
+            <param name="state">The state object to be passed to the async callback.</param>
+            <returns>IAsyncResult that represents an async operation.</returns>
         </member>
-        <member name="M:Amazon.Runtime.Internal.HttpRequest.GetRequestContentAsync(System.Threading.CancellationToken)">
+        <member name="M:Amazon.Runtime.Internal.HttpRequest.EndGetResponse(System.IAsyncResult)">
             <summary>
-            Gets a handle to the request content.
+            Ends the operation to Returns the HTTP response.
             </summary>
-            <param name="cancellationToken">Used to cancel the request on demand</param>
-            <returns></returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.HttpRequest.GetResponseAsync(System.Threading.CancellationToken)">
-            <summary>
-            Returns the HTTP response.
-            </summary>
-            <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
-            <returns></returns>
+            <param name="asyncResult">IAsyncResult that represents an async operation.</param>
+            <returns>The HTTP response.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.HttpRequest.ConfigureRequest(Amazon.Runtime.IRequestContext)">
             <summary>
@@ -8504,16 +8125,37 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.PipelineHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.PipelineHandler.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Contains the processing logic for an asynchronous request invocation.
-            This method calls InnerHandler.InvokeSync to continue processing of the
+            This method should calls InnerHandler.InvokeSync to continue processing of the
             request by the pipeline.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
+            <returns>IAsyncResult which represent an async operation.</returns>
+        </member>
+        <member name="M:Amazon.Runtime.Internal.PipelineHandler.AsyncCallback(Amazon.Runtime.IAsyncExecutionContext)">
+            <summary>
+            This callback method is called by the callback method of the inner handler
+            as part of asynchronous processing after any underlying asynchronous
+            operations complete. 
+            </summary>
             <param name="executionContext">The execution context, it contains the
             request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:Amazon.Runtime.Internal.PipelineHandler.InvokeAsyncCallback(Amazon.Runtime.IAsyncExecutionContext)">
+            <summary>
+            This callback method contains the processing logic that should be executed 
+            after the underlying asynchronous operation completes.
+            This method is called as part of a callback chain which starts 
+            from the InvokeAsyncCallback method of the bottommost handler and then invokes
+            each callback method of the handler above it.
+            This method calls OuterHandler.AsyncCallback to continue processing of the
+            request by the pipeline, unless it's the topmost handler.
+            </summary>
+            <param name="executionContext">The execution context, it contains the
+            request and response context.</param>
         </member>
         <member name="M:Amazon.Runtime.Internal.PipelineHandler.LogMetrics(Amazon.Runtime.IExecutionContext)">
             <summary>
@@ -8525,9 +8167,6 @@
         <member name="T:Amazon.Runtime.Internal.AdaptiveRetryPolicy">
             <summary>
             The default implementation of the adaptive retry policy.
-            </summary>
-            <summary>
-            The default implementation of the adaptive policy.
             </summary>
         </member>
         <member name="M:Amazon.Runtime.Internal.AdaptiveRetryPolicy.#ctor(System.Int32)">
@@ -8573,34 +8212,7 @@
             </summary>
             <param name="executionContext">Request context containing the state of the request.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.AdaptiveRetryPolicy.RetryForExceptionAsync(Amazon.Runtime.IExecutionContext,System.Exception)">
-            <summary>
-            Return true if the request should be retried.
-            </summary>
-            <param name="executionContext">Request context containing the state of the request.</param>
-            <param name="exception">The exception thrown by the previous request.</param>
-            <returns>Return true if the request should be retried.</returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.AdaptiveRetryPolicy.WaitBeforeRetryAsync(Amazon.Runtime.IExecutionContext)">
-            <summary>
-            Waits before retrying a request.
-            </summary>
-            <param name="executionContext">The execution context which contains both the
-            requests and response context.</param>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.AdaptiveRetryPolicy.ObtainSendTokenAsync(Amazon.Runtime.IExecutionContext,System.Exception)">
-            <summary>
-            This method uses a token bucket to enforce the maximum sending rate.
-            </summary>
-            <param name="executionContext">The execution context which contains both the
-            requests and response context.</param>
-            <param name="exception">If the prior request failed, this exception is expected to be 
-            the exception that occurred during the prior request failure.</param>
-        </member>
         <member name="T:Amazon.Runtime.Internal.DefaultRetryPolicy">
-            <summary>
-            The default implementation of the legacy retry policy.
-            </summary>
             <summary>
             The default implementation of the legacy retry policy.
             </summary>
@@ -8718,21 +8330,6 @@
             the first retry will be 1.</param>
             <param name="maxBackoffInMilliseconds">The max number of milliseconds to wait</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.DefaultRetryPolicy.RetryForExceptionAsync(Amazon.Runtime.IExecutionContext,System.Exception)">
-            <summary>
-            Return true if the request should be retried.
-            </summary>
-            <param name="executionContext">Request context containing the state of the request.</param>
-            <param name="exception">The exception thrown by the previous request.</param>
-            <returns>Return true if the request should be retried.</returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.DefaultRetryPolicy.WaitBeforeRetryAsync(Amazon.Runtime.IExecutionContext)">
-            <summary>
-            Waits before retrying a request.
-            </summary>
-            <param name="executionContext">The execution context which contains both the
-            requests and response context.</param>
-        </member>
         <member name="T:Amazon.Runtime.Internal.RetryHandler">
             <summary>
             The retry handler has the generic logic for retrying requests.
@@ -8765,15 +8362,13 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.RetryHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.RetryHandler.InvokeAsyncCallback(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Invokes the inner handler and performs a retry, if required as per the
             retry policy.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
-            <param name="executionContext">The execution context, it contains the
-            request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
         </member>
         <member name="M:Amazon.Runtime.Internal.RetryHandler.PrepareForRetry(Amazon.Runtime.IRequestContext)">
             <summary>
@@ -8784,9 +8379,6 @@
         <member name="T:Amazon.Runtime.Internal.StandardRetryPolicy">
             <summary>
             The default implementation of the standard retry policy.
-            </summary>
-            <summary>
-            The default implementation of the standard policy.
             </summary>
         </member>
         <member name="P:Amazon.Runtime.Internal.StandardRetryPolicy.MaxBackoffInMilliseconds">
@@ -8903,21 +8495,6 @@
             the first retry will be 1.</param>
             <param name="maxBackoffInMilliseconds">The max number of milliseconds to wait</param>
         </member>
-        <member name="M:Amazon.Runtime.Internal.StandardRetryPolicy.RetryForExceptionAsync(Amazon.Runtime.IExecutionContext,System.Exception)">
-            <summary>
-            Return true if the request should be retried.
-            </summary>
-            <param name="executionContext">Request context containing the state of the request.</param>
-            <param name="exception">The exception thrown by the previous request.</param>
-            <returns>Return true if the request should be retried.</returns>
-        </member>
-        <member name="M:Amazon.Runtime.Internal.StandardRetryPolicy.WaitBeforeRetryAsync(Amazon.Runtime.IExecutionContext)">
-            <summary>
-            Waits before retrying a request.
-            </summary>
-            <param name="executionContext">The execution context which contains both the
-            requests and response context.</param>
-        </member>
         <member name="T:Amazon.Runtime.Internal.RuntimePipeline">
             <summary>
             A runtime pipeline contains a collection of handlers which represent
@@ -8962,12 +8539,12 @@
             <param name="executionContext">Request context</param>
             <returns>Response context</returns>
         </member>
-        <member name="M:Amazon.Runtime.Internal.RuntimePipeline.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.Internal.RuntimePipeline.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Invokes the pipeline asynchronously.
             </summary>
             <param name="executionContext">Request context</param>
-            <returns>Response context</returns>
+            <returns>IAsyncResult which represents the in progress asynchronous operation.</returns>
         </member>
         <member name="M:Amazon.Runtime.Internal.RuntimePipeline.AddHandler(Amazon.Runtime.IPipelineHandler)">
             <summary>
@@ -9107,16 +8684,6 @@
             <param name="failFast">Indicates that the client should or shouldn't sleep and 
             try again if capacity cannot be obtained.
             </param>        
-        </member>
-        <member name="M:Amazon.Runtime.Internal.TokenBucket.TryAcquireTokenAsync(System.Double,System.Boolean,System.Threading.CancellationToken)">
-            <summary>
-            This method attempts to acquire capacity from the client's token 
-            </summary>        
-            <param name="amount">The amount of capacity to obtain from the token bucket</param>
-            <param name="failFast">Indicates that the client should or shouldn't sleep and 
-            try again if capacity cannot be obtained.
-            </param>
-            <param name="cancellationToken">Token which can be used to cancel the task.</param>        
         </member>
         <member name="M:Amazon.Runtime.Internal.TokenBucket.UpdateClientSendingRate(System.Boolean)">
             <summary>
@@ -9465,14 +9032,6 @@
             <exception cref="T:System.ArgumentOutOfRangeException">The timeout specified is less than or equal to zero and is not Infinite.</exception>
             <seealso cref="P:System.Net.HttpWebRequest.Timeout"/>
             <seealso cref="P:System.Net.Http.HttpClient.Timeout"/>
-        </member>
-        <member name="M:Amazon.Runtime.ClientConfig.BuildDefaultCancellationToken">
-            <summary>
-            Generates a <see cref="T:System.Threading.CancellationToken"/> based on the value
-            for <see cref="P:Amazon.Runtime.DefaultConfiguration.TimeToFirstByteTimeout"/>.
-            <para />
-            NOTE: <see cref="!:Amazon.Runtime.HttpWebRequestMessage.GetResponseAsync"/> uses 
-            </summary>
         </member>
         <member name="P:Amazon.Runtime.ClientConfig.UseDualstackEndpoint">
             <summary>
@@ -10086,38 +9645,6 @@
         <member name="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.EndpointUrl">
             <summary>
             The global endpoint to use for a profile. Service specific endpoints will always override this value.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.SsoAccountId">
-            <summary>
-            The AWS account ID that temporary AWS credentials will be resolved for using AWS SSO.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.SsoRegion">
-            <summary>
-            The AWS region where the SSO directory for <see cref="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.SsoStartUrl"/> is hosted.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.SsoRegistrationScopes">
-            <summary>
-            The SSO scopes that are provided for authorization when using AWS SSO.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.SsoRoleName">
-            <summary>
-            The corresponding IAM role in the AWS account that temporary AWS credentials will be resolved for using AWS SSO.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.SsoSession">
-            <summary>
-            Name of the Sso Session section used to retrieve <see cref="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.SsoRegion"/> and
-            <see cref="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.SsoStartUrl"/>.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.SsoStartUrl">
-            <summary>
-            The main URL for users to login to their SSO directory.
-            Provided by the SSO service via the web console.
             </summary>
         </member>
         <member name="P:Amazon.Runtime.CredentialManagement.CredentialProfileOptions.IsEmpty">
@@ -11093,11 +10620,6 @@
             Returns a copy of the most recent instance profile credentials.
             </summary>
         </member>
-        <member name="M:Amazon.Runtime.DefaultInstanceProfileAWSCredentials.GetCredentialsAsync">
-            <summary>
-            Returns a copy of the most recent instance profile credentials.
-            </summary>
-        </member>
         <member name="M:Amazon.Runtime.DefaultInstanceProfileAWSCredentials.Dispose">
             <summary>
             Dispose this object and all related resources.
@@ -11416,216 +10938,6 @@
             <param name="s"></param>
             <returns></returns>
         </member>
-        <member name="T:Amazon.Runtime.Credentials.Internal.SsoToken">
-            <summary>
-            An <see cref="T:Amazon.Runtime.Credentials.Internal.SsoToken"/> is used by the <see cref="T:Amazon.Runtime.SSOAWSCredentials"/> provider to request
-            permission to get credentials and by the <see cref="T:Amazon.Runtime.SSOTokenProvider"/> when a Service is using
-            <see cref="T:Amazon.Runtime.BearerTokenSigner"/>.
-            <para />
-            <see cref="T:Amazon.Runtime.Credentials.Internal.SsoToken"/>s are persisted using <see cref="T:Amazon.Runtime.Credentials.Internal.SSOTokenManager"/>.
-            </summary>
-            <remarks>
-            This class is meant to be used internally.  It may be projected to a
-            <see cref="T:Amazon.Runtime.AWSToken"/>
-            </remarks>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SsoToken.AccessToken">
-            <summary>
-            Token string returned by the SSOOIDC service (IAmazonSSOOIDC).
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SsoToken.ExpiresAt">
-            <summary>
-            Expiration time of <see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.AccessToken"/>
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SsoToken.RefreshToken">
-            <summary>
-             An opaque string returned by the sso-oidc service.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SsoToken.ClientId">
-            <summary>
-            The client ID generated when performing the registration portion of the OIDC authorization flow.
-            The clientId is used alongside the <see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.RefreshToken"/> to refresh the <see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.AccessToken"/>.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SsoToken.ClientSecret">
-            <summary>
-            he client secret generated when performing the registration portion of the OIDC authorization flow.
-            The <see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.ClientSecret"/> is used alongside the <see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.RefreshToken"/> to refresh the <see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.AccessToken"/>.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SsoToken.RegistrationExpiresAt">
-            <summary>
-            The expiration time of the client registration (<see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.ClientId"/> and <see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.ClientSecret"/>) as
-            an RFC 3339 formatted timestamp.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SsoToken.Region">
-            <summary>
-            The configured sso_region for the profile that credentials are being resolved for.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SsoToken.StartUrl">
-            <summary>
-            The configured sso_start_url for the profile that credentials are being resolved for.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SsoToken.Session">
-            <summary>
-            The configured sso_session for the profile that credentials are being resolved for.
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.ISSOTokenFileCache.Exists(Amazon.Runtime.CredentialManagement.CredentialProfileOptions)">
-            <summary>
-            Returns true if a cache entry exists for the <see cref="T:Amazon.Runtime.Credentials.Internal.SsoToken"/> represented by
-            <paramref name="options"/>.
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.ISSOTokenFileCache.TryGetSsoToken(Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions,System.String,Amazon.Runtime.Credentials.Internal.SsoToken@)">
-            <inheritdoc cref="M:Amazon.Runtime.Credentials.Internal.ISSOTokenFileCache.TryGetSsoTokenAsync(Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions,System.String,System.Threading.CancellationToken)"/>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.ISSOTokenFileCache.SaveSsoToken(Amazon.Runtime.Credentials.Internal.SsoToken,System.String)">
-            <inheritdoc cref="M:Amazon.Runtime.Credentials.Internal.ISSOTokenFileCache.SaveSsoTokenAsync(Amazon.Runtime.Credentials.Internal.SsoToken,System.String,System.Threading.CancellationToken)"/>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.ISSOTokenFileCache.TryGetSsoTokenAsync(Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions,System.String,System.Threading.CancellationToken)">
-            <summary>
-            Tries to load a <see cref="T:Amazon.Runtime.Credentials.Internal.SsoToken"/> from the SSO File Cache.
-            </summary>
-            <param name="getSsoTokenOptions">
-            Options containing details needed to lookup the <see cref="T:Amazon.Runtime.Credentials.Internal.SsoToken"/> in cache.
-            </param>
-            <param name="ssoCacheDirectory">
-            Optional: Leave null/empty to default to (user profile)/.aws/sso/cache/
-            </param>
-            <param name="cancellationToken">
-            Cancels the operation
-            </param>
-            <returns>
-            A <see cref="T:Amazon.Runtime.TryResponse`1"/> indicating if a <see cref="T:Amazon.Runtime.Credentials.Internal.SsoToken"/> was retrieved from cache.
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.ISSOTokenFileCache.SaveSsoTokenAsync(Amazon.Runtime.Credentials.Internal.SsoToken,System.String,System.Threading.CancellationToken)">
-            <summary>
-            Saves <paramref name="token"/> to the SSO File Cache.
-            </summary>
-            <param name="token">
-            <see cref="T:Amazon.Runtime.Credentials.Internal.SsoToken"/> to persist to disk.
-            </param>
-            <param name="ssoCacheDirectory">
-            Optional: Leave null/empty to default to (user profile)/.aws/sso/cache/
-            </param>
-            <param name="cancellationToken">
-            Cancels the operation
-            </param>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.SSOTokenFileCache.GetCacheFilename(System.String,System.String)">
-            <summary>
-            Determines the file name of the Token Cache, regardless of folder.
-            If <see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.Session"/> is set, than that will be used to calculate the filename,
-            otherwise <see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.StartUrl"/> is used.
-            </summary>
-            <returns>
-            The filename to be used for a <see cref="T:Amazon.Runtime.Credentials.Internal.SsoToken"/>
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.SSOTokenFileCache.GenerateSha1Hash(System.String)">
-            <summary>
-            Generate a SHA1 hash for the given text
-            </summary>
-            <param name="text">Text to generate a hash for</param>
-            <returns>
-            SHA1 hash for <paramref name="text"/>
-            </returns>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.SSOTokenManager.GetSsoClientName(System.String)">
-            <summary>
-            Produces a client name watermarked with a timestamp for use in this provider's SSO Flow.
-            </summary>
-            <example>
-            "sometool" -> "sometool-1599153467"
-            </example>
-            <returns>A Client Name to use in the internal SSO flow</returns>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions.StartUrl">
-            <inheritdoc cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.StartUrl"/>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions.Session">
-            <inheritdoc cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.Session"/>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions.Region">
-            <inheritdoc cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.Region"/>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions.CacheFolderLocation">
-            <summary>
-            Set to override the sso cache location.  Leave null
-            to use the Default
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions.ClientName">
-            <inheritdoc cref="P:Amazon.Runtime.SSOAWSCredentialsOptions.ClientName"/>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions.ClientType">
-            <inheritdoc cref="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenRequest.ClientType"/>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions.SsoVerificationCallback">
-            <inheritdoc cref="P:Amazon.Runtime.SSOAWSCredentialsOptions.SsoVerificationCallback"/>
-        </member>
-        <member name="P:Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions.SupportsGettingNewToken">
-            <summary>
-            This field controls how <see cref="T:Amazon.Runtime.Credentials.Internal.SSOTokenManager"/> should behave if it does not find a valid or
-            refreshable token.
-            <para />
-            If <c>true</c>, then <see cref="T:Amazon.Runtime.Credentials.Internal.SSOTokenManager"/> will use <see cref="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonSSOOIDC.GetSsoToken(Amazon.Runtime.SharedInterfaces.GetSsoTokenRequest)"/>
-            to start an authorization flow and mint a new token and cache the result.
-            If <c>false</c> <see cref="T:Amazon.Runtime.Credentials.Internal.SSOTokenManager"/> will throw an exception if it finds
-            an expired token.  It will take no action if finds no cached token.
-            <para />
-            NOTE: If setting to <c>true</c>, <see cref="P:Amazon.Runtime.Credentials.Internal.SSOTokenManagerGetTokenOptions.SsoVerificationCallback"/> must also be set
-            for authorization flow to succeed.
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.SsoTokenUtils.IsExpired(Amazon.Runtime.Credentials.Internal.SsoToken)">
-            <summary>
-            True if <see cref="P:Amazon.Runtime.Credentials.Internal.SsoToken.ExpiresAt"/> is less than the current time
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.SsoTokenUtils.NeedsRefresh(Amazon.Runtime.Credentials.Internal.SsoToken)">
-            <summary>
-            True if either the <paramref name="token"/> will expire in 6 minutes or
-            has already expired.
-            <para />
-            Per Spec: Always try and refresh an expired token.
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.SsoTokenUtils.CanRefresh(Amazon.Runtime.Credentials.Internal.SsoToken)">
-            <summary>
-            Indicates if <paramref name="token"/> has the necessary data properties
-            to facilitate a refresh attempt.
-            <para />
-            NOTE: This does NOT check if the <paramref name="token"/> is within a refresh
-            time window.  For that, use <see cref="M:Amazon.Runtime.Credentials.Internal.SsoTokenUtils.NeedsRefresh(Amazon.Runtime.Credentials.Internal.SsoToken)"/>/
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.SsoTokenUtils.AsJson(Amazon.Runtime.Credentials.Internal.SsoToken)">
-            <summary>
-            Serializes the SSO Token to JSON
-            </summary>
-            <param name="token">Token to serialize</param>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.SsoTokenUtils.ToJson(Amazon.Runtime.Credentials.Internal.SsoToken)">
-            <summary>
-            Serializes the SSO Token to JSON
-            </summary>
-            <param name="token">Token to serialize</param>
-        </member>
-        <member name="M:Amazon.Runtime.Credentials.Internal.SsoTokenUtils.FromJson(System.String)">
-            <summary>
-            Deserializes the SSO Token from JSON
-            </summary>
-            <param name="json">JSON (string) to deserialize</param>
-        </member>
         <member name="T:Amazon.Runtime.ProcessAWSCredentials">
             <summary>
             Process Credentials  can retrieve credentials by running a process and reading its stdout. 
@@ -11694,14 +11006,6 @@
             </summary>
         </member>
         <member name="M:Amazon.Runtime.RefreshingAWSCredentials.GenerateNewCredentials">
-            <summary>
-            When overridden in a derived class, generates new credentials and new expiration date.
-            
-            Called on first credentials request and when expiration date is in the past.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Amazon.Runtime.RefreshingAWSCredentials.GenerateNewCredentialsAsync">
             <summary>
             When overridden in a derived class, generates new credentials and new expiration date.
             
@@ -11930,165 +11234,6 @@
             The fully qualified name to the credential file that was located, or null
             if no credential file could be found.
             </returns>
-        </member>
-        <member name="T:Amazon.Runtime.SSOAWSCredentials">
-            <summary>
-            AWS Credentials that resolve using AWS SSO.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SSOAWSCredentials.AccountId">
-            <summary>
-            The AWS account ID that temporary AWS credentials will be resolved for.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SSOAWSCredentials.Region">
-            <summary>
-            The AWS region where the SSO directory for <see cref="P:Amazon.Runtime.SSOAWSCredentials.StartUrl"/> is hosted.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SSOAWSCredentials.RoleName">
-            <summary>
-            The corresponding IAM role in the AWS account that temporary AWS credentials will be resolved for.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SSOAWSCredentials.StartUrl">
-            <summary>
-            The main URL for users to login to their SSO directory.
-            Provided by the SSO service via the web console.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SSOAWSCredentials.Options">
-            <summary>
-            Options to be used in the SSO flow to resolve credentials.
-            Developers wishing to support AWS SSO would want to provide the following:
-            - <seealso cref="P:Amazon.Runtime.SSOAWSCredentialsOptions.ClientName"/>
-            - <seealso cref="P:Amazon.Runtime.SSOAWSCredentialsOptions.SsoVerificationCallback"/>
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.SSOAWSCredentials.#ctor(System.String,System.String,System.String,System.String)">
-            <summary>
-            Constructs an SSOAWSCredentials object.
-            </summary>
-            <param name="accountId">The AWS account ID that temporary AWS credentials will be resolved for.</param>
-            <param name="region">The AWS region where the SSO directory for <paramref name="startUrl"/> is hosted.</param>
-            <param name="roleName">The corresponding IAM role in the AWS account that temporary AWS credentials will be resolved for.</param>
-            <param name="startUrl">The main URL for users to login to their SSO directory.</param>
-        </member>
-        <member name="M:Amazon.Runtime.SSOAWSCredentials.#ctor(System.String,System.String,System.String,System.String,Amazon.Runtime.SSOAWSCredentialsOptions)">
-            <summary>
-            Constructs an SSOAWSCredentials object.
-            </summary>
-            <param name="accountId">The AWS account ID that temporary AWS credentials will be resolved for.</param>
-            <param name="region">The AWS region where the SSO directory for <paramref name="startUrl"/> is hosted.</param>
-            <param name="roleName">The corresponding IAM role in the AWS account that temporary AWS credentials will be resolved for.</param>
-            <param name="startUrl">The main URL for users to login to their SSO directory.</param>
-            <param name="options">Options to be used in the SSO flow to resolve credentials.</param>
-        </member>
-        <member name="M:Amazon.Runtime.SSOAWSCredentials.GetSsoCredentials(Amazon.Runtime.SharedInterfaces.ICoreAmazonSSO)">
-            <summary>
-            Performs the SSO flow to authenticate and get credentials
-            </summary>
-            <param name="oidc">SSO OIDC client</param>
-            <param name="sso">SSO client</param>
-            <returns>Resolved credentials</returns>
-        </member>
-        <member name="M:Amazon.Runtime.SSOAWSCredentials.GetSsoCredentialsAsync(Amazon.Runtime.SharedInterfaces.ICoreAmazonSSO)">
-            <summary>
-            Performs the SSO flow to authenticate and get credentials
-            </summary>
-            <param name="sso">SSO client</param>
-            <returns>Resolved credentials</returns>
-        </member>
-        <member name="M:Amazon.Runtime.SSOAWSCredentials.HasCachedAccessTokenAvailable(System.String)">
-            <summary>
-            Returns true if there is already a non-expired cached login access token in the token cache.
-            </summary>
-            <param name="startUrl"></param>
-            <returns>Obsolete: ALWAYS RETURNS FALSE</returns>
-        </member>
-        <member name="M:Amazon.Runtime.SSOAWSCredentials.GetSsoRoleCredentials(Amazon.Runtime.SharedInterfaces.ICoreAmazonSSO,System.String)">
-            <summary>
-            Get resolved credentials from an AWS SSO access token
-            </summary>
-            <param name="sso">AWS SSO Client</param>
-            <param name="accessToken">AWS SSO access token obtained from a user's authorization</param>
-            <returns>Resolved credentials</returns>
-        </member>
-        <member name="M:Amazon.Runtime.SSOAWSCredentials.GetSsoRoleCredentialsAsync(Amazon.Runtime.SharedInterfaces.ICoreAmazonSSO,System.String)">
-            <summary>
-            Get resolved credentials from an AWS SSO access token
-            </summary>
-            <param name="sso">AWS SSO Client</param>
-            <param name="accessToken">AWS SSO access token obtained from a user's authorization</param>
-            <returns>Resolved credentials</returns>
-        </member>
-        <member name="P:Amazon.Runtime.SsoVerificationArguments.UserCode">
-            <summary>
-            The end-user verification code that is provided (by the user or on their behalf) when
-            the user logs in using <see cref="P:Amazon.Runtime.SsoVerificationArguments.VerificationUri"/>
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SsoVerificationArguments.VerificationUri">
-            <summary>
-            End-user verification URI on the authorization server.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SsoVerificationArguments.VerificationUriComplete">
-            <summary>
-            A verification URI that includes the "user_code", designed for non-textual transmission.
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.SsoVerificationArguments.GetSsoSigninMessage">
-            <summary>
-            Produces a stock message that can be presented to users, instructing them how to log in through SSO.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SSOAWSCredentialsOptions.ClientName">
-            <summary>
-            Required - Name of the application or system used during SSO client registration.
-            A timestamp indicating when the client was registered will be appended to requests made to the SSOOIDC service.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SSOAWSCredentialsOptions.SessionName">
-            <summary>
-            The name of the sso_session section in the shared configuration file specified to be used when loading the token.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SSOAWSCredentialsOptions.SsoVerificationCallback">
-            <summary>
-            A callback that is used to initiate the SSO Login flow with the user.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SSOAWSCredentialsOptions.ProxySettings">
-            <summary>
-            The proxy settings to use when calling SSOOIDC and SSO Services.
-            </summary>
-        </member>
-        <member name="T:Amazon.Runtime.SSOImmutableCredentials">
-            <summary>
-            Immutable representation of AWS credentials obtained as a result of
-            authenticating through AWS SSO.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SSOImmutableCredentials.Expiration">
-            <summary>
-            The expiry time of the credentials, obtained from the AWS SSO service.
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.SSOImmutableCredentials.#ctor(System.String,System.String,System.String,System.DateTime)">
-            <summary>
-            Constructs an instance with supplied keys, token, and expiration.
-            </summary>
-            <param name="awsAccessKeyId">The AccessKey for the credentials.</param>
-            <param name="awsSecretAccessKey">The SecretKey for the credentials.</param>
-            <param name="token">The security token for the credentials.</param>
-            <param name="expiration">The expiration time for the credentials.</param>
-        </member>
-        <member name="M:Amazon.Runtime.SSOImmutableCredentials.Copy">
-            <summary>
-            Get a copy of this SSOImmutableCredentials object.
-            </summary>
-            <returns>A copy of this object.</returns>
         </member>
         <member name="T:Amazon.Runtime.AppConfigAWSCredentials">
             <summary>
@@ -12347,14 +11492,9 @@
             Method to post UDP datagram for sync calls
             </summary>
         </member>
-        <member name="M:Amazon.Runtime.MonitoringListener.PostMessagesOverUDPAsync(System.String)">
+        <member name="M:Amazon.Runtime.MonitoringListener.BeginPostMessagesOverUDPInvoke(System.String)">
             <summary>
             Method to post UDP datagram for async calls
-            </summary>
-        </member>
-        <member name="F:Amazon.Runtime.MonitoringListener._disposed">
-            <summary>
-            Method to post UDP datagram for bcl35 async calls
             </summary>
         </member>
         <member name="T:Amazon.Runtime.IDefaultConfiguration">
@@ -14373,19 +13513,6 @@
             This method can also throw a new exception to replace the original exception.
             </returns>
         </member>
-        <member name="M:Amazon.Runtime.IExceptionHandler.HandleAsync(Amazon.Runtime.IExecutionContext,System.Exception)">
-            <summary>
-            Handles an exception for the given execution context.
-            </summary>
-            <param name="executionContext">The execution context, it contains the
-            request and response context.</param>
-            <param name="exception">The exception to handle.</param>
-            <returns>
-            Returns a boolean value which indicates if the original exception
-            should be rethrown.
-            This method can also throw a new exception to replace the original exception.
-            </returns>
-        </member>
         <member name="T:Amazon.Runtime.IExceptionHandler`1">
             <summary>
             The interface for an exception handler with a generic parameter for the exception type.
@@ -14490,18 +13617,35 @@
             Aborts the HTTP request.
             </summary>
         </member>
-        <member name="M:Amazon.Runtime.IHttpRequest`1.GetRequestContentAsync">
+        <member name="M:Amazon.Runtime.IHttpRequest`1.BeginGetRequestContent(System.AsyncCallback,System.Object)">
             <summary>
-            Gets a handle to the request content.
+            Initiates the operation to gets a handle to the request content.
             </summary>
-            <returns></returns>
+            <param name="callback">The async callback invoked when the operation completes.</param>
+            <param name="state">The state object to be passed to the async callback.</param>
+            <returns>IAsyncResult that represents an async operation.</returns>
         </member>
-        <member name="M:Amazon.Runtime.IHttpRequest`1.GetResponseAsync(System.Threading.CancellationToken)">
+        <member name="M:Amazon.Runtime.IHttpRequest`1.EndGetRequestContent(System.IAsyncResult)">
             <summary>
-            Returns the HTTP response.
+            Ends the operation to gets a handle to the request content.
             </summary>
-            <param name="cancellationToken">A cancellation token that can be used to cancel the asynchronous operation.</param>
-            <returns></returns>
+            <param name="asyncResult">IAsyncResult that represents an async operation.</param>
+            <returns>The request content.</returns>
+        </member>
+        <member name="M:Amazon.Runtime.IHttpRequest`1.BeginGetResponse(System.AsyncCallback,System.Object)">
+            <summary>
+            Initiates the operation to Returns the HTTP response.
+            </summary>
+            <param name="callback">The async callback invoked when the operation completes.</param>
+            <param name="state">The state object to be passed to the async callback.</param>
+            <returns>IAsyncResult that represents an async operation.</returns>
+        </member>
+        <member name="M:Amazon.Runtime.IHttpRequest`1.EndGetResponse(System.IAsyncResult)">
+            <summary>
+            Ends the operation to Returns the HTTP response.
+            </summary>
+            <param name="asyncResult">IAsyncResult that represents an async operation.</param>
+            <returns>The HTTP response.</returns>
         </member>
         <member name="T:Amazon.Runtime.IPipelineHandler">
             <summary>
@@ -14533,22 +13677,30 @@
             <param name="executionContext">The execution context which contains both the
             requests and response context.</param>
         </member>
-        <member name="M:Amazon.Runtime.IPipelineHandler.InvokeAsync``1(Amazon.Runtime.IExecutionContext)">
+        <member name="M:Amazon.Runtime.IPipelineHandler.InvokeAsync(Amazon.Runtime.IAsyncExecutionContext)">
             <summary>
             Contains the processing logic for an asynchronous request invocation.
             This method should call InnerHandler.InvokeSync to continue processing of the
             request by the pipeline, unless it's a terminating handler.
             </summary>
-            <typeparam name="T">The response type for the current request.</typeparam>
+            <param name="executionContext">The execution context which contains both the
+            requests and response context.</param>
+            <returns>IAsyncResult which represent a async operation.</returns>
+        </member>
+        <member name="M:Amazon.Runtime.IPipelineHandler.AsyncCallback(Amazon.Runtime.IAsyncExecutionContext)">
+            <summary>
+            This callback method contains the processing logic that should be executed 
+            after the underlying asynchronous operation completes.
+            This method is called as part of a callback chain which starts 
+            from the InvokeAsyncCallback method of the bottommost handler and then invokes
+            each callback method of the handler above it.
+            This method should call OuterHandler.AsyncCallback to continue processing of the
+            request by the pipeline, unless it's the topmost handler.
+            </summary>
             <param name="executionContext">The execution context, it contains the
             request and response context.</param>
-            <returns>A task that represents the asynchronous operation.</returns>
         </member>
         <member name="T:Amazon.Runtime.RetryPolicy">
-            <summary>
-            A retry policy specifies all aspects of retry behavior. This includes conditions when the request should be retried,
-            checks of retry limit, preparing the request before retry and introducing delay (backoff) before retries.
-            </summary>
             <summary>
             A retry policy specifies all aspects of retry behavior. This includes conditions when the request should be retried,
             checks of retry limit, preparing the request before retry and introducing delay (backoff) before retries.
@@ -14716,40 +13868,6 @@
             otherwise we construct key based on ClientConfig's schema, region, service, fips, dualstack parameters.
             This value is unique key per real service's url variant.
             </summary>
-        </member>
-        <member name="M:Amazon.Runtime.RetryPolicy.RetryAsync(Amazon.Runtime.IExecutionContext,System.Exception)">
-            <summary>
-            Checks if a retry should be performed with the given execution context and exception.
-            </summary>
-            <param name="executionContext">The execution context which contains both the
-            requests and response context.</param>
-            <param name="exception">The exception throw after issuing the request.</param>
-            <returns>Returns true if the request should be retried, else false. The exception is retried if it matches with clockskew error codes.</returns>
-        </member>
-        <member name="M:Amazon.Runtime.RetryPolicy.ObtainSendTokenAsync(Amazon.Runtime.IExecutionContext,System.Exception)">
-            <summary>
-            This method uses a token bucket to enforce the maximum sending rate.
-            </summary>
-            <param name="executionContext">The execution context which contains both the
-            requests and response context.</param>
-            <param name="exception">If the prior request failed, this exception is expected to be 
-            the exception that occurred during the prior request failure.</param>
-        </member>
-        <member name="M:Amazon.Runtime.RetryPolicy.RetryForExceptionAsync(Amazon.Runtime.IExecutionContext,System.Exception)">
-            <summary>
-            Return true if the request should be retried for the given exception.
-            </summary>
-            <param name="executionContext">The execution context which contains both the
-            requests and response context.</param>
-            <param name="exception">The exception thrown by the previous request.</param>
-            <returns>Return true if the request should be retried.</returns>
-        </member>
-        <member name="M:Amazon.Runtime.RetryPolicy.WaitBeforeRetryAsync(Amazon.Runtime.IExecutionContext)">
-            <summary>
-            Waits before retrying a request.
-            </summary>
-            <param name="executionContext">The execution context which contains both the
-            requests and response context.</param>
         </member>
         <member name="T:Amazon.Runtime.IRequestMetrics">
             <summary>
@@ -15010,11 +14128,6 @@
             and allows other services to be able to use S3 as a runtime dependency. This interface
             is implemented by the AmazonS3Client defined in the S3 assembly.
             </summary>
-            <summary>
-            ICoreAmazonS3 is not meant to use directly. It defines S3 with basic .NET types
-            and allows other services to be able to use S3 as a runtime dependency. This interface
-            is implemented by the AmazonS3Client defined in the S3 assembly.
-            </summary>
         </member>
         <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.GeneratePreSignedURL(System.String,System.String,System.DateTime,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
@@ -15026,97 +14139,93 @@
             <param name="additionalProperties"></param>
             <returns></returns>
         </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.GetAllObjectKeysAsync(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.BeginDelete(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.AsyncCallback,System.Object)">
             <summary>
-            Get all the object keys for the particular bucket and key prefix.
+            Start a delete object.
             </summary>
             <param name="bucketName"></param>
-            <param name="prefix"></param>
+            <param name="objectKey"></param>
             <param name="additionalProperties"></param>
+            <param name="callback"></param>
+            <param name="state"></param>
             <returns></returns>
         </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.UploadObjectFromStreamAsync(System.String,System.String,System.IO.Stream,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.EndDelete(System.IAsyncResult)">
             <summary>
-            Upload an object from a stream.
+            Get the results of a delete object.
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.BeginUploadObjectFromStream(System.String,System.String,System.IO.Stream,System.Collections.Generic.IDictionary{System.String,System.Object},System.AsyncCallback,System.Object)">
+            <summary>
+            Start an upload object from stream.
             </summary>
             <param name="bucketName"></param>
             <param name="objectKey"></param>
             <param name="stream"></param>
             <param name="additionalProperties"></param>
-            <param name="cancellationToken"></param>
+            <param name="callback"></param>
+            <param name="state"></param>
             <returns></returns>
         </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.DeleteAsync(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.EndUploadObjectFromStream(System.IAsyncResult)">
             <summary>
-            Delete an object.
+            Get the results of an upload from stream.
             </summary>
-            <param name="bucketName"></param>
-            <param name="objectKey"></param>
-            <param name="additionalProperties"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
+            <param name="result"></param>
         </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.DeletesAsync(System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.BeginUploadObjectFromFilePath(System.String,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.AsyncCallback,System.Object)">
             <summary>
-            Delete an object.
-            </summary>
-            <param name="bucketName"></param>
-            <param name="objectKeys"></param>
-            <param name="additionalProperties"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.GetObjectStreamAsync(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
-            <summary>
-            Open a stream to an object in S3.
-            </summary>
-            <param name="bucketName"></param>
-            <param name="objectKey"></param>
-            <param name="additionalProperties"></param>
-            <param name="cancellationToken"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.UploadObjectFromFilePathAsync(System.String,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
-            <summary>
-            Upload an object from a file path.
+            Start an upload object from file path.
             </summary>
             <param name="bucketName"></param>
             <param name="objectKey"></param>
             <param name="filepath"></param>
             <param name="additionalProperties"></param>
-            <param name="cancellationToken"></param>
+            <param name="callback"></param>
+            <param name="state"></param>
             <returns></returns>
         </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.DownloadToFilePathAsync(System.String,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.CancellationToken)">
+        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.EndUploadObjectFromFilePath(System.IAsyncResult)">
             <summary>
-            Download an object in S3 to a file path.
+            Get the results of an upload from file path.
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.BeginDownloadToFilePath(System.String,System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.AsyncCallback,System.Object)">
+            <summary>
+            Start a download to a file path.
             </summary>
             <param name="bucketName"></param>
             <param name="objectKey"></param>
             <param name="filepath"></param>
             <param name="additionalProperties"></param>
-            <param name="cancellationToken"></param>
+            <param name="callback"></param>
+            <param name="state"></param>
             <returns></returns>
         </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.MakeObjectPublicAsync(System.String,System.String,System.Boolean)">
+        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.EndDownloadToFilePath(System.IAsyncResult)">
             <summary>
-            Set the ACL on the object to public readable.
+            Get results of downloading an object to a file path.
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.BeginGetObjectStream(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.AsyncCallback,System.Object)">
+            <summary>
+            Start opening a stream to an object in S3.
             </summary>
             <param name="bucketName"></param>
             <param name="objectKey"></param>
-            <param name="enable"></param>
+            <param name="additionalProperties"></param>
+            <param name="callback"></param>
+            <param name="state"></param>
+            <returns></returns>
         </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.EnsureBucketExistsAsync(System.String)">
+        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.EndGetObjectStream(System.IAsyncResult)">
             <summary>
-            Check to see if the bucket exists and if it doesn't create the bucket.
+            Get results of opening a stream to an object in S3.
             </summary>
-            <param name="bucketName"></param>
-        </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.DoesS3BucketExistAsync(System.String)">
-            <summary>
-            Check to see if the bucket exists.
-            </summary>
-            <param name="bucketName"></param>
+            <param name="result"></param>
             <returns></returns>
         </member>
         <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonS3.GetAllObjectKeys(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
@@ -15219,13 +14328,6 @@
             <param name="queueUrl">The queue URL to get attributes for.</param>
             <returns>The attributes for the queue.</returns>
         </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonSQS.GetAttributesAsync(System.String)">
-            <summary>
-            Get the attributes for the queue identified by the queue URL asynchronously.
-            </summary>
-            <param name="queueUrl">The queue URL to get attributes for.</param>
-            <returns>A Task containing the result of a dictionary of attributes for the queue.</returns>
-        </member>
         <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonSQS.SetAttributes(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
             <summary>
             <para>
@@ -15236,14 +14338,6 @@
             </summary>
             <param name="queueUrl">The queue URL to set the attributues.</param>
             <param name="attributes">The attributes to set.</param>
-        </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonSQS.SetAttributesAsync(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
-            <summary>
-            Set the attributes on the queue identified by the queue URL asynchronously.
-            </summary>
-            <param name="queueUrl">The queue URL to set the attributues.</param>
-            <param name="attributes">The attributes to set.</param>
-            <returns>A Task</returns>
         </member>
         <member name="T:Amazon.Runtime.SharedInterfaces.ICoreAmazonSTS">
             <summary>
@@ -15320,27 +14414,6 @@
             <param name="options">Options to be used in the call to AssumeRoleWithWebIdentity</param>
             <returns></returns>
         </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonSTS_WebIdentity.CredentialsFromAssumeRoleWithWebIdentityAuthenticationAsync(System.String,System.String,System.String,Amazon.Runtime.AssumeRoleWithWebIdentityCredentialsOptions)">
-            <summary>
-            <para>
-            This method is used internally to access the Amazon Security Token
-            service within other service assemblies.
-            Please use AmazonSecurityTokenServiceClient to access the Amazon Security Token
-            service instead.
-            </para>
-            Use Amazon Security Token Service to assume a role.
-            <remarks>
-            Proxy settings that are required for the HTTPS and STS calls made during the authentication/credential
-            generation process are supported and should have been configured on the STS ClientConfig instance
-            associated with the STS client instance exposing this interface.
-            </remarks>
-            </summary>
-            <param name="webIdentityToken">The web identity token used to assume the role.</param>
-            <param name="roleArn">The Amazon Resource Name (ARN) of the role to assume.</param>
-            <param name="roleSessionName">An identifier for the assumed role session.</param>
-            <param name="options">Options to be used in the call to AssumeRoleWithWebIdentity</param>
-            <returns></returns>
-        </member>
         <member name="T:Amazon.Runtime.SharedInterfaces.Internal.CoreAmazonKMS">
              <summary>
              CoreAmazonKMS is not meant to use directly. It implements ICoreAmazonKMS
@@ -15384,130 +14457,6 @@
             <param name="source">Data to hash</param>
             <param name="previous">Previous value of a rolling checksum</param>
             <returns>Updated CRC32C hash as 32-bit integer</returns>
-        </member>
-        <member name="T:Amazon.Runtime.SharedInterfaces.ICoreAmazonSSO">
-            <summary>
-            ICoreAmazonSSO is not meant to be used directly. It defines SSO 
-            service with basic .NET types and allows other services to be able to use the service as 
-            a runtime dependency. This interface is implemented by the AmazonSSOClient 
-            defined in the AWSSDK.SSO assembly.
-            </summary>
-        </member>
-        <member name="T:Amazon.Runtime.SharedInterfaces.ICoreAmazonSSOOIDC">
-            <summary>
-            ICoreAmazonSSOOIDC is not meant to be used directly. It defines SSO OIDC
-            service with basic .NET types and allows other services to be able to use the service as 
-            a runtime dependency. This interface is implemented by the AmazonSSOOIDCClient 
-            defined in the AWSSDK.SSOOIDC assembly.
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonSSOOIDC.GetSsoToken(Amazon.Runtime.SharedInterfaces.GetSsoTokenRequest)">
-            <summary>
-            This method is used internally to access the Amazon SSO OIDC service within other service assemblies.
-            Please use AmazonSSOOIDCClient to access the Amazon SSO OIDC service instead.
-            
-            Use Amazon SSO OIDC to get an SSO Token
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonSSOOIDC.GetSsoTokenAsync(Amazon.Runtime.SharedInterfaces.GetSsoTokenRequest)">
-            <summary>
-            This method is used internally to access the Amazon SSO OIDC service within other service assemblies.
-            Please use AmazonSSOOIDCClient to access the Amazon SSO OIDC service instead.
-            
-            Use Amazon SSO OIDC to get an SSO Token
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonSSOOIDC.RefreshToken(Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse)">
-            <summary>
-            This method is used internally to access the Amazon SSO OIDC service within other service assemblies.
-            Please use AmazonSSOOIDCClient to access the Amazon SSO OIDC service instead.
-            
-            Use Amazon SSO OIDC to refresh <paramref name="previousResponse"/>
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.SharedInterfaces.ICoreAmazonSSOOIDC.RefreshTokenAsync(Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse)">
-            <summary>
-            This method is used internally to access the Amazon SSO OIDC service within other service assemblies.
-            Please use AmazonSSOOIDCClient to access the Amazon SSO OIDC service instead.
-            
-            Use Amazon SSO OIDC to refresh <paramref name="previousResponse"/>
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenRequest.ClientName">
-            <summary>
-            Name of the application or system used during SSO client registration.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenRequest.ClientType">
-            <summary>
-            OAuth client type
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenRequest.StartUrl">
-            <summary>
-            The StartUrl to request an SSO Token from.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenRequest.SsoVerificationCallback">
-            <summary>
-            Callback for presenting the user with a SSO Login flow.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenRequest.AdditionalProperties">
-            <summary>
-            Additional properties to provide to the operation.
-            Optional, can be null.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.AccessToken">
-            <summary>
-            The SSO login token that can be exchanged for temporary AWS credentials.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.ExpiresAt">
-            <summary>
-            When <see cref="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.AccessToken"/> expires
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.RefreshToken">
-            <summary>
-             An opaque string returned by the sso-oidc service.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.ClientId">
-            <summary>
-            The client ID generated when performing the registration portion of the OIDC authorization flow.
-            The clientId is used alongside the <see cref="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.RefreshToken"/> to refresh the <see cref="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.AccessToken"/>.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.ClientSecret">
-            <summary>
-            he client secret generated when performing the registration portion of the OIDC authorization flow.
-            The <see cref="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.ClientSecret"/> is used alongside the <see cref="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.RefreshToken"/> to refresh the <see cref="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.AccessToken"/>.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.RegistrationExpiresAt">
-            <summary>
-            The expiration time of the client registration (<see cref="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.ClientId"/> and <see cref="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.ClientSecret"/>) as
-            an RFC 3339 formatted timestamp.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.Region">
-            <summary>
-            The configured sso_region for the profile that credentials are being resolved for.
-            This field is set as a convenience and is not directly used by the token provider but is useful in other contexts.
-            Logic that requires the SSO region as part of the SSO token provider MUST use the SSO region configured on the profile
-            and MUST NOT use the region in the cached token.
-            </summary>
-        </member>
-        <member name="P:Amazon.Runtime.SharedInterfaces.GetSsoTokenResponse.StartUrl">
-            <summary>
-            The configured sso_start_url for the profile that credentials are being resolved for.
-            This field is set as a convenience and is not directly used by the token provider but
-            is useful in other contexts. Logic that requires the SSO start URL as part of the SSO
-            token provider MUST use the SSO start URL configured on the profile and MUST NOT
-            use the SSO start URL in the cached token.
-            </summary>
         </member>
         <member name="T:Amazon.Runtime.SignatureException">
             <summary>
@@ -15566,7 +14515,7 @@
             </summary>
             <remarks>
             This class is the focused public projection of the internal class
-            <see cref="T:Amazon.Runtime.Credentials.Internal.SsoToken"/>
+            <see cref="!:Amazon.Runtime.Credentials.Internal.SsoToken"/>
             </remarks>
         </member>
         <member name="T:Amazon.Runtime.AWSTokenProviderChain">
@@ -15600,7 +14549,7 @@
         </member>
         <member name="P:Amazon.Runtime.DefaultAWSTokenProviderChain.ProfileName">
             <summary>
-            Used to initialize <see cref="T:Amazon.Runtime.ProfileTokenProvider"/>.
+            Used to initialize <see cref="!:ProfileTokenProvider"/>.
             </summary>
         </member>
         <member name="T:Amazon.Runtime.IAWSTokenProvider">
@@ -15612,14 +14561,6 @@
             </remarks>
         </member>
         <member name="M:Amazon.Runtime.IAWSTokenProvider.TryResolveToken(Amazon.Runtime.AWSToken@)">
-            <summary>
-            Attempts to load an <see cref="T:Amazon.Runtime.AWSToken"/>.
-            <para />
-            NOTE: In some extreme circumstances, providers may throw an
-            exception.
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.IAWSTokenProvider.TryResolveTokenAsync(System.Threading.CancellationToken)">
             <summary>
             Attempts to load an <see cref="T:Amazon.Runtime.AWSToken"/>.
             <para />
@@ -15643,107 +14584,6 @@
             valid.  Attempting to retrieve <paramref name="token"/> after <paramref name="expiration"/> will cause
             a <see cref="T:Amazon.Runtime.AmazonClientException"/> to be thrown.
             </param>
-        </member>
-        <member name="T:Amazon.Runtime.TryResponse`1">
-            <summary>
-            Helper class to support a TryGetFoo(out var foo) pattern for async operations.
-            This is necessary because async methods do not support output parameters.
-            </summary>
-        </member>
-        <member name="T:Amazon.Runtime.IPaginatedEnumerable`1">
-            <summary>
-            Interface for enumerables consumed by the customer
-            to read responses or result keys
-            </summary>
-            <typeparam name="TResult"></typeparam>
-        </member>
-        <member name="T:Amazon.Runtime.IPaginator`1">
-            <summary>
-            Interface for operation paginators
-            </summary>
-            <typeparam name="TResponse"></typeparam>
-        </member>
-        <member name="T:Amazon.Runtime.PaginatedResponse`1">
-            <summary>
-            An enumerable containing all of the responses for a paginated
-            operation
-            </summary>
-            <typeparam name="TResponse"></typeparam>
-        </member>
-        <member name="M:Amazon.Runtime.PaginatedResponse`1.#ctor(Amazon.Runtime.IPaginator{`0})">
-            <summary>
-            Create a PaginatedResponse object by providing
-            any operation paginator
-            </summary>
-            <param name="paginator"></param>
-        </member>
-        <member name="M:Amazon.Runtime.PaginatedResponse`1.GetEnumerator">
-            <summary>
-            Get responses synchronously
-            </summary>
-            <returns></returns>        
-        </member>
-        <member name="T:Amazon.Runtime.PaginatedResultKeyResponse`2">
-            <summary>
-            An enumerable containing all of the Result Keys for a paginator
-            </summary>
-            <typeparam name="TResponse"></typeparam>
-            <typeparam name="TResultKey"></typeparam>
-        </member>
-        <member name="M:Amazon.Runtime.PaginatedResultKeyResponse`2.#ctor(Amazon.Runtime.IPaginator{`0},System.Func{`0,System.Collections.Generic.IEnumerable{`1}})">
-            <summary>
-            Create a PaginatedResultKeyResponse by providing any operation paginator
-            and a selector function for the result key
-            </summary>
-            <param name="paginator"></param>
-            <param name="resultKeySelector"></param>
-        </member>
-        <member name="M:Amazon.Runtime.PaginatedResultKeyResponse`2.GetEnumerator">
-            <summary>
-            Get the result keys synchronously
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="T:Amazon.Runtime.ProfileTokenProvider">
-            <summary>
-            Looks for a AWS Profile and then passes token resolution
-            to <see cref="T:Amazon.Runtime.SSOTokenProvider"/>.
-            <para />
-            This provider requires .NET 4.5 or newer.
-            </summary>
-        </member>
-        <member name="M:Amazon.Runtime.ProfileTokenProvider.LoadAndValidateProfile(Amazon.Runtime.CredentialManagement.CredentialProfile@)">
-            <summary>
-            Loads the <see cref="T:Amazon.Runtime.CredentialManagement.CredentialProfile"/> from <see cref="F:Amazon.Runtime.ProfileTokenProvider._credentialProfileSource"/>
-            and runs some validation logic.
-            <para />
-            NOTE: Per the Spec, this method can throw exceptions that should bubble up through
-            <see cref="M:Amazon.Runtime.IAWSTokenProvider.TryResolveToken(Amazon.Runtime.AWSToken@)"/>.
-            </summary>
-            <returns>
-            True if the profile has all necessary data points and should be further processed by
-            <see cref="T:Amazon.Runtime.SSOTokenProvider"/>.
-            </returns>
-        </member>
-        <member name="T:Amazon.Runtime.SSOTokenProvider">
-            <summary>
-            Looks in <see cref="F:Amazon.Runtime.SSOTokenProvider._ssoCacheDirectory"/> for a file that matches
-            <see cref="F:Amazon.Runtime.SSOTokenProvider._sessionName"/> and then loads the SSO Token from that file.
-            </summary>
-        </member>
-        <member name="T:Amazon.Runtime.ISSOTokenProviderFactory">
-            <inheritdoc cref="M:Amazon.Runtime.ISSOTokenProviderFactory.Build(Amazon.Runtime.CredentialManagement.CredentialProfile)"/>
-        </member>
-        <member name="M:Amazon.Runtime.ISSOTokenProviderFactory.Build(Amazon.Runtime.CredentialManagement.CredentialProfile)">
-            <summary>
-            Constructs a new <see cref="T:Amazon.Runtime.SSOTokenProvider"/> initialized by the passed <paramref name="profile"/>.
-            </summary>
-        </member>
-        <member name="T:Amazon.Runtime.SSOTokenProviderFactory">
-            <inheritdoc />
-        </member>
-        <member name="M:Amazon.Runtime.SSOTokenProviderFactory.Build(Amazon.Runtime.CredentialManagement.CredentialProfile)">
-            <inheritdoc />
         </member>
         <member name="T:Amazon.Runtime.TcpKeepAlive">
             <summary>
@@ -17106,12 +15946,6 @@
         <member name="M:Amazon.Util.Internal.IFile.WriteAllText(System.String,System.String)">
             <inheritdoc cref="M:System.IO.File.WriteAllText(System.String,System.String)"/>
         </member>
-        <member name="M:Amazon.Util.Internal.IFile.ReadAllTextAsync(System.String,System.Threading.CancellationToken)">
-            <inheritdoc cref="M:System.IO.File.ReadAllText(System.String)"/>
-        </member>
-        <member name="M:Amazon.Util.Internal.IFile.WriteAllTextAsync(System.String,System.String,System.Threading.CancellationToken)">
-            <inheritdoc cref="M:System.IO.File.WriteAllText(System.String,System.String)"/>
-        </member>
         <member name="T:Amazon.Util.Internal.FileRetriever">
             <inheritdoc cref="T:Amazon.Util.Internal.IFile"/>
         </member>
@@ -18035,118 +16869,6 @@
             </summary>
             <param name="target"></param>
             <returns></returns>
-        </member>
-        <member name="T:Amazon.Util.AWSHttpClient">
-            <summary>
-            AwsHttpClient is a wrapper around HttpClient class of the System.Net.Http library.
-            The wrapper has been added so as to remove System.Net.Http dependencies from the Services
-            and migrate it to a Core level dependecy only. This avoids version clashes when a service 
-            and the Core depends on different versions of the System.Net.Http library. This is a Service 
-            level utility method
-            </summary>
-        </member>
-        <member name="M:Amazon.Util.AWSHttpClient.#ctor">
-            <summary>
-            AWSHttpClient wrapper that is wrapped around
-            HttpClient default wrapper.
-            </summary>
-        </member>
-        <member name="P:Amazon.Util.AWSHttpClient.BaseAddress">
-            <summary>
-            AWSHttpClient BaseAddress property that is wrapper for
-            HttpClient BaseAddress property.
-            </summary>
-        </member>
-        <member name="P:Amazon.Util.AWSHttpClient.Timeout">
-            <summary>
-            AWSHttpClient Timeout property that is wrapper for
-            HttpClient Timeout property.
-            </summary>
-        </member>
-        <member name="P:Amazon.Util.AWSHttpClient.MaxResponseContentBufferSize">
-            <summary>
-            AWSHttpClient MaxResponseContentBufferSize property that is wrapper for
-            HttpClient MaxResponseContentBufferSize property.
-            </summary>
-        </member>
-        <member name="M:Amazon.Util.AWSHttpClient.GetStreamAsync(System.String)">
-            <summary>
-            AWSHttpClient GetStreamAsync that accepts the requester's URI
-            and make a HttpClient.GetStreamAsync call.
-            </summary>
-            <param name="requestUri">Requester Uri</param>
-        </member>
-        <member name="M:Amazon.Util.AWSHttpClient.PutRequestUriAsync(System.String,Amazon.Util.AWSStreamContent,System.Collections.Generic.IDictionary{System.String,System.String})">
-            <summary>
-            Wrapper method that accepts a request uri, stream content and headers and makes a sendAsync call.
-            </summary>
-            <param name="requestUri"></param>
-            <param name="content"></param>
-        </member>
-        <member name="M:Amazon.Util.AWSHttpClient.GetResponseHeadersAsync(System.String,System.String)">
-            <summary>
-            Wrapper for HttpClient's HttpRequestMessage and SendAsync methods.
-            </summary>
-            <param name="httpMethodValue"></param>
-            <param name="url"></param>
-            <returns>Returns response headers information- header name,value and status code</returns>
-        </member>
-        <member name="M:Amazon.Util.AWSHttpClient.Dispose">
-            <summary>
-            Wrapper for HttpClient Dispose.
-            </summary>
-        </member>
-        <member name="M:Amazon.Util.AWSHttpClient.IsHttpInnerException(System.Exception)">
-            <summary>
-            Method that checks if the passed exception is of type
-            HttpRequestException
-            </summary>
-            <param name="exception"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Amazon.Util.AWSStreamContent">
-            <summary>
-            AWSStreamContent is a wrapper for StreamContent class in
-            the System.Net.Http library.The wrapper has been added so as to 
-            remove System.Net.Http dependencies from the Services
-            and migrate it to a Core level dependecy only. This avoids version clashes when a service 
-            and the Core depends on different versions of the System.Net.Http library. This is a Service 
-            level utility method
-            </summary>
-        </member>
-        <member name="M:Amazon.Util.AWSStreamContent.#ctor(System.IO.Stream)">
-            <summary>
-            Wrapper for StreamContent constructor
-            for stream content
-            </summary>
-            <param name="content"></param>
-        </member>
-        <member name="M:Amazon.Util.AWSStreamContent.#ctor(System.IO.Stream,System.Int32)">
-            <summary>
-            Wrapper for StreamContent constructor
-            for stream content and bufferSize
-            </summary>
-            <param name="content"></param>
-            <param name="bufferSize"></param>
-        </member>
-        <member name="M:Amazon.Util.AWSStreamContent.RemoveHttpContentHeader(System.String)">
-            <summary>
-            Wrapper to allow Services to remove StreamContent Headers
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Amazon.Util.AWSStreamContent.AddHttpContentHeader(System.String,System.String)">
-            <summary>
-            Wrapper to allow Services to add StreamContent Headers
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Amazon.Util.AWSStreamContent.Dispose">
-            <summary>
-            Wrapper for StreamContent Dispose.
-            </summary>
         </member>
         <member name="T:Amazon.Arn">
             <summary>
