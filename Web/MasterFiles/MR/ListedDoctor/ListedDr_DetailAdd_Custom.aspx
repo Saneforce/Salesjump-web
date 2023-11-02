@@ -1647,60 +1647,166 @@
                         }
                     });
                 }
-                   
+
+                function uploadFiles() {
+                    var file = document.getElementById("fileUploader")//All files
+                    for (var i = 0; i < file.files.length; i++) {
+                        uploadSingleFile(file.files[i], i);
+                    }
+                }
+
+                function uploadSingleFile(file, i) {
+                    var fileId = i;
+                    var mimeid1 = i;
+                    var ajax = new XMLHttpRequest();
+                    //Progress Listener
+                    ajax.upload.addEventListener("progress", function (e) {
+                        var percent = (e.loaded / e.total) * 100;
+                        $("#status_" + fileId).text(Math.round(percent) + "% uploaded, please wait...");
+                        $('#progressbar_' + fileId).css("width", percent + "%")
+                        $("#notify_" + fileId).text("Uploaded " + (e.loaded / 1048576).toFixed(2) + " MB of " + (e.total / 1048576).toFixed(2) + " MB ");
+                    }, false);
+                    //Load Listener
+                    ajax.addEventListener("load", function (e) {
+                        $("#status_" + fileId).text(e.target.responseText);
+                        $('#progressbar_' + fileId).css("width", "100%");
+
+                        //Hide cancel button
+                        var _cancel = $('#cancel_' + fileId);
+                        _cancel.hide();
+                    }, false);
+                    //Error Listener
+                    ajax.addEventListener("error", function (e) {
+                        $("#status_" + fileId).text("Upload Failed");
+                    }, false);
+                    //Abort Listener
+                    ajax.addEventListener("abort", function (e) {
+                        $("#status_" + fileId).text("Upload Aborted");
+                    }, false);
+
+                    ajax.open("POST", "UploadHandler.ashx"); // Your API .net, php
+
+                    var uploaderForm = new FormData(); // Create new FormData
+                    uploaderForm.append("file", file); // append the next file for upload
+                    ajax.send(uploaderForm);
+
+                    //Cancel button
+                    var _cancel = $('#cancel_' + fileId);
+                    _cancel.show();
+
+                    _cancel.on('click', function () {
+                        ajax.abort();
+                    })
+                }
+
+
                 function getFile(elm) {
                     var Attachments = new Array();
-                  
+
                     var id = $(elm).attr("id");
                     var file = "";
                     var input = document.getElementById(id);
-                    var files = input.files;
-                    console.log(files);
-                    var formData = new FormData();
-
-                    for (var i = 0; i < files.length; i++) {
-                        formData.append("Attachments", files[i].name);
+                    var i = 0;
+                    var previewImage = $('.' + id + ''); //$("#showimage");
+                    var ext = $('#' + id + '').val().split('.').pop().toLowerCase();
+                    if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg', 'mp3', 'mp4', 'xls', 'xlsx', 'doc', 'docx', 'pdf', 'zip']) == -1) {
+                        alert('invalid extension!');
                     }
-                    console.log(formData);
-                    //var name = '';
-                    //var div = '';
-                    //var fileUpload = $(elm);
-                    //var Context = fileUpload.context.files;
+                    else {
 
-                    for (var i = 0; i < files.length; i++) {
+                        file = input.files[0].name;
+                        var cimg = $("<div style='float: left;'></div>");
 
-                        var adDetail = {};
-
-                        file = files[i].name;  
-
-                        div = "<div> " + file + " <br /></div>";
-
-                        adDetail.fId = id;
-                        adDetail.fName = file;
-                        Attachments.push(adDetail);
-                    }
-
-                    var filename = {
-                        "fId": id,
-                        "fName": file
-                    }
-
-                    console.log(filename);
-
-                    $.ajax({
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        async: false,
-                        url: "ListedDr_DetailAdd_Custom.aspx/SaveFileS3Bucket",
-                        data: "{'filename':'" + JSON.stringify(filename) + "'}",
-                        dataType: "json",
-                        success: function (msg) {
-                            alert(msg.d);
+                        var tb = $("<table></table>");
+                        var tr = $("<tr></tr>");
+                        var td = $("<td></td>");
+                        var img = $("<img/>");
+                        switch (input.files[0].type) {
+                            case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': case 'application/msword':
+                                //img.attr("src", 'http://localhost:14802/FileImage/Word.jpg');
+                                img.attr("src", 'http://fmcg.sanfmcg.com//FileImage/Word.jpg');
+                                break;
+                            case 'application/pdf':
+                                img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/pdf.jpg');
+                                break;
+                            case 'text/plain':
+                                img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/txt.png');
+                                break;
+                            case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': case 'application/vnd.ms-excel':
+                                img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/Excel.png');
+                                break;
+                            case 'application/x-sql':
+                                img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/sqlimg.png');
+                                break;
+                            case 'application/zip':
+                                img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/Zipimg.png');
+                                break;
+                            default:
+                                img.attr('src', 'http://fmcg.sanfmcg.com/uploads/' + input.files[0].name);
                         }
-                    });
+                        img.attr("style", "height:150px;width: 150px;padding-left:10px");
+                        td.append(img);
+                        tr.append(td);
+                        tb.append(tr);
 
-                    $('.' + id + '').append(div);                  
-                    
+                        var fragment = "";
+                        var fileName = input.files[0].name; // get file[0] name
+                        var fileSize = input.files[0].size; // get file[0] size 
+                        if (fileSize < 2000000) {
+                            fileType = input.files[0].type; // get file type   
+                            console.log(fileType);
+                            fragment += "<li>" + fileName + " " + fileSize + " bytes. Type :" + fileType + "</li>";
+                            ul = $("#ulList").append(fragment);
+                            Getfilename = input.files[0].name;
+                            filelist += Getfilename + ",";
+                            var tr2 = $("<tr></tr>");
+                            var td2 = $("<td></td>");
+                            $(td2).append('<div><ul id="ulList_' + ul + '></ul></div>');
+                            tr2.append(td2);
+                            tb.append(tr2);
+
+                            var tr1 = $("<tr></tr>");
+                            var td1 = $("<td></td>");
+
+                            //if (fileSize < 2000000) {
+
+                            $(td1).append('<div style="width:170px">' + '<div class="col-md-12">' +
+                                '<div class="progress"><div class="progress-bar" role="progressbar" id="progressbar_' + fileId + '" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div></div>' +
+                                '</div>' +
+                                '<div class="col-md-12">' +
+                                '<div class="col-md-6">' +
+                                '<input type="button" class="btn btn-danger" style="display:none;line-height:6px;height:25px" id="cancel_' + fileId + '" value="cancel">' +
+                                '</div>' +
+                                '<div class="col-md-6">' +
+                                '<p class="progress-status" style="text-align: right;margin-right:-15px;font-weight:bold;color:saddlebrown" id="status_' + fileId + '"></p>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="col-md-12">' +
+                                '<p id="notify_' + fileId + '" style="text-align: right;"></p>' +
+                                '</div>' + '</div>');
+
+                            tr1.append(td1);
+                            tb.append(tr1);
+                            cimg.append(tb);
+                            i++;
+                            previewImage.append(cimg);
+                        }
+                        else {
+                            alert('Maximum 2 Mb');
+                        }                                               
+
+                        for (var i = 0; i < input.files.length; i++) {
+                            console.log(input.files[i].name);
+                            file = input.files[i].name;
+                            uploadSingleFile(input.files[i], i);
+                        }
+
+                        var filename = {
+                            "fId": id,
+                            "fName": file
+                        }
+                        console.log(filename);
+                    }
                 }
 
                 console.log(additionalfud);

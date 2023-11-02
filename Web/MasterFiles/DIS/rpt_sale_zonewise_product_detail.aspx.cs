@@ -130,7 +130,7 @@ public partial class MIS_Reports_rpt_sale_zonewise_product_detail : System.Web.U
 
         SalesForce dr = new SalesForce();
 
-        dsDr = dr.sale_zonewise_purchase_productdetail(div_code, zonecode, Convert.ToInt16(Year), Convert.ToInt16(Month), sCurrentDate);
+        dsDr = dr.sale_zonewise_purchase_productdetail(div_code, Convert.ToInt16(Month), Convert.ToInt16(Year), 0, sCurrentDate, zonecode);
 
 
         if (dsDr.Tables[0].Rows.Count > 0)

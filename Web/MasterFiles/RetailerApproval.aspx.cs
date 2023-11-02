@@ -61,12 +61,12 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
     {
         public string cCode { get; set; }
         public string cName { get; set; }
-		public string channel { get; set; }								   
+        public string channel { get; set; }
         public string code { get; set; }
         public string routeName { get; set; }
         public string createDate { get; set; }
         public string sfName { get; set; }
-  public string picture { get; set; }
+        public string picture { get; set; }
         public string Address { get; set; }
         public string Area_Name { get; set; }
         public string City_Name { get; set; }
@@ -75,7 +75,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         public string Contact_Person { get; set; }
         public string Designation { get; set; }
         public string Phone_No { get; set; }
- public string lat { get; set; }
+        public string lat { get; set; }
         public string longn { get; set; }
     }
 
@@ -122,7 +122,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
             list.routeName = row["Territory_Name"].ToString();
             list.createDate = row["ListedDr_Created_Date"].ToString();
             list.sfName = row["SFName"].ToString();
- list.lat = row["ListedDr_Class_Patients"].ToString();
+            list.lat = row["ListedDr_Class_Patients"].ToString();
             list.longn = row["ListedDr_Consultation_Fee"].ToString();
             list.Address = row["ListedDr_Address1"].ToString();
             list.Area_Name = row["ListedDr_Address2"].ToString();

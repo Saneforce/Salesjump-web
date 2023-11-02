@@ -205,7 +205,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <p class="help-block">Max. 2MB</p>
+                                                        <p class="help-block">Max. 3MB</p>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -286,7 +286,7 @@
                     }, false);
                     //Load Listener
                     ajax.addEventListener("load", function (e) {
-                        $("#status_" + fileId).text(event.target.responseText);
+                        $("#status_" + fileId).text(e.target.responseText);
                         $('#progressbar_' + fileId).css("width", "100%");
 
                         //Hide cancel button
@@ -426,101 +426,111 @@
                     });
 
                     $("#fileUploader").change(function () {
-                        var fileType;
-                        var extension;
-                        var previewImage = $("#showimage");
-                        previewImage.html("");
-                        $("#ulList").empty();
-                        var i = 0;
-                        $($(this)[0].files).each(function () {
-                            var file = $(this);
-                            //var reader = new FileReader();
-                            var ul;
-                            // reader.onload = function (e) {
 
-                            var cimg = $("<div style='float: left;'></div>");
+                        var id = $(this).attr("id");
 
-                            var tb = $("<table></table>");
-                            var tr = $("<tr></tr>");
-                            var td = $("<td></td>");
-                            fileId = i;
-                            var img = $("<img/>");
-                            switch (file[0].type) {
-                                case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': case 'application/msword':
-                                    //img.attr("src", 'http://localhost:14802/FileImage/Word.jpg');
-                                    img.attr("src", 'http://fmcg.sanfmcg.com//FileImage/Word.jpg');
-                                    break;
-                                case 'application/pdf':
-                                    img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/pdf.jpg');
-                                    break;
-                                case 'text/plain':
-                                    img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/txt.png');
-                                    break;
-                                case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': case 'application/vnd.ms-excel':
-                                    img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/Excel.png');
-                                    break;
-                                case 'application/x-sql':
-                                    img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/sqlimg.png');
-                                    break;
-                                case 'application/zip':
-                                    img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/Zipimg.png');
-                                    break;
-                                default:
-                                    img.attr('src', 'http://fmcg.sanfmcg.com/uploads/' + file[0].name);
-                            }
-                            img.attr("style", "height:150px;width: 150px;padding-left:10px");
-                            td.append(img);
-                            tr.append(td);
-                            tb.append(tr);
+                        var ext = $('#' + id + '').val().split('.').pop().toLowerCase();
+                        if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg', 'mp3', 'mp4', 'txt', 'xls', 'xlsx', 'doc', 'docx', 'pdf', 'zip']) == -1) {
+                            alert('invalid extension!');
+                        }
+                        else {
 
-                            var fragment = "";
-                            var fileName = file[0].name; // get file[0] name
-                            var fileSize = file[0].size; // get file[0] size 
-                            if (fileSize < 2000000) {
-                                fileType = file[0].type; // get file type   
-                                fragment += "<li>" + fileName + " " + fileSize + " bytes. Type :" + fileType + "</li>";
-                                ul = $("#ulList").append(fragment);
-                                Getfilename = file[0].name;
-                                filelist += Getfilename + ",";
-                                var tr2 = $("<tr></tr>");
-                                var td2 = $("<td></td>");
-                                $(td2).append('<div><ul id="ulList_' + ul + '></ul></div>');
-                                tr2.append(td2);
-                                tb.append(tr2);
+                            var fileType;
+                            var extension;
+                            var previewImage = $("#showimage");
+                            previewImage.html("");
+                            $("#ulList").empty();
+                            var i = 0;
+                            $($(this)[0].files).each(function () {
+                                var file = $(this);
+                                //var reader = new FileReader();
+                                var ul;
+                                // reader.onload = function (e) {
 
-                                var tr1 = $("<tr></tr>");
-                                var td1 = $("<td></td>");
+                                var cimg = $("<div style='float: left;'></div>");
 
-                                //if (fileSize < 2000000) {
+                                var tb = $("<table></table>");
+                                var tr = $("<tr></tr>");
+                                var td = $("<td></td>");
+                                fileId = i;
+                                var img = $("<img/>");
+                                switch (file[0].type) {
+                                    case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document': case 'application/msword':
+                                        //img.attr("src", 'http://localhost:14802/FileImage/Word.jpg');
+                                        img.attr("src", 'http://fmcg.sanfmcg.com//FileImage/Word.jpg');
+                                        break;
+                                    case 'application/pdf':
+                                        img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/pdf.jpg');
+                                        break;
+                                    case 'text/plain':
+                                        img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/txt.png');
+                                        break;
+                                    case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': case 'application/vnd.ms-excel':
+                                        img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/Excel.png');
+                                        break;
+                                    case 'application/x-sql':
+                                        img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/sqlimg.png');
+                                        break;
+                                    case 'application/zip':
+                                        img.attr("src", 'http://fmcg.sanfmcg.com/FileImage/Zipimg.png');
+                                        break;
+                                    default:
+                                        img.attr('src', 'http://fmcg.sanfmcg.com/uploads/' + file[0].name);
+                                }
+                                img.attr("style", "height:150px;width: 150px;padding-left:10px");
+                                td.append(img);
+                                tr.append(td);
+                                tb.append(tr);
 
-                                $(td1).append('<div style="width:170px">' + '<div class="col-md-12">' +
-                                    '<div class="progress"><div class="progress-bar" role="progressbar" id="progressbar_' + fileId + '" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div></div>' +
-                                    '</div>' +
-                                    '<div class="col-md-12">' +
-                                    '<div class="col-md-6">' +
-                                    '<input type="button" class="btn btn-danger" style="display:none;line-height:6px;height:25px" id="cancel_' + fileId + '" value="cancel">' +
-                                    '</div>' +
-                                    '<div class="col-md-6">' +
-                                    '<p class="progress-status" style="text-align: right;margin-right:-15px;font-weight:bold;color:saddlebrown" id="status_' + fileId + '"></p>' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '<div class="col-md-12">' +
-                                    '<p id="notify_' + fileId + '" style="text-align: right;"></p>' +
-                                    '</div>' + '</div>');
+                                var fragment = "";
+                                var fileName = file[0].name; // get file[0] name
+                                var fileSize = file[0].size; // get file[0] size 
+                                if (fileSize < 3000000) {
+                                    fileType = file[0].type; // get file type   
+                                    console.log(fileType);
+                                    fragment += "<li>" + fileName + " " + fileSize + " bytes. Type :" + fileType + "</li>";
+                                    ul = $("#ulList").append(fragment);
+                                    Getfilename = file[0].name;
+                                    filelist += Getfilename + ",";
+                                    var tr2 = $("<tr></tr>");
+                                    var td2 = $("<td></td>");
+                                    $(td2).append('<div><ul id="ulList_' + ul + '></ul></div>');
+                                    tr2.append(td2);
+                                    tb.append(tr2);
 
-                                tr1.append(td1);
-                                tb.append(tr1);
-                                cimg.append(tb);
-                                i++;
-                                previewImage.append(cimg);
-                            }
-                            else {
-                                alert('Maximum 2 Mb');
-                            }
+                                    var tr1 = $("<tr></tr>");
+                                    var td1 = $("<td></td>");
 
-                            //previewImage.append(cimg);
-                        });
+                                    //if (fileSize < 2000000) {
 
+                                    $(td1).append('<div style="width:170px">' + '<div class="col-md-12">' +
+                                        '<div class="progress"><div class="progress-bar" role="progressbar" id="progressbar_' + fileId + '" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div></div>' +
+                                        '</div>' +
+                                        '<div class="col-md-12">' +
+                                        '<div class="col-md-6">' +
+                                        '<input type="button" class="btn btn-danger" style="display:none;line-height:6px;height:25px" id="cancel_' + fileId + '" value="cancel">' +
+                                        '</div>' +
+                                        '<div class="col-md-6">' +
+                                        '<p class="progress-status" style="text-align: right;margin-right:-15px;font-weight:bold;color:saddlebrown" id="status_' + fileId + '"></p>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '<div class="col-md-12">' +
+                                        '<p id="notify_' + fileId + '" style="text-align: right;"></p>' +
+                                        '</div>' + '</div>');
+
+                                    tr1.append(td1);
+                                    tb.append(tr1);
+                                    cimg.append(tb);
+                                    i++;
+                                    previewImage.append(cimg);
+                                }
+                                else {
+                                    alert('Maximum 3 Mb');
+                                }
+
+                                //previewImage.append(cimg);
+                            });
+                        }
                     });
 
                 });

@@ -131,7 +131,7 @@ public partial class MIS_Reports_rpt_sales_statewise_product_detail : System.Web
 
         SalesForce dr = new SalesForce();
 
-        dsDr = dr.Sale_Statewise_purchase_productdetail(div_code, statecode, Convert.ToInt16(Year), Convert.ToInt16(Month), sCurrentDate);
+        dsDr = dr.Sale_Statewise_purchase_productdetail(div_code, Convert.ToInt16(Month), Convert.ToInt16(Year), 0, "", statecode);
 
 
         if (dsDr.Tables[0].Rows.Count > 0)

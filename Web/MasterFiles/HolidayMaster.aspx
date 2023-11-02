@@ -71,6 +71,21 @@
                         }
                     });
 
+                    function alpha(e) {
+                        var k;
+                        //document.all ? k = e.keyCode : k = e.which;
+                        e.keyCode ? k = e.keyCode : k = e.which;
+                        return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+                    }
+
+
+                    $("input[type='text']").on("keypress", function (e) {
+                        var k;
+                        //document.all ? k = e.keyCode : k = e.which;
+                        e.keyCode ? k = e.keyCode : k = e.which;
+                        return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+                    });
+
 
                     $('#THoliday').removeClass(SELECTED);
                     $('#THoliday').removeClass(SELSTART);
@@ -155,8 +170,18 @@
                         $('#THoliday').append(str);
                         if (tDts.length > 0) {
                             for (var i = 0; i < tDts.length; i++) {
+
+                                var HNamee = tDts[i].HolidayName;
+
+                                var HolidayName = HNamee.replace(/[^\w\s]/gi, '');
+
+                                var HRemarks = tDts[i].HolidayRemarks;
+
+                                var HolidayRemarks = HRemarks.replace(/[^\w\s]/gi, '');
+
+
                                 // $('#THoliday').append('<tr><td>' + (i + 1) + '</td> <td>' + tDts[i].HolidayDate + '</td> <td>' + tDts[i].HolidayName + '</td> <td><a class="btn btn-primary btnedit" hdidv=' + tDts[i].HolidayID + ' hdremarks=' + tDts[i].HolidayRemarks + '>Edit</a></td>  </tr>');
-                                $('#THoliday').append('<tr><td>' + (i + 1) + '</td> <td>' + tDts[i].HolidayDate + '</td> <td>' + tDts[i].HolidayName + '</td> <td><a class="btn btn-primary btnedit" hdidv=' + tDts[i].HolidayID + ' hdremarks=' + tDts[i].HolidayRemarks + '>Edit</a></td> <td><a class="btn btn-primary btndelete" hdeldidv=' + tDts[i].HolidayID + ' hdeldate=' + tDts[i].HolidayDate + ' hdelstcode=' + stateCode + '  hddelremarks=' + tDts[i].HolidayRemarks + '>Delete</a></td>  </tr>');
+                                $('#THoliday').append('<tr><td>' + (i + 1) + '</td> <td>' + tDts[i].HolidayDate + '</td> <td>' + HolidayName + '</td> <td><a class="btn btn-primary btnedit" hdidv=' + tDts[i].HolidayID + ' hdremarks=' + tDts[i].HolidayRemarks + '>Edit</a></td> <td><a class="btn btn-primary btndelete" hdeldidv=' + tDts[i].HolidayID + ' hdeldate=' + tDts[i].HolidayDate + ' hdelstcode=' + stateCode + '  hddelremarks=' + HolidayRemarks + '>Delete</a></td>  </tr>');
                                 //$('#THoliday').append('<tr><td>' + (i + 1) + '</td> <td>' + tDts[i].HolidayDate + '</td> <td>' + tDts[i].HolidayName + '</td> <td><a class="btn btn-primary btnedit" hdidv=' + tDts[i].HolidayID + '  hdremarks=' + tDts[i].HolidayRemarks + '>Edit</a></td> <td><a class="btn btn-primary btndelete" hdeldidv=' + tDts[i].HolidayID + ' hdeldate=' + tDts[i].HolidayDate + ' hdelstcode=' + stateCode+'  hddelremarks=' + tDts[i].HolidayRemarks + '>Delete</a></td>  </tr>');
                             }
                         }

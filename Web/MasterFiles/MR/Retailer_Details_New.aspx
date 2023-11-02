@@ -464,15 +464,26 @@
                                                             //else if (($val.includes(".mp3") || $val.includes(".mp4") || $val.includes(".gif"))) {
                                                             //    DownloadFiels($val);
                                                             //}
+                                                            //var ext = $val.split('.').pop().toLowerCase();
+                                                            //if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg', 'mp3', 'mp4', 'xls', 'xlsx', 'doc', 'docx', 'pdf', 'zip']) == -1) {
+                                                            //    alert('invalid extension!');
+                                                            //}
                                                             var ans = $val.includes('.') ? "true" : "false";
                                                             if (ans == "true") {
+
+                                                                
+                                                                var me = getUrlVars($val);
+
+
                                                                 //alert('file');
                                                             }
                                                             else {
+
+                                                                $td += "<td>" + $val + "</td>";
                                                                // alert('text');
                                                             }
 
-                                                            $td += "<td>" + $val + "</td>";
+                                                           
                                                             if (Orders[$i].Profilepic == "") {
                                                                 tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
                                                                 $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
@@ -547,6 +558,21 @@
                     $("#tSearchOrd").val('');
                     ReloadTable();
                 });
+
+                function getUrlVars($val) {                           
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        async: false,
+                        url: "Retailer_Details_New.aspx/DownloadImageFromS3",
+                        data: "{'filename':'" + $val +"'}",
+                        dataType: "json",
+                        success: function (data) {
+                            vars = data.d;  
+                        }
+                    });
+                    return vars;
+                }
 
                 function fillstate() {
                     $.ajax({

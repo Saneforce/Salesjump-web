@@ -137,31 +137,14 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
         <script type="text/javascript" src="../JsFiles/jquery-1.10.1.js"></script>
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
-        <%--    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>--%>
-        <script type="text/javascript">
-            function ShowProgress() {
-                setTimeout(function () {
-                    var modal = $('<div />');
-                    modal.addClass("modal");
-                    $('body').append(modal);
-                    var loading = $(".loading");
-                    loading.show();
-                    var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
-                    var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
-                    loading.css({ top: top, left: left });
-                }, 200);
-            }
-            $('form').live("submit", function () {
-                ShowProgress();
-            });
-        </script>
+        <%--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>--%>
+        
         <script type="text/javascript" src="../JsFiles/CommonValidation.js"></script>
-        <script src="multiselect.min.js"></script>
+        <script src="multiselect.min.js" type="text/javascript"></script>
         <link href="../css/jquery.multiselect.css" rel="stylesheet" />
-        <%--    <script type="text/javascript" src="../JsFiles/jquery-1.10.1.js"></script>--%>
+        <%--<script type="text/javascript" src="../JsFiles/jquery-1.10.1.js"></script>--%>
         <script type="text/javascript">
             var x = 0;
             var pcode = '<%=ProdCode%>';
@@ -175,6 +158,24 @@
             var taDets = [];
             var alltax = [];
             var newtax = [];
+
+            function ShowProgress() {
+                setTimeout(function () {
+                    var modal = $('<div />');
+                    modal.addClass("modal");
+                    $('body').append(modal);
+                    var loading = $(".loading");
+                    loading.show();
+                    var top = Math.max($(window).height() / 2 - loading[0].offsetHeight / 2, 0);
+                    var left = Math.max($(window).width() / 2 - loading[0].offsetWidth / 2, 0);
+                    loading.css({ top: top, left: left });
+                }, 200);
+            }
+
+            $('form').live("submit", function () {
+                ShowProgress();
+            });
+
             function AddRow() {
                 x = 1;
                 var trx = $("#OrderEntry > TBODY>tr");
@@ -182,6 +183,7 @@
                 $(tr).html("<td><label style='margin-bottom:0px;'><input type='checkbox' class='slitm'> <span class='rwsl'>" + x + "</span></label></td><td><select class='ddlProd' style='margin-top:-3px;height:25px;'>" + Prds + "</select></td><td style='width:70px;'><input type='text' class='txtQty' style='margin-top:-3px;height:25px;' value='' /></td><td><input type='radio' name='dUOM' class='deuom'></td>");
                 $("#OrderEntry > TBODY").append(tr); resetSL();
             }
+
             function DelRow() {
                 $(".slitm:checked").each(function () {
                     itr = $(this).closest('tr');
@@ -189,10 +191,12 @@
                     $(this).closest('tr').remove();
                 }); resetSL();
             }
+
             clearOrder = function () {
                 $("#OrderEntry > TBODY").html("");
                 arr = [];
             }
+
             resetSL = function () {
                 $(".rwsl").each(function () {
                     $(this).text($(this).closest('tr').index() + 1);
@@ -200,7 +204,6 @@
             }
 
             function btnsave() {
-
 
                 $(document).find('.subRow').each(function () {
                     var dfuom = (($(this).find('.deuom').prop("checked") == true) ? "0" : "1");
@@ -228,6 +231,7 @@
                     }
                 });
             }
+
             function loadproduct() {
                 $.ajax({
                     type: "POST",
@@ -259,10 +263,9 @@
                     },
                     error: function (result) {
                     }
-
-
                 });
             }
+
             function loaduom() {
                 $.ajax({
                     type: "POST",
@@ -286,20 +289,18 @@
 
                 });
             }
-
-
-
+                       
             $(document).ready(function () {
 
-		$('#<%=fold.ClientID%>').on('change', function () {
+                $('#<%=fold.ClientID%>').on('change', function () {
                     var selectedValue = '';
-                    selectedValue= $(this).val();$('#<%=fileUpload1.ClientID%>').val('');
+                    selectedValue = $(this).val(); $('#<%=fileUpload1.ClientID%>').val('');
                     var fileInput = $('#<%=fileUpload1.ClientID%>');
                     // Reset file input to accept all file types
                     fileInput.attr('accept', '');
                     // Filter the file selection to image files
                     fileInput.change(function () {
-                        selectedValue= $('#<%=fold.ClientID%>').val();
+                        selectedValue = $('#<%=fold.ClientID%>').val();
                         if (selectedValue === '3') {
                             var files = $(this)[0].files;
                             for (var i = 0; i < files.length; i++) {
@@ -319,12 +320,15 @@
                 $('input[id*=txtEffect_To]').datepicker({
                     dateFormat: 'dd/mm/yy'
                 });
+
                 $('input[id*=txtEffect_from]').datepicker({
                     dateFormat: 'dd/mm/yy'
                 });
+
                 txt = $('#<%=ddlbaseunit.ClientID%> :selected').text();
                 txtval = $('#<%=ddlbaseunit.ClientID%> :selected').val();
                 loaduom();
+
                 $(document).on('click', '#btnbaseUOM', function () {
                     $('#exampleModal').modal('toggle');
                     x = 0;
@@ -343,6 +347,7 @@
                         $inputs.prop('disabled', false); // <--
                     }
                 });
+
                 //   $('input:text:first').focus();
                 $('input:text').bind("keydown", function (e) {
                     var n = $("input:text").length;
@@ -366,10 +371,9 @@
                         }
                     }
                 });
-                $("input:text").on("keypress", function (e) {
-                    if (e.which === 32 && !this.value.length)
-                        e.preventDefault();
-                });
+
+
+
                 $('#<%=btnSubmit.ClientID%>').click(function () {
                     if ($('#<%=txtProdDetailCode.ClientID%>').val() == "") { alert("Enter Product Code."); $('#<%=txtProdDetailCode.ClientID%>').focus(); return false; }
                     if ($('#<%=txtProdDetailName.ClientID%>').val() == "") { alert("Enter Product Name."); $('#<%=txtProdDetailName.ClientID%>').focus(); return false; }
@@ -420,7 +424,7 @@
 
 
                     $utr = $(".tbltax > tbody").find("tr");
-                    alltax = [];var filteredArray = [];
+                    alltax = []; var filteredArray = [];
                     for (i = 1; i <= $utr.length; i++) {
                         tax = {};
                         tr = $utr[i - 1];
@@ -435,7 +439,7 @@
                             var ttacitems = sname.toString();
                             tax["sname"] = ttacitems;
                         }
-                         if (sname == null && tname != 0) {
+                        if (sname == null && tname != 0) {
                             // alltax.push(tax);
                             alert('Select The states  for selected tax ');
                             return false;
@@ -504,6 +508,7 @@
 
 
             }
+
             function loadstates() {
                 $.ajax({
                     type: "POST",
@@ -539,10 +544,11 @@
 
 
             }
+
             var tname = '';
             var sname = '';
-            function savetaxdet() {
 
+            function savetaxdet() {
 
                 for (var i = 0; i < alltax.length; i++) {
                     var statess = alltax[i].sname.toString();
@@ -578,7 +584,9 @@
 
 
             }
+
             var icnt = 1;
+
             function addtax() {
                 $('#state').multiselect({
                     includeSelectAllOption: true
@@ -618,7 +626,6 @@
 
             }
 
-
             function saveupdt() {
 
                 var Product_code = $('#<%=txtProdDetailCode.ClientID%>').val();
@@ -630,19 +637,16 @@
                     url: "ProductDetail.aspx/deletedata",
                     data: "{'Product_code':'" + Product_code + "'}",
                     success: function (data) {
-
                         var obj = data.d;
                         if (obj == 'true') {
-
-
                         }
                     },
-
                     error: function (result) {
                         alert("Error Occured, Try Again");
                     }
                 });
             }
+
             function gettaxdetails() {
                 loadtaxes();
                 loadstates();
@@ -683,12 +687,14 @@
                 });
 
             }
+
             function deleterow(tblee1) {
                 icnt--;
                 var table = document.getElementById('tblee1');
                 var rowCount = table.rows.length;
                 table.deleteRow(rowCount - 1);
             }
+
             function Confirm() {
                 if (confirm("Do you want to delete the Row?")) {                   
                     var value = "Yes";
@@ -698,6 +704,7 @@
                     $("#<%= hiddenval1.ClientID %>").val(value);
                 }
             }
+
             function Confirmation() {
                 if (confirm("Do you want to Update the Row?")) {
                      var value = "Yes";
@@ -708,22 +715,29 @@
                 }
             }
 
-        </script>
-        <script type="text/javascript">
-            function ValidateCheckBoxList() {
+            function checkAll(obj1) {
+                var checkboxCollection = document.getElementById('<%=chkboxLocation.ClientID %>').getElementsByTagName('input');
+                 for (var i = 0; i < checkboxCollection.length; i++) {
+                     if (checkboxCollection[i].type.toString().toLowerCase() == "checkbox") {
 
+                         checkboxCollection[i].checked = obj1.checked;
+
+                     }
+                 }
+             }
+
+            function ValidateCheckBoxList() {
                 var listItems = document.getElementById("chkboxLocation").getElementsByTagName("input");
                 var itemcount = listItems.length;
                 var iCount = 0;
                 var isItemSelected = false;
+
                 for (iCount = 0; iCount < itemcount; iCount++) {
                     if (listItems[iCount].checked) {
                         isItemSelected = true;
                         break;
                     }
                 }
-
-
 
                 if (!isItemSelected) {
                     alert("Please select State");
@@ -733,39 +747,6 @@
                 }
                 return false;
             }
-        </script>
-         <script type="text/javascript">
-
-            function checkAll(obj1) {
-                var checkboxCollection = document.getElementById('<%=chkboxLocation.ClientID %>').getElementsByTagName('input');
-                for (var i = 0; i < checkboxCollection.length; i++) {
-                    if (checkboxCollection[i].type.toString().toLowerCase() == "checkbox") {
-
-                        checkboxCollection[i].checked = obj1.checked;
-
-                    }
-                }
-            }
-
-        </script>
-        <script type="text/javascript">
-
-</script>
-        <%-- <script type="text/javascript">
-
-        function ChkBoxAll(obj2) {
-            var checkboxCollection1 = document.getElementById('<%=ChkBox_Multiunit.ClientID %>').getElementsByTagName('input');
-            for (var i = 0; i < checkboxCollection1.length; i++) {
-                if (checkboxCollection1[i].type.toString().toLowerCase() == "checkbox") {
-
-                    checkboxCollection1[i].checked = obj1.checked;
-
-                }
-            }
-        }  
-      
-    </script>--%>
-        <script type="text/javascript">
 
             $(function () {
 
@@ -800,80 +781,7 @@
             });
 
         </script>
-        <%-- <script type="text/javascript">
-
-        $(function () {
-
-            $("[id*=ChkBoxAll]").bind("click", function () {
-
-                if ($(this).is(":checked")) {
-
-                    $("[id*=ChkBox_Multiunit] input").attr("checked", "checked");
-
-
-                } else {
-
-                    $("[id*=ChkBox_Multiunit] input").removeAttr("checked");
-
-                }
-
-            });
-
-            $("[id*=ChkBox_Multiunit] input").bind("click", function () {
-
-                if ($("[id*=ChkBox_Multiunit] input:checked").length == $("[id*=ChkBox_Multiunit] input").length) {
-
-                    $("[id*=ChkBoxAll]").attr("checked", "checked");
-
-
-                } else {
-
-                    $("[id*=ChkBoxAll]").removeAttr("checked");
-
-                }
-
-            });
-
-        });
-
-    </script>--%>
-        <%--  <script type="text/javascript">
-    function check(){
-        var chkNil = document.getElementById("chkNil");
-        var chkSubdiv = document.getElementById("chkSubdiv");
-    if (chkNil.checked == true)
-    {
-        chkSubdiv.checked == false;
-    } 
-    else if(chkSubdiv.checked == true)
-    {
-        chkNil.checked == false;
-    }
-}
-</script>--%>
-        <%--   <script type="text/javascript">
-
-        function checkNIL(obj1) {
-            var checkSubCollection = document.getElementById('<%=chkSubdiv.ClientID %>').getElementsByTagName('input');
-            
-            var checkNilCollection = document.getElementById('<%=chkNil.ClientID %>').getElementsByTagName('input2');
-
-            for (var i = 0; i < checkSubCollection.length; i++) {
-                if (obj1.checked) {
-                    checkSubCollection[i].checked = false;
-                }
-                else {
-                    checkSubCollection[i].checked = true;
-                }             
-
-
-
-            }
-
-
-        }  
-      
-    </script>--%>
+        
     </head>
     <body>
         <form id="form1" runat="server">
@@ -920,65 +828,95 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <%-- <ucl:Menu ID="menu1" runat="server" />--%>
-
+                </div>               
                 <br />
+                <div class="row card" style="width:100%">
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <table runat="server" cellpadding="5" cellspacing="5">
+                                <tr>
+                                    <td align="left" class="stylespc">
+                                        <asp:Label ID="lblDetailCode" runat="server" SkinID="lblMand"><span style="color:Red">*</span>Product Code</asp:Label>
+                                    </td>
+                                    <td align="left" class="stylespc" colspan="2">
+                                        <asp:TextBox ID="txtProdDetailCode" runat="server" CssClass="form-control" MaxLength="50" 
+                                            onfocus="this.style.backgroundColor='#E0EE9D'" onblur="this.style.backgroundColor='White'"
+                                            onkeypress="AlphaNumeric_NoSpecialChars(event);" onchange="return alpha(this)" TabIndex="1" SkinID="MandTxtBox"></asp:TextBox>
+                                    </td>
+                                    <td align="left" class="stylespc">
+                                        <asp:Label ID="Label2" runat="server" SkinID="lblMand"><span style="color:Red">*</span>Product Name</asp:Label>
+                                    </td>
+                                    <td align="left" class="stylespc" colspan="2">
+                                        <asp:TextBox ID="txtProdDetailName" runat="server" CssClass="form-control"  TabIndex="2"
+                                            AutoCompleteType="Search" MaxLength="150" onfocus="this.style.backgroundColor='#E0EE9D'"
+                                            onblur="this.style.backgroundColor='White'"
+                                            Width="288px" SkinID="MandTxtBox" onkeypress="AlphaNumeric_NoSpecialChars(event);"></asp:TextBox>
+                                    </td>
+                                    <td align="left" class="stylespc">
+                                        <asp:Label ID="Label13" runat="server" SkinID="lblMand"><span style="color:Red">*</span>Product Short Name</asp:Label>
+                                    </td>
+                                    <td align="left" class="stylespc" colspan="2">
+                                        <asp:TextBox ID="txtProdShortName" runat="server" CssClass="form-control"  TabIndex="2"
+                                            AutoCompleteType="Search" MaxLength="150" onfocus="this.style.backgroundColor='#E0EE9D'"
+                                            onblur="this.style.backgroundColor='White'"
+                                            Width="288px" SkinID="MandTxtBox" onkeypress="AlphaNumeric_NoSpecialChars(event);"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" class="stylespc">
+                                        <asp:Label ID="Label6" runat="server" SkinID="lblMand"><span style="color:Red">*</span>Base UOM</asp:Label>
+                                    </td>
+                                    <td align="left" class="stylespc" colspan="2">
+                                        <asp:DropDownList ID="ddlbaseunit" runat="server" EnableViewState="true" CssClass="DropDownList"
+                                            AutoPostBack="true" SkinID="ddlRequired" TabIndex="3" onfocus="this.style.backgroundColor='#E0EE9D'"
+                                            onblur="this.style.backgroundColor='White'"                                        
+                                            OnSelectedIndexChanged="ddlbaseunit_SelectedIndexChanged1">
+                                        </asp:DropDownList>
+                                        <button type="button" id="btnbaseUOM">>></button>
+                                    </td>
+                                   
+                                 
+                                </tr>
+                                <tr>
+                                     <td align="left" class="stylespc">
+                                        <asp:Label ID="Label16" runat="server" SkinID="lblMand"><span>Product Image</span></asp:Label>
+                                    </td>
+                                    <td align="left" class="stylespc">
+                                        <asp:Image ID="prodImg" runat="server" CssClass="form-control" Style="width:150px; height:150px;" />
+                                    </td>  
+                                    <td align="left" class="stylespc">
+                                        <div style="margin-left: auto">
+                                            <asp:FileUpload ID="fileup2" runat="server" Font-Size="8pt" COLOR="black" FONT-FAMILY="Verdana" Height="38px" Width="301px" />
+                                        </div>
+                                        <div style="margin-left: auto">
+                                            <asp:Button ID="Button2" CssClass="btn-choose" runat="server" Text="Upload" OnClick="Button2_Click" />
+                                            <asp:Label ID="pimage" runat="server"></asp:Label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
                 <center>
+
+
                     <div class="col-sm-8 card" style="width: 740px; left: 0px; top: -30px">
 
                         <br />
 
                         <table runat="server" cellpadding="5" cellspacing="5" align="center">
+                            
                             <tr>
-                                <td align="left" class="stylespc">
-                                    <asp:Label ID="lblDetailCode" runat="server" Width="150px" SkinID="lblMand"><span style="color:Red">*</span>Product Code</asp:Label>
-                                </td>
-                                <td align="left" class="stylespc" colspan="2">
-                                    <asp:TextBox ID="txtProdDetailCode" runat="server" CssClass="TEXTAREA" MaxLength="50"
-                                        onfocus="this.style.backgroundColor='#E0EE9D'" onblur="this.style.backgroundColor='White'"
-                                        onkeypress="AlphaNumeric_NoSpecialChars(event);" TabIndex="1" SkinID="MandTxtBox"></asp:TextBox>
-                                </td>
+                                
                             </tr>
                             <tr>
-                                <td align="left" class="stylespc">
-                                    <asp:Label ID="Label2" runat="server" SkinID="lblMand"><span style="color:Red">*</span>Product Name</asp:Label>
-                                </td>
-                                <td align="left" class="stylespc" colspan="2">
-                                    <asp:TextBox ID="txtProdDetailName" runat="server" CssClass="TEXTAREA" TabIndex="2"
-                                        AutoCompleteType="Search" MaxLength="150" onfocus="this.style.backgroundColor='#E0EE9D'"
-                                        onblur="this.style.backgroundColor='White'"
-                                        Width="288px" SkinID="MandTxtBox"></asp:TextBox>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="left" class="stylespc">
-                                    <asp:Label ID="Label13" runat="server" SkinID="lblMand"><span style="color:Red">*</span>Product Short Name</asp:Label>
-                                </td>
-                                <td align="left" class="stylespc" colspan="2">
-                                    <asp:TextBox ID="txtProdShortName" runat="server" CssClass="TEXTAREA" TabIndex="2"
-                                        AutoCompleteType="Search" MaxLength="150" onfocus="this.style.backgroundColor='#E0EE9D'"
-                                        onblur="this.style.backgroundColor='White'"
-                                        Width="288px" SkinID="MandTxtBox"></asp:TextBox>
-                                </td>
+                                
                             </tr>
 
                             <tr>
-                                <td align="left" class="stylespc">
-                                    <asp:Label ID="Label6" runat="server" SkinID="lblMand"><span style="color:Red">*</span>Base UOM</asp:Label>
-                                </td>
-                                <td align="left" class="stylespc" colspan="1">
-                                    <asp:DropDownList ID="ddlbaseunit" runat="server" EnableViewState="true" CssClass="DropDownList"
-                                        AutoPostBack="true" SkinID="ddlRequired" TabIndex="3" onfocus="this.style.backgroundColor='#E0EE9D'"
-                                        onblur="this.style.backgroundColor='White'"
-                                        onkeypress="AlphaNumeric_NoSpecialChars(event);"
-                                        OnSelectedIndexChanged="ddlbaseunit_SelectedIndexChanged1">
-                                    </asp:DropDownList>
-                                    <button type="button" id="btnbaseUOM">>></button>
-                                </td>
-                                <td rowspan="4">
-                                    <asp:Image ID="prodImg" runat="server" Style="width: 111px; height: 123px;" />
-                                </td>
+                                
+                             
                             </tr>
                             <tr>
                                 <td align="left" class="stylespc">
@@ -987,15 +925,11 @@
                                 <td align="left" class="stylespc">
                                     <asp:DropDownList ID="ddlunit" runat="server" EnableViewState="true" CssClass="DropDownList"
                                         AutoPostBack="true" SkinID="ddlRequired" TabIndex="4" onfocus="this.style.backgroundColor='#E0EE9D'"
-                                        onblur="this.style.backgroundColor='White'"
-                                        onkeypress="AlphaNumeric_NoSpecialChars(event);"
+                                        onblur="this.style.backgroundColor='White'"                                       
                                         OnSelectedIndexChanged="ddlunit_SelectedIndexChanged">
                                     </asp:DropDownList>
                                 </td>
-                                <td align="left" class="stylespc">
-                                    <asp:Label ID="Label16" runat="server" SkinID="lblMand"><span style="margin-left:-275px">Product Image</span></asp:Label>
-                                </td>
-
+                               
                             </tr>
                             <tr>
                                 <td align="left" class="stylespc">
@@ -1014,7 +948,7 @@
                                 <td align="left" class="stylespc">
                                     <asp:DropDownList ID="ddlCat" runat="server" EnableViewState="true" CssClass="DropDownList"
                                         AutoPostBack="false" SkinID="ddlRequired" onfocus="this.style.backgroundColor='#E0EE9D'"
-                                        onblur="this.style.backgroundColor='White'" onkeypress="AlphaNumeric_NoSpecialChars(event);">
+                                        onblur="this.style.backgroundColor='White'" >
                                     </asp:DropDownList>
                                 </td>
                             </tr>
@@ -1025,16 +959,12 @@
                                 <td align="left" class="stylespc" colspan="2">
                                     <asp:DropDownList ID="ddlGroup" runat="server" EnableViewState="true" CssClass="DropDownList"
                                         AutoPostBack="false" TabIndex="5" onfocus="this.style.backgroundColor='#E0EE9D'"
-                                        SkinID="ddlRequired" onblur="this.style.backgroundColor='White'" onkeypress="AlphaNumeric_NoSpecialChars(event);">
+                                        SkinID="ddlRequired" onblur="this.style.backgroundColor='White'" >
                                         <asp:ListItem Value="0">--Select</asp:ListItem>
                                     </asp:DropDownList>
                                 </td>
 
-                                <td style="font-size: Medium; height: 38px; width: 301px; padding-top: 12px;">
-                                    <div style="margin-left: -180px">
-                                        <asp:FileUpload ID="fileup2" runat="server" Font-Size="8pt" COLOR="black" FONT-FAMILY="Verdana" Height="38px" Width="301px" />
-                                    </div>
-                                </td>
+                               
                             </tr>
                             <tr>
                                 <td align="left" class="stylespc">
@@ -1043,15 +973,10 @@
                                 <td align="left" class="stylespc" colspan="2">
                                     <asp:DropDownList ID="ddlBrand" runat="server" EnableViewState="true" CssClass="DropDownList"
                                         AutoPostBack="false" TabIndex="5" onfocus="this.style.backgroundColor='#E0EE9D'"
-                                        SkinID="ddlRequired" onblur="this.style.backgroundColor='White'" onkeypress="AlphaNumeric_NoSpecialChars(event);">
+                                        SkinID="ddlRequired" onblur="this.style.backgroundColor='White'" >
                                     </asp:DropDownList>
                                     &nbsp;&nbsp;</td>
-                                <td style="padding-top: 0px; padding-bottom: 08px;">
-                                    <div style="margin-left: -150px">
-                                        <asp:Button ID="Button2" CssClass="btn-choose" runat="server" Text="Upload" OnClick="Button2_Click" />
-                                        <asp:Label ID="pimage" runat="server"></asp:Label>
-                                    </div>
-                                </td>
+                                
                             </tr>
                             <tr>
                                 <td>
@@ -1077,17 +1002,7 @@
                                     </asp:RadioButtonList>
                                 </td>
                             </tr>
-                            <%-- <tr>
-                    <td align="left" class="stylespc">
-                        <asp:Label ID="Label8" runat="server" Text="Mode of Product" SkinID="lblMand"></asp:Label>
-                    </td>
-                    <td align="left" class="stylespc">
-                        <asp:DropDownList ID="ddlmode" runat="server" SkinID="ddlRequired">
-                            <asp:ListItem Text="Sale" Value="Sale"></asp:ListItem>
-                            <asp:ListItem Text="Sample" Value="Sample"></asp:ListItem>
-                        </asp:DropDownList>
-                    </td>
-                </tr>--%>
+                            
                             <tr>
                                 <td align="left" class="stylespc">
                                     <asp:Label ID="Label5" runat="server" SkinID="lblMand"><span style="color:Red">*</span>Description</asp:Label>
@@ -1182,16 +1097,12 @@
 
                                 </td>
                             </tr>
-                            <%-- <tr>
-                <td>
-                </td>
-            </tr>--%>
-				 <tr>
+                            <tr>
                                 <td>
                                     <label for="state" style="font-size: small; margin-left: 0px;" class="form-label">Save Type</label>
                                     <asp:DropDownList ID="fold" runat="server" EnableViewState="true" Width="150px" Font-Size="medium"
                                         AutoPostBack="true" TabIndex="5" onfocus="this.style.backgroundColor='#E0EE9D'"
-                                        onblur="this.style.backgroundColor='White'" onkeypress="AlphaNumeric_NoSpecialChars(event);" OnSelectedIndexChanged="fold_SelectedIndexChanged">
+                                        onblur="this.style.backgroundColor='White'" OnSelectedIndexChanged="fold_SelectedIndexChanged">
                                         <asp:ListItem Value="1">Detailing</asp:ListItem>
                                         <asp:ListItem Value="2">Others</asp:ListItem>
                                         <asp:ListItem Value="3">Product Launch</asp:ListItem>
@@ -1208,41 +1119,20 @@
                                     <br />
                                 </td>
                             </tr>
-                            <%-- <tr>
-                <td>
-                </td>
-            </tr>--%>
+                            
                             <tr style="width: auto; height: auto">
-
                                 <td>
-
-                                    <%-- Effect From:<asp:TextBox ID="txtFrom" runat="server"></asp:TextBox>
-                   
-                        Effect To:<asp:TextBox ID="txtTo" runat="server"></asp:TextBox> --%>
-                    Effect From:<input name="txtFrom" type="date" cssclass="TEXTAREA" maxlength="5"
-                        onfocus="this.style.backgroundColor='#E0EE9D'" onblur="this.style.backgroundColor='White'"
-                        onkeypress="AlphaNumeric_NoSpecialChars(event);" tabindex="1" skinid="MandTxtBox" />
-
-                                    Effect To:<input name="txtTo" type="date" cssclass="TEXTAREA" maxlength="5"
-                                        onfocus="this.style.backgroundColor='#E0EE9D'" onblur="this.style.backgroundColor='White'"
+                                    <%-- Effect From:<asp:TextBox ID="txtFrom" runat="server"></asp:TextBox>Effect To:<asp:TextBox ID="txtTo" runat="server"></asp:TextBox> --%>
+                                    Effect From:<input name="txtFrom" type="date" cssclass="TEXTAREA" maxlength="5" onfocus="this.style.backgroundColor='#E0EE9D'" onblur="this.style.backgroundColor='White'"
+                                        onkeypress="AlphaNumeric_NoSpecialChars(event);" tabindex="1" skinid="MandTxtBox" />
+                                    
+                                    Effect To:<input name="txtTo" type="date" cssclass="TEXTAREA" maxlength="5" onfocus="this.style.backgroundColor='#E0EE9D'" onblur="this.style.backgroundColor='White'"  
                                         onkeypress="AlphaNumeric_NoSpecialChars(event);" tabindex="2" skinid="MandTxtBox" />
-
-
-
-
-
                                 </td>
-                            </tr>
-                           
-                            <%--<tr>
-                <td>
-                </td>
-            </tr>--%>
+                            </tr>                           
                             <tr>
                                 <td align="center">
-
                                     <asp:ImageButton ID="Button1" runat="server" Width="90px" Height="30px" ImageUrl="~/Images/but_upload.png" Text="Upload" OnClick="OnLnkUpload_Click" />
-
                                 </td>
                             </tr>
                             <tr>
@@ -1279,9 +1169,7 @@
                                                         <ItemTemplate>
                                                             <asp:Label ID="filename" runat="server" Font-Size="9pt" Text='<%#Eval("File_Name")%>'></asp:Label>
                                                         </ItemTemplate>
-                                                        <%-- <EditItemTemplate>  
-                           <asp:FileUpload ID="fileUpload11" runat="server" />
-                    </EditItemTemplate>--%>
+                                                       
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Effect From" ItemStyle-Width="270" HeaderStyle-BorderWidth="1"
                                                         HeaderStyle-Font-Size="10pt" ItemStyle-BorderWidth="1" ItemStyle-HorizontalAlign="Left">
@@ -1326,6 +1214,7 @@
                         <br />
 
                     </div>
+
                     <div style="max-height: 330px; min-height: 200px; width: 44%; left: 8px; top: -40px; overflow: auto" class="col-sm-8 card">
                         <table id="tblee1" border="1" style="margin-top: 10px" class="tbltax">
                             <thead>
@@ -1349,7 +1238,7 @@
                                     <td align="left" style="width: 129px">
                                         <select name="cntry1" class="col-2 taxval" id="cntry1" style="width: 100px; margin-left: 18px;"></select></td>
                                     <td align="left" style="width: 312px;">
-                                        <select id="state1" name="state1" class="col-6 state" multiple></select></td>
+                                        <select id="state1" name="state1" class="col-6 state" multiple="multiple"></select></td>
                                     <td align="left"><i class="fa fa-plus-circle col-2 addrows" style="font-size: 25px; color: green" id="addcountry" onclick="addtax()"></i></td>
                                 </tr>
                             </tbody>
@@ -1358,10 +1247,6 @@
                         <br />
                         <%-- <button type="button" style="margin-left: 200px" class="btn btn-default" onclick="savetaxdet()">Save</button>--%>
                     </div>
-
-
-
-
 
                     <div class="col-sm-4 card" style="margin-top: -50px">
                         <table cellpadding="3" cellspacing="3">
@@ -1425,9 +1310,6 @@
                 </div>
             </div>
         </form>
-
-
     </body>
-
     </html>
 </asp:Content>

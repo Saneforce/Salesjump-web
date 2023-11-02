@@ -8,15 +8,12 @@ using System.IO;
 using DBase_EReport;
 using System.Web;
 using System.Data.SqlClient;
+
+using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Transfer;
-using System.Net;
 using Amazon.S3.Model;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Drawing;
-using Amazon;
 
 public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 {
@@ -425,7 +422,7 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
             con.Open();
             using (var cmd = new SqlCommand(sqlQry, con))
             {
-                cmd.CommandType = CommandType.Text;                
+                cmd.CommandType = CommandType.Text;
                 iReturn = cmd.ExecuteNonQuery();
                 if (iReturn == 0) { update = " Not Inserted"; }
                 else { update = "Inserted"; }
@@ -486,7 +483,9 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 
             DataSet dsDivision = ld.getStatePerDivision(divCode);
             string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
-            string directoryPath = urlshotName + "_" + "Retailer";
+
+
+            string directoryPath = urlshotName.ToString().ToLower() + "_" + "Retailer";
 
             string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
 
@@ -500,9 +499,9 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
             string relativePath = directoryPath;
 
             // Iterate through the static fields for image fields and retrieve/save them
-            msg = RetrieveAndSaveImage(filename, currentDirectory, relativePath);
+            msg = RetrieveAndSaveImage(currentDirectory, relativePath, filename);
         }
-        
+
         catch (Exception exception)
         {
             //Console.WriteLine(exception.Message, exception.InnerException);
@@ -522,8 +521,6 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 
             try
             {
-
-
                 var awsKey = "AKIA5OS74MUCASG7HSCG";
                 var awsSecretKey = "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";
                 var bucketRegion = RegionEndpoint.APSouth1;
@@ -541,14 +538,16 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
                     GetObjectResponse response = client.GetObject(request);
 
                     using (Stream responseStream = response.ResponseStream)
-                    using (FileStream fileStream = File.Create(localFilePath))
                     {
-                        responseStream.CopyTo(fileStream);
+                        using (FileStream fileStream = File.Create(localFilePath))
+                        {
+                            responseStream.CopyTo(fileStream);
+                        }
                     }
 
                     msg = " " + objectKey + " retrieved and saved locally.";
 
-                    Console.WriteLine(" " + objectKey + " retrieved and saved locally.");
+                    // Console.WriteLine(" " + objectKey + " retrieved and saved locally.");
                 }
             }
             catch (AmazonS3Exception ex)
