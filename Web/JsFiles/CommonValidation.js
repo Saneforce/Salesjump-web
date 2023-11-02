@@ -5,7 +5,7 @@ function CheckNumeric(e) {
     if (window.event) // IE 
     {
         if ((e.keyCode < 48 || e.keyCode > 57) & e.keyCode != 8 & e.keyCode != 13 & e.keyCode != 9) {
-            event.returnValue = false;
+            e.returnValue = false;
             return false;
         }
     }
@@ -22,7 +22,7 @@ function AlphaNumeric(e) {
     if (window.event) // IE 
     {
         if (!((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 97 && e.keyCode <= 122) || (e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode == 32 || e.keyCode == 44 || e.keyCode == 95 || e.keyCode == 46 || e.keyCode == 45 || e.keyCode == 35 || e.keyCode == 36 || e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 8 || e.keyCode == 9)) {
-            event.returnValue = false;
+            e.returnValue = false;
             return false;
 
         }
@@ -42,7 +42,7 @@ function CharactersOnly(e) {
     if (window.event) // IE 
     {
         if (!((e.keyCode >= 97 && e.keyCode <= 122) || (e.keyCode >= 65 && e.keyCode <= 90) || e.which == 8 || e.keyCode == 9 || e.keyCode == 32 || e.keyCode == 95)) {
-            event.returnValue = false;
+            e.returnValue = false;
             return false;
 
         }
@@ -71,7 +71,7 @@ function AlphaNumeric_enter(e) {
     if (window.event) // IE 
     {
         if (!((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 97 && e.keyCode <= 122) || (e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode == 32 || e.keyCode == 44 || e.keyCode == 95 || e.keyCode == 46 || e.keyCode == 45 || e.keyCode == 35 || e.keyCode == 36 || e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 8 || e.keyCode == 9 || e.keyCode == 13)) {
-            event.returnValue = false;
+            e.returnValue = false;
             return false;
 
         }
@@ -89,7 +89,7 @@ function Calendar_enter(e) {
     if (window.event) // IE 
     {
         if (!( e.keyCode == 8 || e.keyCode == 9 )) {
-            event.returnValue = false;
+            e.returnValue = false;
             return false;
 
         }
@@ -107,7 +107,7 @@ function AlphaNumeric_NoSpecialChars(e) {
     if (window.event) // IE 
     {
         if (!((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 97 && e.keyCode <= 122) || (e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode == 32 || e.keyCode == 8 || e.keyCode == 9)) {
-            event.returnValue = false;
+            e.returnValue = false;
             return false;
 
         }
@@ -126,7 +126,7 @@ function AlphaNumeric_NoSpecialChars_New(e) {
     if (window.event) // IE 
     {
         if (!((e.keyCode >= 47 && e.keyCode <= 57) || (e.keyCode >= 97 && e.keyCode <= 122) || (e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode == 32 || e.keyCode == 8 || e.keyCode == 9 || e.keyCode == 42 || e.keyCode != 43)) {
-            event.returnValue = false;
+            e.returnValue = false;
             return false;
 
         }
@@ -154,7 +154,7 @@ function CheckNumeric_dot(e) {
     if (window.event) // IE 
     {
         if ((e.keyCode < 48 || e.keyCode > 57) && e.keyCode != 8 && e.keyCode != 13 && e.keyCode != 9 && e.keyCode!=49) {
-            event.returnValue = false;
+            e.returnValue = false;
             return false;
         }
     }
