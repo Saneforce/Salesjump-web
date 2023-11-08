@@ -80,27 +80,24 @@
                         </div>
                     </div>
                 </div>
-                <!--<div id="myModal" class="modal" style="opacity: 1;"> -->
-                <!-- The Close Button -->
-                <!-- <span class="close" style="opacity: 1;">&times;</span> -->
+               
 
-                <!-- Modal Content (The Image) -->
-                <!-- <img class="modal-content" id="img01"> -->
+                <div style="position:fixed;left:60%;top:50%;width:70%;height:70%;transform: translate(-50%, -50%);border-radius: 15px;display:none" id="cphoto1">
+                    <span style="position: absolute;padding: 5px;cursor: default;background: #dcd6d652;border-radius: 50%;width: 20px;height: 20px;line-height: 6px;text-align: center;border: solid 1px gray;top: 6px;right: 6px;" onclick="closew()">x</span>
+                    <img alt="img" style="width:100%;height:100%;border-radius: 15px;" id="photo1" />
+                </div>
 
-                <!-- Modal Caption (Image Text) -->
-                <!-- <div id="caption"></div> -->
-                <!-- </div> -->
-                <div id="myModal" class="modal" style="z-index: 10000000; overflow-y: auto; background-color: rgb(1 3 18 / 12%); opacity: 1;" aria-hidden="false">
-                    <!-- The Close Button -->
+                <%--<div id="myModal" class="modal" style="z-index: 10000000; overflow-y: auto; background-color: rgb(1 3 18 / 12%); opacity: 1;" aria-hidden="false">
+                    
                     <div class="modal-content" style="margin-top: 80px">
                         <span class="close" style="opacity: 1; color: red;">&times;</span>
-                        <%--<i class="fa fa-times-circle close" id="close"  style="font-size:48px;color:red;margin-right:-80PX;margin-top:-25px"  ></i>--%>
-                        <!-- Modal Content (The Image) -->
+                        
+                        
                         <img alt="" id="img01" style="width: 100%; height: 450px;">
                     </div>
-                    <!-- Modal Caption (Image Text) -->
+                   
                     <div id="caption"></div>
-                </div>
+                </div>--%>
             </div>
         </div>
     </form>
@@ -117,6 +114,7 @@
                 ReloadTable();
             }
         );
+
         function loadPgNos() {
             prepg = parseInt($(".paginate_button.previous>a").attr("data-dt-idx"));
             Nxtpg = parseInt($(".paginate_button.next>a").attr("data-dt-idx"));
@@ -145,6 +143,7 @@
             }
             );
         }
+
         function ReloadTable() {
             $("#OrderList TBODY").html("");
             if (filtrkey != "All") {
@@ -160,7 +159,8 @@
                         $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
                     }
                     else {
-                        $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
+                        //$(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='picc' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
+                        $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='picc' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
                     }
                     $("#OrderList TBODY").append(tr);
                 }
@@ -187,6 +187,7 @@
                 Orders = AllOrders
             ReloadTable();
         });
+
         $(".segment>li").on("click", function () {
             $(".segment>li").removeClass('active');
             $(this).addClass('active');
@@ -195,6 +196,7 @@
             $("#tSearchOrd").val('');
             ReloadTable();
         });
+
         function fillstate() {
             $.ajax({
                 type: "POST",
@@ -253,6 +255,7 @@
                 }
             });
         }
+
         function fillRoute(hq) {
             $.ajax({
                 type: "POST",
@@ -271,6 +274,7 @@
                 }
             });
         }
+
         function fillRetailers(sfs, routes) {
             $.ajax({
                 type: "POST",
@@ -285,6 +289,7 @@
                 }
             });
         }
+
         $(document).ready(function () {
             fillstate();
             $('#ddlstate').on('change', function () {
@@ -348,10 +353,12 @@
                     return false;
                 }
             });
+
             $(document).on('click', '.roedit', function () {
                 var route_C = parseInt($(this).closest('tr').attr('rocode'));
                 window.location.href = "ListedDoctor/ListedDr_DetailAdd.aspx?type=2&ListedDrCode=" + route_C + "";
             });
+
             $(document).on("click", ".rodeact", function () {
                 var route_C = $(this).closest('tr').attr('rocode');
                 let oindex = Orders.findIndex(x => x.ListedDrCode == route_C);
@@ -452,6 +459,29 @@
 
             });
         });
+
+        $(document).on('click', '.picc', function () {
+            //alert('hi');
+            var photo = $(this).attr("src");
+            $('#photo1').attr("src", $(this).attr("src"));
+            $('#cphoto1').css("display", 'block');
+            // $(this).append('<div style="width: 100%" ><img src="' + photo + '"/></div>'
+        });
+
+
+        //$('.picc').click(function () {
+        //    alert('hi');
+        //    var photo = $(this).attr("src");
+        //    $('#photo1').attr("src", $(this).attr("src"));
+        //    $('#cphoto1').css("display", 'block');
+        //    // $(this).append('<div style="width: 100%" ><img src="' + photo + '"/></div>'
+
+        //});
+
+
+        function closew() {
+            $('#cphoto1').css("display", 'none');
+        }
     </script>
     <script type="text/javascript">
         // Get the modal
@@ -475,7 +505,7 @@
             modal.style.display = "none";
         }
     </script>
-    <style>
+    <style type="text/css">
         /*popup image*/
 
         .phimg img {

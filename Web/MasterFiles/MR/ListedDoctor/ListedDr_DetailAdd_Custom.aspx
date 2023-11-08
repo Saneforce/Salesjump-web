@@ -462,46 +462,11 @@
                                         </tr>
                                     </table>
                                 </div>
-                            </div> 
-                            
-
-                            <div class="col-lg-12" style="width:100%;">
-                                <div class="col-lg-12">
-                                    <table style="width:100%;">                                       
-                                        <tr>
-                                            <td>
-                                                <asp:GridView ID="fugv" runat="server" AutoGenerateColumns="false">
-                                                    <Columns>
-                                                        <asp:TemplateField HeaderText="Field Name">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lblFname" runat="server" Text='<%#Bind("Field_Name") %>'></asp:Label>
-                                                                <asp:Label ID="LabelFC" runat="server" Text='<%#Bind("Field_Col") %>' Visible="false"></asp:Label>
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                        <asp:TemplateField HeaderText="Files Upload">
-                                                            <ItemTemplate>
-                                                                <asp:FileUpload ID="flupslip" runat="server" />
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>                                                       
-                                                    </Columns>
-                                                </asp:GridView>
-                                            </td>
-                                            <td>
-                                                 <asp:Button ID="Button1" runat="server" Text="Upload" OnClick="btnUpload_Click" />
-                                            </td>
-                                             <td>
-                                                  <asp:Label ID="lblError" runat="server" Font-Bold="true"  ForeColor="#006600" Width="150"></asp:Label><br />
-                                            </td>
-                                        </tr>
-                                    </table>                   
-                                   
-                                </div>
-                                <div class="col-lg-12 labelnames" style="width:100%;">
-
-                                </div>
-                            </div>
-                            
+                            </div>                  
                             <br />
+                            <div class="row col-lg-12 labelnames">
+                                 
+                            </div>
                             <%-- <div class="col-lg-12">
                                  <asp:Panel ID="pnl2" runat="server">
                                      <table border="0" cellpadding="0" cellspacing="0" id="tbladdtional" style="width: 100%;">
@@ -557,7 +522,7 @@
 
                     //console.log(listeddrcode);
                     GetCustomFormsFieldsGroup();
-                    GetCustomFormsFields();
+                    //GetCustomFormsFields();
 
                     if (listeddrcode > 0) {
                         BindCustomFieldData(listeddrcode);
@@ -805,18 +770,18 @@
                     }, 200);
                 }
 
-                function GetCustomFormsFieldsGroup() {
-                    var furl = "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsFieldsGroups";
+                function GetCustomFormsFieldsGroup() {                   
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         async: false,                       
-                        url: furl,
+                        url: "ListedDr_DetailAdd_Custom.aspx/GetCustomFormsFieldsGroups",
                         data: "{'divcode':'<%=Session["div_code"]%>','ModuleId':'3'}",
                         dataType: "json",
                         success: function (data) {
                             $(".labelnames").html('');
                             MasFrmsGroup = JSON.parse(data.d) || [];
+                            console.log(MasFrmsGroup);
                             if (MasFrmsGroup.length > 0) {
                                 var str = "";
                                 var str1 = "";
@@ -1485,39 +1450,40 @@
                                                     }
                                                 }
                                                 break;
-                                            //case 'FS':
+                                            case 'FS':
                                              
 
-                                            //    str += "<td class='stylespc' align='left'>";
+                                                str += "<td class='stylespc' align='left'>";
                                              
-                                            //    //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                            //    str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
-                                            //    str += "<input type='button' onclick='fnADD()' />";
+                                                //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
 
-                                            //    str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+                                                //str += "<input type='button' onclick='fnADD()'  value='upload' />";
 
-                                            //    break;
-                                            //case 'FSC':                                             
+                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+
+                                                break;
+                                            case 'FSC':                                             
 
                                                 
-                                            //    str += "<td class='stylespc' align='left'>";
+                                                str += "<td class='stylespc' align='left'>";
                                                 
-                                            //    //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                            //    str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
-                                            //    str += "<input type='button' onclick='fnADD()' />";
-                                            //    str += "<div width='100' height='100'  class='" + filtered[k].Field_Col + "' /></td>";
+                                                //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
+                                                //str += "<br /><input type='button' onclick='fnADD()'  value='upload' />";
+                                                str += "<div width='100' height='100'  class='" + filtered[k].Field_Col + "' /></td>";
 
-                                            //    break;
+                                                break;
 
-                                            //case 'FC':
-                                            //    str += "<td class='stylespc' align='left'>";
+                                            case 'FC':
+                                                str += "<td class='stylespc' align='left'>";
                                                 
-                                            //    //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
-                                            //    str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
-                                            //    str += "<input type='button' onclick='fnADD()' />";
-                                            //    str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
+                                                //str += "<input name='photo' type='file' accept='image/png, image/jpeg, image/jpg' onchange='document.getElementById('" + filtered[k].Field_Col + "').src = window.URL.createObjectURL(this.files[0])'>";
+                                                str += "<input type='file' onchange='getFile(this)'  id='" + filtered[k].Field_Col + "' name='" + filtered[k].Field_Col + "' class='fsfiles notrequired'  />";
+                                                //str += "<input type='button' onclick='fnADD()' value='upload' />";
+                                                str += "<div width='100' height='100' class='" + filtered[k].Field_Col + "' /></td>";
 
-                                            //    break;
+                                                break;
                                           
                                             default:
                                                 break
@@ -1529,19 +1495,14 @@
                                             m = 0;
                                         }
 
-
-
-
                                     }
 
                                     str += "</tr>";
                                     str += '</table>';
-
                                     str += "</div>";
-
                                 }
-                                $(".labelnames").append(str);
 
+                                $(".labelnames").append(str);
                             }
                         }
                     });
@@ -1556,12 +1517,12 @@
                         data: "{'divcode':'<%=Session["div_code"]%>','ModuleId':'3'}",
                         dataType: "json",
                         success: function (data) {
-                            MasFrms = JSON.parse(data.d) || [];                         
+                            MasFrms = JSON.parse(data.d) || [];
+                            console.log(MasFrms);
                         },
                         error: function (data) {
                             alert(JSON.stringify(data.d));
                         }
-
                     });
                 }
 
@@ -1616,44 +1577,8 @@
                         }
                     });
                 }                              
-                                              
-                $('#btnSaved').click(function () {                    
-                    SaveCustomFielsValues();                    
-                });                              
-                                
-                var additionalfud = new Array();              
 
-                function fnADD() {
-                    var input = document.getElementById('file_TicketManageMent_AttachFile');
-                    var files = input.files;
-                    var formData = new FormData();
-
-                    for (var i = 0; i != files.length; i++) {
-                        formData.append("Attachments", files[i]);
-                    }
-
-                    formData.append("FirstName", 'Title');
-                    formData.append("LastName", 'Short Description');
-
-                    $.ajax({
-                        cache: false,
-                        type: 'Post',
-                        data: formData,
-                        url: '{your_url_here}',
-                        processData: false,
-                        contentType: false,
-                        success: function (xhr, ajaxOptions, thrownError) {
-
-                        }
-                    });
-                }
-
-                function uploadFiles() {
-                    var file = document.getElementById("fileUploader")//All files
-                    for (var i = 0; i < file.files.length; i++) {
-                        uploadSingleFile(file.files[i], i);
-                    }
-                }
+                var additionalfud = new Array();
 
                 function uploadSingleFile(file, i) {
                     var fileId = i;
@@ -1684,7 +1609,7 @@
                         $("#status_" + fileId).text("Upload Aborted");
                     }, false);
 
-                    ajax.open("POST", "UploadHandler.ashx"); // Your API .net, php
+                    ajax.open("POST", "CustomUploadHandler.ashx"); // Your API .net, php
 
                     var uploaderForm = new FormData(); // Create new FormData
                     uploaderForm.append("file", file); // append the next file for upload
@@ -1699,10 +1624,10 @@
                     })
                 }
 
+                var fileNames = new Array();
 
                 function getFile(elm) {
-                    var Attachments = new Array();
-
+                    var adDetail = {};
                     var id = $(elm).attr("id");
                     var file = "";
                     var input = document.getElementById(id);
@@ -1757,8 +1682,8 @@
                             console.log(fileType);
                             fragment += "<li>" + fileName + " " + fileSize + " bytes. Type :" + fileType + "</li>";
                             ul = $("#ulList").append(fragment);
-                            Getfilename = input.files[0].name;
-                            filelist += Getfilename + ",";
+                            //Getfilename = input.files[0].name;
+                            //filelist += input.files[0].name + ",";
                             var tr2 = $("<tr></tr>");
                             var td2 = $("<td></td>");
                             $(td2).append('<div><ul id="ulList_' + ul + '></ul></div>');
@@ -1771,18 +1696,18 @@
                             //if (fileSize < 2000000) {
 
                             $(td1).append('<div style="width:170px">' + '<div class="col-md-12">' +
-                                '<div class="progress"><div class="progress-bar" role="progressbar" id="progressbar_' + fileId + '" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div></div>' +
+                                '<div class="progress"><div class="progress-bar" role="progressbar" id="progressbar_' + id + '" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div></div>' +
                                 '</div>' +
                                 '<div class="col-md-12">' +
                                 '<div class="col-md-6">' +
-                                '<input type="button" class="btn btn-danger" style="display:none;line-height:6px;height:25px" id="cancel_' + fileId + '" value="cancel">' +
+                                '<input type="button" class="btn btn-danger" style="display:none;line-height:6px;height:25px" id="cancel_' + id + '" value="cancel">' +
                                 '</div>' +
                                 '<div class="col-md-6">' +
-                                '<p class="progress-status" style="text-align: right;margin-right:-15px;font-weight:bold;color:saddlebrown" id="status_' + fileId + '"></p>' +
+                                '<p class="progress-status" style="text-align: right;margin-right:-15px;font-weight:bold;color:saddlebrown" id="status_' + id + '"></p>' +
                                 '</div>' +
                                 '</div>' +
                                 '<div class="col-md-12">' +
-                                '<p id="notify_' + fileId + '" style="text-align: right;"></p>' +
+                                '<p id="notify_' + id + '" style="text-align: right;"></p>' +
                                 '</div>' + '</div>');
 
                             tr1.append(td1);
@@ -1793,27 +1718,25 @@
                         }
                         else {
                             alert('Maximum 2 Mb');
-                        }                                               
+                        }
 
                         for (var i = 0; i < input.files.length; i++) {
                             console.log(input.files[i].name);
                             file = input.files[i].name;
+
+                            adDetail.fId = id;
+                            adDetail.fName = file;
+
+                            fileNames.push(adDetail);
+
                             uploadSingleFile(input.files[i], i);
                         }
 
-                        var filename = {
-                            "fId": id,
-                            "fName": file
-                        }
-                        console.log(filename);
+                        console.log(fileNames);
                     }
-                }
-
-                console.log(additionalfud);
+                }        
 
                 function SaveCustomFielsValues() {
-
-                 
 
                     var vflag = true;
 
@@ -1898,19 +1821,6 @@
                         addfields.push(adDetail);
                     });
 
-                    if (Attachments.length > 0) {
-                        var adDetail = {};
-                        adDetail.Attachments = Attachments;
-                        addfields.push(adDetail);
-                    }
-                    else {
-                        var adDetail = {};
-                        adDetail.Attachments = "";
-                        addfields.push(adDetail);
-                    }
-
-                    console.log(addfields);
-
                     var fdata = {
                         "DR_Name": $('#<%=txtName.ClientID%>').val(),
                         "Mobile_No": $('#<%=txtMobile.ClientID%>').val(),
@@ -1955,7 +1865,8 @@
                         "curentCom": $('#<%=ddlCC.ClientID%> option:selected').val(),
                         "curentCompitat": $('#<%=ddlCC.ClientID%> option:selected').text(),
                         "Email": $('#<%=txtmail.ClientID%>').val(),
-                        "Additionsfld": addfields
+                        "Additionsfld": addfields,
+                        "fileNames": fileNames
                     };
 
                     console.log(JSON.stringify(fdata));
@@ -2012,6 +1923,13 @@
                         }
                     });
                 }
+
+                $('#btnSaved').click(function () {                    
+                    SaveCustomFielsValues();                    
+                });                                                         
+                    
+
+              
 
                 function GetCutomRetailerData(listeddrcode, columnName) {
                     $.ajax({
@@ -2317,56 +2235,119 @@
                                                 }
                                             }
                                             break;
-                                        //case 'FS':
-                                        //    if (($cval == null || $cval == '' || $cval == "")) {
+                                        case 'FS':
+                                            if (($cval == null || $cval == '' || $cval == "")) {
 
-                                        //    }
-                                        //    else {
-                                        //        $("input[type='file']").each(function () {
-                                        //            var id = $(this).attr("id");
-                                        //            if (id == $fldnm) {
-                                        //                $("." + id + "").empty();
-                                        //                var div = "<div> " + $cval + " <br /></div>";
-                                        //                //console.log(div);
-                                        //                $("." + id + "").append(div);
-                                        //            }
-                                        //        });                                               
-                                        //    }
+                                            }
+                                            else {
+                                                $("input[type='file']").each(function () {
+                                                    var id = $(this).attr("id");
+                                                    var div = "";
+                                                    if (id == $fldnm) {
+                                                        $("." + id + "").empty();
+
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            contentType: "application/json; charset=utf-8",
+                                                            async: false,
+                                                            url: "ListedDr_DetailAdd_Custom.aspx/DownloadImageFromS3",
+                                                            data: "{'filename':'" + $cval + "'}",
+                                                            dataType: "json",
+                                                            success: function (msg) {
+                                                                //console.log(msg);
+                                                                //$td += "<td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + msg.d + "></td>";
+
+                                                                //$td += "<td>" + msg.d + "</td>";
+
+                                                                div = "<div><br /> " + msg.d + " <br /><label for='" + id + "'>" + $cval +"</label><br /></div>";
+                                                            }
+                                                        });
+
+                                                        //div = "<div> " + $cval + " <br /></div>";
+                                                        //console.log(div);
+
+                                                        $("." + id + "").append(div);
+
+                                                        //$(this).attr("id").val() = $cval;
+                                                    }
+                                                });                                               
+                                            }
                                                                                  
-                                        //    break;
-                                        //case 'FSC':
-                                        //    if (($cval == null || $cval == '' || $cval == "")) {
+                                            break;
+                                        case 'FSC':
+                                            if (($cval == null || $cval == '' || $cval == "")) {
 
-                                        //    }
-                                        //    else {
-                                        //        $("input[type='file']").each(function () {
-                                        //            var id = $(this).attr("id");
-                                        //            if (id == $fldnm) {
-                                        //                $("." + id + "").empty();
-                                        //                var div = "<div> " + $cval + " <br /></div>";
-                                        //                //console.log(div);
-                                        //                $("." + id + "").append(div);
-                                        //            }
-                                        //        });      
-                                        //    }                                   
-                                        //    break;
-                                        //case 'FC':
-                                        //    if (($cval == null || $cval == '' || $cval == "")) {
+                                            }
+                                            else {
+                                                $("input[type='file']").each(function () {
+                                                    var id = $(this).attr("id");
+                                                    var div = "";
+                                                    if (id == $fldnm) {
 
-                                        //    }
-                                        //    else {
+                                                        $("." + id + "").empty();
 
-                                        //        $("input[type='file']").each(function () {
-                                        //            var id = $(this).attr("id");
-                                        //            if (id == $fldnm) {
-                                        //                $("." + id + "").empty();
-                                        //                var div = "<div> " + $cval + " <br /></div>";
-                                        //                //console.log(div);
-                                        //                $("." + id + "").append(div);
-                                        //            }
-                                        //        });      
-                                        //    }
-                                        //    break;
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            contentType: "application/json; charset=utf-8",
+                                                            async: false,
+                                                            url: "ListedDr_DetailAdd_Custom.aspx/DownloadImageFromS3",
+                                                            data: "{'filename':'" + $cval + "'}",
+                                                            dataType: "json",
+                                                            success: function (msg) {
+                                                                //console.log(msg);
+                                                                //$td += "<td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + msg.d + "></td>";
+
+                                                                //$td += "<td>" + msg.d + "</td>";
+
+                                                                div = "<div><br /> " + msg.d + " <br /><label for='" + id + "'>" + $cval + "</label><br /></div>";
+                                                            }
+                                                        });
+
+                                                        //div = "<div> " + $cval + " <br /></div>";
+                                                        //console.log(div);
+
+                                                        $("." + id + "").append(div);                                                        
+                                                    }
+                                                });      
+                                            }                                   
+                                            break;
+                                        case 'FC':
+                                            if (($cval == null || $cval == '' || $cval == "")) {
+
+                                            }
+                                            else {
+
+                                                $("input[type='file']").each(function () {
+                                                    var id = $(this).attr("id");
+                                                    var div = "";
+                                                    if (id == $fldnm) {
+                                                        $("." + id + "").empty();
+
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            contentType: "application/json; charset=utf-8",
+                                                            async: false,
+                                                            url: "ListedDr_DetailAdd_Custom.aspx/DownloadImageFromS3",
+                                                            data: "{'filename':'" + $cval + "'}",
+                                                            dataType: "json",
+                                                            success: function (msg) {
+                                                                //console.log(msg);
+                                                                //$td += "<td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + msg.d + "></td>";
+
+                                                                //$td += "<td>" + msg.d + "</td>";
+
+                                                                div = "<div><br /> " + msg.d + " <br /><label for='" + id + "'>" + $cval + "</label><br /></div>";
+                                                            }
+                                                        });
+
+                                                        //div = "<div> " + $cval + " <br /></div>";
+                                                        //console.log(div);
+
+                                                        $("." + id + "").append(div);                                                        
+                                                    }
+                                                });      
+                                            }
+                                            break;
                                         default:
                                             break;
                                     }

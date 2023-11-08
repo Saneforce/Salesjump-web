@@ -13,6 +13,8 @@ using System.Net;
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Transfer;
+using System.Linq;
+using Amazon.S3.Model;
 
 public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : System.Web.UI.Page
 {
@@ -170,9 +172,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             FillddlCC();
             FillType(div_code);
 
-            AddFileUploadControls();
-
-
             if (Request.QueryString["type"] != null)
             {
                 if ((Request.QueryString["type"].ToString() == "1") || (Request.QueryString["type"].ToString() == "2"))
@@ -229,7 +228,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
     private void FillUOM()
     {
-        lisdr ldr = new lisdr();
+        Listdrdt ldr = new Listdrdt();
         dsTerritory = ldr.getStatePerDivision(div_code);
 
         //Division dv = new Division();
@@ -262,7 +261,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     private void LoadDoctor(int request_type, string request_doctor)
     {
         ListedDR lst = new ListedDR();
-        lisdr lst1 = new lisdr();
+        Listdrdt lst1 = new Listdrdt();
         if (div_code == "70")
         {
             newcontactDR = lst.ViewnewcontactDr(request_doctor, div_code);
@@ -385,7 +384,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         ListedDR lst = new ListedDR();
         string divcode = Convert.ToString(lst.Div_Code(Session["sf_code"].ToString()));
 
-        lisdr ldr = new lisdr();
+        Listdrdt ldr = new Listdrdt();
         dsDivision = ldr.getStatePerDivision(divcode);
 
         //Division dv = new Division();
@@ -445,31 +444,12 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         return pid.ToArray();
     }
 
-    private void AddFileUploadControls()
-    {
-        DataSet ds = new DataSet();
-        lisdr ad = new lisdr();
-
-        ds = ad.GetCustomFormsFieldsFilesData(div_code, "3");
-
-        if (ds.Tables.Count > 0)
-        {
-            DataTable dt = ds.Tables[0];
-            if (dt.Rows.Count > 0)
-            {
-                fugv.Visible = true;
-                fugv.DataSource = dt;
-                fugv.DataBind();
-            }
-            else { fugv.Visible = false; }
-        }
-    }
 
     [WebMethod]
     public static string GetCustomFormsFieldsList(string divcode, string ModuleId)
     {
         //DataSet ds = new DataSet();
-        lisdr ad = new lisdr();
+        Listdrdt ad = new Listdrdt();
         DataSet ds = ad.GetCustomFormsFieldsData(divcode, ModuleId);
         //AdminSetup Ad = new AdminSetup();
         //ds = Ad.GetCustomFormsFieldsData(divcode, ModuleId);
@@ -483,7 +463,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         //AdminSetup Ad = new AdminSetup();
 
-        lisdr Ad = new lisdr();
+        Listdrdt Ad = new Listdrdt();
 
         ds = Ad.GetCustomFormsFieldsGroupData(divcode, ModuleId);
         return JsonConvert.SerializeObject(ds.Tables[0]);
@@ -494,8 +474,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     public static string GetCustomFormsSeclectionMastesList(string TableName)
     {
         DataSet ds = new DataSet();
-        lisdr ad = new lisdr();
-
+       
         string DivCode = Convert.ToString(HttpContext.Current.Session["div_Code"]);
 
         if ((DivCode == null || DivCode == ""))
@@ -534,7 +513,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
     public static string GetBindCustomFieldData(string listeddrcode, string columnName)
     {
         //ListedDR lst = new ListedDR();
-        lisdr lstd = new lisdr();
+        Listdrdt lstd = new Listdrdt();
         DataSet ds = lstd.get_RetailerCustomField(listeddrcode, columnName, div_code);
 
         //DataSet ds = lst.get_RetailerCustomField(listeddrcode);
@@ -719,10 +698,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                     ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('ERP Code Already Exist');</script>");
 
                 }
-
             }
-
-
         }
         else
         {
@@ -743,9 +719,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                 ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert('Please Enter Address...');</script>");
                 txtAddress.Focus();
             }
-
         }
-
     }
 
     protected void btnClear_Click(object sender, EventArgs e)
@@ -922,17 +896,22 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         [JsonProperty("Additionsfld")]
         public List<AddtionalfieldDetails> Additionsfld { get; set; }
 
+        [JsonProperty("fileNames")]
+        public List<fileNames> fileNames { get; set; }
+
     }
 
     [WebMethod(EnableSession = true)]
     public static string SaveAdditionalField(string fdata)
     {
+        
         string msg = "";
 
         RetailerMainfld sd = JsonConvert.DeserializeObject<RetailerMainfld>(fdata);
 
-        List<AddtionalfieldDetails> addfields = sd.Additionsfld;
+        List<AddtionalfieldDetails> addfields = sd.Additionsfld.ToList();
 
+        List<fileNames> adfup = sd.fileNames.ToList();
 
         string DR_Name = Convert.ToString(sd.DR_Name);
         string Mobile_No = Convert.ToString(sd.Mobile_No);
@@ -983,7 +962,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             { // Add New Listed Doctor
               //
               //ListedDR lstDR = new ListedDR();
-                lisdr lstdr = new lisdr();
+                Listdrdt lstdr = new Listdrdt();
                 // iReturn = lstDR.RecordAdd(DR_Name, sf_code, Mobile_No, retail_code, advance_amount, DR_Spec, dr_spec_name, sales_Tax, Tinno, DR_Terr, credit_days, DR_Class, dr_class_name, ad, DR_Address1, DR_Address2, div_code, Milk_pon, UOM, UOM_Name, DDL_Re_Type.SelectedValue, outstandng, creditlmt, Cus_Alter, drcategory, dscategoryName, erbCode);
                 if (div_code == "70")
                 {
@@ -1005,8 +984,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
                     string RetailerID = Convert.ToString(ds.Tables[0].Rows[0]["ListedDrCode"]);
 
-                    lisdr ld = new lisdr();
-
                     if (addfields.Count > 0)
                     {
                         int i = 0; string fld = ""; string val = "";
@@ -1025,17 +1002,17 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         }
                     }
 
-                    if (tb.Rows.Count > 0)
+                    if (adfup.Count > 0)
                     {
                         int i = 0; string fld = ""; string val = "";
 
-                        for (int k = 0; k < tb.Rows.Count; k++)
+                        for (int k = 0; k < adfup.Count; k++)
                         {
-                            if ((Convert.ToString(tb.Rows[k]["FieldId"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldId"]) != "undefined") && (Convert.ToString(tb.Rows[k]["FieldVal"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldVal"]) != "undefined"))
+                            if ((Convert.ToString(adfup[k].fId) != "'undefined'" || Convert.ToString(adfup[k].fId) != "undefined") && (Convert.ToString(adfup[k].fName) != "'undefined'" || Convert.ToString(adfup[k].fName) != "undefined"))
                             {
-                                fld = Convert.ToString(tb.Rows[k]["FieldId"]);
+                                fld = Convert.ToString(adfup[k].fId);
 
-                                val = Convert.ToString(tb.Rows[k]["FieldVal"]);
+                                val = Convert.ToString(adfup[k].fName);
 
                                 if ((val == null || val == ""))
                                 { val = ""; }
@@ -1046,23 +1023,6 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                         }
                     }
                     
-
-                    //if (addfileuds.Count > 0)
-                    //{
-                    //    int i = 0; string fld = ""; string val = "";
-
-                    //    for (int k = 0; k < addfileuds.Count; k++)
-                    //    {
-                    //        if ((addfileuds[k].FileId != "'undefined'" || addfileuds[k].FileId != "undefined") && (addfileuds[k].FileName != "'undefined'" || addfileuds[k].FileName != "undefined"))
-                    //        {
-                    //            fld = addfileuds[k].FileId;
-                    //            val = addfileuds[k].FileName;
-
-                    //            string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + RetailerID + "'";
-                    //            i = db_ER.ExecQry(uquery);
-                    //        }
-                    //    }
-                    //}
 
                     msg = "Created Successfully";
                     //btnClear_Click(sender, e);
@@ -1088,7 +1048,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
                 //ListedDR lstDR = new ListedDR();
 
-                lisdr lstDR = new lisdr();
+                Listdrdt lstDR = new Listdrdt();
 
                 string subdivcode = Convert.ToString(doctorcode);
                 //iReturn = lstDR.Recordupdate_detail(subdivcode, DR_Name, sf_code, Mobile_No, retail_code, advance_amount, DR_Spec, dr_spec_name, sales_Tax, Tinno, DR_Terr, credit_days, DR_Class, dr_class_name, ad, DR_Address1, DR_Address2, div_code, Milk_pon, UOM, UOM_Name, DDL_Re_Type.SelectedValue, outstandng, creditlmt, Cus_Alter, drcategory, dscategoryName, erbCode);
@@ -1112,49 +1072,42 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                             {
                                 fld = addfields[k].Fields;
                                 val = addfields[k].Values;
-                                string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
-                                i = db_ER.ExecQry(uquery);
+                                if ((val == "" || val == null || val == "null"))
+                                { }
+                                else
+                                {
+                                    string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
+                                    i = db_ER.ExecQry(uquery);
+                                }
                             }
                         }
                     }
 
-                    if (tb.Rows.Count > 0)
+                    if (adfup.Count > 0)
                     {
                         int i = 0; string fld = ""; string val = "";
 
-                        for (int k = 0; k < tb.Rows.Count; k++)
+                        for (int k = 0; k < adfup.Count; k++)
                         {
-                            if ((Convert.ToString(tb.Rows[k]["FieldId"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldId"]) != "undefined") && (Convert.ToString(tb.Rows[k]["FieldVal"]) != "'undefined'" || Convert.ToString(tb.Rows[k]["FieldVal"]) != "undefined"))
+                            if ((Convert.ToString(adfup[k].fId) != "'undefined'" || Convert.ToString(adfup[k].fId) != "undefined") && (Convert.ToString(adfup[k].fName) != "'undefined'" || Convert.ToString(adfup[k].fName) != "undefined"))
                             {
-                                fld = Convert.ToString(tb.Rows[k]["FieldId"]);
+                                fld = Convert.ToString(adfup[k].fId);
 
-                                val = Convert.ToString(tb.Rows[k]["FieldVal"]);
+                                val = Convert.ToString(adfup[k].fName);
 
-                                if ((val == null || val == ""))
-                                { val = ""; }
+                                if ((val == "" || val == null || val == "null"))
+                                { }
+                                else
+                                {
+                                    string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
+                                    i = db_ER.ExecQry(uquery);
+                                }
 
-                                string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
-                                i = db_ER.ExecQry(uquery);
+                                //string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
+                                //i = db_ER.ExecQry(uquery);
                             }
                         }
                     }
-
-                    //if (addfileuds.Count > 0)
-                    //{
-                    //    int i = 0; string fld = ""; string val = "";
-
-                    //    for (int k = 0; k < addfileuds.Count; k++)
-                    //    {
-                    //        if ((addfileuds[k].FileId != "'undefined'" || addfileuds[k].FileId != "undefined") && (addfileuds[k].FileName != "'undefined'" || addfileuds[k].FileName != "undefined"))
-                    //        {
-                    //            fld = addfileuds[k].FileId;
-                    //            val = addfileuds[k].FileName;
-
-                    //            string uquery = "EXEC [Insert_CustomRetailerDetails] '" + div_code + "', '" + fld + "', '" + val + "','" + doctorcode + "'";
-                    //            i = db_ER.ExecQry(uquery);
-                    //        }
-                    //    }
-                    //}
 
                     msg = "Updated Successfully";
                 }
@@ -1201,337 +1154,194 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
         return msg;
     }
 
-    public static void CopyStream(Stream input, Stream output)
-    {
-        byte[] buffer = new byte[8 * 1024];
-        int len;
-        while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
-        {
-            output.Write(buffer, 0, len);
-        }
-    }
-
-    protected void button1_click(string filename)
-    {
-        try
-        {
-            lisdr ld = new lisdr();
-            string msg = "";
-            DataSet dsDivision = ld.getStatePerDivision(div_code);
-            string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
-            string directoryPath = urlshotName + "_" + "Retailer";
-
-
-            string _FullName = filename;
-            string _FilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
-            string awsKey = "AKIA5OS74MUCASG7HSCG";
-            string awsSecretKey = "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";
-            string bucketName = "happic";
-
-            //First I am creating a file with the file name in my local machine in a shared folder
-            string FileLocation = _FilePath + "\\" + _FullName;
-            FileStream fs = File.Create(_FullName);
-            fs.Close();
-
-            // Set up your AWS credentials
-           
-
-            // Create a new Amazon S3 client
-            AmazonS3Client s3Client = new AmazonS3Client(awsKey, awsSecretKey, Amazon.RegionEndpoint.APSouth1);
-            // Upload the file to Amazon S3
-            TransferUtility fileTransferUtility = new TransferUtility(s3Client);
-            fileTransferUtility.Download(FileLocation, bucketName + "\\" + directoryPath, _FullName);
-            fileTransferUtility.Dispose();
-            WebClient webClient = new WebClient();
-            HttpResponse response = HttpContext.Current.Response;
-            response.Clear();
-            response.ClearContent();
-            response.ClearHeaders();
-            response.Buffer = true;
-            response.AddHeader("Content-Disposition", "attachment;filename=" + _FullName.ToString() + "");
-            byte[] data = webClient.DownloadData(FileLocation);
-            File.Delete(FileLocation); //After download starts, then I am deleting the file from the local path which I created initially.
-            response.BinaryWrite(data);
-            response.End();
-        }
-        catch (Exception ex) { }
-
-    }
-
 
     [WebMethod(EnableSession = true)]
-    public static string SaveFileS3Bucket(string filename)
+    public static string DownloadImageFromS3(string filename)
     {
-
-        lisdr ld = new lisdr();
         string msg = "";
-        DataSet dsDivision = ld.getStatePerDivision(div_code);
-        string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
-        string directoryPath = urlshotName + "_" + "Retailer";
-
-        string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
-
-        //Create the Directory.
-        if (!Directory.Exists(filepath))
-        {
-            Directory.CreateDirectory(filepath);
-        }
-
-        fileNames sd = JsonConvert.DeserializeObject<fileNames>(filename);
-
-        string fid = Convert.ToString(sd.fId);
-        string fname = Convert.ToString(sd.fName);
-        
-
-        string Ext = System.IO.Path.GetExtension(fname);
-        if (((Ext == ".jpg") || (Ext == ".jpeg") || (Ext == ".png")))
-        {
-            
-
-            string filePath = filepath + sf_code + "__" + fname;
-
-            Stream myStream = new FileStream(filePath, FileMode.OpenOrCreate);
-
-            FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-            StreamReader sr = new StreamReader(fs);
-            StreamWriter sw = new StreamWriter(fs);
-            sw.Flush(); //HERE
-            fs.Close();
-
-            //HttpFileCollection hfc = Page.Request.Files;
-
-            //for (int i = 0; i < hfc.Count; i++)
-            //{
-            //    HttpPostedFile hpf = fname.ToString();
-
-            //    FileName = System.IO.Path.GetFileName(hpf.FileName);
-            //    FileID = System.IO.Path.GetFileName(hpf.FileName);
-
-            //    if (hpf.ContentLength > 0)
-            //    {
-            //        if (hpf.ContentLength < 307200)
-            //        {
-
-
-            //            if (((Ext == ".txt") || (Ext == ".doc") || (Ext == ".docx") || (Ext == ".xls")
-            //                || (Ext == ".xlsx") || (Ext == ".pdf") || (Ext == ".jpg")
-            //                || (Ext == ".jpeg") || (Ext == ".png") || (Ext == ".gif")))
-            //            {
-
-            //                hpf.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + "doc[" + (i + 1).ToString() + "]@" + System.DateTime.Now.Date.Date.ToString("dd-MM-yy") + Ext);
-
-            //                msg = "'" + fname.ToString() + "'" + " Uploaded Successfully..." + "<br>";
-            //            }
-
-            //            else
-            //            { msg = "'" + fname.ToString() + "'" + " Failed :" + "'" + Ext.ToString() + "'" + " Extension not supported... " + "<br>"; }
-
-            //        }
-            //        else
-            //        { msg = "'" + fname.ToString() + "'" + " Failed : " + " file length should not exceed 3MB... " + "<br>"; }
-
-            //    }
-            //    else
-            //    { msg = "'" + fname.ToString() + "'" + " Failed : " + " File is Empty... " + "<br>"; }
-
-
-            //}
-        }
-
-        //if (((Ext == ".jpg") || (Ext == ".jpeg") || (Ext == ".png")))
-        //{
-        //    using (var memoryStream = new MemoryStream())
-        //    {
-        //        System.Drawing.Image image = System.Drawing.Image.FromStream(memoryStream, true);
-        //        string filePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + filename;
-        //        image.Save(filePath);
-        //    }         
-        //}
-        //else
-        //{
-        //    using (var memoryStream = new MemoryStream())
-        //    {
-        //        var fileName = filename;
-        //        string tempFilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + fileName);
-        //        using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write))
-        //        {
-        //            memoryStream.WriteTo(fs);
-        //        }
-        //    }
-        //}
-
-
-
-        //string name = filename;
-        //string myBucketName = bucketName; //your s3 bucket name goes here  
-        //string s3DirectoryName = directoryPath;
-        //string cutrrentFilePath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + name;
-        //string s3FileName = @name;
-        //string awsAccessKeyId = "AKIA5OS74MUCASG7HSCG";
-        //string awsSecretAccessKey = "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";
-        //try
-        //{        
-
-        //    s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
-        //    IAmazonS3 client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, RegionEndpoint.APSouth1);
-        //    TransferUtility utility = new TransferUtility(client);
-        //    TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
-        //    if (s3DirectoryName == "" || s3DirectoryName == null)
-        //    {
-        //        request.BucketName = myBucketName; //no subdirectory just bucket name  
-        //    }
-        //    else
-        //    {   // subdirectory and bucket name  
-        //        request.BucketName = myBucketName + @"/" + s3DirectoryName;
-        //    }
-        //    request.Key = s3FileName; //file name up in S3             
-        //    utility.Upload(request);
-
-
-        //    msg = "Upload  completed !!";
-        //}
-        //catch (AmazonS3Exception e)
-        //{
-        //    //Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
-        //    msg = "Error encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
-        //}
-
-        //catch (Exception e)
-        //{
-        //    //Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
-        //    msg = "Unknown encountered on server. Message:'{0}' when writing an object  " + e.Message + " ";
-        //}
-
-        return msg;
-    }
-        
-
-    protected void btnUpload_Click(object sender, EventArgs e)
-    {
-
-        string FileName = ""; 
-        string error = "";
-        lisdr ld = new lisdr();
-
-        DataSet dsDivision = ld.getStatePerDivision(div_code);
-        string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
-        string directoryPath = urlshotName + "_" + "Retailer";
-        string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
-
-        //Create the Directory.
-        if (!Directory.Exists(filepath))
-        {
-            Directory.CreateDirectory(filepath);
-        }
-
         try
-        {  // Get the HttpFileCollection
-            tb = new DataTable();
-            tb.Columns.Add("FieldId", typeof(string));
-            tb.Columns.Add("FieldVal", typeof(string));
-            int search_results = Convert.ToInt32(fugv.Rows.Count);
-            if (search_results > 0)
+        {
+            Listdrdt ld = new Listdrdt();
+
+            DataSet dsDivision = ld.getStatePerDivision(div_code);
+            string Folder = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+
+
+            Folder = Folder.ToString().ToLower() + "_" + "Retailer";
+
+            string filepath = HttpContext.Current.Server.MapPath("~/" + Folder + "/");
+
+            //Create the Directory.
+            if (!Directory.Exists(filepath))
             {
-                for (int i = 0; i < fugv.Rows.Count; i++)
-                {
-
-                    dr = tb.NewRow();
-
-                    Label GLabelFC = fugv.Rows[i].FindControl("LabelFC") as Label;
-                    string FieldId = GLabelFC.Text.ToString().Trim();
-
-
-                    dr["FieldId"] = GLabelFC.Text.ToString().Trim();
-
-                    FileUpload fu = fugv.Rows[i].FindControl("flupslip") as FileUpload;
-
-                    if (fu.PostedFile.ContentLength > 0)
-                    {
-                        if (fu.PostedFile.ContentLength < 307200)
-                        {
-                            string Ext = System.IO.Path.GetExtension(fu.FileName);
-
-                            if (((Ext == ".txt") || (Ext == ".doc") || (Ext == ".docx") || (Ext == ".xls")
-                                || (Ext == ".xlsx") || (Ext == ".pdf") || (Ext == ".jpg")
-                                || (Ext == ".jpeg") || (Ext == ".png") || (Ext == ".gif")))
-                            {
-
-                                //fu.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + "doc[" + (i + 1).ToString() + "]@" + System.DateTime.Now.Date.Date.ToString("dd-MM-yy") + Ext);
-
-                                FileName = Convert.ToString(sf_code + "__" + Path.GetFileName(fu.FileName));
-
-                                fu.PostedFile.SaveAs(HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + FileName);
-
-                                var awsKey = "AKIA5OS74MUCASG7HSCG";
-                                var awsSecretKey = "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";
-                                var bucketRegion = RegionEndpoint.APSouth1;                                                             
-
-                                try
-                                {
-                                    string fileToBackup = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/") + FileName; // test file path from the local computer
-                                    string myBucketName = "happic"; // your s3 bucket name goes here
-                                    string s3DirectoryName = directoryPath; // the directory path to a sub folder goes here
-                                    string s3FileName = FileName; // the name of the file when its saved into the S3 buscket
-                                    
-                                    IAmazonS3 client = new AmazonS3Client(awsKey, awsSecretKey, RegionEndpoint.APSouth1);
-                                    TransferUtility utility = new TransferUtility(client);
-                                    TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
-                                    if (s3DirectoryName == "" || s3DirectoryName == null)
-                                    {
-                                        request.BucketName = myBucketName; //no subdirectory just bucket name
-                                    }
-                                    else
-                                    {   // subdirectory and bucket name
-                                        request.BucketName = myBucketName + @"/" + s3DirectoryName;
-                                    }
-                                    request.Key = FileName;
-                                    request.FilePath = fileToBackup;
-                                    utility.Upload(request);
-                                   
-                                    error += "" + FileName.ToString() + "  " + " File uploaded to S3..." + "<br>";
-                                    //Console.WriteLine("Image '{fieldName}' retrieved and saved locally.");                                    
-                                }
-                                catch (AmazonS3Exception ex)
-                                {
-                                    error += "" + ex.Message.ToString() + "  " + " Uploaded Successfully..." + "<br>";
-                                }
-
-                                tb.Rows.Add(dr);
-                            }
-                            else
-                            {
-                                error += "" + FileName.ToString() + "  " + " Failed :" + "'" + Ext.ToString() + "'" + " Extension not supported... " + "<br>";
-                                //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
-                            }
-                        }
-                        else
-                        {
-                            error += "" + FileName.ToString() + "  " + " Failed : " + " file length should not exceed 3MB... " + "<br>";
-                            //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
-                        }
-                    }
-                    else
-                    {
-                        error +=  "'" + FileName.ToString() + "'" + " Failed : " + " File is Empty... " + "<br>";
-                        //ClientScript.RegisterStartupScript(GetType(), "Message", "<SCRIPT LANGUAGE='javascript'>alert(" + error + ");</script>");
-                    }
-                }
+                Directory.CreateDirectory(filepath);
             }
 
-            
+            string currentDirectory = HttpContext.Current.Server.MapPath("~");
+            string relativePath = Folder;
+
+            // Iterate through the static fields for image fields and retrieve/save them
+            msg = RetrieveAndSaveImage(currentDirectory, Folder, filename);
+
+
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            error += ex.Message.ToString(); //Response.Write(ex.Message);
+            //Console.WriteLine(exception.Message, exception.InnerException);
+            msg = " " + exception.Message + " , " + exception.InnerException + " ";
         }
 
-        lblError.Text= error;
+
+        return msg;
+
+    }
+
+    private static string RetrieveAndSaveImage(string currentDirectory, string Folder, string fileName)
+    {
+        string msg = "";
+        if (!string.IsNullOrWhiteSpace(fileName))
+        {
+            string localFilePath = Path.Combine(currentDirectory, Folder, fileName);
+
+
+            try
+            {
+                string accessKey = "AKIA5OS74MUCASG7HSCG", accessSecret = "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";
+                AmazonS3Client client = new AmazonS3Client(accessKey, accessSecret, Amazon.RegionEndpoint.APSouth1);
+
+                var transferUtility = new TransferUtility(client);
+                string bucketName = "happic";
+                string objectKey = Folder + "/" + fileName;
+                //string objectKey = Folder + "/" + objectKey;
+
+                string localFilePaths = currentDirectory + "\\" + Folder + "\\" + fileName + "";
+
+                //string localFilePaths = "http://fmcg.sanfmcg.com/MasterFiles/Reports/AudFiles/MR4126_1694754881446.mp3";                
+                try
+                {
+                    //transferUtility.Download(localFilePath, bucketName, fileName);
+
+
+                    GetObjectRequest request = new GetObjectRequest
+                    {
+                        BucketName = bucketName,
+                        Key = objectKey
+                    };
+
+                    GetObjectResponse response = client.GetObject(request);
+
+                    using (Stream responseStream = response.ResponseStream)
+                    {
+                        using (FileStream fileStream = File.Create(localFilePath))
+                        {
+                            responseStream.CopyTo(fileStream);
+                            fileStream.Close();
+                        }
+                    }
+
+
+                    //GetObjectResponse response = client.GetObject(bucketName, fileName);
+                    //MemoryStream memoryStream = new MemoryStream();
+
+                    //using (Stream responseStream = response.ResponseStream)
+                    //{
+                    //    responseStream.CopyTo(memoryStream);
+                    //    memoryStream.Close();
+                    //}
+
+
+
+                    msg = "File downloaded locally on the server successfully.";
+                }
+                catch (AmazonS3Exception ex)
+                {
+                    msg = "S3 Error:: " + ex.Message.ToString() + "";
+                    //Console.WriteLine("S3 Error: {ex.Message}");
+                }
+                catch (WebException ex)
+                {
+                    msg = "Web Error:: " + ex.Message.ToString() + "";
+                    // Console.WriteLine("Web Error: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    msg = "Error:: " + ex.Message.ToString() + "";
+                    //Console.WriteLine("Error: {ex.Message}");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                msg = "Error:: " + ex.Message.ToString() + " ";
+                //throw ex;
+            }
+        }
+        if (msg == "File downloaded locally on the server successfully.")
+        {
+            string sUrls = HttpContext.Current.Request.Url.Host.ToLower();
+            string baseUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/');
+            //string sUrl = "http://localhost:58964";
+
+            string ex = Path.GetExtension(fileName);
+            if ((ex == ".png" || ex == ".jpg" || ex == ".jpeg" || ex == ".Webp"))
+            {
+                //msg = "<img style='width:30px;height:30px;' class='phimg' onclick='imgPOP(this)' src='" + baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName + "'>";
+                msg = "<img style='width:30px;height:30px;' class='picc'  src=" + baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName + " />";
+            }
+            else if ((ex == ".pdf"))
+            {
+                //msg = "<a class='fa fa-file' style='width:50px;height:50px;' target=_blank' href=" + baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName + "></a>";
+
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/pdf.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else if ((ex == ".xls" || ex == ".xlsx"))
+            {
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/Excel.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else if ((ex == ".doc" || ex == ".docx"))
+            {
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/doc.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else if ((ex == ".txt"))
+            {
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/txt.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else
+            {
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+
+                msg = "<a  target=_blank' href=" + linkurl + ">link</a>";
+            }
+
+            //msg = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+        }
+
+        return msg;
 
     }
 
 
-    public class lisdr
+
+    public class Listdrdt
     {
+
         public DataTable GetCustomFieldsDetailsdetails(string div_code)
         {
 
@@ -1596,7 +1406,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         public int RecordAdd11(string DR_Name, string curentCompitat, string sf_code, string Mobile_No, string retail_code, string advance_amount, string DR_Spec, string dr_spec_name, string sales_Tax, string Tinno, string DR_Terr, string credit_days, string DR_Class, string dr_class_name, string ad, string DR_Address1, string DR_Address2, string Div_code, string Milk_pot, string Uom, string Uom_Name, string re_type, string outstanding, string credit_limit, string Cus_Alt, string drcategory, string drcategoryName, string erbCode, string latitude, string longitude, string DFDairyMP, string MonthlyAI, string MCCNFPM, string MCCMilkColDaily, string FrequencyOfVisit, string Breed, string curentCom, string txtmail)
         {
-            //int iReturn = -1;
+            int iReturn = -1;
             //int jReturn = -1;
             //int Listed_DR_Code;
             if (!sRecordExist(retail_code, DR_Name, Div_code))
@@ -2050,7 +1860,7 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
                     using (var cmd = con.CreateCommand())
                     {
                         cmd.CommandText = strQry;
-                        cmd.Parameters.AddWithValue("@Division_Code", Convert.ToInt32(div_code));
+                        cmd.Parameters.AddWithValue("@Division_Code", Convert.ToInt32(divcode));
                         cmd.Parameters.AddWithValue("@ModuleId", Convert.ToInt32(ModeleId));
                         cmd.CommandType = CommandType.Text;
                         SqlDataAdapter dap = new SqlDataAdapter();
@@ -2070,10 +1880,9 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
         }
 
-
         public int Recordupdate_detail1(string Dr_Code, string curentCompitat, string DR_Name, string sf_code, string Mobile_No, string retail_code, string advance_amount, string DR_Spec, string dr_spec_name, string sales_Tax, string Tinno, string DR_Terr, string credit_days, string DR_Class, string dr_class_name, string ad, string DR_Address1, string DR_Address2, string div_code, string Milk_Potential, string UOM, string UOM_Name, string Retailer_Type, string outstanding, string credit_limit, string Cus_alt, string catgoryCode, string catgoryName, string erbCode, string latitude, string longitude, string DFDairyMP, string MonthlyAI, string MCCNFPM, string MCCMilkColDaily, string FrequencyOfVisit, string Breed, string curentCom, string ukey, string txtmail)
         {
-            //int iReturn = -1;
+            int iReturn = -1;
             DB_EReporting db = new DB_EReporting();
             if (!sRecordExist1(erbCode, Dr_Code, div_code))
             {
@@ -2157,51 +1966,49 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
                     SqlParameter[] parameters = new SqlParameter[]
                     {
-                        new SqlParameter("@UKey", Convert.ToString(ukey)),
-                        new SqlParameter("@DR_Name", Convert.ToString(DR_Name)),
-                        new SqlParameter("@DFDairyMP", Convert.ToString(DFDairyMP)),
-                        new SqlParameter("@MonthlyAI", Convert.ToString(MonthlyAI)),
-                        new SqlParameter("@curentCompitat", Convert.ToString(curentCompitat)),
-                        new SqlParameter("@MCCNFPM", Convert.ToString(MCCNFPM)),
-                        new SqlParameter("@MCCMilkColDaily", Convert.ToString(MCCMilkColDaily)),
-                        new SqlParameter("@Dr_Code", Convert.ToString(Dr_Code)),
-                        new SqlParameter("@DR_Spec", Convert.ToString(DR_Spec)),
-                        new SqlParameter("@Milk_Potential", Convert.ToString(Milk_Potential)),
-                        new SqlParameter("@curentCom", Convert.ToString(curentCom)),
-                        new SqlParameter("@FrequencyOfVisit", Convert.ToString(FrequencyOfVisit)),
-                        new SqlParameter("@DR_Terr", Convert.ToString(DR_Terr)),
-                        new SqlParameter("@DR_Class", Convert.ToString(DR_Class)),
-                        new SqlParameter("@erbCode", Convert.ToString(erbCode)),
-                        new SqlParameter("@terr_code", Convert.ToString(terr_code)),
-                        new SqlParameter("@distname", Convert.ToString(distname)),
-                        new SqlParameter("@Mobile_No", Convert.ToString(Mobile_No)),
-                        new SqlParameter("@advance_amount", Convert.ToString(advance_amount)),
-                        new SqlParameter("@dr_spec_name", Convert.ToString(dr_spec_name)),
-                        new SqlParameter("@sales_Tax", Convert.ToString(sales_Tax)),
-                        new SqlParameter("@Tinno", Convert.ToString(Tinno)),
-                        new SqlParameter("@credit_days", Convert.ToString(credit_days)),
-                        new SqlParameter("@dr_class_name", Convert.ToString(dr_class_name)),
-                        new SqlParameter("@ad", Convert.ToString(ad)),
-                        new SqlParameter("@DR_Address1", Convert.ToString(DR_Address1)),
-                        new SqlParameter("@DR_Address2", Convert.ToString(DR_Address2)),
-                        new SqlParameter("@Uom", Convert.ToString(UOM)),
-                        new SqlParameter("@Uom_Name", Convert.ToString(UOM_Name)),
-                        new SqlParameter("@Retailer_Type", Convert.ToString(Retailer_Type)),
-                        new SqlParameter("@outstanding", Convert.ToString(outstanding)),
-                        new SqlParameter("@credit_limit", Convert.ToString(credit_limit)),
-                        new SqlParameter("@Cus_Alt", Convert.ToString(Cus_alt)),
-                        new SqlParameter("@catgoryCode", Convert.ToString(catgoryCode)),
-                        new SqlParameter("@catgoryName", Convert.ToString(catgoryName)),
-                        new SqlParameter("@latitude", Convert.ToString(latitude)),
-                        new SqlParameter("@longitude", Convert.ToString(longitude)),
-                        new SqlParameter("@div_code", Convert.ToString(Division_Code)),
-                        new SqlParameter("@Breed", Convert.ToString(Breed)),
-                        new SqlParameter("@txtmail", Convert.ToString(txtmail))
+                    new SqlParameter("@UKey", Convert.ToString(ukey)),
+                    new SqlParameter("@DR_Name", Convert.ToString(DR_Name)),
+                    new SqlParameter("@DFDairyMP", Convert.ToString(DFDairyMP)),
+                    new SqlParameter("@MonthlyAI", Convert.ToString(MonthlyAI)),
+                    new SqlParameter("@curentCompitat", Convert.ToString(curentCompitat)),
+                    new SqlParameter("@MCCNFPM", Convert.ToString(MCCNFPM)),
+                    new SqlParameter("@MCCMilkColDaily", Convert.ToString(MCCMilkColDaily)),
+                    new SqlParameter("@Dr_Code", Convert.ToString(Dr_Code)),
+                    new SqlParameter("@DR_Spec", Convert.ToString(DR_Spec)),
+                    new SqlParameter("@Milk_Potential", Convert.ToString(Milk_Potential)),
+                    new SqlParameter("@curentCom", Convert.ToString(curentCom)),
+                    new SqlParameter("@FrequencyOfVisit", Convert.ToString(FrequencyOfVisit)),
+                    new SqlParameter("@DR_Terr", Convert.ToString(DR_Terr)),
+                    new SqlParameter("@DR_Class", Convert.ToString(DR_Class)),
+                    new SqlParameter("@erbCode", Convert.ToString(erbCode)),
+                    new SqlParameter("@terr_code", Convert.ToString(terr_code)),
+                    new SqlParameter("@distname", Convert.ToString(distname)),
+                    new SqlParameter("@Mobile_No", Convert.ToString(Mobile_No)),
+                    new SqlParameter("@advance_amount", Convert.ToString(advance_amount)),
+                    new SqlParameter("@dr_spec_name", Convert.ToString(dr_spec_name)),
+                    new SqlParameter("@sales_Tax", Convert.ToString(sales_Tax)),
+                    new SqlParameter("@Tinno", Convert.ToString(Tinno)),
+                    new SqlParameter("@credit_days", Convert.ToString(credit_days)),
+                    new SqlParameter("@dr_class_name", Convert.ToString(dr_class_name)),
+                    new SqlParameter("@ad", Convert.ToString(ad)),
+                    new SqlParameter("@DR_Address1", Convert.ToString(DR_Address1)),
+                    new SqlParameter("@DR_Address2", Convert.ToString(DR_Address2)),
+                    new SqlParameter("@Uom", Convert.ToString(UOM)),
+                    new SqlParameter("@Uom_Name", Convert.ToString(UOM_Name)),
+                    new SqlParameter("@Retailer_Type", Convert.ToString(Retailer_Type)),
+                    new SqlParameter("@outstanding", Convert.ToString(outstanding)),
+                    new SqlParameter("@credit_limit", Convert.ToString(credit_limit)),
+                    new SqlParameter("@Cus_Alt", Convert.ToString(Cus_alt)),
+                    new SqlParameter("@catgoryCode", Convert.ToString(catgoryCode)),
+                    new SqlParameter("@catgoryName", Convert.ToString(catgoryName)),
+                    new SqlParameter("@latitude", Convert.ToString(latitude)),
+                    new SqlParameter("@longitude", Convert.ToString(longitude)),
+                    new SqlParameter("@div_code", Convert.ToString(Division_Code)),
+                    new SqlParameter("@Breed", Convert.ToString(Breed)),
+                    new SqlParameter("@txtmail", Convert.ToString(txtmail))
                     };
 
                     iReturn = db.Exec_QueryWithParamNew("Update_RetailerDetails", CommandType.StoredProcedure, parameters);
-
-
                 }
                 else
                 {
@@ -2220,7 +2027,9 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
             int iReturn = -1;
             DB_EReporting db = new DB_EReporting();
 
-            strQry = "SELECT ListedDrCode FROM Mas_ListedDr WHERE  ListedDrCode  =" + Dr_Code + " AND Division_Code='" + div_code + "' AND  (ListedDr_Active_Flag=0 or ListedDr_Active_Flag=2) ";
+            //strQry = "SELECT ListedDrCode FROM Mas_ListedDr WHERE  ListedDrCode=" + Dr_Code + " AND Division_Code='" + div_code + "' AND  (ListedDr_Active_Flag=0 or ListedDr_Active_Flag=2) ";
+
+            strQry = "SELECT ListedDrCode FROM Mas_ListedDr WHERE  ListedDrCode=" + retail_code + " AND Division_Code='" + div_code + "' AND  (ListedDr_Active_Flag=0 or ListedDr_Active_Flag=2) ";
 
             DataSet ds = db.Exec_DataSet(strQry);
 
@@ -2292,6 +2101,9 @@ public partial class MasterFiles_MR_ListedDoctor_ListedDr_DetailAdd_Custom : Sys
 
                     if ((credit_limit == null || credit_limit == ""))
                     { credit_limit = "0"; }
+
+                    if ((Retailer_Type == null || Retailer_Type == ""))
+                    { Retailer_Type = "0"; }
 
 
                     SqlParameter[] parameters = new SqlParameter[]

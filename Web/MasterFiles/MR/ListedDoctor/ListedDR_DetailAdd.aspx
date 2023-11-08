@@ -81,17 +81,17 @@
     <script type="text/javascript" src="../../../JsFiles/CommonValidation.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
- $('#example-multiple-selected').hide()
+            $('#example-multiple-selected').hide()
             $('#<%=lblDMP.ClientID%>').hide();
             $('#<%=txtDMP.ClientID%>').hide()
             $('#<%=lblCC.ClientID%>').hide();
             $('#<%=ddlCC.ClientID%>').hide()
             $('#<%=lblmonA.ClientID%>').hide()
-            $('#<%=txtmonA.ClientID%>').hide()  
+            $('#<%=txtmonA.ClientID%>').hide()
             $('#<%=lblMCL.ClientID%>').hide()
             $('#<%=txtMCL.ClientID%>').hide()
             $('#<%=lblMFPM.ClientID%>').hide()
-            $('#<%=txtMFPM.ClientID%>').hide()            
+            $('#<%=txtMFPM.ClientID%>').hide()
             $('#<%=lblfzy.ClientID%>').hide()
             $('#<%=ddlfzy.ClientID%>').hide()
             $('#<%=Label4.ClientID%>').hide()
@@ -120,16 +120,18 @@
                     }
                 }
             });
+
             $("input:text").on("keypress", function (e) {
                 if (e.which === 32 && !this.value.length)
                     e.preventDefault();
             });
+
             $('#<%=btnSave.ClientID%>').click(function () {
-			  if ($('#<%=Txt_id.ClientID%>').val() == "") { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); return false; }
+                if ($('#<%=Txt_id.ClientID%>').val() == "") { alert("Enter Retailer Code."); $('#<%=Txt_id.ClientID%>').focus(); return false; }
                 if ($('#<%=txtName.ClientID%>').val() == "") { alert("Enter Retailer Name."); $('#<%=txtName.ClientID%>').focus(); return false; }
-               
-               
-                
+
+
+
                 var spec = $('#<%=ddlSpec.ClientID%> :selected').text();
                 if (spec == "---Select---") { alert("Select Channel."); $('#<%=ddlSpec.ClientID%>').focus(); return false; }
 
@@ -143,35 +145,35 @@
                // if (categ == "---Select---") { alert("Select Category..!"); $('#<%=DDL_category.ClientID%>').focus(); return false; }
 
 
-             
-				 if ($('#<%=txtAddress.ClientID%>').val() == "") { alert("Enter Address."); $('#<%=txtAddress.ClientID%>').focus(); return false; }
 
-   var sbreed = '';
+                if ($('#<%=txtAddress.ClientID%>').val() == "") { alert("Enter Address."); $('#<%=txtAddress.ClientID%>').focus(); return false; }
+
+                var sbreed = '';
                 $('#example-multiple-selected  > option:selected').each(function () {
-                    sbreed += $(this).text() + ',';                
+                    sbreed += $(this).text() + ',';
                 });
                 $('#<%=hdnbreedname.ClientID%>').val(sbreed)
 
             });
-				
-			
+
+
             $('.numberVal').keypress(function (event) {
-			
+
                 return isNumber(event, this)
             });
-			function isNumber(evt, element) {
+            function isNumber(evt, element) {
 
                 var charCode = (evt.which) ? evt.which : event.keyCode
 
                 if (
-                        (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // �.� CHECK DOT, AND ONLY ONE.
-            (charCode < 48 || charCode > 57))
+                    (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // �.� CHECK DOT, AND ONLY ONE.
+                    (charCode < 48 || charCode > 57))
                     return false;
 
                 return true;
             }
 
-  if ($('#<%=divcode.ClientID%>').val() == 70) {
+            if ($('#<%=divcode.ClientID%>').val() == 70) {
                 $.ajax({
                     type: "Post",
                     contentType: "application/json; charset=utf-8",
@@ -195,7 +197,7 @@
                                 selectAll: true
                             }).multiselect('reload');
                             //$('.ms-options ul').css('column-count', '3');
-                        }                       
+                        }
                     },
                     error: function (result) {
                         alert(JSON.stringify(result));
@@ -213,31 +215,31 @@
                 $('#<%=lblQual.ClientID%>').text('*Customer Code')
                 $('#<%=lblName.ClientID%>').text('*Name Of Customer')
                 $('#<%=lblSpec.ClientID%>').text('*Category')
-                 $('#<%=Lab_Type.ClientID%>').text('Customer Type')
-                $('#<%=TinNO.ClientID%>').hide()            
+                $('#<%=Lab_Type.ClientID%>').text('Customer Type')
+                $('#<%=TinNO.ClientID%>').hide()
                 $('#<%=lblCC.ClientID%>').show();
                 $('#<%=ddlCC.ClientID%>').show()
                 $('#<%=lblfzy.ClientID%>').show()
                 $('#<%=ddlfzy.ClientID%>').show()
                 $('#<%=lblCatg.ClientID%>').text('*Breed')
-              // $('#<%=lblCatg.ClientID%>').hide()
-               // $('#example-multiple-selected').hide()
+                // $('#<%=lblCatg.ClientID%>').hide()
+                // $('#example-multiple-selected').hide()
                 $('#<%=Label4.ClientID%>').text('No of Animals')
                 if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'AIT') {
                     $('#<%=lblmonA.ClientID%>').show()
                     $('#<%=txtmonA.ClientID%>').show()
-                  //  $('#<%=lblCatg.ClientID%>').text('*Breed')
-                 //   $('#<%=lblCatg.ClientID%>').show()  
-                 //   $('#example-multiple-selected').show()
+                    //  $('#<%=lblCatg.ClientID%>').text('*Breed')
+                    //   $('#<%=lblCatg.ClientID%>').show()  
+                    //   $('#example-multiple-selected').show()
 
                 }
                 if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {
                     $('#<%=Label4.ClientID%>').show()
                     $('#<%=creditdays.ClientID%>').show()
                     $('#<%=lblDMP.ClientID%>').show()
-                    $('#<%=txtDMP.ClientID%>').show()   
-                   // $('#<%=lblCatg.ClientID%>').text('*Breed')
-                   // $('#<%=lblCatg.ClientID%>').show()
+                    $('#<%=txtDMP.ClientID%>').show()
+                    // $('#<%=lblCatg.ClientID%>').text('*Breed')
+                    // $('#<%=lblCatg.ClientID%>').show()
                     //$('#example-multiple-selected').show()
                 }
                 if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'MCC') {
@@ -245,34 +247,34 @@
                     $('#<%=txtMCL.ClientID%>').show()
                     $('#<%=lblMFPM.ClientID%>').show()
                     $('#<%=txtMFPM.ClientID%>').show()
-                   // $('#example-multiple-selected').hide()
+                    // $('#example-multiple-selected').hide()
                     $('#<%=creditdays.ClientID%>').hide()
                 }
-                $('#<%=ddlSpec.ClientID%>').on('change', function () {                
-                  if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {                 
-                    $('#<%=Label4.ClientID%>').show()
-                    $('#<%=creditdays.ClientID%>').show()
-                    $('#<%=lblDMP.ClientID%>').show()
-                    $('#<%=txtDMP.ClientID%>').show()
-                    $('#<%=lblMCL.ClientID%>').hide()
-                    $('#<%=txtMCL.ClientID%>').hide()
-                    $('#<%=lblMFPM.ClientID%>').hide()
-                    $('#<%=txtMFPM.ClientID%>').hide()
-                    $('#<%=lblmonA.ClientID%>').hide()
-                    $('#<%=txtmonA.ClientID%>').hide()
-                    $('#<%=lblCatg.ClientID%>').text('*Breed')
-                    $('#<%=lblCatg.ClientID%>').show()
-                   //   $('#example-multiple-selected').show()
+                $('#<%=ddlSpec.ClientID%>').on('change', function () {
+                    if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'DF') {
+                        $('#<%=Label4.ClientID%>').show()
+                        $('#<%=creditdays.ClientID%>').show()
+                        $('#<%=lblDMP.ClientID%>').show()
+                        $('#<%=txtDMP.ClientID%>').show()
+                        $('#<%=lblMCL.ClientID%>').hide()
+                        $('#<%=txtMCL.ClientID%>').hide()
+                        $('#<%=lblMFPM.ClientID%>').hide()
+                        $('#<%=txtMFPM.ClientID%>').hide()
+                        $('#<%=lblmonA.ClientID%>').hide()
+                        $('#<%=txtmonA.ClientID%>').hide()
+                        $('#<%=lblCatg.ClientID%>').text('*Breed')
+                        $('#<%=lblCatg.ClientID%>').show()
+                        //   $('#example-multiple-selected').show()
                   <%--  $('#<%=ddlCatg.ClientID%>').multiselect({
                         includeSelectAllOption: true
                     });--%>
 
-                  }
-                   else {
-                    $('#<%=Label4.ClientID%>').hide()
-                    $('#<%=creditdays.ClientID%>').hide()
-                    $('#<%=lblDMP.ClientID%>').hide();
-                    $('#<%=txtDMP.ClientID%>').hide()
+                    }
+                    else {
+                        $('#<%=Label4.ClientID%>').hide()
+                        $('#<%=creditdays.ClientID%>').hide()
+                        $('#<%=lblDMP.ClientID%>').hide();
+                        $('#<%=txtDMP.ClientID%>').hide()
                     }
                     if ($('#<%=ddlSpec.ClientID%> option:selected').text() == 'AIT') {
                         $('#<%=lblmonA.ClientID%>').show()
@@ -285,7 +287,7 @@
                         $('#<%=txtDMP.ClientID%>').hide()
                         $('#<%=Label4.ClientID%>').hide()
                         $('#<%=creditdays.ClientID%>').hide()
-                      //  $('#example-multiple-selected').hide()
+                        //  $('#example-multiple-selected').hide()
                     }
                     else {
                         $('#<%=lblmonA.ClientID%>').hide()
@@ -311,11 +313,11 @@
                         $('#<%=txtMFPM.ClientID%>').hide()
                     }
                 });
-              
+
             }
 
 
-        }); 
+        });
     </script>
 </head>
 <body>

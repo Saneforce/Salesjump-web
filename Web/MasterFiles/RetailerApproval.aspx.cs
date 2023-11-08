@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
-using System.Configuration;
 using Newtonsoft.Json;
 using Bus_EReport;
 using System.Web.Services;
@@ -14,20 +13,27 @@ using System.IO;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Data.SqlClient;
+using Amazon.S3;
+using Amazon.S3.Transfer;
+using Amazon.S3.Model;
+using System.Net;
+
 
 public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
 {
     #region "Declaration"
-    string div_code = string.Empty;
-    string sf_code = string.Empty;
+
+    public static string sf_code = string.Empty;
     string sf_type = string.Empty;
     DataSet dsSalesForce = null;
     DataSet dsDivision = null;
     DataSet dsTP = null;
-	public static DataTable dtt = null;
+    public static DataTable dtt = null;
+    public static string div_code = string.Empty;
     #endregion
 
-   
+
     protected override void OnPreInit(EventArgs e)
     {
         base.OnPreInit(e);
@@ -79,6 +85,55 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         public string longn { get; set; }
     }
 
+
+    [WebMethod]
+    public static string GetAdditionalRetailer(string divcode, string ModuleId, string ColumnName)
+    {
+
+        DataSet ds = new DataSet();
+        //AdminSetup Ad = new AdminSetup();
+
+        ds = GetAdditionalRetailers(divcode, ModuleId, ColumnName);
+        //ds = Ad.GetAdditionalRetailer(divcode, ModuleId);
+        return JsonConvert.SerializeObject(ds.Tables[0]);
+
+    }
+
+
+    public static DataSet GetAdditionalRetailers(string divcode, string ModuleId, string ColumnName)
+    {
+
+        DB_EReporting db_ER = new DB_EReporting();
+
+        DataSet dsAdmin = null;
+
+        string strQry = "EXEC [GetDataForDynamicFields] '" + divcode + "','" + ModuleId + "','" + ColumnName + "' ";
+
+        //strQry = "EXEC [GetDataForDynamicFields] '" + ModeleId + "' ,'" + divcode + "','" + ColumnName + "' ";
+
+        try
+        {
+            dsAdmin = db_ER.Exec_DataSet(strQry);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return dsAdmin;
+    }
+
+
+
+    [WebMethod]
+    public static string GetCustomFormsFieldsColumns(string divcode, string ModuleId, string Sf)
+    {
+        DataSet ds = new DataSet();
+        AdminSetup Ad = new AdminSetup();
+        ds = Ad.GetCustomFormsFieldsColumns(divcode, ModuleId, Sf);
+
+        return JsonConvert.SerializeObject(ds.Tables[0]);
+    }
+
     [WebMethod]
     public static List<newRetailer> getNewRetailer()
     {
@@ -103,20 +158,20 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
 
         if (SFCode.Contains("Admin") || SFCode.Contains("admin"))
         {
-            ds = ldr.GetNewRetailers(div_code, SFCode, "", dts.Year.ToString(),"3");
+            ds = ldr.GetNewRetailers(div_code, SFCode, "", dts.Year.ToString(), "3");
         }
         else
         {
-            ds = ldr.GetNewRetailers(div_code, SFCode, "", dts.Year.ToString(),"3");
+            ds = ldr.GetNewRetailers(div_code, SFCode, "", dts.Year.ToString(), "3");
         }
-		dtt = ds.Tables[0];
+        dtt = ds.Tables[0];
 
         foreach (DataRow row in ds.Tables[0].Rows)
         {
             newRetailer list = new newRetailer();
             list.cCode = row["ListedDrCode"].ToString();
             list.cName = row["ListedDr_Name"].ToString();
-			list.channel = row["channel"].ToString();										 
+            list.channel = row["channel"].ToString();
             list.code = row["code"].ToString();
             list.picture = row["Visit_Hours"].ToString();
             list.routeName = row["Territory_Name"].ToString();
@@ -137,8 +192,348 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         return Lists.ToList();
     }
 
+    [WebMethod]
+    public static string GetBindCustomFieldData(string listeddrcode, string columnName)
+    {
+        DataSet ds = get_RetailerCustomField(listeddrcode, columnName, div_code);
+
+        //DataSet ds = lst.get_RetailerCustomField(listeddrcode);
+        return JsonConvert.SerializeObject(ds.Tables[0]);
+    }
+
+    public static DataSet get_RetailerCustomField(string listeddrcode, string columnName, string divcode)
+    {
+        DB_EReporting db_ER = new DB_EReporting();
+
+        DataSet dsTerr = null;
+
+        string strQry = "EXEC [Get_Retailer_CustomFieldDetails] '" + listeddrcode + "','" + columnName + "','" + divcode + "'";
+
+        try
+        {
+            dsTerr = db_ER.Exec_DataSet(strQry);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return dsTerr;
+    }
+
+
+    [WebMethod]
+    public static string DisPlayCutomFields(string ModuleId)
+    {
+        DataTable ds = new DataTable();
+        //AdminSetup Ad = new AdminSetup();
+       
+        ds = getDCFields(div_code, ModuleId, sf_code);
+        //ds = Ad.GetCustomFormsFieldsColumns(divcode, ModuleId, Sf);
+
+        return JsonConvert.SerializeObject(ds);
+    }
+
+
+    public static DataTable getDCFields(string divcode, string ModuleId, string Sf_Code)
+    {
+        
+        DataTable dsAdmin = new DataTable();
+
+
+        if (divcode == null || divcode == "")
+        { divcode = "0"; }
+
+        if (ModuleId == null || ModuleId == "")
+        { ModuleId = "0"; }
+
+        if (Sf_Code == null || Sf_Code == "")
+        { Sf_Code = ""; }
+
+
+        string strQry = " SELECT *FROM DisplayFields  (NOLOCK) ";
+        strQry += " WHERE ModuleId=3 AND ActiveView=1 AND Division_Code=@Division_Code AND Sf_Code=@Sf_Code";
+
+        try
+        {
+            using (var con = new SqlConnection(Globals.ConnString))
+            {
+                using (var cmd = con.CreateCommand())
+                {
+                    cmd.CommandText = strQry;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@Division_Code", Convert.ToString(divcode));
+                    cmd.Parameters.AddWithValue("@Sf_Code", Convert.ToString(Sf_Code));
+                    SqlDataAdapter dap = new SqlDataAdapter();
+                    dap.SelectCommand = cmd;
+                    con.Open();
+                    dap.Fill(dsAdmin);
+                    con.Close();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+
+        }
+        return dsAdmin;
+
+
+    }
+
+    [WebMethod]
+    public static string UpdateCutomRetailerData(string columnName, string ActiveView)
+    {
+        string update = "";
+        update = Update_RetailerCustomField(columnName, ActiveView, div_code);
+
+        //DataSet ds = lst.get_RetailerCustomField(listeddrcode);
+        //return JsonConvert.SerializeObject(ds.Tables[0]);
+        return update;
+    }
+
+
+    public static string Update_RetailerCustomField(string columnName, string ActiveView, string DivCode)
+    {
+        string update = "";
+        string sql = @"UPDATE Trans_Custom_Fields_Details  SET ActiveView=@ActiveView WHERE Field_Name=@Field_Name AND Div_code=@Div_code";
+
+        using (var con = new SqlConnection(Global.ConnString))
+        {
+            con.Open();
+            using (var cmd = new SqlCommand(sql, con))
+            {
+                cmd.Parameters.AddWithValue("@ActiveView", ActiveView);
+                cmd.Parameters.AddWithValue("@Field_Name", columnName);
+                cmd.Parameters.AddWithValue("@Div_code", DivCode);
+                cmd.ExecuteNonQuery();
+                update = "Updated";
+            }
+        }
+
+        return update;
+    }
+
+
     [WebMethod(EnableSession = true)]
-    public static string UpdateApprove(string custCode,string erp, string lat, string longi)
+    public static string DownloadImageFromS3(string filename)
+    {
+        string msg = "";
+        try
+        {
+           
+            DataSet dsDivision = getStatePerDivision(div_code);
+            string Folder = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+
+
+            Folder = Folder.ToString().ToLower() + "_" + "Retailer";
+
+            string filepath = HttpContext.Current.Server.MapPath("~/" + Folder + "/");
+
+            //Create the Directory.
+            if (!Directory.Exists(filepath))
+            {
+                Directory.CreateDirectory(filepath);
+            }
+
+            string currentDirectory = HttpContext.Current.Server.MapPath("~");
+            string relativePath = Folder;
+
+            // Iterate through the static fields for image fields and retrieve/save them
+            msg = RetrieveAndSaveImage(currentDirectory, Folder, filename);
+
+
+        }
+        catch (Exception exception)
+        {
+            //Console.WriteLine(exception.Message, exception.InnerException);
+            msg = " " + exception.Message + " , " + exception.InnerException + " ";
+        }
+
+
+        return msg;
+
+    }
+
+
+
+    private static string RetrieveAndSaveImage(string currentDirectory, string Folder, string fileName)
+    {
+        string msg = "";
+        if (!string.IsNullOrWhiteSpace(fileName))
+        {
+            string localFilePath = Path.Combine(currentDirectory, Folder, fileName);
+
+
+            try
+            {
+                string accessKey = "AKIA5OS74MUCASG7HSCG", accessSecret = "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";
+                AmazonS3Client client = new AmazonS3Client(accessKey, accessSecret, Amazon.RegionEndpoint.APSouth1);
+
+                var transferUtility = new TransferUtility(client);
+                string bucketName = "happic";
+                string objectKey = Folder + "/" + fileName;
+                //string objectKey = Folder + "/" + objectKey;
+
+                string localFilePaths = currentDirectory + "\\" + Folder + "\\" + fileName + "";
+
+                //string localFilePaths = "http://fmcg.sanfmcg.com/MasterFiles/Reports/AudFiles/MR4126_1694754881446.mp3";                
+                try
+                {
+                    //transferUtility.Download(localFilePath, bucketName, fileName);
+
+
+                    GetObjectRequest request = new GetObjectRequest
+                    {
+                        BucketName = bucketName,
+                        Key = objectKey
+                    };
+
+                    GetObjectResponse response = client.GetObject(request);
+
+                    using (Stream responseStream = response.ResponseStream)
+                    {
+                        using (FileStream fileStream = File.Create(localFilePath))
+                        {
+                            responseStream.CopyTo(fileStream);
+                            fileStream.Close();
+                        }
+                    }
+
+
+                    //GetObjectResponse response = client.GetObject(bucketName, fileName);
+                    //MemoryStream memoryStream = new MemoryStream();
+
+                    //using (Stream responseStream = response.ResponseStream)
+                    //{
+                    //    responseStream.CopyTo(memoryStream);
+                    //    memoryStream.Close();
+                    //}
+
+
+
+                    msg = "File downloaded locally on the server successfully.";
+                }
+                catch (AmazonS3Exception ex)
+                {
+                    msg = "S3 Error:: " + ex.Message.ToString() + "";
+                    //Console.WriteLine("S3 Error: {ex.Message}");
+                }
+                catch (WebException ex)
+                {
+                    msg = "Web Error:: " + ex.Message.ToString() + "";
+                    // Console.WriteLine("Web Error: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    msg = "Error:: " + ex.Message.ToString() + "";
+                    //Console.WriteLine("Error: {ex.Message}");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                msg = "Error:: " + ex.Message.ToString() + " ";
+                //throw ex;
+            }
+        }
+        if (msg == "File downloaded locally on the server successfully.")
+        {
+            string sUrls = HttpContext.Current.Request.Url.Host.ToLower();
+            string baseUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/');
+            //string sUrl = "http://localhost:58964";
+
+            string ex = Path.GetExtension(fileName);
+            if ((ex == ".png" || ex == ".jpg" || ex == ".jpeg" || ex == ".Webp"))
+            {
+                //msg = "<img style='width:30px;height:30px;' class='phimg' onclick='imgPOP(this)' src='" + baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName + "'>";
+                msg = "<img style='width:30px;height:30px;' class='picc'  src=" + baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName + " />";
+            }
+            else if ((ex == ".pdf"))
+            {
+                //msg = "<a class='fa fa-file' style='width:50px;height:50px;' target=_blank' href=" + baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName + "></a>";
+
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/pdf.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else if ((ex == ".xls" || ex == ".xlsx"))
+            {
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/Excel.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else if ((ex == ".doc" || ex == ".docx"))
+            {
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/doc.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else if ((ex == ".txt"))
+            {
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/txt.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else
+            {
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+
+                msg = "<a  target=_blank' href=" + linkurl + ">link</a>";
+            }
+
+            //msg = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+        }
+
+        return msg;
+
+
+
+    }
+
+    public static DataSet getStatePerDivision(string div_code)
+    {
+        DataSet dsAdmin = new DataSet();
+
+        string strQry = "SELECT State_Code,Division_Name,Division_SName,Url_Short_Name  FROM Mas_Division ";
+        strQry += " Where Division_Code = @Division_Code  GROUP BY State_Code,Division_Name,Division_SName,Url_Short_Name ";
+
+        try
+        {
+            using (var con = new SqlConnection(Global.ConnString))
+            {
+                using (var cmd = con.CreateCommand())
+                {
+                    cmd.CommandText = strQry;
+                    cmd.Parameters.AddWithValue("@Division_Code", Convert.ToInt32(div_code));
+                    cmd.CommandType = CommandType.Text;
+                    SqlDataAdapter dap = new SqlDataAdapter();
+                    dap.SelectCommand = cmd;
+                    con.Open();
+                    dap.Fill(dsAdmin);
+                    con.Close();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+
+        }
+        return dsAdmin;
+    }
+
+    [WebMethod(EnableSession = true)]
+    public static string UpdateApprove(string custCode, string erp, string lat, string longi)
     {
         string div_code = "";
         try
@@ -157,11 +552,11 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         if (SFCode.Contains("Admin") || SFCode.Contains("admin"))
         {
 
-             ret = adm.Retailer_Appprove_Manager(SFCode, custCode, "1", "",0);
+            ret = adm.Retailer_Appprove_Manager(SFCode, custCode, "1", "", 0);
         }
         else
         {
-             ret = adm.Retailer_Appprove_Manager(SFCode, custCode, "1", "",0);
+            ret = adm.Retailer_Appprove_Manager(SFCode, custCode, "1", "", 0);
         }
         if (ret > 0)
         {
@@ -187,7 +582,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         string SFCode = HttpContext.Current.Session["sf_code"].ToString();
 
         ListedDR adm = new ListedDR();
-        int ret = adm.Retailer_Appprove_Manager(SFCode, custCode, "2", reasion,4);
+        int ret = adm.Retailer_Appprove_Manager(SFCode, custCode, "2", reasion, 4);
         if (ret > 0)
         {
             return "Retailer Rejected Successfully..!";
@@ -198,7 +593,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         }
     }
     [WebMethod(EnableSession = true)]
-	public static string updChannel(string custCode,string spcode,string spname)
+    public static string updChannel(string custCode, string spcode, string spname)
     {
         int ret = -1;
         try
@@ -232,18 +627,19 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
             div_code = HttpContext.Current.Session["Division_Code"].ToString();
         }
         string SFCode = HttpContext.Current.Session["sf_code"].ToString();
-        IList<Customer>  Data = JsonConvert.DeserializeObject<IList<Customer>>(sCus); ;
+        IList<Customer> Data = JsonConvert.DeserializeObject<IList<Customer>>(sCus); ;
         ListedDR adm = new ListedDR();
         int ret = -1;
         try
         {
             for (int il = 0; il < Data.Count; il++)
             {
-                ret = adm.updatelatlong( Data[il].erp, Data[il].lat, Data[il].longi, Data[il].custCode);
+                ret = adm.updatelatlong(Data[il].erp, Data[il].lat, Data[il].longi, Data[il].custCode);
             }
             return "Updated Successfully..!";
         }
-        catch {
+        catch
+        {
             return "Updated Failed..!";
         }
     }
@@ -291,8 +687,8 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         public string erp { get; set; }
         public string lat { get; set; }
         public string longi { get; set; }
-}
- protected void btnexl_Click(object sender, EventArgs e)
+    }
+    protected void btnexl_Click(object sender, EventArgs e)
     {
         DataTable dt = new DataTable();
         dt.Columns.Add("FieldForce Name", typeof(string));

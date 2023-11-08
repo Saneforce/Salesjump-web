@@ -225,9 +225,10 @@
                                 </div>
                                  <div class="col-md-3 sub-header" style="float: right;width:10%;">                                  
                                     <span style="float: right;border-width: 0px; position: absolute; top: 5px;height: 40px; width: 40px;">
-                                        <a href="ListedDoctor/ListedDr_DetailAdd_Custom.aspx" class="btn btn-primary btn-update" id="newsf">
+                                        <button type="button" class="btn btn-primary btn-update" id="newsf">Add Retailer</button>
+                                        <%--<a href="#" onclick="onclick()" class="btn btn-primary btn-update" id="newsf">
                                             Add Retailer
-                                        </a>
+                                        </a>--%>
                                     </span>
                                 </div>
                             </div>
@@ -311,14 +312,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="myModal" class="modal" style="opacity: 1;">
-                            <!-- The Close Button -->
-                            <span class="close" style="opacity: 1;">&times;</span>
-                            <!-- Modal Content (The Image) -->
-                            <img alt="" class="modal-content" id="img01" />
-                            <!-- Modal Caption (Image Text) -->
-                            <div id="caption"></div>
+                        
+                        <div style="position:fixed;left:51%;top:50%;width:70%;height:70%;transform: translate(-50%, -50%);border-radius: 15px;display:none" id="cphoto1">
+                            <span style="position: absolute;padding: 5px;cursor: default;background: #dcd6d652;border-radius: 50%;width: 20px;height: 20px;line-height: 6px;text-align: center;border: solid 1px gray;top: 6px;right: 6px;" onclick="closew()">x</span>
+                            <img alt="img" style="width:100%;height:100%;border-radius: 15px;" id="photo1" />
                         </div>
+                        
+                        <%--<div id="myModal" class="modal" style="z-index: 10000000; overflow-y: auto; background-color: rgb(1 3 18 / 12%); opacity: 1;" aria-hidden="false">
+                            <div class="modal-content" style="margin-top: 80px">
+                                <span class="close" style="opacity: 1; color: red;">&times;</span>
+                                <img alt="" id="img01" style="width: 100%; height: 450px;">
+                            </div>
+                            <div id="caption"></div>
+                        </div>--%>
+                       
                         <div class="modal fade" id="CustomFieldModal" style="z-index: 10000000; background: transparent;" tabindex="0" aria-hidden="true">
                             <div class="modal-dialog" role="document" style="width: 30% !important">
                                 <div class="modal-content">
@@ -372,6 +379,11 @@
                     }
                 );
 
+                $('#newsf').on('click', function () {
+                    window.location.href = "ListedDoctor/ListedDr_DetailAdd_Custom.aspx";
+                })
+
+
                 function loadPgNos() {
                     prepg = parseInt($(".paginate_button.previous>a").attr("data-dt-idx"));
                     Nxtpg = parseInt($(".paginate_button.next>a").attr("data-dt-idx"));
@@ -419,98 +431,93 @@
 
                             if (DisPlayF.length > 0) {
                                 $td = "";
-                                if (DisPlayF.length > 0) {
-                                    for (var $k = 0; $k < DisPlayF.length; $k++) {
-                                        $fldnm = DisPlayF[$k].DisPlayName;
-                                        $fldnc = DisPlayF[$k].ColumnName;  
 
-                                        $('#OrderList thead>tr').each(function () {
-                                            $('th', this).each(function () {
-                                                var ortblhn = $(this).text();
-                                                if ($fldnm == ortblhn) {
+                                for (var $k = 0; $k < DisPlayF.length; $k++) {
+                                    $fldnm = DisPlayF[$k].DisPlayName;
+                                    $fldnc = DisPlayF[$k].ColumnName;
 
-                                                    fillAdditionalRetailer($fldnc);
+                                    $('#OrderList thead>tr').each(function () {
+                                        $('th', this).each(function () {
+                                            var ortblhn = $(this).text();
+                                            if ($fldnm == ortblhn) {
 
-                                                    console.log(ARetailer);
-                                                    let CustItem = ARetailer.filter(function (a) { return Orders[$i].ListedDrCode == a.Retail_code });
-                                                    console.log(CustItem);
-                                                    if (CustItem.length > 0) {
-                                                        var $val = CustItem[0][$fldnc];
-                                                        console.log($val);
-                                                        if (($val == null || $val == '' || $val == "")) {
-                                                            $val = "";
+                                                fillAdditionalRetailer($fldnc);
 
-                                                            $td += "<td></td>";
-                                                            if (Orders[$i].Profilepic == "") {
-                                                                tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
-                                                                $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
-                                                            }
-                                                            else {
-                                                                tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
-                                                                $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
-                                                            }
-                                                        }                                                       
+                                                //console.log(ARetailer);
+                                                let CustItem = ARetailer.filter(function (a) { return Orders[$i].ListedDrCode == a.Retail_code });
+                                                //console.log(CustItem);
+                                                if (CustItem.length > 0) {
+                                                    var $val = CustItem[0][$fldnc];
+                                                    //console.log($val);
+                                                    if (($val == null || $val == '' || $val == "")) {
+                                                        $val = "";
+
+                                                        $td += "<td></td>";
+                                                        if (Orders[$i].Profilepic == "") {
+                                                            tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
+                                                            $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
+                                                        }
                                                         else {
-                                                            //alert($val);
-                                                            //if (($val.includes(".xlsx") || $val.includes(".xlx") || $val.includes(".doc"))) {
-                                                            //    alert('files');
-                                                            //    DownloadFiels($val);
-                                                            //    //alert('doc');
-                                                            //}
-                                                            //else if (($val.includes(".jpg") || $val.includes(".jpeg") || $val.includes(".png"))) {
-                                                            //    console.log($val);
-                                                            //    DownloadFiels($val);
-                                                            //}
-                                                            //else if (($val.includes(".mp3") || $val.includes(".mp4") || $val.includes(".gif"))) {
-                                                            //    DownloadFiels($val);
-                                                            //}
-                                                            //var ext = $val.split('.').pop().toLowerCase();
-                                                            //if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg', 'mp3', 'mp4', 'xls', 'xlsx', 'doc', 'docx', 'pdf', 'zip']) == -1) {
-                                                            //    alert('invalid extension!');
-                                                            //}
-                                                            var ans = $val.includes('.') ? "true" : "false";
-                                                            if (ans == "true") {
-
-                                                                
-                                                                var me = getUrlVars($val);
-
-
-                                                                //alert('file');
-                                                            }
-                                                            else {
-
-                                                                $td += "<td>" + $val + "</td>";
-                                                               // alert('text');
-                                                            }
-
-                                                           
-                                                            if (Orders[$i].Profilepic == "") {
-                                                                tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
-                                                                $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
-                                                            }
-                                                            else {
-                                                                tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
-                                                                $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
-                                                            }
+                                                            tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
+                                                            //$(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
+                                                            $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='picc'  src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
                                                         }
                                                     }
+                                                    else {
+                                                        
+                                                        var ans = $val.includes('.') ? "true" : "false";
+                                                        if (ans == "true") {
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                contentType: "application/json; charset=utf-8",
+                                                                async: false,
+                                                                url: "Retailer_Details_New.aspx/DownloadImageFromS3",
+                                                                data: "{'filename':'" + $val + "'}",
+                                                                dataType: "json",
+                                                                success: function (msg) {
+                                                                    //console.log(msg);
+                                                                    //$td += "<td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + msg.d + "></td>";
 
+                                                                    $td += "<td>" + msg.d + "</td>";
+                                                                }
+                                                            });
+                                                        }
+                                                        else {
+
+                                                            $td += "<td>" + $val + "</td>";
+                                                            // alert('text');
+                                                        }
+
+                                                        if (Orders[$i].Profilepic == "") {
+                                                            tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
+                                                            $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
+                                                        }
+                                                        else {
+                                                            tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
+                                                            
+                                                            //$(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
+                                                            $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='picc' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>" + $td + "");
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                            else {
+
+                                                if (Orders[$i].Profilepic == "") {
+                                                    tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
+                                                    $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
                                                 }
                                                 else {
-
-                                                    if (Orders[$i].Profilepic == "") {
-                                                        tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
-                                                        $(tr).html("<td>" + ($i + 1) + "</td><td>" + Orders[$i].Profilepic + "</td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
-                                                    }
-                                                    else {
-                                                        tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
-                                                        $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
-                                                    }
+                                                    tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
+                                                    //$(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
+                                                    $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='picc' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
                                                 }
-                                            });
+                                            }
                                         });
-                                    }
+                                    });
                                 }
+
                             }
                             else {
 
@@ -520,7 +527,8 @@
                                 }
                                 else {
                                     tr = $("<tr rname='" + Orders[$i].ListedDr_Name + "' rocode='" + Orders[$i].ListedDrCode + "'></tr>");
-                                    $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
+                                    //$(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='phimg' onclick='imgPOP(this)' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
+                                    $(tr).html("<td>" + ($i + 1) + "</td><td><img width=30 height=30 class='picc' src=" + Orders[$i].Profilepic + "></td><td>" + Orders[$i].ListedDrCode + "</td><td>" + Orders[$i].ListedDr_Name + "</td><td>" + Orders[$i].Territory_Name + "</td><td>" + Orders[$i].ListedDr_Mobile + "</td><td class='roedit'><a href='#'>Edit</a></td><td class='rodeact'><a href='#'>" + Orders[$i].Status + "</a></td>");
                                 }
                             }
 
@@ -559,7 +567,7 @@
                     ReloadTable();
                 });
 
-                function getUrlVars($val) {                           
+                function getUrlVars($val) {          
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
@@ -573,6 +581,12 @@
                     });
                     return vars;
                 }
+
+                $('a').bind('click', function (e) {
+                    var url = $(this).attr('href');
+                    $('div#container').load(url); // load the html response into a DOM element
+                    e.preventDefault(); // stop the browser from following the link
+                });
 
                 function fillstate() {
                     $.ajax({
@@ -676,7 +690,7 @@
                         contentType: "application/json; charset=utf-8",
                         async: false,
                         url: "Retailer_Details_New.aspx/GetAdditionalRetailer",
-                        data: "{'ModuleId':'3','divcode':'<%=Session["div_code"]%>','ColumnName':'" + ColumnName + "'}",
+                        data: "{'divcode':'<%=Session["div_code"]%>','ModuleId':'3','ColumnName':'" + ColumnName + "'}",
                         dataType: "json",
                         success: function (data) {
                             ARetailer = JSON.parse(data.d) || [];
@@ -684,8 +698,6 @@
                         }
                     });
                 }
-
-
 
                 function DownloadFiels(fileName) {
                     $.ajax({
@@ -702,8 +714,6 @@
                         }
                     });
                 }
-
-
 
                 $(document).ready(function () {
                     
@@ -847,10 +857,10 @@
                // Get the <span> element that closes the modal
                 var span = document.getElementsByClassName("close")[0];
 
-              // When the user clicks on <span> (x), close the modal
-                span.onclick = function () {
-                    modal.style.display = "none";
-                }
+                // When the user clicks on <span> (x), close the modal
+                //span.onclick = function () {
+                //    modal.style.display = "none";
+                //}
 
                 function loadDisPlayCustomFields() {
                     var ModuleId = "3";                    
@@ -1031,11 +1041,8 @@
                                             $tctd += "<th style='text-align:left; color: #fff'>" + cbval + "</th>";
                                         }
                                     }
-
                                 });
-
                             });
-
                         }
                     }
 
@@ -1043,7 +1050,7 @@
                     //console.log($tctd);
                     $('#OrderList thead > tr').append($tctd);
 
-                    //ReloadTable();
+                    ReloadTable();
 
                 }
 
@@ -1091,6 +1098,29 @@
                             alert(JSON.stringify(data.d));
                         }
                     });
+                }
+
+                $(document).on('click', '.picc', function () {
+                    //alert('hi');
+                    var photo = $(this).attr("src");
+                    $('#photo1').attr("src", $(this).attr("src"));
+                    $('#cphoto1').css("display", 'block');
+                    // $(this).append('<div style="width: 100%" ><img src="' + photo + '"/></div>'
+                });
+
+
+                //$('.picc').click(function () {
+                //    alert('hi');
+                //    var photo = $(this).attr("src");
+                //    $('#photo1').attr("src", $(this).attr("src"));
+                //    $('#cphoto1').css("display", 'block');
+                //    // $(this).append('<div style="width: 100%" ><img src="' + photo + '"/></div>'
+
+                //});
+
+
+                function closew() {
+                    $('#cphoto1').css("display", 'none');
                 }
 
             </script>

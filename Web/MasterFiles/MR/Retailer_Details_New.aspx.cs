@@ -9,11 +9,11 @@ using DBase_EReport;
 using System.Web;
 using System.Data.SqlClient;
 
-using Amazon;
-using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Transfer;
 using Amazon.S3.Model;
+using System.Net;
+using System.Reflection;
 
 public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 {
@@ -45,7 +45,8 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        sUSR = Request.Url.Host;
+        sUSR = Request.Url.Host.ToLower().Replace("www.", "").Replace(".sanfmcg.com", "").Replace(".salesjump.in", "").ToLower();
+        
         sf_type = Session["sf_type"].ToString();
         if (sf_type == "4")
         {
@@ -383,7 +384,9 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
     {
         string strQry = string.Empty;
         DataTable dt = null;
-        strQry = "exec get_SF_Retailer '" + sf + "','" + route + "','http://" + sUSR + "'";
+        string baseUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/');
+        //strQry = "exec get_SF_Retailer '" + sf + "','" + route + "','http://" + sUSR + "'";
+        strQry = "exec get_SF_Retailer '" + sf + "','" + route + "','" + baseUrl + "'";
         dt = execQuery(strQry);
         return JsonConvert.SerializeObject(dt);
     }
@@ -452,10 +455,13 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
         DataSet ds = new DataSet();
         //AdminSetup Ad = new AdminSetup();
         rdloc sfd = new rdloc();
-        ds = sfd.GetAdditionalRetailer(ModuleId, divcode, ColumnName);
+        ds = sfd.GetAdditionalRetailer(divcode, ModuleId, ColumnName);
         //ds = Ad.GetAdditionalRetailer(divcode, ModuleId);
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
+
+
+
 
     public static DataTable execQuery(string strQry)
     {
@@ -482,12 +488,12 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
             rdloc ld = new rdloc();
 
             DataSet dsDivision = ld.getStatePerDivision(divCode);
-            string urlshotName = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
+            string Folder = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
 
 
-            string directoryPath = urlshotName.ToString().ToLower() + "_" + "Retailer";
+            Folder = Folder.ToString().ToLower() + "_" + "Retailer";
 
-            string filepath = HttpContext.Current.Server.MapPath("~/" + directoryPath + "/");
+            string filepath = HttpContext.Current.Server.MapPath("~/" + Folder + "/");
 
             //Create the Directory.
             if (!Directory.Exists(filepath))
@@ -496,43 +502,54 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
             }
 
             string currentDirectory = HttpContext.Current.Server.MapPath("~");
-            string relativePath = directoryPath;
+            string relativePath = Folder;
 
             // Iterate through the static fields for image fields and retrieve/save them
-            msg = RetrieveAndSaveImage(currentDirectory, relativePath, filename);
-        }
+            msg = RetrieveAndSaveImage(currentDirectory, Folder, filename);
 
+            
+        }
         catch (Exception exception)
         {
             //Console.WriteLine(exception.Message, exception.InnerException);
             msg = " " + exception.Message + " , " + exception.InnerException + " ";
         }
+               
 
         return msg;
 
     }
 
-    private static string RetrieveAndSaveImage(string objectKey, string currentDirectory, string relativePath)
+    private static string RetrieveAndSaveImage(string currentDirectory,string Folder, string fileName)
     {
         string msg = "";
-        if (!string.IsNullOrWhiteSpace(objectKey))
+        if (!string.IsNullOrWhiteSpace(fileName))
         {
-            string localFilePath = Path.Combine(currentDirectory, relativePath, objectKey);
+            string localFilePath = Path.Combine(currentDirectory, Folder, fileName);
+
 
             try
             {
-                var awsKey = "AKIA5OS74MUCASG7HSCG";
-                var awsSecretKey = "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";
-                var bucketRegion = RegionEndpoint.APSouth1;
-                string bucketName = "hoppic";
-                string prefix = "hoppic/" + relativePath + "/" + objectKey;
-                string fullObjectKey = "hoppic/" + relativePath + "/" + objectKey;
-                using (IAmazonS3 client = new AmazonS3Client(awsKey, awsSecretKey, bucketRegion))
+                string accessKey = "AKIA5OS74MUCASG7HSCG", accessSecret = "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";
+                AmazonS3Client client = new AmazonS3Client(accessKey, accessSecret, Amazon.RegionEndpoint.APSouth1);
+
+                var transferUtility = new TransferUtility(client);
+                string bucketName = "happic";
+                string objectKey =  Folder + "/" + fileName;
+                //string objectKey = Folder + "/" + objectKey;
+
+                string localFilePaths = currentDirectory + "\\" + Folder + "\\" + fileName + "";
+
+                //string localFilePaths = "http://fmcg.sanfmcg.com/MasterFiles/Reports/AudFiles/MR4126_1694754881446.mp3";                
+                try
                 {
+                    //transferUtility.Download(localFilePath, bucketName, fileName);
+
+
                     GetObjectRequest request = new GetObjectRequest
                     {
                         BucketName = bucketName,
-                        Key = fullObjectKey
+                        Key = objectKey
                     };
 
                     GetObjectResponse response = client.GetObject(request);
@@ -542,22 +559,108 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
                         using (FileStream fileStream = File.Create(localFilePath))
                         {
                             responseStream.CopyTo(fileStream);
+                           fileStream.Close();
                         }
                     }
+                    
 
-                    msg = " " + objectKey + " retrieved and saved locally.";
+                    //GetObjectResponse response = client.GetObject(bucketName, fileName);
+                    //MemoryStream memoryStream = new MemoryStream();
 
-                    // Console.WriteLine(" " + objectKey + " retrieved and saved locally.");
+                    //using (Stream responseStream = response.ResponseStream)
+                    //{
+                    //    responseStream.CopyTo(memoryStream);
+                    //    memoryStream.Close();
+                    //}
+                        
+                
+
+                    msg = "File downloaded locally on the server successfully.";
                 }
+                catch (AmazonS3Exception ex)
+                {
+                    msg = "S3 Error:: " + ex.Message.ToString() + "";
+                    //Console.WriteLine("S3 Error: {ex.Message}");
+                }
+                catch (WebException ex)
+                {
+                    msg = "Web Error:: " + ex.Message.ToString() + "";
+                    // Console.WriteLine("Web Error: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    msg = "Error:: " + ex.Message.ToString() + "";
+                    //Console.WriteLine("Error: {ex.Message}");
+                }
+
             }
-            catch (AmazonS3Exception ex)
+            catch (Exception ex)
             {
-                msg = " " + ex.Message.ToString() + " ";
+                msg = "Error:: " + ex.Message.ToString() + " ";
                 //throw ex;
             }
         }
+        if (msg == "File downloaded locally on the server successfully.")
+        {
+            string sUrls = HttpContext.Current.Request.Url.Host.ToLower();
+            string baseUrl = HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.ApplicationPath.TrimEnd('/');
+            //string sUrl = "http://localhost:58964";
+
+            string ex = Path.GetExtension(fileName);
+            if ((ex == ".png" || ex == ".jpg" || ex == ".jpeg" || ex == ".Webp"))
+            {
+                //msg = "<img style='width:30px;height:30px;' class='phimg' onclick='imgPOP(this)' src='" + baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName + "'>";
+                msg = "<img style='width:30px;height:30px;' class='picc'  src=" + baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName + " />";
+            }
+            else if ((ex == ".pdf"))
+            {
+                //msg = "<a class='fa fa-file' style='width:50px;height:50px;' target=_blank' href=" + baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName + "></a>";
+
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/pdf.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else if ((ex == ".xls" || ex == ".xlsx"))
+            {
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/Excel.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else if ((ex == ".doc" || ex == ".docx"))
+            {
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/doc.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else if ((ex == ".txt"))
+            {
+                string imgsrc = baseUrl.ToString().Trim() + "/FileImage/txt.jpg";
+
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+                msg = "<a target=_blank' href=" + linkurl + "><img style='width:30px;height:30px;' src='" + imgsrc + "'  /></a>";
+            }
+            else
+            {
+                string linkurl = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+
+
+                msg = "<a  target=_blank' href=" + linkurl + ">link</a>";
+            }
+
+            //msg = baseUrl.ToString().Trim() + "/" + Folder + "/" + fileName;
+        }
+
         return msg;
+
     }
+
 
     public class rdloc
     {
@@ -708,14 +811,16 @@ public partial class MasterFiles_MR_Retailer_Details_New : System.Web.UI.Page
             return dsAdmin;
         }
 
-        public DataSet GetAdditionalRetailer(string divcode, string ModeleId, string ColumnName)
+        public DataSet GetAdditionalRetailer(string divcode, string ModuleId, string ColumnName)
         {
 
             DB_EReporting db_ER = new DB_EReporting();
 
             DataSet dsAdmin = null;
 
-            strQry = "EXEC [GetDataForDynamicFields] '" + ModeleId + "' ,'" + divcode + "','" + ColumnName + "' ";
+            string strQry = "EXEC [GetDataForDynamicFields] '" + divcode + "','" + ModuleId + "','" + ColumnName + "' ";
+
+            //strQry = "EXEC [GetDataForDynamicFields] '" + ModeleId + "' ,'" + divcode + "','" + ColumnName + "' ";
 
             try
             {
