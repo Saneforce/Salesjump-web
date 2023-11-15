@@ -488,7 +488,7 @@
                                             <label>First Name</label><span style="color: red;">*</span>
                                         </td>
                                         <td>
-                                            <input class="form-control" type="text" id="sffirstname" oninput="validate(this)" autocomplete="off" required />
+                                            <input class="form-control" type="text" id="sffirstname" oninput="validate(this)" autocomplete="off" required="required" />
                                         </td>
                                         <td>
                                             <label>Last Name</label>
@@ -500,7 +500,7 @@
                                             <label>Employee ID</label><span class="sfempid" style="color: red;">*</span>
                                         </td>
                                         <td>
-                                            <input class="form-control" type="text" id="sfempid" oninput="validate(this)" autocomplete="off" required />
+                                            <input class="form-control" type="text" id="sfempid" oninput="validate(this)" autocomplete="off" required="required" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -521,7 +521,7 @@
                                             <label>Division</label><span style="color: red;">*</span>
                                         </td>
                                         <td>
-                                            <select id="division" class="form-control" data-dropup-auto="false" multiple>
+                                            <select id="division" class="form-control" data-dropup-auto="false" multiple="multiple">
                                             </select>
                                         </td>
                                     </tr>

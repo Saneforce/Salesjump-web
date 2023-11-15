@@ -618,11 +618,13 @@
                         clearFields();
                         $('#btnAddFgModule').removeAttr('disabled');
                         $('#ddlfgroup').removeAttr('disabled');
+
+                        $('#ddltypes').removeAttr('disabled');
                     }
 
                     $('#btnAddFgModule').removeAttr('disabled');
                     $('#ddlfgroup').removeAttr('disabled');
-
+                    $('#ddltypes').removeAttr('disabled');
                     //var sel = document.getElementById("ddlfgroup");
                     //var text = sel.options[sel.selectedIndex].text;
 
@@ -656,9 +658,7 @@
                     $('.fieldId').val("0");
                     $('#ddltypes').val('0');
                     
-                    FiledTypeOnChange();
-
-                    
+                    FiledTypeOnChange();                    
                 });
 
                 $('#svfieldgsm').on('click', function () {
@@ -1294,8 +1294,8 @@
                 }
 
                 function othersch() {
-                    $('#custt').val('');
-                    $('#custemps').val('');
+                    //$('#custt').val('');
+                    //$('#custemps').val('');
                     $('#Templaterow').show();
                     $('#Customvrow').show();
                     $('#Mtablerow').hide();
@@ -1366,7 +1366,7 @@
                             $('#selectrow').hide();
                             $('#textrow').hide();
                             //$('.Maxlenrow').show();
-                            $('.Maxlenrow').hide();
+                            $('.Maxlenrow').show();
                             $('.Mandrow').show();
                             $('#numberrow').show();
                             $('#phonenrow').show();
@@ -1871,105 +1871,122 @@
                                    
                                     $('#currlist').val(FldArr[0].Fld_Symbol);
                                     FiledTypeOnChange();
+
+                                    $('#Maxlenrow').hide();
+                                    $('#currlist').show();
+
                                     break;
                                 case 'NP':
                                     $('#ddltypes').val('N');
                                    
-                                    //$('#ddltypes').selectpicker('val', 'N');
+                                   
                                     $('#phonen').prop('checked', true);
+                                    
                                     FiledTypeOnChange();
+                                    $('#Maxlenrow').show();
+                                    $('#currlist').hide();
                                     break;
                                 case 'SSM':
                                     $('#ddltypes').val('S');
-                                    //$('#ddltypes').selectpicker('val', 'S');
+                                    $('#datarow').show();
 
-                                    $('#mtables').val(FldArr[0].TableActualName);
-                                    $('#mtables').selectpicker('val', FldArr[0].TableActualName);
-                                    $('#mtables').selectpicker('refresh');
-                                    
-                                    $('#sslec').prop('checked', true);
+                                    $('#sslec').prop('checked', true);                                    
                                     $('#master').prop('checked', true);
 
-                                    masterch();
-                                   
-                                    var element = $('#mtables');
+                                    $('#mtables').val(FldArr[0].TableActualName);
+                                    $('#mtables').selectpicker('refresh');
+
                                     var velement = $('#ddlvaluef');
                                     var telement = $('#ddltextf');
 
                                     if ((FldSrcName != '' || FldSrcName != null)) {
 
                                         loadTableColumns(FldSrcName);
-                                        $(element).val(FldSrcName);
+                                        //$(element).val(FldArr[0].Fld_Src_Name);
                                         $(velement).val(multiopt[0]);
                                         $(telement).val(multiopt[1]);
 
                                         //$(element).selectpicker('val', FldArr[0].Fld_Src_Name);
                                         //$(velement).selectpicker('val', multiopt[0]);
                                         //$(telement).selectpicker('val', multiopt[1]);
-
                                     }
 
+                                    $('#mtables').selectpicker('refresh');
+
                                     FiledTypeOnChange();
+                                    masterch();                                    
                                     break;
                                 case 'SSO':
                                     $('#ddltypes').val('S');
-                                    //$('#ddltypes').selectpicker('val', 'S');
                                    
                                     $('#sslec').prop('checked', true);
                                     $('#others').prop('checked', true);
-                                    othersch();
+
+                                    $('#datarow').show();
+                                    
+                                    $('#others').prop('checked', true);
                                     $('#custt').val(FldArr[0].Fld_Src_Name);
-                                    fillvalfields(FldArr[0].Fld_Src_Name);
+
                                     var newopt = '';
                                     for ($j = 0; $j < multiopt.length; $j++) {
                                         newopt += multiopt[$j] + '\n';
                                     }
+
                                     $('#custemps').val(newopt);
+                                    console.log(newopt);
                                     FiledTypeOnChange();
+                                    othersch();      
 
                                     break;
                                 case 'SMM':
                                     $('#ddltypes').val('S');
                                     //$('#ddltypes').selectpicker('val', 'S');
-                                    $('#mtables').val(FldArr[0].TableActualName);
-                                    $('#mtables').selectpicker('refresh');
-
                                     $('#mselc').prop('checked', true);
                                     $('#master').prop('checked', true);
 
-                                    masterch();
-                                    var element = $('#mtables');
+                                    $('#mtables').val(FldArr[0].TableActualName);
+                                    $('#mtables').selectpicker('refresh');
+
+                                    //var element = $('#mtables');
                                     var velement = $('#ddlvaluef');
                                     var telement = $('#ddltextf');
 
                                     if ((FldSrcName != '' || FldSrcName != null)) {
 
                                         loadTableColumns(FldSrcName);
-                                        $(element).val(FldArr[0].Fld_Src_Name);
+                                        //$(element).val(FldArr[0].Fld_Src_Name);
                                         $(velement).val(multiopt[0]);
                                         $(telement).val(multiopt[1]);
 
                                         //$(element).selectpicker('val', FldArr[0].Fld_Src_Name);
                                         //$(velement).selectpicker('val', multiopt[0]);
                                         //$(telement).selectpicker('val', multiopt[1]);
-
                                     }
+
+                                    $('#mtables').selectpicker('refresh');
                                     FiledTypeOnChange();
+                                    masterch();      
+
                                     break;
                                 case 'SMO':
                                     $('#ddltypes').val('S'); //$('#ddltypes').selectpicker('val', 'S');
                                     
                                     $('#mselc').prop('checked', true);
                                     $('#others').prop('checked', true);
-                                    othersch();
+
+                                    $('#datarow').show();
+                                    $('#others').prop('checked', true);
+
                                     $('#custt').val(FldArr[0].Fld_Src_Name);
-                                    fillvalfields(FldArr[0].Fld_Src_Name);
                                     var newopt = '';
                                     for ($j = 0; $j < multiopt.length; $j++) {
                                         newopt += multiopt[$j] + '\n';
                                     }
                                     $('#custemps').val(newopt);
+                                    console.log(newopt);
                                     FiledTypeOnChange();
+                                    othersch();      
+                                    
                                     break;
                                 case 'D':
                                     $('#ddltypes').val('D'); //$('#ddltypes').selectpicker('val', 'D');
@@ -2004,16 +2021,19 @@
                                     $('#datarow').show();
                                     $('#master').prop('checked', true);
                                     $('#mtables').val(FldArr[0].TableActualName);
+
+                                    //console.log(FldArr[0].TableActualName);
+
                                     $('#mtables').selectpicker('refresh');
 
-                                    var element = $('#mtables');
+                                    //var element = $('#mtables');
                                     var velement = $('#ddlvaluef');
                                     var telement = $('#ddltextf');
 
                                     if ((FldSrcName != '' || FldSrcName != null)) {
 
                                         loadTableColumns(FldSrcName);
-                                        $(element).val(FldArr[0].Fld_Src_Name);
+                                        //$(element).val(FldArr[0].Fld_Src_Name);
                                         $(velement).val(multiopt[0]);
                                         $(telement).val(multiopt[1]);
 
@@ -2022,43 +2042,53 @@
                                         //$(telement).selectpicker('val', multiopt[1]);
 
                                     }
-                                    masterch();
+                                    $('#mtables').selectpicker('refresh');
                                     FiledTypeOnChange();
+                                    masterch();
+                                   
                                     break;
                                 case 'RO':
                                     $('#ddltypes').val('R');
                                     
                                     //$('#ddltypes').selectpicker('val', 'R');
                                     $('#datarow').show();
+                                    //$('#Templaterow').show();
+                                    //$('#Customvrow').show();
+                                    //$('#Mtablerow').hide();
+                                    
                                     $('#others').prop('checked', true);
-                                    othersch();
+
                                     $('#custt').val(FldArr[0].Fld_Src_Name);
                                     var newopt = '';
                                     for ($j = 0; $j < multiopt.length; $j++) {
                                         newopt += multiopt[$j] + '\n';
                                     }
                                     $('#custemps').val(newopt);
+                                    console.log(newopt);    
                                     FiledTypeOnChange();
+                                    othersch();        
+                                  
                                     break;
                                 case 'CM':
                                     $('#ddltypes').val('C');
-                                    $('#mtables').val(FldArr[0].TableActualName);
-                                    $('#mtables').selectpicker('val', FldArr[0].TableActualName);
-                                    $('#mtables').selectpicker('refresh');
 
-                                    //$('#ddltypes').selectpicker('val', 'C');
+                                    //$('#ddltypes').selectpicker('val', 'R');
                                     $('#datarow').show();
                                     $('#master').prop('checked', true);
+                                    $('#mtables').val(FldArr[0].TableActualName);
 
-                                    masterch();
-                                    var element = $('#mtables');
+                                    //console.log(FldArr[0].TableActualName);
+
+                                    $('#mtables').selectpicker('refresh');
+
+                                    //var element = $('#mtables');
                                     var velement = $('#ddlvaluef');
                                     var telement = $('#ddltextf');
 
                                     if ((FldSrcName != '' || FldSrcName != null)) {
 
                                         loadTableColumns(FldSrcName);
-                                        $(element).val(FldSrcName);
+                                        //$(element).val(FldArr[0].Fld_Src_Name);
                                         $(velement).val(multiopt[0]);
                                         $(telement).val(multiopt[1]);
 
@@ -2067,7 +2097,10 @@
                                         //$(telement).selectpicker('val', multiopt[1]);
 
                                     }
+                                    $('#mtables').selectpicker('refresh');
                                     FiledTypeOnChange();
+                                    masterch();
+
                                     break;
                                 case 'CO':
                                     $('#ddltypes').val('C');
@@ -2075,7 +2108,7 @@
                                     //$('#ddltypes').selectpicker('val', 'C');
                                     $('#datarow').show();
                                     $('#others').prop('checked', true);
-                                    othersch();
+                                   
                                     $('#custt').val(FldArr[0].Fld_Src_Name);
                                     var newopt = '';
                                     for ($j = 0; $j < multiopt.length; $j++) {
@@ -2083,6 +2116,7 @@
                                     }
                                     $('#custemps').val(newopt);
                                     FiledTypeOnChange();
+                                    othersch();
                                     break;
                                 case 'FS':
                                    
@@ -2104,6 +2138,7 @@
                                     
                                     //$('#ddltypes').selectpicker('val', 'F');
                                     $('#selupl').prop('checked', true);
+                                    $('#cameraupl').prop('checked', true);
                                     FiledTypeOnChange();
                                     break;
                                 default:
@@ -2124,9 +2159,12 @@
                                     }
                                     else {
                                         $('.ddlFilter option[value=' + FrmsandFlds[$i].Fld_ID + ']').show();
+
                                     }
                                 }
                             }
+
+                            $('#ddltypes').attr('disabled', 'disabled');
                             //change
                         },
                         error: function (data) {

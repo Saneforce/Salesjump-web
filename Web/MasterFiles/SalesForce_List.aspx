@@ -434,6 +434,9 @@
                         var s = data.d.filter(function (a) {
                             return (a.Parent_Menu == MainMnu[i].Menu_ID)
                         });
+
+                        console.log(s);
+
                         for (var j = 0; j < s.length; j++) {
                             var schecked = ((menurights.indexOf(',' + s[j].Menu_ID + ',')) > -1 ? 'checked' : '');
 

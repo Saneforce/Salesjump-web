@@ -28,13 +28,15 @@ public partial class MasterFiles_Options_Primary_Upload_View : System.Web.UI.Pag
             BindDate();
         }
     }
+
     [WebMethod]
     public static string GetDetails(string Div, string Mn, string Yr)
     {
-        Sales SFD = new Sales();
-        ds = SFD.GetPrimary_Sales_Value(Div, Mn, Yr);
+        Sales SFD = new Sales();        
+        ds = SFD.GetPrimary_Sales_Value(Convert.ToString(Div.ToString().TrimEnd(',')), Mn, Yr);
         return JsonConvert.SerializeObject(ds);
     }
+
     private void BindDate()
     {
         TourPlan tp = new TourPlan();

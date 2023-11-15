@@ -4,8 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
-
 using System.IO;
 using System.Data;
 using Bus_EReport;
@@ -13,6 +11,7 @@ using Newtonsoft.Json;
 using System.Web.Services;
 using System.Data.SqlClient;
 using DBase_EReport;
+
 public partial class MIS_Reports_rptEmployeewiseorderDetails : System.Web.UI.Page
 {
     #region "Declaration"
@@ -26,6 +25,7 @@ public partial class MIS_Reports_rptEmployeewiseorderDetails : System.Web.UI.Pag
     string stname = string.Empty;
     string producttype = string.Empty;
     #endregion
+
     protected void Page_Load(object sender, EventArgs e)
     {
 

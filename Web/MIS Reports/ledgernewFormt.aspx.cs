@@ -26,6 +26,8 @@ public partial class MIS_Reports_ledgernewFormt : System.Web.UI.Page
     int time;
 	public static string sub_division = string.Empty;
     #endregion
+
+
     protected override void OnPreInit(EventArgs e)
     {
         base.OnPreInit(e);

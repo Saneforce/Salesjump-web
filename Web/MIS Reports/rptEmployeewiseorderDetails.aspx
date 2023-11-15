@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="https://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Employee wise Order Details</title>
+   <title>Employee wise Order Details</title>
    <link href="../css/bootstrap-3.3.2.min.css" rel="stylesheet" />
     <link href="../css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -39,7 +39,6 @@
             z-index: 999;
         }
 
-
 		#Product_Table tbody tr td, #Product_Table tfoot tr th
 		{
 			text-align:right;
@@ -49,6 +48,7 @@
 		{
 			text-align:left;
 		}
+
 		#Product_Table tfoot tr th:nth-child(1)
 		{
 			text-align:center;
@@ -173,13 +173,9 @@
                 }
             });
 
-
-
             var Fyear = $("#<%=ddlFYear.ClientID%>").val();
             var FMonth = $("#<%=ddlFMonth.ClientID%>").val();
             var subDiv = $("#<%=SubDivCode.ClientID%>").val();
-
-
 
             $.ajax({
                 type: "POST",
@@ -214,7 +210,6 @@
                 }
             });
 
-
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -248,9 +243,6 @@
                     alert(msg);
                 }
             });
-
-
-
 
             $.ajax({
                 type: "POST",
@@ -449,41 +441,41 @@
         });
         
 
-function sortTable() {
-  var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("Product_Table");
-  switching = true;
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /*Loop through all table rows (except the
-    first, which contains table headers):*/
-    for (i = 1; i < (rows.length - 1); i++) {
-      //start by saying there should be no switching:
-      shouldSwitch = false;
-      /*Get the two elements you want to compare,
-      one from current row and one from the next:*/
-	var colLen = rows[i].cells.length;
-      x = rows[i].getElementsByTagName("TD")[colLen-3] || 0;
-      y = rows[i + 1].getElementsByTagName("TD")[colLen-3] || 0;
-      //check if the two rows should switch place:
-      if ( Number(x.innerHTML) < Number( y.innerHTML )) {
-        //if so, mark as a switch and break the loop:
-        shouldSwitch = true;
-        break;
-      }
-    }
-    if (shouldSwitch) {
-      /*If a switch has been marked, make the switch
-      and mark that a switch has been done:*/
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
-}
+        function sortTable() {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("Product_Table");
+            switching = true;
+            /*Make a loop that will continue until
+            no switching has been done:*/
+            while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+                for (i = 1; i < (rows.length - 1); i++) {
+                    //start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /*Get the two elements you want to compare,
+                    one from current row and one from the next:*/
+                    var colLen = rows[i].cells.length;
+                    x = rows[i].getElementsByTagName("TD")[colLen - 3] || 0;
+                    y = rows[i + 1].getElementsByTagName("TD")[colLen - 3] || 0;
+                    //check if the two rows should switch place:
+                    if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    /*If a switch has been marked, make the switch
+                    and mark that a switch has been done:*/
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
        
        
     </script>
