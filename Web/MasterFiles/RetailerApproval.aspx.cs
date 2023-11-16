@@ -18,7 +18,10 @@ using Amazon.S3;
 using Amazon.S3.Transfer;
 using Amazon.S3.Model;
 using System.Net;
-
+using System.Net.Http;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using System.Text;
+using System.Net.Http.Headers;
 
 public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
 {
@@ -29,10 +32,9 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
     DataSet dsSalesForce = null;
     DataSet dsDivision = null;
     DataSet dsTP = null;
-    public static DataTable dtt = null;
+    public static System.Data.DataTable dtt = null;
     public static string div_code = string.Empty;
     #endregion
-
 
     protected override void OnPreInit(EventArgs e)
     {
@@ -59,7 +61,9 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         sf_type = Session["sf_type"].ToString();
         if (!Page.IsPostBack)
         {
-
+            div_code = Session["div_code"].ToString();
+            sf_code = Session["sf_code"].ToString();
+            sf_type = Session["sf_type"].ToString();
         }
     }
 
@@ -224,7 +228,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
     [WebMethod]
     public static string DisPlayCutomFields(string ModuleId)
     {
-        DataTable ds = new DataTable();
+        System.Data.DataTable ds = new System.Data.DataTable();
         //AdminSetup Ad = new AdminSetup();
        
         ds = getDCFields(div_code, ModuleId, sf_code);
@@ -234,10 +238,10 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
     }
 
 
-    public static DataTable getDCFields(string divcode, string ModuleId, string Sf_Code)
+    public static System.Data.DataTable getDCFields(string divcode, string ModuleId, string Sf_Code)
     {
-        
-        DataTable dsAdmin = new DataTable();
+
+        System.Data.DataTable dsAdmin = new System.Data.DataTable();
 
 
         if (divcode == null || divcode == "")
@@ -535,6 +539,8 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
     [WebMethod(EnableSession = true)]
     public static string UpdateApprove(string custCode, string erp, string lat, string longi)
     {
+        string retailerStatus = "";
+
         string div_code = "";
         try
         {
@@ -550,23 +556,244 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         int ret = -1;
         adm.updatelatlong(erp, lat, longi, custCode);
         if (SFCode.Contains("Admin") || SFCode.Contains("admin"))
-        {
-
-            ret = adm.Retailer_Appprove_Manager(SFCode, custCode, "1", "", 0);
-        }
+        { ret = adm.Retailer_Appprove_Manager(SFCode, custCode, "1", "", 0); }
         else
-        {
-            ret = adm.Retailer_Appprove_Manager(SFCode, custCode, "1", "", 0);
-        }
+        { ret = adm.Retailer_Appprove_Manager(SFCode, custCode, "1", "", 0); }
+
         if (ret > 0)
         {
-            return "Retailer Approved Successfully..!";
+
+            DataSet dsAdmin = new DataSet();
+            DataSet tc = new DataSet();
+            dsAdmin = getRetailerApprovalDetails(custCode);
+            if (div_code == "227")
+            {
+                if (dsAdmin.Tables.Count > 0)
+                {
+                    if (dsAdmin.Tables[0].Rows.Count > 0)
+                    {
+                        string ListedDrCode = dsAdmin.Tables[0].Rows[0]["ListedDrCode"].ToString();
+                        string Sf_Code = dsAdmin.Tables[0].Rows[0]["Sf_Code"].ToString();
+                        string ListedDr_Name = dsAdmin.Tables[0].Rows[0]["ListedDr_Name"].ToString();
+
+                        string ListedDr_PinCode = dsAdmin.Tables[0].Rows[0]["ListedDr_PinCode"].ToString();
+                        string ListedDr_Phone = dsAdmin.Tables[0].Rows[0]["ListedDr_Phone"].ToString();
+                        string ListedDr_Mobile = dsAdmin.Tables[0].Rows[0]["ListedDr_Mobile"].ToString();
+                        string ListedDr_Email = dsAdmin.Tables[0].Rows[0]["ListedDr_Email"].ToString();
+                        string Territory_Code = dsAdmin.Tables[0].Rows[0]["Territory_Code"].ToString();
+                        string Pan_No = dsAdmin.Tables[0].Rows[0]["Pan_No"].ToString();
+                        string GST = dsAdmin.Tables[0].Rows[0]["GST"].ToString();
+
+                        tc = getRetailerApprovalTerrDetails(ListedDrCode, Territory_Code);
+
+                        string State_Name = tc.Tables[0].Rows[0]["StateName"].ToString();
+                        string Territory_Name = tc.Tables[0].Rows[0]["Territory_Name"].ToString();
+                        string Zone_name = tc.Tables[0].Rows[0]["Zone_name"].ToString();
+                        string Area_name = tc.Tables[0].Rows[0]["Area_name"].ToString();
+                        string Country_name = tc.Tables[0].Rows[0]["Country_name"].ToString();
+
+                        var payload = new
+                        {
+                            systemID = "CUS01",
+                            payload = new
+                            {
+                                IM_SOURCE = "SANEFORCE",
+                                IM_EXTREQUEST = 1234,
+                                IM_EXTCUSTID = "12345678",
+                                IM_REQTYPE = "N",
+                                IM_STG_REQ = new[]
+                                {
+                                new
+                                {
+                                    REQ_SRNO = 0,
+                                    SP_REQTYPE = "N",
+                                    SP_CODE = custCode,
+                                    SP_NAME1 = ListedDr_Name,
+                                    SP_NAME2 = "",
+                                    SP_NAME3 = "",
+                                    SP_NAME4 = "",
+                                    SP_STREET = Territory_Name,
+                                    SP_CITY = Zone_name,
+                                    SP_PINCODE = ListedDr_PinCode,
+                                    SP_STATE = State_Name,
+                                    SP_COUNTRY = Country_name,
+                                    SP_PAN = Pan_No,
+                                    SP_MOBILE = ListedDr_Mobile,
+                                    SP_EMAIL = ListedDr_Email,
+                                    SP_CONTPERS_NAME = "TEST1",
+                                    SP_CONTPERS_MOBILE = "9988007766",
+                                    SP_CONTPERS_EMAIL = "TEST@RIL.COM",
+
+                                    SH_CODE = "",
+                                    SH_NAME1 = ListedDr_Name,
+                                    SH_NAME2 = "",
+                                    SH_NAME3 = "",
+                                    SH_NAME4 = "",
+                                    SH_STREET = Territory_Name,
+                                    SH_CITY = Zone_name,
+                                    SH_PINCODE = ListedDr_PinCode,
+                                    SH_STATE = State_Name,
+                                    SH_COUNTRY = Country_name,
+                                    SH_GST = GST,
+                                    SH_MOBILE = ListedDr_Mobile,
+                                    SH_EMAIL = ListedDr_Email,
+                                    SH_CONTPERS_NAME = "TESTTT",
+                                    SH_CONTPERS_MOBILE = "9945122222",
+                                    SH_CONTPERS_EMAIL = "TEST@RIL.COM",
+
+                                    BP_CODE = "",
+                                    BP_NAME1 = ListedDr_Name,
+                                    BP_NAME2 = "",
+                                    BP_NAME3 = "",
+                                    BP_NAME4 = "",
+                                    BP_STREET = Territory_Name,
+                                    BP_CITY = Zone_name,
+                                    BP_PINCODE = ListedDr_PinCode,
+                                    BP_STATE = State_Name,
+                                    BP_COUNTRY = Country_name,
+                                    BP_GST = GST,
+                                    BP_MOBILE = ListedDr_Mobile,
+                                    BP_EMAIL = ListedDr_Email,
+                                    BP_CONTPERS_NAME = "TESTTT",
+                                    BP_CONTPERS_MOBILE = "9988443322",
+                                    BP_CONTPERS_EMAIL = "TEST@RIL.COM",
+
+                                    PY_CODE = "",
+                                    PY_NAME1 = ListedDr_Name,
+                                    PY_NAME2 = "",
+                                    PY_NAME3 = "",
+                                    PY_NAME4 = "",
+                                    PY_STREET = Territory_Name,
+                                    PY_CITY = Zone_name,
+                                    PY_PINCODE = ListedDr_PinCode,
+                                    PY_STATE = State_Name,
+                                    PY_COUNTRY = Country_name,
+                                    PY_PAN = Pan_No,
+                                    PY_GST = GST,
+                                    PY_MOBILE = ListedDr_Mobile,
+                                    PY_EMAIL = ListedDr_Email,
+                                    PY_CONTPERS_NAME = "TETETE",
+                                    PY_CONTPERS_MOBILE = "9909777663",
+                                    PY_CONTPERS_EMAIL = "MIAL@RIL.COM"
+                                }
+                            },
+                                IM_STG_KNBW = new[] { new { } },
+                                IM_STG_KNBK = new[] { new { } },
+                                IM_DMS = new[] { new { } },
+                                IT_STG_REQ = new[] { new { } },
+                                IT_STG_KNBW = new[] { new { } },
+                                IT_STG_KNBK = new[] { new { } }
+                            }
+                        };
+
+                        var json = JsonConvert.SerializeObject(payload);
+
+                        HttpClient client = new HttpClient();
+
+                        var content = new StringContent(json, Encoding.UTF8);
+
+                        client.BaseAddress = new Uri("https://apigwhcdev.ril.com/commonsapfeature/1.0.0/RFCAnyWhere/callRFC");
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "643fea21-630d-3135-8cd7-7a14903c70f");
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        var response = client.PostAsync("POST", content).Result;
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            retailerStatus = "Retailer approved details sent to sap..!";
+                        }
+                        else
+                        {
+                            retailerStatus = "Internal server Error..!";
+                        }
+                    }
+                }
+            }
+            else
+            { retailerStatus = "Retailer Approved Successfully..!"; }
         }
         else
-        {
-            return "Retailer Approved UnSuccessfull..!";
-        }
+        { retailerStatus = "Retailer Approved Successfully..!"; }
+
+        return retailerStatus;
     }
+
+
+    public static DataSet getRetailerApprovalDetails(string custCode)
+    {
+        DataSet dsAdmin = new DataSet();
+
+        string strQry = " SELECT *FROM  Mas_ListedDr  ";
+        strQry += " WHERE ListedDrCode = @custCode AND ListedDr_Active_Flag = 0 ";
+
+        try
+        {
+            using (var con = new SqlConnection(Global.ConnString))
+            {
+                using (var cmd = con.CreateCommand())
+                {
+                    cmd.CommandText = strQry;
+                    cmd.Parameters.AddWithValue("@custCode", Convert.ToString(custCode));
+                    cmd.CommandType = CommandType.Text;
+                    SqlDataAdapter dap = new SqlDataAdapter();
+                    dap.SelectCommand = cmd;
+                    con.Open();
+                    dap.Fill(dsAdmin);
+                    con.Close();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+
+        }
+        return dsAdmin;
+    }
+
+
+    public static DataSet getRetailerApprovalTerrDetails(string custCode, string Territory_Code)
+    {
+        DataSet dsAdmin = new DataSet();
+
+        string strQry = " SELECT tc.Territory_SName,tc1.Territory_Name,mz.Zone_name,ma.Area_name,ms.StateName,mc.Country_name ";
+        strQry += " FROM  Mas_ListedDr ld (NOLOCK)     ";
+        strQry += " INNER JOIN  Mas_Territory_Creation tc1 (NOLOCK) on ld.Territory_Code = tc1.Territory_Code  ";
+        strQry += " INNER JOIN  Mas_Territory tc  (NOLOCK) ON tc1.Territory_SName = tc.Territory_code  ";
+        strQry += " INNER JOIN  Mas_Zone mz (NOLOCK) ON tc.Zone_code = tc.Zone_code  ";
+        strQry += " INNER JOIN  Mas_Area ma (NOLOCK) ON mz.Area_code = ma.Area_code  ";
+        strQry += " INNER JOIN  Mas_State ms  (NOLOCK) ON ma.State_Code = ms.State_Code ";
+        strQry += " INNER JOIN  Mas_Country mc  (NOLOCK) ON ms.Country_code = mc.Country_code ";
+        strQry += " WHERE ListedDrCode = @custCode AND ld.Territory_Code=@Territory_Code AND ListedDr_Active_Flag = 0 ";
+        strQry += " GROUP BY tc.Territory_SName,tc1.Territory_Name,mz.Zone_name,ma.Area_name,ms.StateName,mc.Country_name ";
+
+        try
+        {
+            using (var con = new SqlConnection(Global.ConnString))
+            {
+                using (var cmd = con.CreateCommand())
+                {
+                    cmd.CommandText = strQry;
+                    cmd.Parameters.AddWithValue("@custCode", Convert.ToString(custCode));
+                    cmd.Parameters.AddWithValue("@Territory_Code", Convert.ToString(Territory_Code));
+                    cmd.CommandType = CommandType.Text;
+                    SqlDataAdapter dap = new SqlDataAdapter();
+                    dap.SelectCommand = cmd;
+                    con.Open();
+                    dap.Fill(dsAdmin);
+                    con.Close();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+
+        }
+        return dsAdmin;
+    }
+
+
     [WebMethod(EnableSession = true)]
     public static string UpdateReject(string custCode, string reasion)
     {
@@ -614,6 +841,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
             return "Updated Failed.";
         }
     }
+
     [WebMethod(EnableSession = true)]
     public static string Updatelatlong(string sCus)
     {
@@ -636,6 +864,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
             {
                 ret = adm.updatelatlong(Data[il].erp, Data[il].lat, Data[il].longi, Data[il].custCode);
             }
+            
             return "Updated Successfully..!";
         }
         catch
@@ -656,18 +885,18 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
             div_code = HttpContext.Current.Session["Division_Code"].ToString();
         }
 
-        DataTable dtchannel = new DataTable();
+        System.Data.DataTable dtchannel = new System.Data.DataTable();
 
         dtchannel = getsfcc("select Doc_Special_Code,Doc_Special_Name from Mas_Doctor_Speciality where Division_Code=" + div_code.TrimEnd(',') + " and Doc_Special_Active_Flag=0 order by Doc_Special_Name");
 
         return JsonConvert.SerializeObject(dtchannel);
     }
-    public static DataTable getsfcc(string qrystring)
+    public static System.Data.DataTable getsfcc(string qrystring)
     {
 
         DB_EReporting db_ER = new DB_EReporting();
 
-        DataTable dsSF = null;
+        System.Data.DataTable dsSF = new System.Data.DataTable();
 
         string strQry = qrystring;
 
@@ -690,7 +919,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
     }
     protected void btnexl_Click(object sender, EventArgs e)
     {
-        DataTable dt = new DataTable();
+        System.Data.DataTable dt = new System.Data.DataTable();
         dt.Columns.Add("FieldForce Name", typeof(string));
         dt.Columns.Add("Created Date", typeof(string));
         dt.Columns.Add("RetailerName", typeof(string));
@@ -788,7 +1017,9 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         }
         catch (Exception ex)
         {
+            throw ex;
         }
         Response.End();
     }
+
 }

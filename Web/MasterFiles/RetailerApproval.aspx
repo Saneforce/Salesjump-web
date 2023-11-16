@@ -182,7 +182,7 @@
                                 data: "{'custCode':'" + lCode + "','erp':'" + erp + "','lat':'" + lat + "','longi':'" + longi + "'}",
                                 dataType: "json",
                                 success: function (data) {
-                                    alert(data.d);
+                                    alert(data.d);                                                                        
                                     getRetilers();
                                 },
                                 error: function (rs) {

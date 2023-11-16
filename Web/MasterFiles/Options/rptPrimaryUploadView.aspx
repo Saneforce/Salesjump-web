@@ -400,7 +400,7 @@
                 </div>
                 <div class="row">
                     <br />
-                    <asp:Label ID="Label1" runat="server" Text="Label" Style="padding-left: 5px;"></asp:Label>
+                    <asp:Label ID="Label1" runat="server" Visible="false" Text="Label" Style="padding-left: 5px;"></asp:Label>
                     <br />
                     <div>
                         <table id="Product_Table" border="1" class="newStly" style="border-collapse: collapse;">
