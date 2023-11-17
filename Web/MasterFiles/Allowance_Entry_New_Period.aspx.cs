@@ -322,7 +322,9 @@ public partial class MasterFiles_Allowance_Entry_New_Period : System.Web.UI.Page
         //int iReturn = nt.Insert_Allowance_Data(Division_code.TrimEnd(',').ToString(), items[i].SF_Code.ToString(), items[i].Alw_code.ToString(), items[i].Des_code.ToString(), items[i].values.ToString());
         SqlConnection con = new SqlConnection(Globals.ConnString);
         con.Open();
+        
         string strQry = "EXEC Insert_Designation_Allowance_Values_Period '" + item + "','" + item_FF + "','" + date + "','" + Division_code.TrimEnd(',').ToString() + "'";
+        //string strQry = "";
         SqlCommand cmd = new SqlCommand(strQry, con);
         //Log(strQry);
         co = cmd.ExecuteNonQuery();
