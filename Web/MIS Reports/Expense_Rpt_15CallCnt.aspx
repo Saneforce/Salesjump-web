@@ -350,7 +350,7 @@
                 contentType: "application/json; charset=utf-8",
                 async: false,
                 url: "Expense_Rpt_15CallCnt.aspx/GetCallCntRpt",
-                data: "{'Frmdt':'2023-02-01','Todt':'2023-02-28'}",
+                data: "{'Frmdt':'" + FDT + "','Todt':'" + TDT +"'}",
                 dataType: "json",
                 success: function (data) {
                     AllOrders = JSON.parse(data.d) || [];
