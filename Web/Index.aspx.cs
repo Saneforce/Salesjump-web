@@ -59,11 +59,11 @@ public partial class Index : System.Web.UI.Page
     }
     public string getDBInfo()
     {
-        string sConStr = ConfigurationManager.ConnectionStrings["Ereportcon"].ConnectionString;
+        string sConStr = ConfigurationManager.ConnectionStrings["Server1"].ConnectionString;
         sUSR = Request.Url.Host.ToLower().Replace("www.", "").Replace(".sanfmcg.com", "").Replace(".salesjump.in", "").ToLower();
-        string DBName = "FMCG_Live";
+        string DBName = "";
         if (sUSR == "localhost")
-        { DBName = "FMCG_Live"; }
+        { DBName = "FMCG_RAD"; }
         else
         {
             if (Request.Url.Host.ToLower().IndexOf("salesjump.in") > -1 && sUSR == "fmcg")
@@ -103,7 +103,7 @@ public partial class Index : System.Web.UI.Page
                 DBName = "FMCG_" + sUSR.ToUpper();
             }
         }
-        Session["DBName"] = DBName;
+        //Session["DBName"] = DBName;
         sConStr = sConStr.Replace("[DATABASE]", DBName);
         return sConStr;
     }
@@ -124,7 +124,7 @@ public partial class Index : System.Web.UI.Page
     {
         div_code = Session["div_code"].ToString();
 
-        if (div_code.Contains(','))
+        if (div_code.Contains(","))
         {
             div_code = div_code.Remove(div_code.Length - 1);
         }

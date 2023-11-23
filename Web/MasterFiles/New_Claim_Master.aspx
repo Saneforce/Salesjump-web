@@ -4,48 +4,49 @@
     <link href="../css/jquery.multiselect.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <style>
+    <style type="text/css">
         .multiselect {
-  width: 200px;
-}
+            width: 200px;
+        }
 
-.selectBox {
-  position: relative;
-}
+        .selectBox {
+            position: relative;
+        }
+        
+        .selectBox select {
+            width: 100%;
+            font-weight: bold;
+        }
 
-.selectBox select {
-  width: 100%;
-  font-weight: bold;
-}
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
 
-.overSelect {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-.info-icon {
-  position: relative;
-  display: inline-block;
-}
+        .info-icon {
+            position: relative;
+            display: inline-block;
+        }
 
-.tooltip {
-  visibility: hidden;
-  width: 250px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-   top: 5px;
-    left: 475%;
-  margin-left: -75px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
+        .tooltip {
+            visibility: hidden;
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            top: 5px;
+            left: 475%;
+            margin-left: -75px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
         .info-icon:hover .tooltip {
             visibility: visible;
@@ -53,10 +54,10 @@
         }
 
         .info-icon .fas.fa-info-circle {
-  color: darkseagreen;
-  font-size: 20px;
-}
-         .segment3 {
+            color: darkseagreen;
+            font-size: 20px;
+        }
+        .segment3 {
             display: inline-block;
             padding-left: 0;
             margin: -2px 22px;
@@ -64,31 +65,31 @@
             font-size: 13px;
             font-family: "Poppins";
         }
+        
+        .segment3 > li {
+            display: inline-block;
+            background: #fafafa;
+            color: #666;
+            margin-left: -4px;
+            padding: 5px 10px;
+            min-width: 50px;
+            border: 1px solid #ddd;
+        }
+        
+        .segment3 > li:first-child {
+            border-radius: 4px 0px 0px 4px;
+        }
 
-            .segment3 > li {
-                display: inline-block;
-                background: #fafafa;
-                color: #666;
-                margin-left: -4px;
-                padding: 5px 10px;
-                min-width: 50px;
-                border: 1px solid #ddd;
-            }
-
-                .segment3 > li:first-child {
-                    border-radius: 4px 0px 0px 4px;
-                }
-
-                .segment3 > li:last-child {
-                    border-radius: 0px 4px 4px 0px;
-                }
-
-                .segment3 > li.active {
-                    color: #fff;
-                    cursor: default;
-                    background-color: #428bca;
-                    border-color: #428bca;
-                }
+        .segment3 > li:last-child {
+            border-radius: 0px 4px 4px 0px;
+        }
+        
+        .segment3 > li.active {
+            color: #fff;
+            cursor: default;
+            background-color: #428bca;
+            border-color: #428bca;
+        }
 
         .segment2 {
             display: inline-block;
@@ -99,46 +100,55 @@
             font-family: "Poppins";
             /* border: 1px solid  #66a454   #d3252a  #f59303;*/
         }
+        
+        .segment2 > li {
+            display: inline-block;
+            background: #fafafa;
+            color: #666;
+            margin-left: -4px;
+            padding: 5px 10px;
+            min-width: 50px;
+            border: 1px solid #ddd;
+        }
 
-            .segment2 > li {
-                display: inline-block;
-                background: #fafafa;
-                color: #666;
-                margin-left: -4px;
-                padding: 5px 10px;
-                min-width: 50px;
-                border: 1px solid #ddd;
-            }
+        .segment2 > li:first-child {
+            border-radius: 4px 0px 0px 4px;
+        }
+        
+        .segment2 > li:last-child {
+            border-radius: 0px 4px 4px 0px;
+        }
+        
+        .segment2 > li.active {
+            color: #fff;
+            cursor: default;
+            background-color: #428bca;
+            border-color: #428bca;
+        }
 
-                .segment2 > li:first-child {
-                    border-radius: 4px 0px 0px 4px;
-                }
+        .aState1[data-val='Active'] {
+            color: #66a454 !important;
+        }
 
-                .segment2 > li:last-child {
-                    border-radius: 0px 4px 4px 0px;
-                }
+        .aState1[data-val='Deactivate'] {
+            color: #d3252a;
+        }
 
-                .segment2 > li.active {
-                    color: #fff;
-                    cursor: default;
-                    background-color: #428bca;
-                    border-color: #428bca;
-                }
-				                .aState1[data-val='Active']
-                {color: #66a454 !important;}
-                .aState1[data-val='Deactivate']
-                {color: #d3252a;}
+        .aState2[data-val='Active'] {
+            color: #66a454 !important;
+        }
 
-                .aState2[data-val='Active']
-{color: #66a454 !important;}
-.aState2[data-val='Deactivate']
-{color: #d3252a;}
+        .aState2[data-val='Deactivate'] {
+            color: #d3252a;
+        }
 
-.aState3[data-val='Active']
-{color: #66a454 !important;}
-.aState3[data-val='Deactivate']
-{color: #d3252a;}
+        .aState3[data-val='Active'] {
+            color: #66a454 !important;
+        }
 
+        .aState3[data-val='Deactivate'] {
+            color: #d3252a;
+        }
     </style>
      <form id="frm" runat="server">
          <div class="container" style="max-width: 100%">
@@ -588,7 +598,7 @@
                                             <label>Product Name<span style="color:red;font:bold;">  *</span></label>
                                         </div>
                                          <div class="col-sm-8">
-                                        <select class="form-control selectBox" id="ddlprodcatgry" multiple></select>
+                                        <select class="form-control selectBox" id="ddlprodcatgry" multiple="multiple"></select>
                                              </div>
                                         </div>
                                     <%--<div class="row" style="margin-top: 10px;">
@@ -604,10 +614,10 @@
                                             <label>Invoice Split Up Needed</label>
                                         </div>
                                           <div class="col-sm-3">
-                                            <input type="radio" name="isun" id="yes" value="0" checked="true">Yes<br>   
+                                            <input type="radio" name="isun" id="yes" value="0" checked="checked">Yes<br />   
                                         </div>
                                          <div class="col-sm-3">
-                                            <input type="radio" name="isun" id="no" value="1">No<br> 
+                                            <input type="radio" name="isun" id="no" value="1">No<br /> 
                                         </div>
                                     </div>
                                      <div class="row" style="margin-top: 10px;">
@@ -615,10 +625,10 @@
                                             <label>Product Bill-Basis</label>
                                         </div>
                                         <div class="col-sm-3">
-                                            <input type="radio" name="bb" id="value" value="0" checked="true">Sale Value<br>   
+                                            <input type="radio" name="bb" id="value" value="0" checked="checked">Sale Value<br />
                                         </div>
                                          <div class="col-sm-3" visible="false">
-                                            <input type="radio" name="bb" id="qty" value="1">Sale Qty<br> 
+                                            <input type="radio" name="bb" id="qty" value="1">Sale Qty<br />
                                         </div>
                                     </div>
                                     <div class="row hval" style="margin-top: 10px;">
@@ -642,10 +652,10 @@
                                             <label>Claim Calculation</label>
                                         </div>
                                         <div class="col-sm-3">
-                                            <input type="radio" name="cc1" id="fixed1" value="0" checked="true">Fixed Amount<br>   
+                                            <input type="radio" name="cc1" id="fixed1" value="0" checked="checked">Fixed Amount<br />  
                                         </div>
                                          <div class="col-sm-3">
-                                            <input type="radio" name="cc1" id="percentage1" value="1">Percentage<br> 
+                                            <input type="radio" name="cc1" id="percentage1" value="1">Percentage<br />
                                         </div>
                                     </div>
 									<div class="row" style="margin-top: 10px;">
@@ -659,10 +669,10 @@
                                             <label>Claim Form</label>
                                         </div>
                                         <div class="col-sm-4">
-                                            <input type="radio" name="cf1" id="discount" value="0" checked="true">Discount<br>   
+                                            <input type="radio" name="cf1" id="discount" value="0" checked="checked">Discount<br />  
                                         </div>
                                          <div class="col-sm-4">
-                                            <input type="radio" name="cf1" id="prod" value="1">Product<br> 
+                                            <input type="radio" name="cf1" id="prod" value="1">Product<br />
                                         </div>
                                     </div>
                                     <div class="row" style="margin-top: 10px;display:none;" id="clgip1">
@@ -670,7 +680,7 @@
                                             <label style="white-space: nowrap;">Claim/Gift Products<span  style="color:red;font:bold;">  *</span></label>
                                         </div>
                                          <div class="col-sm-8">
-                                        <select class="form-control selectBox" id="ddlgift1" multiple></select>
+                                        <select class="form-control selectBox" id="ddlgift1" multiple="multiple"></select>
                                              </div>
                                         </div>
                                     <div class="row" style="margin-top: 10px;">
@@ -678,7 +688,7 @@
                                             <label style="white-space: nowrap;">HQ</label>
                                         </div>
                                          <div class="col-sm-8">
-                                        <select class="form-control selectBox" id="ddlhq1" multiple></select>
+                                        <select class="form-control selectBox" id="ddlhq1" multiple="multiple"></select>
                                              </div>
                                         </div>
                                     <%--<div class="row" style="margin-top: 10px;">
@@ -694,7 +704,7 @@
                                             <label style="white-space: nowrap;">Retailer<span  style="color:red;font:bold;">  *</span></label>
                                         </div>
                                          <div class="col-sm-8">
-                                        <select class="form-control selectBox" id="ddlret1" multiple></select>
+                                        <select class="form-control selectBox" id="ddlret1" multiple="multiple"></select>
                                              </div>
                                         </div>
                                     <div class="row" style="margin-top: 10px;">
@@ -1043,21 +1053,38 @@
                         }
                     }); $('#ddlret').multiselect('reload');
                     $('.ms-options ul').css('column-count', '2');
-                    if (gbdts[0].GiftType == '0') {
-                        $("input[type='radio'][name='cf'][value='0']").prop("checked", true);
+
+                    if ((gbdts[0].GiftType == '0' && $("input[type='radio'][name='cf'][value='0']").prop("checked", true))) {
+                        //$("input[type='radio'][name='cf'][value='0']").prop("checked", true);
                         $("#clgip").hide();
                     }
-                    else {
-                        $("input[type='radio'][name='cf'][value='1']").prop("checked", true);
-                        $("#clgip").show();
+
+                    if ((gbdts[0].GiftType == '1' && $("input[type='radio'][name='cf'][value='1']").prop("checked", true))) {
                         var gp = gbdts[0].Claim_Product;
                         gp = gp.split(',');
                         $('#ddlgift  > option').each(function () {
                             for (var i = 0; i < gp.length; i++) {
-                                if (gp[i] == $(this).val()) { $(this).prop('selected', true); }
+                                if (gp[i] == $(this).val())
+                                {
+                                    $(this).prop('selected', true);
+                                }
                             }
-                        }); $('#ddlgift').multiselect('reload');
+                        }); 
+
+                        $('#ddlgift').multiselect('reload');
+
+                        $('.ms-options ul').css('column-count', '2');
+
+                        $("#clgip").show();
+
                     }
+
+                    //else {
+                    //    $("input[type='radio'][name='cf'][value='1']").prop("checked", true);
+                    //    $("#clgip").show();
+                       
+                    //}
+
                     if (gbdts[0].Claim_Type == '0') {
                         $("input[type='radio'][name='cc'][value='0']").prop("checked", true);
                         $("#val").hide();
@@ -1079,9 +1106,11 @@
                 }
             });
         }
+
         $('#rbsbtn').on('click', function () {
             clear();
         });
+
         function clear() {
             $('#hbcode').val('');
             $('#txtbname').val('');
@@ -1094,60 +1123,72 @@
             $('input[name="cc"][value="0"]').prop('checked', true);
             $('#claimvalue').val('');
             $('input[name="cf"][value="0"]').prop('checked', true);
+
             //$('#ddlgift').val([]);
             $('#ddlgift  > option:selected').each(function () {
                 $(this).prop('selected', false);
             });
+
             $('#ddlgift').multiselect('reload');
             //$('#ddlhq').val([]);
             $('#ddlhq  > option:selected').each(function () {
                 $(this).prop('selected', false);
             });
+
             $('#ddlhq').multiselect('reload');
+
             $('#ddlret  > option:selected').each(function () {
                 $(this).prop('selected', false);
             });
+
             $('#ddlret').multiselect('reload');
 
             pgNo = 1; PgRecords = 10; TotalPg = 0;
             ReloadTable1();
         }
+
         $('#btnsave').on('click', function () {
-		
+
             var slbid = $('#hbcode').val();
             var nam = $('#txtbname').val();
+
             if (nam == "") {
                 alert("Please Enter Name");
                 $('#txtbname').focus();
                 return false;
             }
-			 var validatename = [];
-			 validatename = AllOrders.filter(function (a) {
-            return a.GiftName.toLowerCase() == nam.toLowerCase();
-        });
 
-if (validatename.length > 0&& slbid=='') {
-    alert("Entered Slabname '" + nam + "' is Already Exist.");
-    return false;
-}
+            var validatename = [];
+            validatename = AllOrders.filter(function (a) {
+                return a.GiftName.toLowerCase() == nam.toLowerCase();
+            });
+
+            if (validatename.length > 0 && slbid == '') {
+                alert("Entered Slabname '" + nam + "' is Already Exist.");
+                return false;
+            }
+
             var clmy = $('#txtbdesc').val();
             if (clmy == "") {
                 alert("Please Select Month and Year");
                 $('#txtbdesc').focus();
                 return false;
             }
+
             var minval = $('#bminvalue').val();
             if (minval == "") {
                 alert("Please Enter Minimum Value.");
                 $('#bminvalue').focus();
                 return false;
             }
+
             var maxval = $('#bmaxvalue').val();
             if (maxval == "") {
                 alert("Please Enter Maximum Value.");
                 $('#bmaxvalue').focus();
                 return false;
             }
+
             if (minval != "" && maxval != "") {
                 if (parseInt(minval) > parseInt(maxval)) {
                     alert("Your Minimum value is Greater...");
@@ -1157,60 +1198,84 @@ if (validatename.length > 0&& slbid=='') {
             }
             var clmtyp = $("input[type='radio'][name='cc']:checked").val();
             var clmval = $('#claimvalue').val();
-			if (clmval == "" && clmtyp == '0') {
-    alert("Enter Fixed Amount...");
-    $('#claimvalue').focus();
-    return false;
-}
-if (clmval == "" && clmtyp == '1') {
-    alert("Enter Percentage of ClaimCalculation...");
-    $('#claimvalue').focus();
-    return false;
-}
+            if (clmval == "" && clmtyp == '0') {
+                alert("Enter Fixed Amount...");
+                $('#claimvalue').focus();
+                return false;
+            }
+
+            if (clmval == "" && clmtyp == '1') {
+                alert("Enter Percentage of ClaimCalculation...");
+                $('#claimvalue').focus();
+                return false;
+            }
+
             var gifttyp = $("input[type='radio'][name='cf']:checked").val();
             var clmprod = '';
             $('#ddlgift  > option:selected').each(function () {
                 clmprod += $(this).val() + ',';
             });
-			if (clmprod == '' && gifttyp == '1') {
-    alert("Mandatory select GiftProducts.");
-    $('#ddlgift').focus();
-    return false;
-}
+
+            if (clmprod == '' && gifttyp == '1') {
+                alert("Mandatory select GiftProducts.");
+                $('#ddlgift').focus();
+                return false;
+            }
+
             var hq = "";
             $('#ddlhq  > option:selected').each(function () {
                 hq += $(this).val() + ',';
             });
+
             var ret = '';
             $('#ddlret  > option:selected').each(function () {
                 ret += $(this).val() + ',';
             });
-			if (ret == '') {
-    alert("Mandatory select Retailers.");
-    $('#ddlret').focus();
-    return false;
-}
-            var gfdt = $('#fdt').val();
-			if (gfdt == '') {
-    alert("Mandatory select Duration From date");
-    $('#fdt').focus();
-    return false;
-}
-            var gtdt = $('#tdt').val();
-			if (gtdt == '') {
-    alert("select Duration To date");
-    $('#tdt').focus();
-    return false;
-}
-            var clmenddt = $('#ced').val();
-			if (clmenddt == '') {
-    alert("End Date is Mandatory");
-    $('#ced').focus();
-    return false;
-}
+            if (ret == '') {
+                alert("Mandatory select Retailers.");
+                $('#ddlret').focus();
+                return false;
+            }
 
-            data = { "slbid": slbid, "slabnm": nam, "clmdesc": clmy, "mnval": minval, "mxval": maxval, "clmtyp": clmtyp, "clmval": clmval, "Gtype": gifttyp, "FDT": gfdt, "TDT": gtdt, "hqdtl": hq, "retail": ret, "Gprod": clmprod, "ClmEndDt": clmenddt }
-//$('#btnsave').hide();
+            var gfdt = $('#fdt').val();
+            if (gfdt == '') {
+                alert("Mandatory select Duration From date");
+                $('#fdt').focus();
+                return false;
+            }
+
+            var gtdt = $('#tdt').val();
+            if (gtdt == '') {
+                alert("select Duration To date");
+                $('#tdt').focus();
+                return false;
+            }
+
+            var clmenddt = $('#ced').val();
+            if (clmenddt == '') {
+                alert("End Date is Mandatory");
+                $('#ced').focus();
+                return false;
+            }
+
+            data = {
+                "slbid": slbid,
+                "slabnm": nam,
+                "clmdesc": clmy,
+                "mnval": minval,
+                "mxval": maxval,
+                "clmtyp": clmtyp,
+                "clmval": clmval,
+                "Gtype": gifttyp,
+                "FDT": gfdt,
+                "TDT": gtdt,
+                "hqdtl": hq,
+                "retail": ret,
+                "Gprod": clmprod,
+                "ClmEndDt": clmenddt
+            }
+            //$('#btnsave').hide();
+
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -1221,7 +1286,7 @@ if (clmval == "" && clmtyp == '1') {
                 success: function (data) {
                     alert(data.d);
                     $("#Slab").modal("hide");
-					//$('#btnsave').show();
+                    //$('#btnsave').show();
                     loadData1();
                     //clear();
                 },
@@ -1241,6 +1306,7 @@ if (clmval == "" && clmtyp == '1') {
                 PgRecords = $(this).val();
                 ReloadTable2();
             });
+
         $("#tSearchOrd2").on("keyup", function () {
             if ($(this).val() != "") {
                 shText = $(this).val().toLowerCase();
@@ -1258,6 +1324,7 @@ if (clmval == "" && clmtyp == '1') {
                 Orders2 = AllOrders2;
             ReloadTable2();
         });
+
         $(".segment2>li").on("click", function () {
             $(".segment2>li").removeClass('active');
             $(this).addClass('active');
@@ -1266,6 +1333,7 @@ if (clmval == "" && clmtyp == '1') {
             $("#tSearchOrd2").val('');
             ReloadTable2();
         });
+
         function loadPgNos2() {
             prepg = parseInt($(".paginate_button.previous>a").attr("data-dt-idx"));
             Nxtpg = parseInt($(".paginate_button.next>a").attr("data-dt-idx"));
@@ -1289,9 +1357,9 @@ if (clmval == "" && clmtyp == '1') {
             $(".paginate_button > a").on("click", function () {
                 pgNo = parseInt($(this).attr("data-dt-idx"));
                 ReloadTable2();
-            }
-            );
+            });
         }
+
         $(document).on('click', ".ddlStatus1>li>a", function () {
             //$(".ddlStatus>li>a").on("click", function () {
             cStus = $(this).closest("td").find(".aState2");
@@ -1323,6 +1391,7 @@ if (clmval == "" && clmtyp == '1') {
             }
             loadPgNos2();
         });
+
         function ReloadTable2() {
             $("#billslab TBODY").html("");
             if (filtrkey2 != "All") {
@@ -1349,6 +1418,7 @@ if (clmval == "" && clmtyp == '1') {
             $("#billslab_info").html("Showing " + (st + 1) + " to " + (((st + PgRecords) < Orders2.length) ? (st + PgRecords) : Orders2.length) + " of " + Orders2.length + " entries")
             loadPgNos2();
         }
+
         function loadData2() {
             $.ajax({
                 type: "POST",
@@ -1367,11 +1437,13 @@ if (clmval == "" && clmtyp == '1') {
                 }
             });
         }
+
         $(document).on('click', '.sfedit2', function () {
             x = this.id;
             $("#Billed").modal("show");
             fillBillPop(x);
         });
+
         function fillBillPop(bcode) {
             $.ajax({
                 type: "POST",
@@ -1461,9 +1533,11 @@ if (clmval == "" && clmtyp == '1') {
                 }
             });
         }
+
         $('#billprod').on('click', function () {
             clear2();
         });
+
         function clear2() {
             $('#sbcode').val('');
             $('#txtbname1').val('');
@@ -1497,8 +1571,9 @@ if (clmval == "" && clmtyp == '1') {
             pgNo = 1; PgRecords = 10; TotalPg = 0;
             ReloadTable2();
         }
+
         $('#btnsave1').on('click', function () {
-		//$('#btnsave1').hide();
+            //$('#btnsave1').hide();
             var billid = $('#sbcode').val();
             var nam = $('#txtbname1').val();
             if (nam == "") {
@@ -1506,106 +1581,132 @@ if (clmval == "" && clmtyp == '1') {
                 $('#txtbname1').focus();
                 return false;
             }
-			var validatename = [];
-			validatename = AllOrders2.filter(function (a) {
-            return a.GiftName.toLowerCase() == nam.toLowerCase();
-        });
-if (validatename.length > 0 && billid == '') {
-    alert("Entered Name '" + nam + "' is Already Exist.");
-    return false;
-}
+            var validatename = [];
+            validatename = AllOrders2.filter(function (a) {
+                return a.GiftName.toLowerCase() == nam.toLowerCase();
+            });
+
+            if (validatename.length > 0 && billid == '') {
+                alert("Entered Name '" + nam + "' is Already Exist.");
+                return false;
+            }
+
             var clmy = $('#txtbdesc1').val();
             if (clmy == "") {
                 alert("Please Select Month and Year");
                 $('#txtbdesc1').focus();
                 return false;
             }
+
             var prodcd = $('#ddlprodcatgry').val() || '';
             if (prodcd == '') {
                 alert("select Products");
                 $('#ddlprodcatgry').focus();
                 return false;
             }
-            var pcode = '', pname='';
+
+            var pcode = '', pname = '';
             for (var y = 0; y < prodcd.length; y++) {
                 pcode += prodcd[y] + ',';
                 pname += $("#ddlprodcatgry option[value='" + prodcd[y] + "']").text() + ',';
             }
+
             var invnd = $("input[type='radio'][name='isun']:checked").val();
             var biltyp = $("input[type='radio'][name='bb']:checked").val();
             var billval = '';
             if (biltyp == '0') {
                 billval = $('#salevalue').val();
             }
+
             if (biltyp == '1') {
                 billval = $('#saleqty').val();
             }
+
             if (billval == '' && biltyp == '0') {
                 alert("Please Enter SaleValue");
-				$('#salevalue').focus();
+                $('#salevalue').focus();
                 return false;
             }
+
             if (billval == '' && biltyp == '1') {
                 alert("Please Enter SaleQuantity");
-				$('#saleqty').focus();
+                $('#saleqty').focus();
                 return false;
             }
+
             var clmcal = $("input[type='radio'][name='cc1']:checked").val();
             var clmval = $('#claimvalue1').val();
-			if (clmval == '' && clmcal =='1') {
+            if (clmval == '' && clmcal == '1') {
                 alert("Enter Calculation percentage.");
-				$('#claimvalue1').focus();
+                $('#claimvalue1').focus();
                 return false;
             }
+
             if (clmval == '' && clmcal == '0') {
                 alert("Enter Fixed Amount");
-				$('#claimvalue1').focus();
+                $('#claimvalue1').focus();
                 return false;
             }
+
             var clmfrm = $("input[type='radio'][name='cf1']:checked").val();
             var clmprod = '';
             $('#ddlgift1  > option:selected').each(function () {
                 clmprod += $(this).val() + ',';
             });
-			if (clmfrm == '1' && clmprod == '') {
+
+            if (clmfrm == '1' && clmprod == '') {
                 alert("Mandatory!. select ClaimProducts.");
-	            $('#ddlgift1').focus();
+                $('#ddlgift1').focus();
                 return false;
             }
+
             var hq = "";
             $('#ddlhq1  > option:selected').each(function () {
                 hq += $(this).val() + ',';
             });
+
             var ret = '';
             $('#ddlret1  > option:selected').each(function () {
                 ret += $(this).val() + ',';
             });
+
             if (ret == "") {
                 alert("Please Select Retailers...");
-				$('#ddlret1').focus();
+                $('#ddlret1').focus();
                 return false;
             }
+
             var bfdt = $('#fdtt').val();
             if (bfdt == '') {
                 alert("Please Select Duration From...");
-				$('#fdtt').focus();
+                $('#fdtt').focus();
                 return false;
             }
+
             var btdt = $('#tdtt').val();
             if (btdt == '') {
                 alert("Please Select Duration To...");
-				$('#tdtt').focus();
+                $('#tdtt').focus();
                 return false;
             }
+
             var clmenddt = $('#ced1').val();
             if (clmenddt == '') {
                 alert("Please Select ClaimEnd Date..");
-				$('#ced1').focus();
+                $('#ced1').focus();
                 return false;
             }
 
             data = {
-                "billid": billid, "billnm": nam, "clmdesc": clmy, "invnd": invnd, "billval": billval, "clmtyp": clmcal, "biltyp": biltyp, "clmval": clmval, "Gtype": clmfrm, "FDT": bfdt, "TDT": btdt, "hqdtl": hq, "retail": ret, "Gprod": clmprod, "ClmEndDt": clmenddt, "pcode": pcode }
+                "billid": billid,
+                "billnm": nam, "clmdesc": clmy,
+                "invnd": invnd, "billval": billval,
+                "clmtyp": clmcal, "biltyp": biltyp,
+                "clmval": clmval, "Gtype": clmfrm,
+                "FDT": bfdt, "TDT": btdt, "hqdtl": hq,
+                "retail": ret, "Gprod": clmprod,
+                "ClmEndDt": clmenddt, "pcode": pcode
+            }
 
             $.ajax({
                 type: "POST",
@@ -1617,7 +1718,7 @@ if (validatename.length > 0 && billid == '') {
                 success: function (data) {
                     alert(data.d);
                     $("#Billed").modal("hide");
-					//$('#btnsave1').show();
+                    //$('#btnsave1').show();
                     loadData2();
                     //clear2();
                 },
@@ -1640,6 +1741,7 @@ if (validatename.length > 0 && billid == '') {
                 ReloadTable3();
             }
         );
+
         $("#tSearchOrd3").on("keyup", function () {
             if ($(this).val() != "") {
                 shText = $(this).val().toLowerCase();
@@ -1657,6 +1759,7 @@ if (validatename.length > 0 && billid == '') {
                 Orders3 = AllOrders3;
             ReloadTable3();
         });
+
         $(".segment3>li").on("click", function () {
             $(".segment3>li").removeClass('active');
             $(this).addClass('active');
@@ -1665,6 +1768,7 @@ if (validatename.length > 0 && billid == '') {
             $("#tSearchOrd3").val('');
             ReloadTable3();
         });
+
         function loadPgNos3() {
             prepg = parseInt($(".paginate_button.previous>a").attr("data-dt-idx"));
             Nxtpg = parseInt($(".paginate_button.next>a").attr("data-dt-idx"));
@@ -1691,6 +1795,7 @@ if (validatename.length > 0 && billid == '') {
             }
             );
         }
+
         $(document).on('click', ".ddlStatus2>li>a", function () {
             //$(".ddlStatus>li>a").on("click", function () {
             cStus = $(this).closest("td").find(".aState3");
@@ -1722,6 +1827,7 @@ if (validatename.length > 0 && billid == '') {
             }
             loadPgNos3();
         });
+
         function ReloadTable3() {
             $("#giftpList TBODY").html("");
             if (filtrkey3 != "All") {
@@ -1745,6 +1851,7 @@ if (validatename.length > 0 && billid == '') {
             $("#gporders_info").html("Showing " + (st + 1) + " to " + (((st + PgRecords) < Orders3.length) ? (st + PgRecords) : Orders3.length) + " of " + Orders3.length + " entries");
             loadPgNos3();
         }
+
         function loadData3() {
             $.ajax({
                 type: "POST",
@@ -1762,20 +1869,23 @@ if (validatename.length > 0 && billid == '') {
                 }
             });
         }
+
         function clear1() {
-		$('#hbgpcode').val('');
+            $('#hbgpcode').val('');
             $('input[name="pt"][value="0"]').prop('checked', true);
             loadproduct('<%=Session["div_code"]%>');
-			$("#hid").show();
+            $("#hid").show();
             $("#hid1").hide();
-			$("#txtprod").val('');
+            $("#txtprod").val('');
             $('#prodpice').val('');
             $('#gpfdt').val('');
             $('#gptdt').val('');
         }
+
         $('#giftpbtn').on('click', function () {
             clear1();
         });
+
         function loadproduct(divcode) {
             $.ajax({
                 type: "POST",
@@ -1786,7 +1896,7 @@ if (validatename.length > 0 && billid == '') {
                 dataType: "json",
                 success: function (data) {
                     allprod = JSON.parse(data.d) || [];
-                    $('#ddlprod').selectpicker('destroy');
+                    //$('#ddlprod').selectpicker('destroy');
                     var pdm = $('#ddlprod');
                     var prnm = $('#ddlprodcatgry');
                     pdm.empty().append($('<option value="0">--Select Product--</option>'));
@@ -1815,11 +1925,13 @@ if (validatename.length > 0 && billid == '') {
             //    includeSelectAllOption: true,
             //});
         }
+
         $(document).on('click', '.sfedit3', function () {
             x = this.id;
             $("#giftpro").modal("show");
             fillGiftProdPop(x);
         });
+
         function fillGiftProdPop(gpcode) {
             $.ajax({
                 type: "POST",
@@ -1858,6 +1970,7 @@ if (validatename.length > 0 && billid == '') {
                 }
             });
         }
+
         $('#btngpsave').on('click', function () {
             var gpscode = $('#hbgpcode').val();
             var prodtyp = $("input[type='radio'][name='pt']:checked").val();
@@ -1868,60 +1981,56 @@ if (validatename.length > 0 && billid == '') {
             if (prodtyp == "1") {
                 productnm = $('#txtprod').val();
             }
-			if((productnm=="" || productnm=="0") && prodtyp == "0")
-			{
-			alert("Select Product");
-			$("#ddlprod").focus();
-			return false;
-			}
-			if(productnm=="" && prodtyp == "1")
-			{
-			alert("Enter ProductName");
-			$('#txtprod').focus();
-			return false;
-			}
-			var validatename = [];
-$.ajax({
-    type: "POST",
-    contentType: "application/json; charset=utf-8",
-    async: false,
-    url: "New_Claim_Master.aspx/getAllGiftProducts",
-    data: "{}",
-    dataType: "json",
-    success: function (data) {
-        validatename = JSON.parse(data.d) || [];
-        validatename = validatename.filter(function (a) {
-            return (a.PName.toLowerCase() == productnm.toLowerCase() && a.prod_type == prodtyp && a.Active_Flag=='0');
-        });
-    },
-    error: function (result) {
-    }
-});
-if (validatename.length > 0 && gpscode == '') {
-    alert("ProductName '" + productnm + "' is Already Exist for same Type.");
-    return false;
-}
+            if ((productnm == "" || productnm == "0") && prodtyp == "0") {
+                alert("Select Product");
+                $("#ddlprod").focus();
+                return false;
+            }
+            if (productnm == "" && prodtyp == "1") {
+                alert("Enter ProductName");
+                $('#txtprod').focus();
+                return false;
+            }
+            var validatename = [];
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                url: "New_Claim_Master.aspx/getAllGiftProducts",
+                data: "{}",
+                dataType: "json",
+                success: function (data) {
+                    validatename = JSON.parse(data.d) || [];
+                    validatename = validatename.filter(function (a) {
+                        return (a.PName.toLowerCase() == productnm.toLowerCase() && a.prod_type == prodtyp && a.Active_Flag == '0');
+                    });
+                },
+                error: function (result) {
+                }
+            });
+
+            if (validatename.length > 0 && gpscode == '') {
+                alert("ProductName '" + productnm + "' is Already Exist for same Type.");
+                return false;
+            }
             var prodprice = $('#prodpice').val();
-			if(prodprice=='')
-			{
-			alert("Enter Product Price");
-			$('#prodpice').focus();
-			return false;
-			}
+            if (prodprice == '') {
+                alert("Enter Product Price");
+                $('#prodpice').focus();
+                return false;
+            }
             var frmdt = $('#gpfdt').val();
-			if(frmdt=='')
-			{
-			alert("select Duration Fromdate");
-			$('#gpfdt').focus();
-			return false;
-			}
+            if (frmdt == '') {
+                alert("select Duration Fromdate");
+                $('#gpfdt').focus();
+                return false;
+            }
             var todt = $('#gptdt').val();
-			if(todt=='')
-			{
-			alert("select Duration Todate");
-			$('#gptdt').focus();
-			return false;
-			}
+            if (todt == '') {
+                alert("select Duration Todate");
+                $('#gptdt').focus();
+                return false;
+            }
 
             $.ajax({
                 type: "POST",
@@ -1951,14 +2060,20 @@ if (validatename.length > 0 && gpscode == '') {
             loadData1();
             loadData2();
             loadData3();
-            loadproduct(divcode);
-            loadretailers(divcode);
+
             loadHQ(divcode);
             //loadretailerCategory(divcode);
             loadclaimprod(divcode);
             fillGiftProductsID(divcode);
+
+
+            loadproduct(divcode);
+
+            loadretailers(divcode);
+
+           
 			
-			  $(document).on('click', '.billprod', function () {
+            $(document).on('click', '.billprod', function () {
                 $('#BPModal').modal('toggle');
                 var slbid = $(this).closest('tr').attr('slbid');
                 var slbnm = $(this).closest('tr').attr('slbnm');
@@ -2007,6 +2122,7 @@ if (validatename.length > 0 && gpscode == '') {
                     $("#val").hide();
                 }
             });
+
             $('input[type=radio][name=cc1]').change(function () {
                 var rad = $('input[name="cc1"]:checked').val();
                 if (rad == '1') {
@@ -2016,6 +2132,7 @@ if (validatename.length > 0 && gpscode == '') {
                     $("#val1").hide();
                 }
             });
+
             $('input[type=radio][name=cf]').change(function () {
                 var rad = $('input[name="cf"]:checked').val();
                 if (rad == '1') {
@@ -2047,6 +2164,7 @@ if (validatename.length > 0 && gpscode == '') {
                     $("#clgip1").hide();
                 }
             });
+
             $('input[type=radio][name=bb]').change(function () {
                 var rad = $('input[name="bb"]:checked').val();
                 if (rad == '1') {
@@ -2094,6 +2212,7 @@ if (validatename.length > 0 && gpscode == '') {
                 }).multiselect('reload');
                 $('.ms-options ul').css('column-count', '2');
             });
+
             $('#ddlhq').on('change', function () {
                 var hq = "";
                 $('#ddlhq  > option:selected').each(function () {
@@ -2128,8 +2247,11 @@ if (validatename.length > 0 && gpscode == '') {
                 }).multiselect('reload');
                 $('.ms-options ul').css('column-count', '2');
             });
+
+           
         });
-		 function fillbilledproduct(slbid) {
+
+        function fillbilledproduct(slbid) {
             $('#bpdets tbody').html('');
             $.ajax({
                 type: "POST",
@@ -2153,6 +2275,7 @@ if (validatename.length > 0 && gpscode == '') {
                 }
             });
         }
+
         function fillRetailers(slbid) {
             $('#rdets tbody').html('');
             $.ajax({
@@ -2177,6 +2300,7 @@ if (validatename.length > 0 && gpscode == '') {
                 }
             });
         }
+
         function fillHQ(slbid) {
             $('#hqdets tbody').html('');
             $.ajax({
@@ -2201,6 +2325,7 @@ if (validatename.length > 0 && gpscode == '') {
                 }
             });
         }
+
 		 function fillRetailers2(slbid) {
             $('#rdets2 tbody').html('');
             $.ajax({
@@ -2225,6 +2350,7 @@ if (validatename.length > 0 && gpscode == '') {
                 }
             });
         }
+
         function fillHQ2(slbid) {
             $('#hqdets2 tbody').html('');
             $.ajax({
@@ -2249,6 +2375,7 @@ if (validatename.length > 0 && gpscode == '') {
                 }
             });
         }
+
         function loadclaimprod(divcode) {
             $.ajax({
                 type: "POST",
@@ -2266,7 +2393,7 @@ if (validatename.length > 0 && gpscode == '') {
                         clpmast1.append($('<option value="' + allcp[i].Product_Code + '">' + allcp[i].Product_Name + '</option>'));
                     }
                     $('#ddlgift').multiselect({
-                        columns: 2,
+                        columns: 1,
                         placeholder: 'Select GiftProducts',
                         search: true,
                         searchOptions: {
@@ -2274,9 +2401,12 @@ if (validatename.length > 0 && gpscode == '') {
                         },
                         selectAll: true
                     }).multiselect('reload');
+
                     $('.ms-options ul').css('column-count', '2');
-                    $('#ddlgift1').multiselect({
-                        columns: 2,
+
+                    $('#ddlgift1').multiselect
+                    ({
+                        columns: 1,
                         placeholder: 'Select GiftProducts',
                         search: true,
                         searchOptions: {
@@ -2316,6 +2446,7 @@ if (validatename.length > 0 && gpscode == '') {
                         },
                         selectAll: true
                     }).multiselect('reload');
+
                     $('.ms-options ul').css('column-count', '2');
                     $('#ddlhq1').multiselect({
                         columns: 2,
@@ -2326,12 +2457,14 @@ if (validatename.length > 0 && gpscode == '') {
                         },
                         selectAll: true
                     }).multiselect('reload');
+
                     $('.ms-options ul').css('column-count', '2');
                 },
                 error: function (result) {
                 }
             });
         }
+
         function fillGiftProductsID(divcode) {
             $.ajax({
                 type: "POST",
@@ -2422,7 +2555,7 @@ if (validatename.length > 0 && gpscode == '') {
             });
         }
 
-        
+       
 
         function ValidatePrice(boxval) {
             if (parseInt(boxval) <= 0)

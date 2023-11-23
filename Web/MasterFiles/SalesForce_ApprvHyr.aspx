@@ -1246,7 +1246,7 @@
                     $('#depo').hide();
                 }
                 sfcode = '<%=sf_code%>';
-                loadAdditionalFields();
+                //loadAdditionalFields();
                 loaddivision();
                 loadhq();
                 loadstates();

@@ -19,9 +19,10 @@ using Amazon.S3.Transfer;
 using Amazon.S3.Model;
 using System.Net;
 using System.Net.Http;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using System.Text;
 using System.Net.Http.Headers;
+using System.Web.Http;
+using iTextSharp.tool.xml.css;
 
 public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
 {
@@ -34,6 +35,9 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
     DataSet dsTP = null;
     public static System.Data.DataTable dtt = null;
     public static string div_code = string.Empty;
+    public static string divCode = string.Empty;
+    public static string SfCode = string.Empty;
+    
     #endregion
 
     protected override void OnPreInit(EventArgs e)
@@ -62,6 +66,8 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         if (!Page.IsPostBack)
         {
             div_code = Session["div_code"].ToString();
+            divCode = Session["div_code"].ToString();
+            SfCode = Session["sf_code"].ToString();
             sf_code = Session["sf_code"].ToString();
             sf_type = Session["sf_type"].ToString();
         }
@@ -97,7 +103,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         DataSet ds = new DataSet();
         //AdminSetup Ad = new AdminSetup();
 
-        ds = GetAdditionalRetailers(divcode, ModuleId, ColumnName);
+        ds = GetAdditionalRetailers(div_code, ModuleId, ColumnName);
         //ds = Ad.GetAdditionalRetailer(divcode, ModuleId);
         return JsonConvert.SerializeObject(ds.Tables[0]);
 
@@ -127,18 +133,19 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
     }
 
 
-
-    [WebMethod]
-    public static string GetCustomFormsFieldsColumns(string divcode, string ModuleId, string Sf)
+    [HttpPost]
+    [WebMethod(EnableSession = true)]
+    public static string GetCustomFormsFieldsColumns(string ModuleId)
     {
         DataSet ds = new DataSet();
         AdminSetup Ad = new AdminSetup();
-        ds = Ad.GetCustomFormsFieldsColumns(divcode, ModuleId, Sf);
+        ds = Ad.GetCustomFormsFieldsColumns(div_code, ModuleId, SfCode);
 
         return JsonConvert.SerializeObject(ds.Tables[0]);
     }
 
-    [WebMethod]
+    [HttpPost]
+    [WebMethod(EnableSession = true)]
     public static List<newRetailer> getNewRetailer()
     {
 
@@ -196,7 +203,8 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         return Lists.ToList();
     }
 
-    [WebMethod]
+    [HttpPost]
+    [WebMethod(EnableSession = true)]
     public static string GetBindCustomFieldData(string listeddrcode, string columnName)
     {
         DataSet ds = get_RetailerCustomField(listeddrcode, columnName, div_code);
@@ -224,8 +232,8 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         return dsTerr;
     }
 
-
-    [WebMethod]
+    [HttpPost]
+    [WebMethod(EnableSession = true)]
     public static string DisPlayCutomFields(string ModuleId)
     {
         System.Data.DataTable ds = new System.Data.DataTable();
@@ -236,7 +244,6 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
 
         return JsonConvert.SerializeObject(ds);
     }
-
 
     public static System.Data.DataTable getDCFields(string divcode, string ModuleId, string Sf_Code)
     {
@@ -255,7 +262,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
 
 
         string strQry = " SELECT *FROM DisplayFields  (NOLOCK) ";
-        strQry += " WHERE ModuleId=3 AND ActiveView=1 AND Division_Code=@Division_Code AND Sf_Code=@Sf_Code";
+        strQry += " WHERE ModuleId=3 AND ActiveView=1 AND Division_Code=@Division_Code AND Sf_Code=@Sf_Code ORDER BY SrtNo ASC";
 
         try
         {
@@ -281,11 +288,43 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
 
         }
         return dsAdmin;
-
-
     }
 
-    [WebMethod]
+    [HttpPost]
+    [WebMethod(EnableSession = true)]
+    public static string InsertUpdateDisplayFileds(string columnName, string ActiveView)
+    {
+        string update = "";
+        update = InsertDisplayFileds(sf_code, columnName, div_code, "3", ActiveView);
+        return update;
+    }
+
+    public static string InsertDisplayFileds(string SfCode, string DisPlayName, string DivCode, string ModuleId, string ActiveView)
+    {
+        string update = "";
+
+        int iReturn = 0;
+        string sqlQry = "EXEC [InsertDeleteDisplayFileds] '" + SfCode + "', '" + DisPlayName + "', '" + DivCode + "','" + ModuleId + "'," + ActiveView + "";
+
+        using (var con = new SqlConnection(Global.ConnString))
+        {
+           
+            using (var cmd = new SqlCommand(sqlQry, con))
+            {
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                iReturn = cmd.ExecuteNonQuery();
+                con.Close();
+                if (iReturn == 0) { update = " Not Inserted"; }
+                else { update = "Inserted"; }
+            }
+        }
+
+        return update;
+    }
+
+    [HttpPost]
+    [WebMethod(EnableSession = true)]
     public static string UpdateCutomRetailerData(string columnName, string ActiveView)
     {
         string update = "";
@@ -296,7 +335,6 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         return update;
     }
 
-
     public static string Update_RetailerCustomField(string columnName, string ActiveView, string DivCode)
     {
         string update = "";
@@ -304,13 +342,15 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
 
         using (var con = new SqlConnection(Global.ConnString))
         {
-            con.Open();
+           
             using (var cmd = new SqlCommand(sql, con))
             {
                 cmd.Parameters.AddWithValue("@ActiveView", ActiveView);
                 cmd.Parameters.AddWithValue("@Field_Name", columnName);
                 cmd.Parameters.AddWithValue("@Div_code", DivCode);
+                con.Open();
                 cmd.ExecuteNonQuery();
+                con.Close();
                 update = "Updated";
             }
         }
@@ -318,7 +358,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         return update;
     }
 
-
+    [HttpPost]
     [WebMethod(EnableSession = true)]
     public static string DownloadImageFromS3(string filename)
     {
@@ -328,7 +368,6 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
            
             DataSet dsDivision = getStatePerDivision(div_code);
             string Folder = Convert.ToString(dsDivision.Tables[0].Rows[0]["Url_Short_Name"]);
-
 
             Folder = Folder.ToString().ToLower() + "_" + "Retailer";
 
@@ -345,8 +384,6 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
 
             // Iterate through the static fields for image fields and retrieve/save them
             msg = RetrieveAndSaveImage(currentDirectory, Folder, filename);
-
-
         }
         catch (Exception exception)
         {
@@ -354,12 +391,8 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
             msg = " " + exception.Message + " , " + exception.InnerException + " ";
         }
 
-
         return msg;
-
     }
-
-
 
     private static string RetrieveAndSaveImage(string currentDirectory, string Folder, string fileName)
     {
@@ -367,7 +400,6 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         if (!string.IsNullOrWhiteSpace(fileName))
         {
             string localFilePath = Path.Combine(currentDirectory, Folder, fileName);
-
 
             try
             {
@@ -386,7 +418,6 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
                 {
                     //transferUtility.Download(localFilePath, bucketName, fileName);
 
-
                     GetObjectRequest request = new GetObjectRequest
                     {
                         BucketName = bucketName,
@@ -404,7 +435,6 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
                         }
                     }
 
-
                     //GetObjectResponse response = client.GetObject(bucketName, fileName);
                     //MemoryStream memoryStream = new MemoryStream();
 
@@ -413,8 +443,6 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
                     //    responseStream.CopyTo(memoryStream);
                     //    memoryStream.Close();
                     //}
-
-
 
                     msg = "File downloaded locally on the server successfully.";
                 }
@@ -499,9 +527,6 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         }
 
         return msg;
-
-
-
     }
 
     public static DataSet getStatePerDivision(string div_code)
@@ -536,6 +561,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         return dsAdmin;
     }
 
+    [HttpPost]
     [WebMethod(EnableSession = true)]
     public static string UpdateApprove(string custCode, string erp, string lat, string longi)
     {
@@ -591,121 +617,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
                         string Zone_name = tc.Tables[0].Rows[0]["Zone_name"].ToString();
                         string Area_name = tc.Tables[0].Rows[0]["Area_name"].ToString();
                         string Country_name = tc.Tables[0].Rows[0]["Country_name"].ToString();
-
-                        var payload = new
-                        {
-                            systemID = "CUS01",
-                            payload = new
-                            {
-                                IM_SOURCE = "SANEFORCE",
-                                IM_EXTREQUEST = 1234,
-                                IM_EXTCUSTID = "12345678",
-                                IM_REQTYPE = "N",
-                                IM_STG_REQ = new[]
-                                {
-                                new
-                                {
-                                    REQ_SRNO = 0,
-                                    SP_REQTYPE = "N",
-                                    SP_CODE = custCode,
-                                    SP_NAME1 = ListedDr_Name,
-                                    SP_NAME2 = "",
-                                    SP_NAME3 = "",
-                                    SP_NAME4 = "",
-                                    SP_STREET = Territory_Name,
-                                    SP_CITY = Zone_name,
-                                    SP_PINCODE = ListedDr_PinCode,
-                                    SP_STATE = State_Name,
-                                    SP_COUNTRY = Country_name,
-                                    SP_PAN = Pan_No,
-                                    SP_MOBILE = ListedDr_Mobile,
-                                    SP_EMAIL = ListedDr_Email,
-                                    SP_CONTPERS_NAME = "TEST1",
-                                    SP_CONTPERS_MOBILE = "9988007766",
-                                    SP_CONTPERS_EMAIL = "TEST@RIL.COM",
-
-                                    SH_CODE = "",
-                                    SH_NAME1 = ListedDr_Name,
-                                    SH_NAME2 = "",
-                                    SH_NAME3 = "",
-                                    SH_NAME4 = "",
-                                    SH_STREET = Territory_Name,
-                                    SH_CITY = Zone_name,
-                                    SH_PINCODE = ListedDr_PinCode,
-                                    SH_STATE = State_Name,
-                                    SH_COUNTRY = Country_name,
-                                    SH_GST = GST,
-                                    SH_MOBILE = ListedDr_Mobile,
-                                    SH_EMAIL = ListedDr_Email,
-                                    SH_CONTPERS_NAME = "TESTTT",
-                                    SH_CONTPERS_MOBILE = "9945122222",
-                                    SH_CONTPERS_EMAIL = "TEST@RIL.COM",
-
-                                    BP_CODE = "",
-                                    BP_NAME1 = ListedDr_Name,
-                                    BP_NAME2 = "",
-                                    BP_NAME3 = "",
-                                    BP_NAME4 = "",
-                                    BP_STREET = Territory_Name,
-                                    BP_CITY = Zone_name,
-                                    BP_PINCODE = ListedDr_PinCode,
-                                    BP_STATE = State_Name,
-                                    BP_COUNTRY = Country_name,
-                                    BP_GST = GST,
-                                    BP_MOBILE = ListedDr_Mobile,
-                                    BP_EMAIL = ListedDr_Email,
-                                    BP_CONTPERS_NAME = "TESTTT",
-                                    BP_CONTPERS_MOBILE = "9988443322",
-                                    BP_CONTPERS_EMAIL = "TEST@RIL.COM",
-
-                                    PY_CODE = "",
-                                    PY_NAME1 = ListedDr_Name,
-                                    PY_NAME2 = "",
-                                    PY_NAME3 = "",
-                                    PY_NAME4 = "",
-                                    PY_STREET = Territory_Name,
-                                    PY_CITY = Zone_name,
-                                    PY_PINCODE = ListedDr_PinCode,
-                                    PY_STATE = State_Name,
-                                    PY_COUNTRY = Country_name,
-                                    PY_PAN = Pan_No,
-                                    PY_GST = GST,
-                                    PY_MOBILE = ListedDr_Mobile,
-                                    PY_EMAIL = ListedDr_Email,
-                                    PY_CONTPERS_NAME = "TETETE",
-                                    PY_CONTPERS_MOBILE = "9909777663",
-                                    PY_CONTPERS_EMAIL = "MIAL@RIL.COM"
-                                }
-                            },
-                                IM_STG_KNBW = new[] { new { } },
-                                IM_STG_KNBK = new[] { new { } },
-                                IM_DMS = new[] { new { } },
-                                IT_STG_REQ = new[] { new { } },
-                                IT_STG_KNBW = new[] { new { } },
-                                IT_STG_KNBK = new[] { new { } }
-                            }
-                        };
-
-                        var json = JsonConvert.SerializeObject(payload);
-
-                        HttpClient client = new HttpClient();
-
-                        var content = new StringContent(json, Encoding.UTF8);
-
-                        client.BaseAddress = new Uri("https://apigwhcdev.ril.com/commonsapfeature/1.0.0/RFCAnyWhere/callRFC");
-                        client.DefaultRequestHeaders.Accept.Clear();
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "643fea21-630d-3135-8cd7-7a14903c70f");
-                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        var response = client.PostAsync("POST", content).Result;
-
-                        if (response.IsSuccessStatusCode)
-                        {
-                            retailerStatus = "Retailer approved details sent to sap..!";
-                        }
-                        else
-                        {
-                            retailerStatus = "Internal server Error..!";
-                        }
+                       
                     }
                 }
             }
@@ -793,7 +705,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         return dsAdmin;
     }
 
-
+    [HttpPost]
     [WebMethod(EnableSession = true)]
     public static string UpdateReject(string custCode, string reasion)
     {
@@ -819,6 +731,9 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
             return "Retailer Rejected UnSuccessfull..!";
         }
     }
+
+
+    [HttpPost]
     [WebMethod(EnableSession = true)]
     public static string updChannel(string custCode, string spcode, string spname)
     {
@@ -842,6 +757,8 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
         }
     }
 
+
+    [HttpPost]
     [WebMethod(EnableSession = true)]
     public static string Updatelatlong(string sCus)
     {
@@ -864,14 +781,18 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
             {
                 ret = adm.updatelatlong(Data[il].erp, Data[il].lat, Data[il].longi, Data[il].custCode);
             }
-            
+
             return "Updated Successfully..!";
         }
         catch
         {
             return "Updated Failed..!";
         }
+
     }
+
+
+    [HttpPost]
     [WebMethod(EnableSession = true)]
     public static string getChannel()
     {
@@ -891,6 +812,7 @@ public partial class MasterFiles_RetailerApproval : System.Web.UI.Page
 
         return JsonConvert.SerializeObject(dtchannel);
     }
+
     public static System.Data.DataTable getsfcc(string qrystring)
     {
 

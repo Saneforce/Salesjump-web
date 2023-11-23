@@ -411,7 +411,7 @@
                         contentType: "application/json; charset=utf-8",
                         async: false,
                         url: "RetailerApproval.aspx/GetCustomFormsFieldsColumns",
-                        data: "{'divcode':'<%=Session["div_code"]%>','ModuleId':'" + ModuleId + "','Sf':'" + Sf + "'}",
+                        data: "{'ModuleId':'" + ModuleId + "'}",
                         dataType: "json",
                         success: function (data) {
                             $('#CustoFielddets TBODY').html("");
@@ -529,7 +529,7 @@
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         async: false,
-                        url: "RetailerApproval.aspx/UpdateCutomRetailerData",
+                        url: "RetailerApproval.aspx/InsertUpdateDisplayFileds",
                         data: "{'columnName':'" + columnName + "','ActiveView':'" + ActiveView + "'}",
                         dataType: "json",
                         success: function (data) {
@@ -602,7 +602,7 @@
                                                         console.log(CustItem);
                                                         if (CustItem.length > 0) {
                                                             var $val = CustItem[0][$fldnc];
-                                                            //console.log($val);
+                                                            console.log($val);
                                                             if (($val == null || $val == '' || $val == "")) {
                                                                                                                                 
                                                                 str += "<td></td>";
