@@ -1,5 +1,4 @@
-
-<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Master.master.cs" Inherits="Master" %>
+<%@ master language="C#" autoeventwireup="true" codefile="Master.master.cs" inherits="Master" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="https://www.w3.org/1999/xhtml">
@@ -370,16 +369,16 @@
                             success: function (data) {
                                 AllData = data.d;
                                 localStorage.setItem('d', JSON.stringify(AllData));
-                                dataa = JSON.stringify(data.d);
-
+                                dataa= JSON.stringify(data.d);
+                               
                             },
 
-                            error: function (result) {
-                                console.log(result);
-                            }
-                        });
-                    }
-                    if (sValue == 'h' || sValue.toLowerCase() == 's') {
+                        error: function (result) {
+                            console.log(result);
+                        }
+                    });
+                }
+                if (sValue == 'h' || sValue.toLowerCase() == 's') {
 
                         $.ajax({
                             type: "Post",
@@ -393,7 +392,7 @@
                                 localStorage.setItem('d', JSON.stringify(AllData));
                                 dataa = JSON.stringify(data.d);
 
-                            },
+                        },
 
                             error: function (result) {
                                 console.log(result);

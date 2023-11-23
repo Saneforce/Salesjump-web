@@ -455,7 +455,7 @@
                                         for (var r = 0; r < n.length; r++) {
                                             var hchecked = ((menurights.indexOf(',' + n[r].Menu_ID + ',')) > -1 ? 'checked' : '');
 
-                                            str += "<div class=" + MainMnu[i].Menu_ID + " style='padding-left:" + (5 + (25 * (h[r].lvl - 1))) + "px'><label  style='font-weight:normal;'><input type='checkbox' id= " + n[r].Menu_ID + "  value=" + n[r].Parent_Menu + " class='cchk" + MainMnu[i].Menu_ID + "' name='check3' title=" + MainMnu[i].Menu_ID + " " + hchecked + " /> " + n[r].Menu_Name + "</label></div>";
+                                            str += "<div class=" + MainMnu[i].Menu_ID + " style='padding-left:" + (5 + (25 * (n[r].lvl - 1))) + "px'><label  style='font-weight:normal;'><input type='checkbox' id= " + n[r].Menu_ID + "  value=" + n[r].Parent_Menu + " class='cchk" + MainMnu[i].Menu_ID + "' name='check3' title=" + MainMnu[i].Menu_ID + " " + hchecked + " /> " + n[r].Menu_Name + "</label></div>";
 
                                         }
                                     }

@@ -26,10 +26,12 @@
         tbody > tr:hover {
             background-color: #83e6c3;
         }
-		th {
-			text-align: center;
-			color: #333;
-		}
+
+        th {
+            text-align: center;
+            color: #333;
+        }
+
         #loader {
             position: absolute;
             left: 50%;
@@ -96,12 +98,12 @@
             });
         }
         var Hq_Typ = ['Metro', 'Major', 'Others'];
-		var Typeval = 0;
-		var TypevalSF=0;
+        var Typeval = 0;
+        var TypevalSF = 0;
         $(document).ready(function () {
-			if (JSON.parse(localStorage.getItem('Access_Details'))[0].Exp_Web_Auto == 1 && JSON.parse(localStorage.getItem('Access_Details'))[0].Exp_Process_Type==0) {
-				 window.location.href = "Allowance_Entry_New.aspx";
-			}
+            if (JSON.parse(localStorage.getItem('Access_Details'))[0].Exp_Web_Auto == 1 && JSON.parse(localStorage.getItem('Access_Details'))[0].Exp_Process_Type == 0) {
+                window.location.href = "Allowance_Entry_New.aspx";
+            }
             let edt = new Date();
             var dd = edt.getDate();
             var mm = edt.getMonth() + 1;
@@ -126,7 +128,7 @@
                     alert(JSON.stringify(result));
                 }
             });
-			 
+
             if ('<%=DBase_EReport.Global.AllowanceType%>' == '0') {
                 $("#FieldForce").css("display", "block");
                 $("#Designation").css('display', 'block');
@@ -135,7 +137,7 @@
                 $("#Designation").css('display', 'block');
                 $("#FieldForce").css('display', 'none');
             }
-             
+
             document.getElementById("recpt-dt").setAttribute("min", yyyy + '-' + mm + '-' + dd);
             alowanceLoad();
             function alowanceLoad() {
@@ -204,10 +206,10 @@
                         for (var i = 0; i < data.d.length; i++) {
                             strDs = "<td class='col-xs-2'> <input type='hidden' name='Des_Code' value='" + data.d[i].Designation_Code + "'/>" + data.d[i].Designation_Short_Name + "</td> ";
                             $.each(Hq_Typ, function (key, val) {
-                                strDs += "<td><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (Typeval+1) + ")'/> </td><td ><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (Typeval+2) + ")'/></td><td ><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (Typeval+3) + ")'/></td>";
-								Typeval += 3;
+                                strDs += "<td><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (Typeval + 1) + ")'/> </td><td ><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (Typeval + 2) + ")'/></td><td ><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (Typeval + 3) + ")'/></td>";
+                                Typeval += 3;
                             });
-							Typeval++;
+                            Typeval++;
                             for (var j = 0; j < len; j++) {
 
                                 strDs += "<td> <input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (j + Typeval) + ")'/> </td>";
@@ -220,7 +222,7 @@
                             }
                             strDs += "<td><select class='cls'>" + Pstr + "</select></td>";
                             $("#Designation tbody").append("<tr class='gvRow'>" + strDs + "</tr>");
-							Typeval = 0;
+                            Typeval = 0;
                             $(".cls").selectpicker({
                                 liveSearch: true
                             });
@@ -243,14 +245,14 @@
                         for (var i = 0; i < data.d.length; i++) {
                             strFF = "<td>" + (i + 1) + " </td><td class='col-xs-2'>" + data.d[i].sf_name + "</td><td class='col-xs-2'><input type='hidden' name='sf_Code' value='" + data.d[i].sf_code + "'/><input type='hidden' name='Des_Code' value='" + data.d[i].Designation_Code + "'/>" + data.d[i].sf_HQ + "</td>";//<td > <input type='text' class='form-control' style='height:33px;' name='Alw_value'/> </td><td ><input type='text' class='form-control' style='height:33px; 'name='Alw_value'/></td><td ><input type='text' class='form-control' style='height:33px; ' name='Alw_value'/></td>
                             $.each(Hq_Typ, function (key, val) {
-                                strFF += "<td><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (TypevalSF+1) + ")'/> </td><td ><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (TypevalSF+2) + ")'/></td><td ><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (Typeval+3) + ")'/></td>";
-								TypevalSF+=3;
+                                strFF += "<td><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (TypevalSF + 1) + ")'/> </td><td ><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (TypevalSF + 2) + ")'/></td><td ><input type='text' class='form-control' style='height:33px;' name='Alw_value' onkeyup='FetchData(this," + (Typeval + 3) + ")'/></td>";
+                                TypevalSF += 3;
                             });
-							TypevalSF++;
+                            TypevalSF++;
                             for (var j = 0; j < len; j++) {
                                 strFF += "<td ><input type='text'  name='Alw_value' class='form-control' style='height:33px;'/></td>";
                             }
-							Pstr = "";
+                            Pstr = "";
                             Pstr = "<option value='0'>Nothing Select</option>";
                             for (var k = 0; k < Periodic.length; k++) {
                                 Pstr += "<option value=" + Periodic[k].Period_Id + ">" + Periodic[k].Period_Name + "</option>";
@@ -300,12 +302,12 @@
                 });
             }
             $(document).on('click', '.btnsave', function () {
-		if ($("#recpt-dt").val() == '') {
-                alert("Select Effective Date!!!")
-		$("#recpt-dt").focus();
-                return;
-            }
-				Typeval = 0;
+                if ($("#recpt-dt").val() == '') {
+                    alert("Select Effective Date!!!")
+                    $("#recpt-dt").focus();
+                    return;
+                }
+                Typeval = 0;
                 $('#loadover').show();
                 var dtls_tab = document.getElementById("Designation");
                 var nrows1 = dtls_tab.rows.length;
@@ -316,16 +318,16 @@
                 var fnldate = btndate;
                 $('#Designation tbody tr').each(function (key) {
                     var fd = 1;
-                    for (var i = 1; i < Ncols-1; i++) {
+                    for (var i = 1; i < Ncols - 1; i++) {
                         //console.log($(this).closest('table').find('.alcode').find('th'));
                         //var val = (i == 1) ? nrows1 : 3 + (i - 1);
-						Alwcode = $(this).closest('table').find('.alcode').find('th').eq(i - 1).find('input[name=Alw_Code]').val();
+                        Alwcode = $(this).closest('table').find('.alcode').find('th').eq(i - 1).find('input[name=Alw_Code]').val();
                         arr.push({
                             Des_code: $(this).closest('tr').find('input[name=Des_Code]').val().toLowerCase().toString(),
                             //SF_Code: $(this).closest('tr').find('input[name=sf_Code]').val().toLowerCase().toString(),
                             Alw_code: Alwcode,
                             values: (($(this).children('td').eq(i).find('input[name=Alw_value]').val()) == "") ? 0 : ($(this).children('td').eq(i).find('input[name=Alw_value]').val()),
-							period: ((Alwcode == "HQ_Me") ? "" : (Alwcode == "EX_Me") ? "" : (Alwcode == "OS_Me") ? "" : (Alwcode == "HQ_Ma") ? "" : (Alwcode == "EX_Ma") ? "" : (Alwcode == "OS_Ma") ? "" : (Alwcode == "HQ_Ot") ? "" : (Alwcode == "EX_Ot") ? "" : (Alwcode == "OS_Ot") ? "" : $('tr:eq("' + (key + 3) + '")').find('td:eq("' + (Ncols - 1) + '")').find('.cls option:selected').val())
+                            period: ((Alwcode == "HQ_Me") ? "" : (Alwcode == "EX_Me") ? "" : (Alwcode == "OS_Me") ? "" : (Alwcode == "HQ_Ma") ? "" : (Alwcode == "EX_Ma") ? "" : (Alwcode == "OS_Ma") ? "" : (Alwcode == "HQ_Ot") ? "" : (Alwcode == "EX_Ot") ? "" : (Alwcode == "OS_Ot") ? "" : $('tr:eq("' + (key + 3) + '")').find('td:eq("' + (Ncols - 1) + '")').find('.cls option:selected').val())
                             //period: $('tr:eq("' + (key + 3) + '")').find('td:eq("' + (Ncols - 1) + '")').find('.cls option:selected').val()
                         });
                     }
@@ -337,18 +339,18 @@
                 var Fieldforce = [];
                 var btndate = $('#recpt-dt').val();
                 var fnldate = (btndate != '1900-01-01' || btndate != '') ? btndate : rjalert('Alert!!!', 'Select Effective Date', 'error');
-                $('#FieldForce tbody tr').each(function () {
+                $('#FieldForce tbody tr').each(function (key) {
                     var fd = 1;
                     //Ncols += 3;
                     for (var i = 3; i < Ncols + 3; i++) {
                         console.log($(this).closest('table').find('.alcode').find('th'));
-						Alwcode = $(this).closest('table').find('.alcode').find('th').eq(i - 3).find('input[name=Alw_Code]').val();
+                        Alwcode = $(this).closest('table').find('.alcode').find('th').eq(i - 3).find('input[name=Alw_Code]').val();
                         Fieldforce.push({
                             Des_code: $(this).closest('tr').find('input[name=Des_Code]').val().toLowerCase().toString(),
                             SF_Code: $(this).closest('tr').find('input[name=sf_Code]').val().toLowerCase().toString(),
                             Alw_code: Alwcode,//$(this).closest('table').find('.alcode').find('th').eq(i - 3).find('input[name=Alw_Code]').val(),
                             values: (($(this).children('td').eq(i).find('input[name=Alw_value]').val()) == "") ? 0 : ($(this).children('td').eq(i).find('input[name=Alw_value]').val()),
-							period: ((Alwcode == "HQ_Me") ? "" : (Alwcode == "EX_Me") ? "" : (Alwcode == "OS_Me") ? "" : (Alwcode == "HQ_Ma") ? "" : (Alwcode == "EX_Ma") ? "" : (Alwcode == "OS_Ma") ? "" : (Alwcode == "HQ_Ot") ? "" : (Alwcode == "EX_Ot") ? "" : (Alwcode == "OS_Ot") ? "" : $(this).closest('table').find('tr:eq("' + (key + 4) + '")').find('td:eq("' + (Ncols + 3) + '")').find('.cls option:selected').val())
+                            period: ((Alwcode == "HQ_Me") ? "" : (Alwcode == "EX_Me") ? "" : (Alwcode == "OS_Me") ? "" : (Alwcode == "HQ_Ma") ? "" : (Alwcode == "EX_Ma") ? "" : (Alwcode == "OS_Ma") ? "" : (Alwcode == "HQ_Ot") ? "" : (Alwcode == "EX_Ot") ? "" : (Alwcode == "OS_Ot") ? "" : $(this).closest('table').find('tr:eq("' + (key + 4) + '")').find('td:eq("' + (Ncols + 3) + '")').find('.cls option:selected').val())
                         });
                     }
                 });
@@ -360,8 +362,8 @@
                     dataType: "json",
                     success: function (data) {
                         $("#loader").hide();
-			if(data.d=='')
-                        alert("Allowance has been updated successfully!!!");
+                        if (data.d == '')
+                            alert("Allowance has been updated successfully!!!");
                         alowanceLoad();
                     },
                     error: function (data) {
@@ -433,10 +435,10 @@
                                 if ($(this).closest('table').find('.alcode').find('th').eq(col - 1).find('input[name=Alw_Code]').val() == data.d[i].Alw_code) {
                                     $(this).find('td').eq(col).find('input[type="text"]').val(data.d[i].values);
                                     $(this).find('td:eq("' + (Ncols - 1) + '")').find('.cls').val(data.d[i].period).selectpicker('refresh');
-                                }                               
+                                }
                             }
                         }
-                        
+
                     });
                 }
             }
@@ -450,8 +452,8 @@
             $('#FieldForce').find('tr:has(td)').each(function () {
                 var sf_code = $(this).find("td:eq(2) :input[name=Des_Code]").val();
                 if (sf_code == ff) {
-					//if($(this).find("td:eq(" + (idx + 2) + ") :input").val()=='')
-						$(this).find("td:eq(" + (idx + 2) + ") :input").val(fareval);
+                    //if($(this).find("td:eq(" + (idx + 2) + ") :input").val()=='')
+                    $(this).find("td:eq(" + (idx + 2) + ") :input").val(fareval);
                 }
             });
         }

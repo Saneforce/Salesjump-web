@@ -1003,12 +1003,12 @@ function Reject($rdt) {
                             else {
                                 trimg = '';
                             }
-							if(trimg!=''){
+							//if(trimg!=''){
 								$s += "<tr class='mtbl'><td class='E_DyUExp' align=\"left\">" + ((ExpItem.WType == 'Not Applicable' || ExpItem.WType == 'Not Claimed') ? "" : $uAllws[$j].expName) + "" + trimg + "</td><td class='E_DyUExpAmt'  expDt='" + $uAllws[$j].eDate + "' expcode='" + $uAllws[$j].expCode + "'  align=\"right\">" + ((ExpItem.WType == 'Not Applicable' || ExpItem.WType == 'Not Claimed') ? "" : ($udAlw).toFixed(2)) + "</td></tr>";
 								if (ExpItem.WType != 'Not Applicable' && ExpItem.WType != 'Not Claimed') {
 									$cTAmt += $udAlw; $trTucl[$j] += $udAlw;
 								}
-							}
+							//}
                         }
                         var Htlnum = (isNaN(Number(ExpItem.Hotel_Bill_Amt)) ? 0 : Number(ExpItem.Hotel_Bill_Amt));
                         if (ExpItem.WType != 'Not Applicable' && ExpItem.WType != 'Not Claimed' && Htlnum != 0) {
